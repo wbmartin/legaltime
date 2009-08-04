@@ -27,6 +27,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 import legaltime.*;
 import legaltime.cache.ClientCache;
+import legaltime.controller.ClientEditorController;
 import legaltime.modelsafe.PersistanceManager;
 import legaltime.model.ClientBean;
 import legaltime.model.ClientManager;
@@ -38,41 +39,14 @@ import org.jdesktop.application.Action;
  *
  * @author bmartin
  */
-public class ClientEditorView extends javax.swing.JInternalFrame 
-        implements ListSelectionListener, InternalFrameListener  {
-    LegalTimeApp mainController;
-    ClientManagerTableModel clientManagerTableModel;
-    ClientManager clientManager;
-    private PersistanceManager persistanceManager;
-    int currentSelectedRow=0;
+public class ClientEditorView extends javax.swing.JInternalFrame  {
+    ClientEditorController clientEditorController;
     /** Creates new form ClientManager */
 
-    public ClientEditorView(LegalTimeApp mainController_) {
+    public ClientEditorView(ClientEditorController clientEditorController_) {
         initComponents();
-        addInternalFrameListener(this);
-        mainController = mainController_;
-        persistanceManager = PersistanceManager.getInstance();
-        clientManager = ClientManager.getInstance();
-        clientManagerTableModel = new ClientManagerTableModel();
-        tblClientSelect.setModel(clientManagerTableModel);
-        tblClientSelect.setAutoCreateRowSorter(true);
-        
-        RowFilter<ClientManagerTableModel, Object> rf = new RowFilter<ClientManagerTableModel,Object>() {
-               public boolean include(Entry<? extends ClientManagerTableModel, ? extends Object> entry) {
-                   if (entry.getValue(0) !=null) {return true; }
-                   return false;
-               }
-         };
-         TableRowSorter<ClientManagerTableModel> sorter = new TableRowSorter<ClientManagerTableModel>(clientManagerTableModel);
-         sorter.setRowFilter(rf);
-         tblClientSelect.setRowSorter(sorter);
-         tblClientSelect.getRowSorter().toggleSortOrder(0);
+        clientEditorController = clientEditorController_;
         buildClientManagerTableColumnModel();
-
-        setListeners();
-        if (clientManagerTableModel.getRowCount()>0){
-            setSelectedRow(currentSelectedRow);
-        }
     }
 
      
@@ -510,6 +484,62 @@ public class ClientEditorView extends javax.swing.JInternalFrame
     private javax.swing.JTextField txtZip;
     // End of variables declaration//GEN-END:variables
 
+    public javax.swing.JTable getTblClientSelect(){
+        return tblClientSelect;
+    }
+    public javax.swing.JTextField getTxtAddress(){
+        return txtAddress;
+
+    }
+    public javax.swing.JTextField getTxtCellPhone() {
+        return txtCellPhone;
+    }
+
+    public javax.swing.JTextField getTxtCity() {
+        return txtCity;
+    }
+    public com.toedter.calendar.JDateChooser getDtClientSince() {
+        return dtClientSince;
+    }
+
+    public javax.swing.JTextField getTxtEmail() {
+        return txtEmail;
+    }
+
+    public javax.swing.JTextField getTxtFaxNum() {
+        return txtFaxNum;
+    }
+
+    public javax.swing.JTextField getTxtFirstName() {
+       return txtFirstName;
+    }
+
+    public javax.swing.JTextField getTxtHomePhone() {
+        return txtHomePhone;
+    }
+
+    public javax.swing.JTextField getTxtLastName() {
+        return txtLastName;
+    }
+
+    public javax.swing.JTextPane getTxtNote() {
+        return txtNote;
+    }
+
+    public javax.swing.JTextField getTxtWorkPhone() {
+        return txtWorkPhone;
+    }
+
+    public javax.swing.JTextField getTxtZip() {
+        return txtZip;
+    }
+
+    public javax.swing.JTextField getTxtState() {
+        return txtState;
+    }
+
+
+   //View Function
     private void buildClientManagerTableColumnModel() {
         TableColumn tc;
         //Name
@@ -523,186 +553,31 @@ public class ClientEditorView extends javax.swing.JInternalFrame
          tc.setMinWidth(50);
          tc.setMaxWidth(200);
     }
-    private void setListeners(){
-        tblClientSelect.getSelectionModel().addListSelectionListener(this);
-        
-    }
+ 
 
-
-     public void valueChanged(ListSelectionEvent event) {
-         int newSelectedRow;
-         
-            if (event.getValueIsAdjusting()) {
-               saveChanges();
-                return;
-            }
-            if(tblClientSelect.getRowCount() >0 && tblClientSelect.getSelectedRow()>=0){
-            newSelectedRow = tblClientSelect.getSelectedRow();
-            currentSelectedRow=tblClientSelect.getRowSorter().convertRowIndexToModel(newSelectedRow);
-            synchDisplayToBean(clientManagerTableModel.getBeanByRow(currentSelectedRow ));
-            }
-                //currentSelectedRow = newSelectedRow;
-            System.out.println(tblClientSelect.getSelectedRow() +" "+currentSelectedRow);
-            mainController.setStatusText("Ready");
-        }
-     
-     public void saveChanges(){
-        mainController.setStatusText("Evaluating changes...");
-        mainController.setLastActionText("No changes to previous client.");
-        synchBeanToDisplay(clientManagerTableModel.getBeanByRow(currentSelectedRow ));
-       if(clientManagerTableModel.getBeanByRow(currentSelectedRow ).isModified()){
-            try {
-                clientManager.save(clientManagerTableModel.getBeanByRow(currentSelectedRow));
-                mainController.setLastActionText("Saved Client Information");
-            } catch (DAOException ex) {
-                mainController.setLastActionText("Error saving client save : " + ex.getMessage());
-                Logger.getLogger(ClientEditorView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else{
-            mainController.setLastActionText("No changes to previous client.");
-        }
-        mainController.setStatusText("Ready");
-     }
-
-
-     public void synchBeanToDisplay(ClientBean bean_){
-         bean_.setAddress(txtAddress.getText());
-         bean_.setCellPhone(txtCellPhone.getText());
-         bean_.setCity(txtCity.getText());
-         try{
-            bean_.setClientSinceDt(dtClientSince.getDate());
-         }catch(Exception e){
-            bean_.setClientSinceDt(new Date());
-         }
-         bean_.setEmail(txtEmail.getText());
-         bean_.setFax(txtFaxNum.getText());
-         bean_.setFirstName(txtFirstName.getText());
-         bean_.setHomePhone(txtHomePhone.getText());
-         bean_.setLastName(txtLastName.getText());
-         bean_.setNote(txtNote.getText());
-         bean_.setState(txtState.getText());
-         bean_.setWorkPhone(txtWorkPhone.getText());
-         bean_.setZip(txtZip.getText());
-
-     }
-     public void synchDisplayToBean(ClientBean bean_){
-         txtAddress.setText(bean_.getAddress());
-         txtCellPhone.setText(bean_.getCellPhone());
-         txtCity.setText(bean_.getCity());
-         dtClientSince.setDate(bean_.getClientSinceDt());
-         txtEmail.setText(bean_.getEmail());
-         txtFaxNum.setText(bean_.getFax());
-         txtFirstName.setText(bean_.getFirstName());
-         txtHomePhone.setText(bean_.getHomePhone());
-         txtLastName.setText(bean_.getLastName());
-         txtNote.setText(bean_.getNote());
-         txtState.setText(bean_.getState());
-         txtWorkPhone.setText(bean_.getWorkPhone());
-         txtZip.setText(bean_.getZip());
-
-     }
-     
-     public void clearDisplay(){
-         txtAddress.setText("");
-         txtCellPhone.setText("");
-         txtCity.setText("");
-         dtClientSince.setDate(null);
-         txtEmail.setText("");
-         txtFaxNum.setText("");
-         txtFirstName.setText("");
-         txtHomePhone.setText("");
-         txtLastName.setText("");
-         txtNote.setText("");
-         txtState.setText("");
-         txtWorkPhone.setText("");
-         txtZip.setText("");
-
-     }
-
-
+     //Controller Function
      @Action
-     public void clearChanges(){
-         synchDisplayToBean(clientManagerTableModel.getBeanByRow(currentSelectedRow ));
+     public void clearChangesToEditedBean(){
+        clientEditorController.clearChangesToEditedBean();
      }
 
+     //Controller Function
      @Action
      public void addNewClient(){
-         if (tblClientSelect.getRowCount()>0){ saveChanges();}
-         ClientBean newClientBean = clientManager.createClientBean();
-         newClientBean.setLastName("_Customer");
-         newClientBean.setFirstName("New");
-         newClientBean.setClientSinceDt(new Date());
-         newClientBean.setActiveYn("Y");
-         //synchDisplayToBean(newClientBean);
-         
-        try {
-            clientManager.save(newClientBean);
-            mainController.setLastActionText("Successfully added new client ");
-        } catch (DAOException ex) {
-            Logger.getLogger(ClientEditorView.class.getName()).log(Level.SEVERE, null, ex);
-            mainController.setLastActionText("Error adding new client: " + ex.getMessage());
-        }
-         persistanceManager.loadClientCache();
-         System.out.println("clients:" + ClientCache.getInstance().getLength());
-         tblClientSelect.revalidate();
-         tblClientSelect.repaint();
-         tblClientSelect.getRowSorter().allRowsChanged();
-         setSelectedRow(0);
-
-
-     }
-
-     private void setSelectedRow(int row ){
-         tblClientSelect.getSelectionModel().setSelectionInterval(
-                    row, row);
-     }
-
-     @Action
-     public void deactivateClient(){
-         mainController.setLastActionText("Client deactivation in process. ");     
-         clientManagerTableModel.getBeanByRow(currentSelectedRow).setActiveYn("N");
-        try {
-            clientManager.save(clientManagerTableModel.getBeanByRow(currentSelectedRow));
-            mainController.setLastActionText("Client deactivated. ");
-        } catch (DAOException ex) {
-            Logger.getLogger(ClientEditorView.class.getName()).log(Level.SEVERE, null, ex);
-            mainController.setLastActionText("Error saving client " + ex.getMessage());
-        }
-        tblClientSelect.revalidate();
-        tblClientSelect.repaint();
-        mainController.setLastActionText("Client deactivation completed. ");
-        tblClientSelect.getRowSorter().allRowsChanged();
-        clearDisplay();
+       clientEditorController.addNewClient();
      }
      
-     public void internalFrameClosing( InternalFrameEvent e ) {
-        saveChanges();
-        this.dispose();
-         
+    
+
+     
+     @Action
+     public void deactivateClient(){
+        clientEditorController.deactivateClient();
      }
 
-    public void internalFrameOpened(InternalFrameEvent e) {
 
-    }
 
-    public void internalFrameClosed(InternalFrameEvent e) {
 
-    }
-
-    public void internalFrameIconified(InternalFrameEvent e) {
-
-    }
-
-    public void internalFrameDeiconified(InternalFrameEvent e) {
-
-    }
-
-    public void internalFrameActivated(InternalFrameEvent e) {
-
-    }
-
-    public void internalFrameDeactivated(InternalFrameEvent e) {
-
-    }
+     
 }
 
