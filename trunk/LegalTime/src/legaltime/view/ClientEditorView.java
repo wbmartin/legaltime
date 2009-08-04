@@ -13,6 +13,7 @@ package legaltime.view;
 
 //import java.awt.Dimension;
 
+import legaltime.view.model.ClientManagerTableModel;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;

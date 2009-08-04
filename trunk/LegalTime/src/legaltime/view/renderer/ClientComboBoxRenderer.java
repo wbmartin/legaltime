@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package legaltime.view;
+package legaltime.view.renderer;
 
 import java.awt.Color;
 import java.awt.Component;

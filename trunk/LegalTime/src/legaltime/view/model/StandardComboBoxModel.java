@@ -3,35 +3,34 @@
  * and open the template in the editor.
  */
 
-package legaltime.view;
+package legaltime.view.model;
 
 import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;
 import legaltime.cache.ClientCache;
-import legaltime.model.ClientBean;
 
 /**
  *
  * @author bmartin
  */
-public class ClientComboBoxModel implements ComboBoxModel {
+public class StandardComboBoxModel implements ComboBoxModel {
     
     int selectedNdx=0;
     private Vector<ListDataListener> listModelListeners = new Vector<ListDataListener>();
-    private ClientBean selItem ;
-    private ClientBean[] array =  {};
+    private Object selItem = new Object();
+    private Object[] array =  {};
     
     @SuppressWarnings("empty-statement")
-    public ClientComboBoxModel(){
+    public StandardComboBoxModel(){
         
     }
 
     public void setSelectedItem(Object anItem) {
-        selItem=(ClientBean)anItem;
+        selItem=anItem;
     }
 
-    public ClientBean getSelectedItem() {
+    public Object getSelectedItem() {
         return selItem;
     }
 
@@ -50,10 +49,8 @@ public class ClientComboBoxModel implements ComboBoxModel {
     public void removeListDataListener(ListDataListener l) {
         listModelListeners.remove( l );
     }
-    public void setList(ClientBean[] array_){
+    public void setList(Object[] array_){
         array = array_;
     }
-
-
 
 }
