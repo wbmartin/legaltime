@@ -13,25 +13,10 @@ package legaltime.view;
 
 //import java.awt.Dimension;
 
-import legaltime.view.model.ClientManagerTableModel;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.RowFilter;
-import javax.swing.RowFilter.Entry;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableRowSorter;
-import legaltime.*;
-import legaltime.cache.ClientCache;
+
 import legaltime.controller.ClientEditorController;
-import legaltime.modelsafe.PersistanceManager;
-import legaltime.model.ClientBean;
-import legaltime.model.ClientManager;
-import legaltime.model.exception.DAOException;
 import org.jdesktop.application.Action;
 
 
@@ -538,8 +523,6 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         return txtState;
     }
 
-
-   //View Function
     private void buildClientManagerTableColumnModel() {
         TableColumn tc;
         //Name
@@ -555,20 +538,15 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     }
  
 
-     //Controller Function
      @Action
      public void clearChangesToEditedBean(){
         clientEditorController.clearChangesToEditedBean();
      }
 
-     //Controller Function
      @Action
      public void addNewClient(){
        clientEditorController.addNewClient();
      }
-     
-    
-
      
      @Action
      public void deactivateClient(){

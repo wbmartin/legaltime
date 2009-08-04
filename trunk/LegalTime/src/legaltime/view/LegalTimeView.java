@@ -390,7 +390,7 @@ public javax.swing.JDesktopPane getDesktop(){
 
     @Action
     public void showClientManager() {
-        ClientEditorController.getInstance(LegalTimeApp.getApplication()).showClientManager();
+        ClientEditorController.getInstance(LegalTimeApp.getApplication()).showClientEditorViewer();
     }
 
     @Action

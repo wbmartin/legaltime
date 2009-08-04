@@ -36,10 +36,9 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
 
     ClientManagerTableModel clientManagerTableModel;
     private PersistanceManager persistanceManager;
-    int currentSelectedRow=0;
     ClientManager clientManager;
-
     LegalTimeApp mainController;
+    int currentSelectedRow=0;
 
     protected ClientEditorController(LegalTimeApp mainController_) {
 
@@ -62,12 +61,10 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          sorter.setRowFilter(rf);
          clientEditorView.getTblClientSelect().setRowSorter(sorter);
          clientEditorView.getTblClientSelect().getRowSorter().toggleSortOrder(0);
-        
-
-        setListeners();
-        if (clientManagerTableModel.getRowCount()>0){
+         setListeners();
+         if (clientManagerTableModel.getRowCount()>0){
             setSelectedRow(currentSelectedRow);
-        }
+         }
     }
     public static ClientEditorController getInstance(LegalTimeApp mainController_){
         if (instance == null){
@@ -75,10 +72,12 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
         }
         return instance;
     }
+
     public LegalTimeApp getMainController(){
         return mainController;
     }
-    public void showClientManager() {
+
+    public void showClientEditorViewer() {
         if (clientEditorView == null) {
             //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
             clientEditorView = new ClientEditorView(this);
@@ -114,17 +113,6 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
      }
 
 
-
-
-
-
-
-
-
-
-
-
-
 //Controller Function
      public void valueChanged(ListSelectionEvent event) {
          int newSelectedRow;
@@ -134,10 +122,10 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
                 return;
             }
             if(clientEditorView.getTblClientSelect().getRowCount() >0
-            && clientEditorView.getTblClientSelect().getSelectedRow()>=0){
-            newSelectedRow = clientEditorView.getTblClientSelect().getSelectedRow();
-            currentSelectedRow=clientEditorView.getTblClientSelect().getRowSorter().convertRowIndexToModel(newSelectedRow);
-            synchDisplayToBean(clientManagerTableModel.getBeanByRow(currentSelectedRow ));
+              && clientEditorView.getTblClientSelect().getSelectedRow()>=0){
+                newSelectedRow = clientEditorView.getTblClientSelect().getSelectedRow();
+                currentSelectedRow=clientEditorView.getTblClientSelect().getRowSorter().convertRowIndexToModel(newSelectedRow);
+                synchDisplayToBean(clientManagerTableModel.getBeanByRow(currentSelectedRow ));
             }
                 //currentSelectedRow = newSelectedRow;
             System.out.println(clientEditorView.getTblClientSelect().getSelectedRow() +" "+currentSelectedRow);
@@ -160,11 +148,6 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          clientEditorView.getTxtZip().setText("");
 
      }
-
-
-
-
-
 
     public void synchBeanToDisplay(ClientBean bean_){
          bean_.setAddress(clientEditorView.getTxtAddress().getText());
@@ -205,17 +188,13 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
      }
 
 
-
-
-
-
-public void clearChangesToEditedBean(){
+    public void clearChangesToEditedBean(){
          synchDisplayToBean(clientManagerTableModel.getBeanByRow(currentSelectedRow ));
      }
 
 
 
-public void addNewClient(){
+    public void addNewClient(){
          if (clientEditorView.getTblClientSelect().getRowCount()>0){ saveChanges();}
          ClientBean newClientBean = clientManager.createClientBean();
          newClientBean.setLastName("_Customer");
@@ -243,7 +222,7 @@ public void addNewClient(){
 
 
 
-public void deactivateClient(){
+    public void deactivateClient(){
          mainController.setLastActionText("Client deactivation in process. ");
          clientManagerTableModel.getBeanByRow(currentSelectedRow).setActiveYn("N");
         try {
@@ -261,7 +240,7 @@ public void deactivateClient(){
      }
 
 
-      private void setSelectedRow(int row ){
+     private void setSelectedRow(int row ){
          clientEditorView.getTblClientSelect().getSelectionModel().setSelectionInterval(row, row);
      }
 
