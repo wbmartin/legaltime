@@ -4,6 +4,7 @@
 
 package legaltime;
 
+import javax.swing.JDesktopPane;
 import legaltime.view.LegalTimeView;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
@@ -62,6 +63,10 @@ LegalTimeView legalTimeView;
     }
     public void setProgressBarValue(int value){
         legalTimeView.setProgressBarProgressValue(value);
+    }
+
+    public JDesktopPane getDesktop(){
+        return legalTimeView.getDesktop();
     }
 
    

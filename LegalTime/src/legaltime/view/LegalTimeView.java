@@ -23,6 +23,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+import legaltime.controller.ClientEditorController;
 import legaltime.reports.JasperReportsIntro;
 import legaltime.modelsafe.PersistanceManager;
 
@@ -370,7 +371,9 @@ public class LegalTimeView extends FrameView {
     // End of variables declaration//GEN-END:variables
 
 
-
+public javax.swing.JDesktopPane getDesktop(){
+    return desktop;
+}
 
 
     @Action
@@ -387,18 +390,7 @@ public class LegalTimeView extends FrameView {
 
     @Action
     public void showClientManager() {
-
-        if (clientManager == null) {
-            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-            clientManager = new ClientEditorView(LegalTimeApp.getApplication());
-            
-
-        }
-        clientManager.setVisible(true);
-        desktop.add(clientManager);
-        try {
-            clientManager.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {}
+        ClientEditorController.getInstance(LegalTimeApp.getApplication()).showClientManager();
     }
 
     @Action
