@@ -1,10 +1,5 @@
-#summary Work Log
+#summary Record of time allocated and changes made.
 
 = Introduction =
-
-Record of time allocated and changes maded
-
-
-= Details =
 
 Work updates will be tracked in comments.
