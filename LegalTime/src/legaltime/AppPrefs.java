@@ -37,7 +37,8 @@ public class AppPrefs {
         }
         temp = prefs.get(JDBC_PASSWD, NOT_SET);
         if (temp.equals(NOT_SET)){
-            prefs.put(JDBC_PASSWD, "PleaseSet");
+            //changed to prompt user on startup if not setup. 2009-08-04 WBM
+            prefs.put(JDBC_PASSWD, NOT_SET);
         }
         
 
