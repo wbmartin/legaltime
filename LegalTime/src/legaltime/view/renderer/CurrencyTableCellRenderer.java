@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package legaltime.view;
+package legaltime.view.renderer;
 
 import java.text.DecimalFormat;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
     static CurrencyTableCellRenderer instance=null;
     protected CurrencyTableCellRenderer() { super(); }
 
-    static CurrencyTableCellRenderer getInstance(){
+    public static CurrencyTableCellRenderer getInstance(){
         if (instance == null){
             instance = new CurrencyTableCellRenderer();
         }

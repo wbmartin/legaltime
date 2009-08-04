@@ -11,6 +11,8 @@
 
 package legaltime.view;
 
+import legaltime.view.model.LaborRegisterTableModel;
+import legaltime.view.renderer.CurrencyTableCellRenderer;
 import java.text.NumberFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -255,6 +257,7 @@ LaborRegisterManager laborRegisterManager;
 
     private void formatTableLaborRegister() {
          TableColumn tc;
+         //CurrencyTableCellRenderer currencyTableCellRenderer  = CurrencyTableCellRenderer.getInstance();
         //Name
          //?
          tc = tblLaborRegister.getColumnModel().getColumn(0);

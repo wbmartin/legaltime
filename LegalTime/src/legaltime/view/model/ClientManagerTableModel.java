@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package legaltime.view;
+package legaltime.view.model;
 
 import javax.swing.table.AbstractTableModel;
 import legaltime.cache.ClientCache;
