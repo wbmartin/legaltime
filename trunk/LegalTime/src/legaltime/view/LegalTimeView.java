@@ -51,7 +51,7 @@ public class LegalTimeView extends FrameView {
 
     public LegalTimeView(SingleFrameApplication app) {
         super(app);
-        AppPrefs appProps = AppPrefs.getInstance();
+        AppPrefs appPrefs = AppPrefs.getInstance();
 
         persistanceManager = PersistanceManager.getInstance();
         initComponents();
@@ -114,6 +114,9 @@ public class LegalTimeView extends FrameView {
         });
         //added default close behavior 2009-07-18
         this.getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        if (appPrefs.getValue(AppPrefs.JDBC_PASSWD).equals(AppPrefs.NOT_SET)){
+            showPreferencesManager();
+        }
     }
 
     @Action
