@@ -30,9 +30,11 @@ import legaltime.model.exception.DAOException;
     ClientBillRateCache clientBillRateCache;
     ClientBillRateManager clientBillRateManager;
     AppPrefs appPrefs;
+    EasyLog easyLog;
 
     protected PersistanceManager(){
         Manager manager = Manager.getInstance();
+        easyLog = EasyLog.getInstance();
         appPrefs =AppPrefs.getInstance();
         manager.setJdbcUrl(appPrefs.getJDBC_URL());
         manager.setJdbcUsername(appPrefs.getValue(AppPrefs.JDBC_USER));
@@ -72,7 +74,8 @@ import legaltime.model.exception.DAOException;
             clientCache.setList(clientManager.loadAll());
             result =DatabaseResult.Success;
         } catch (DAOException ex) {
-            Logger.getLogger(PersistanceManager.class.getName()).log(Level.SEVERE, null, ex);
+            easyLog.addEntry(EasyLog.SEVERE, "Load Client Cache Failed",
+                    this.getClass().getName(),ex);
             result = DatabaseResult.SelectFailed;
         }
         return result;
@@ -86,7 +89,8 @@ import legaltime.model.exception.DAOException;
             userInfoCache.setList(userInfoManager.loadAll());
             result =DatabaseResult.Success;
         } catch (DAOException ex) {
-            Logger.getLogger(PersistanceManager.class.getName()).log(Level.SEVERE, null, ex);
+            easyLog.addEntry(EasyLog.SEVERE, "Load UserInfo Cache Failed",
+                this.getClass().getName(),ex);
             result = DatabaseResult.SelectFailed;
         }
         return result;

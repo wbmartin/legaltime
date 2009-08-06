@@ -24,6 +24,7 @@ LegalTimeView legalTimeView;
     public static void main(String[] args) {
         
         launch(LegalTimeApp.class, args);
+        
     }
 
     @Override protected void startup() {

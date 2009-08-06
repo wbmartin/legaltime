@@ -49,7 +49,7 @@ public class UserInfoTest {
          UserInfoManager userInfoManager = UserInfoManager.getInstance();
 
      UserInfoBean userInfoBean = userInfoManager.createUserInfoBean();
-     userInfoBean.setBillRate(300);
+     
      userInfoBean.setFirstName("Brian");
      userInfoBean.setLastName("Boger");
      userInfoBean.setUserKey("brian");
@@ -60,7 +60,7 @@ public class UserInfoTest {
         }
 
      userInfoBean = userInfoManager.createUserInfoBean();
-     userInfoBean.setBillRate(300);
+     
      userInfoBean.setFirstName("Clerk");
      userInfoBean.setLastName("");
      userInfoBean.setUserKey("clerk");
