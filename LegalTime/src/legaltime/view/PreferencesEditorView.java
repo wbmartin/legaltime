@@ -15,6 +15,7 @@ package legaltime.view;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import legaltime.AppPrefs;
 import legaltime.LegalTimeApp;
 import org.jdesktop.application.Action;
@@ -31,6 +32,7 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         initComponents();
         appPrefs = AppPrefs.getInstance();
         loadCurrentPreferences();
+        txtEbackupPath.setEditable(false);
     }
     public void setMainController(LegalTimeApp mainController_){
         mainController = mainController_;
@@ -55,6 +57,9 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         txtDBPasswd = new javax.swing.JTextField();
         lbldbPasswd = new javax.swing.JLabel();
         lblDBUserName = new javax.swing.JLabel();
+        lblEBackupPath = new javax.swing.JLabel();
+        txtEbackupPath = new javax.swing.JTextField();
+        cmdChooseEBackupPath = new javax.swing.JButton();
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(PreferencesEditorView.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
@@ -90,18 +95,27 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         lblDBUserName.setText(resourceMap.getString("lblDBUserName.text")); // NOI18N
         lblDBUserName.setName("lblDBUserName"); // NOI18N
 
+        lblEBackupPath.setText(resourceMap.getString("lblEBackupPath.text")); // NOI18N
+        lblEBackupPath.setName("lblEBackupPath"); // NOI18N
+
+        txtEbackupPath.setName("txtEbackupPath"); // NOI18N
+
+        cmdChooseEBackupPath.setAction(actionMap.get("ChooseEBackupPath")); // NOI18N
+        cmdChooseEBackupPath.setText(resourceMap.getString("cmdChooseEBackupPath.text")); // NOI18N
+        cmdChooseEBackupPath.setName("cmdChooseEBackupPath"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(114, 114, 114)
                         .addComponent(cmdOk, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cmdCancel))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -111,16 +125,21 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblDBUserName)
                                     .addComponent(lblMysqlIp1)
-                                    .addComponent(lbldbPasswd))
+                                    .addComponent(lbldbPasswd)
+                                    .addComponent(lblEBackupPath))
                                 .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtDBPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtDBUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtEbackupPath, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdChooseEBackupPath))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtDBUserName, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtDBPasswd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtMysqlIp, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtDbName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)))))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,7 +160,12 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDBPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbldbPasswd))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEbackupPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEBackupPath)
+                    .addComponent(cmdChooseEBackupPath))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdOk)
                     .addComponent(cmdCancel))
@@ -154,14 +178,17 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdCancel;
+    private javax.swing.JButton cmdChooseEBackupPath;
     private javax.swing.JButton cmdOk;
     private javax.swing.JLabel lblDBUserName;
+    private javax.swing.JLabel lblEBackupPath;
     private javax.swing.JLabel lblMysqlIp;
     private javax.swing.JLabel lblMysqlIp1;
     private javax.swing.JLabel lbldbPasswd;
     private javax.swing.JTextField txtDBPasswd;
     private javax.swing.JTextField txtDBUserName;
     private javax.swing.JTextField txtDbName;
+    private javax.swing.JTextField txtEbackupPath;
     private javax.swing.JTextField txtMysqlIp;
     // End of variables declaration//GEN-END:variables
 
@@ -171,6 +198,7 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         appPrefs.getPrefs().put(AppPrefs.DB_NAME, txtDbName.getText());
         appPrefs.getPrefs().put(AppPrefs.JDBC_USER, txtDBUserName.getText());
         appPrefs.getPrefs().put(AppPrefs.JDBC_PASSWD, txtDBPasswd.getText());
+        appPrefs.getPrefs().put(AppPrefs.EBACKUP_PATH, txtEbackupPath.getText());
 
     }
     private void loadCurrentPreferences(){
@@ -178,6 +206,7 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         txtDbName.setText(appPrefs.getPrefs().get(AppPrefs.DB_NAME, AppPrefs.NOT_SET));
         txtDBUserName.setText(appPrefs.getPrefs().get(AppPrefs.JDBC_USER,AppPrefs.NOT_SET ));
         txtDBPasswd.setText(appPrefs.getPrefs().get(AppPrefs.JDBC_PASSWD,AppPrefs.NOT_SET ));
+        txtEbackupPath.setText(appPrefs.getPrefs().get(AppPrefs.EBACKUP_PATH,AppPrefs.NOT_SET ));
     }
 
     @Action
@@ -190,6 +219,20 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
     public void closeWindow(){
         this.setVisible(false);
         doDefaultCloseAction();
+
+    }
+
+
+    @Action
+    public void ChooseEBackupPath(){
+        FileChooserView fileChooserView =
+                    new FileChooserView(mainController.getMainFrame());
+        fileChooserView.setFileSelectionMode(FileChooserView.DIRECTORIES);
+        fileChooserView.setVisible(true);
+        if(fileChooserView.isSelectionConfirmed()){
+            txtEbackupPath.setText( fileChooserView.getSelectedFilePath());
+        }
+        fileChooserView.dispose();
 
     }
 }

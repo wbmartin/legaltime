@@ -5,11 +5,14 @@
 package legaltime.view;
 
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import legaltime.*;
 
 
 
 import java.awt.Dimension;
+import legaltime.model.exception.DAOException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -24,6 +27,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import legaltime.controller.ClientEditorController;
+import legaltime.model.SysCodeBean;
+import legaltime.model.SysCodeManager;
+import legaltime.modelsafe.EasyLog;
 import legaltime.reports.JasperReportsIntro;
 import legaltime.modelsafe.PersistanceManager;
 
@@ -48,76 +54,86 @@ public class LegalTimeView extends FrameView {
     private PersistanceManager persistanceManager;
     private PreferencesEditorView preferencesManager;
     private LogView logView;
+    private final EasyLog easyLog;
 
 
     public LegalTimeView(SingleFrameApplication app) {
         super(app);
-        AppPrefs appPrefs = AppPrefs.getInstance();
-
-        persistanceManager = PersistanceManager.getInstance();
-        initComponents();
         
-        LegalTimeApp.getApplication().getMainFrame().setPreferredSize(new Dimension(800, 600));
+            AppPrefs appPrefs = AppPrefs.getInstance();
+            persistanceManager = PersistanceManager.getInstance();
+            easyLog =EasyLog.getInstance();
+            initComponents();
+            LegalTimeApp.getApplication().getMainFrame().setPreferredSize(new Dimension(800, 600));
+            // status bar initialization - message timeout, idle icon and busy animation, etc
+            ResourceMap resourceMap = getResourceMap();
+            int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
+            messageTimer = new Timer(messageTimeout, new ActionListener() {
 
-        // status bar initialization - message timeout, idle icon and busy animation, etc
-        ResourceMap resourceMap = getResourceMap();
-        int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
-        messageTimer = new Timer(messageTimeout, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                statusMessageLabel.setText("");
-            }
-        });
-        messageTimer.setRepeats(false);
-        int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
-        for (int i = 0; i < busyIcons.length; i++) {
-            busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
-        }
-        busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
-                //statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
-            }
-        });
-        idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
-        //statusAnimationLabel.setIcon(idleIcon);
-        progressBar.setVisible(false);
-
-        // connecting action tasks to status bar via TaskMonitor
-        TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
-
-        taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                String propertyName = evt.getPropertyName();
-                if ("started".equals(propertyName)) {
-                    if (!busyIconTimer.isRunning()) {
-                        //statusAnimationLabel.setIcon(busyIcons[0]);
-                        busyIconIndex = 0;
-                        busyIconTimer.start();
-                    }
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(true);
-                } else if ("done".equals(propertyName)) {
-                    busyIconTimer.stop();
-                    //statusAnimationLabel.setIcon(idleIcon);
-                    progressBar.setVisible(false);
-                    progressBar.setValue(0);
-                } else if ("message".equals(propertyName)) {
-                    String text = (String)(evt.getNewValue());
-                    statusMessageLabel.setText((text == null) ? "" : text);
-                    messageTimer.restart();
-                } else if ("progress".equals(propertyName)) {
-                    int value = (Integer)(evt.getNewValue());
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setValue(value);
+                public void actionPerformed(ActionEvent e) {
+                    statusMessageLabel.setText("");
                 }
+            });
+            messageTimer.setRepeats(false);
+            int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
+            for (int i = 0; i < busyIcons.length; i++) {
+                busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
             }
-        });
-        //added default close behavior 2009-07-18
-        this.getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        if (appPrefs.getValue(AppPrefs.JDBC_PASSWD).equals(AppPrefs.NOT_SET)){
-            showPreferencesManager();
-        }
+            busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
+                    //statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
+                }
+            });
+            idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
+            //statusAnimationLabel.setIcon(idleIcon);
+            progressBar.setVisible(false);
+            // connecting action tasks to status bar via TaskMonitor
+            TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
+            taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+
+                public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                    String propertyName = evt.getPropertyName();
+                    if ("started".equals(propertyName)) {
+                        if (!busyIconTimer.isRunning()) {
+                            //statusAnimationLabel.setIcon(busyIcons[0]);
+                            busyIconIndex = 0;
+                            busyIconTimer.start();
+                        }
+                        progressBar.setVisible(true);
+                        progressBar.setIndeterminate(true);
+                    } else if ("done".equals(propertyName)) {
+                        busyIconTimer.stop();
+                        //statusAnimationLabel.setIcon(idleIcon);
+                        progressBar.setVisible(false);
+                        progressBar.setValue(0);
+                    } else if ("message".equals(propertyName)) {
+                        String text = (String) (evt.getNewValue());
+                        statusMessageLabel.setText((text == null) ? "" : text);
+                        messageTimer.restart();
+                    } else if ("progress".equals(propertyName)) {
+                        int value = (Integer) (evt.getNewValue());
+                        progressBar.setVisible(true);
+                        progressBar.setIndeterminate(false);
+                        progressBar.setValue(value);
+                    }
+                }
+            });
+            //added default close behavior 2009-07-18
+            this.getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            if (appPrefs.getValue(AppPrefs.JDBC_PASSWD).equals(AppPrefs.NOT_SET)) {
+                showPreferencesManager();
+            }
+            try {
+                SysCodeManager sysCodeManager = SysCodeManager.getInstance();
+                SysCodeBean sysCodeBean = sysCodeManager.loadByWhere("where code_id='DBVER'")[0];
+            } catch (DAOException ex) {
+                easyLog.addEntry(easyLog.SEVERE,"ERROR Loading DB Version"
+                        ,this.getClass().getName(),ex);
+                setLastActionText("Critical Error Loading DB Version - Likely Database connectivity issue.  Check Preferences Tab.");
+            }
+
     }
 
     @Action

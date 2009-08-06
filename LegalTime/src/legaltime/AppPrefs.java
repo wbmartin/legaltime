@@ -15,12 +15,15 @@ import java.util.prefs.Preferences;
 public class AppPrefs {
     private static AppPrefs instance = null;
     private Preferences prefs = Preferences.userNodeForPackage (getClass ());
+    public static final String  NOT_SET ="NOT SET";
+
     public static final String  MYSQL_IP ="MYSQL_IP";
     public static final String  DB_NAME ="DB_NAME";
-
     public static final String  JDBC_USER ="JDBC_USER";
     public static final String  JDBC_PASSWD ="JDBC_PASSWD";
-    public static final String  NOT_SET ="NOT SET";
+
+    public static final String  EBACKUP_PATH ="EBACKUP_PATH";
+    
     protected AppPrefs(){
        
         String temp = prefs.get(MYSQL_IP, NOT_SET);
@@ -39,6 +42,11 @@ public class AppPrefs {
         if (temp.equals(NOT_SET)){
             //changed to prompt user on startup if not setup. 2009-08-04 WBM
             prefs.put(JDBC_PASSWD, NOT_SET);
+        }
+        temp = prefs.get(EBACKUP_PATH, NOT_SET);
+        if (temp.equals(NOT_SET)){
+            //changed to prompt user on startup if not setup. 2009-08-04 WBM
+            prefs.put(EBACKUP_PATH, NOT_SET);
         }
         
 

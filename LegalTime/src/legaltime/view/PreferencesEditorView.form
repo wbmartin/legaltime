@@ -23,8 +23,8 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
                       <Component id="cmdOk" min="-2" pref="65" max="-2" attributes="0"/>
@@ -43,14 +43,20 @@
                                   <Component id="lblDBUserName" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblMysqlIp1" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="lbldbPasswd" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblEBackupPath" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                              <Component id="txtDBPasswd" min="-2" pref="159" max="-2" attributes="1"/>
-                              <Component id="txtDBUserName" pref="159" max="32767" attributes="1"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="txtEbackupPath" min="-2" pref="445" max="-2" attributes="1"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="cmdChooseEBackupPath" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="txtDBUserName" alignment="0" max="32767" attributes="1"/>
+                              <Component id="txtDBPasswd" alignment="0" pref="159" max="32767" attributes="1"/>
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                               <Component id="txtMysqlIp" alignment="0" max="32767" attributes="1"/>
@@ -59,7 +65,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="43" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -86,7 +92,13 @@
                   <Component id="txtDBPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lbldbPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="116" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtEbackupPath" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblEBackupPath" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmdChooseEBackupPath" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="91" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cmdOk" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdCancel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -158,6 +170,26 @@
       <Properties>
         <Property name="text" type="java.lang.String" resourceKey="lblDBUserName.text"/>
         <Property name="name" type="java.lang.String" value="lblDBUserName" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblEBackupPath">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lblEBackupPath.text"/>
+        <Property name="name" type="java.lang.String" value="lblEBackupPath" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtEbackupPath">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="txtEbackupPath" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdChooseEBackupPath">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="legaltime.view.PreferencesEditorView" id="ChooseEBackupPath" methodName="ChooseEBackupPath"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="cmdChooseEBackupPath.text"/>
+        <Property name="name" type="java.lang.String" value="cmdChooseEBackupPath" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>
