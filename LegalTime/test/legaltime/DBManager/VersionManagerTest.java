@@ -51,6 +51,17 @@ public class VersionManagerTest {
 
     }
 
+    @Test
+    public void testDBBackup() throws Exception{
+        System.out.println("Testing Backup");
+        VersionManager instance = new VersionManager();
+
+        String result = instance.getDBVersion();
+        //assertEquals(null, result);
+        instance.backupDatabase();
+
+    }
+
 
 
 }
