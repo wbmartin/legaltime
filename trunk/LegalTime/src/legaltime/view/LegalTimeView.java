@@ -26,6 +26,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+import legaltime.DBManager.VersionManager;
 import legaltime.controller.ClientEditorController;
 import legaltime.model.SysCodeBean;
 import legaltime.model.SysCodeManager;
@@ -59,6 +60,8 @@ public class LegalTimeView extends FrameView {
 
     public LegalTimeView(SingleFrameApplication app) {
         super(app);
+        VersionManager vm = new VersionManager();
+        vm.backupDatabase();
         
             AppPrefs appPrefs = AppPrefs.getInstance();
             persistanceManager = PersistanceManager.getInstance();
