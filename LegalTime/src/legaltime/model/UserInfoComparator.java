@@ -41,7 +41,7 @@ public class UserInfoComparator implements Comparator
      * Possible values are:
      * <ul>
      *   <li>UserInfoManager.ID_LAST_UPDATE
-     *   <li>UserInfoManager.ID_DEFUALT_BILL_RATE
+     *   <li>UserInfoManager.ID_DEFAULT_BILL_RATE
      *   <li>UserInfoManager.ID_FIRST_NAME
      *   <li>UserInfoManager.ID_LAST_NAME
      *   <li>UserInfoManager.ID_USER_KEY
@@ -64,7 +64,7 @@ public class UserInfoComparator implements Comparator
      * Possible values are:
      * <ul>
      *   <li>UserInfoManager.ID_LAST_UPDATE
-     *   <li>UserInfoManager.ID_DEFUALT_BILL_RATE
+     *   <li>UserInfoManager.ID_DEFAULT_BILL_RATE
      *   <li>UserInfoManager.ID_FIRST_NAME
      *   <li>UserInfoManager.ID_LAST_NAME
      *   <li>UserInfoManager.ID_USER_KEY
@@ -99,15 +99,15 @@ public class UserInfoComparator implements Comparator
                     iReturn = b1.getLastUpdate().compareTo(b2.getLastUpdate());
                 }
                 break;
-            case UserInfoManager.ID_DEFUALT_BILL_RATE:
-                if (b1.getDefualtBillRate() == null && b2.getDefualtBillRate() != null) {
+            case UserInfoManager.ID_DEFAULT_BILL_RATE:
+                if (b1.getDefaultBillRate() == null && b2.getDefaultBillRate() != null) {
                     iReturn = -1;
-                } else if (b1.getDefualtBillRate() == null && b2.getDefualtBillRate() == null) {
+                } else if (b1.getDefaultBillRate() == null && b2.getDefaultBillRate() == null) {
                     iReturn = 0;
-                } else if (b1.getDefualtBillRate() != null && b2.getDefualtBillRate() == null) {
+                } else if (b1.getDefaultBillRate() != null && b2.getDefaultBillRate() == null) {
                     iReturn = 1;
                 } else {
-                    iReturn = b1.getDefualtBillRate().compareTo(b2.getDefualtBillRate());
+                    iReturn = b1.getDefaultBillRate().compareTo(b2.getDefaultBillRate());
                 }
                 break;
             case UserInfoManager.ID_FIRST_NAME:

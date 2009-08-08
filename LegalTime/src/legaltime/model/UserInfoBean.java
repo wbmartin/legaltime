@@ -31,17 +31,17 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class UserInfoBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -2577768296879325956L;
+	private static final long serialVersionUID = 8684280526935727292L;
 	
     private java.util.Date lastUpdate;
 
     private boolean lastUpdateIsModified = false;
     private boolean lastUpdateIsInitialized = false;
 
-    private Double defualtBillRate;
+    private Double defaultBillRate;
 
-    private boolean defualtBillRateIsModified = false;
-    private boolean defualtBillRateIsInitialized = false;
+    private boolean defaultBillRateIsModified = false;
+    private boolean defaultBillRateIsInitialized = false;
 
     private String firstName;
 
@@ -140,74 +140,74 @@ public class UserInfoBean
     }
 
     /**
-     * Getter method for defualtBillRate.
+     * Getter method for defaultBillRate.
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: user_info.defualt_bill_rate</li>
+     * <li>full name: user_info.default_bill_rate</li>
      * <li>column size: 22</li>
      * <li>jdbc type returned by the driver: Types.DOUBLE</li>
      * </ul>
      *
-     * @return the value of defualtBillRate
+     * @return the value of defaultBillRate
      */
-    public Double getDefualtBillRate()
+    public Double getDefaultBillRate()
     {
-        return defualtBillRate;
+        return defaultBillRate;
     }
 
     /**
-     * Setter method for defualtBillRate.
+     * Setter method for defaultBillRate.
      * <br>
      * The new value is set only if compareTo() says it is different,
      * or if one of either the new value or the current value is null.
      * In case the new value is different, it is set and the field is marked as 'modified'.
      *
-     * @param newVal the new value to be assigned to defualtBillRate
+     * @param newVal the new value to be assigned to defaultBillRate
      */
-    public void setDefualtBillRate(Double newVal)
+    public void setDefaultBillRate(Double newVal)
     {
-        if ((newVal != null && defualtBillRate != null && (newVal.compareTo(defualtBillRate) == 0)) ||
-            (newVal == null && defualtBillRate == null && defualtBillRateIsInitialized)) {
+        if ((newVal != null && defaultBillRate != null && (newVal.compareTo(defaultBillRate) == 0)) ||
+            (newVal == null && defaultBillRate == null && defaultBillRateIsInitialized)) {
             return;
         }
-        defualtBillRate = newVal;
-        defualtBillRateIsModified = true;
-        defualtBillRateIsInitialized = true;
+        defaultBillRate = newVal;
+        defaultBillRateIsModified = true;
+        defaultBillRateIsInitialized = true;
     }
 
     /**
-     * Setter method for defualtBillRate.
+     * Setter method for defaultBillRate.
      * <br>
      * Convenient for those who do not want to deal with Objects for primary types.
      *
-     * @param newVal the new value to be assigned to defualtBillRate
+     * @param newVal the new value to be assigned to defaultBillRate
      */
-    public void setDefualtBillRate(double newVal)
+    public void setDefaultBillRate(double newVal)
     {
-        setDefualtBillRate(new Double(newVal));
+        setDefaultBillRate(new Double(newVal));
     }
 
     /**
-     * Determines if the defualtBillRate has been modified.
+     * Determines if the defaultBillRate has been modified.
      *
      * @return true if the field has been modified, false if the field has not been modified
      */
-    public boolean isDefualtBillRateModified()
+    public boolean isDefaultBillRateModified()
     {
-        return defualtBillRateIsModified;
+        return defaultBillRateIsModified;
     }
 
     /**
-     * Determines if the defualtBillRate has been initialized.
+     * Determines if the defaultBillRate has been initialized.
      * <br>
      * It is useful to determine if a field is null on purpose or just because it has not been initialized.
      *
      * @return true if the field has been initialized, false otherwise
      */
-    public boolean isDefualtBillRateInitialized()
+    public boolean isDefaultBillRateInitialized()
     {
-        return defualtBillRateIsInitialized;
+        return defaultBillRateIsInitialized;
     }
 
     /**
@@ -418,7 +418,7 @@ public class UserInfoBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| defualtBillRateIsModified  		|| firstNameIsModified  		|| lastNameIsModified  		|| userKeyIsModified  ;
+        return lastUpdateIsModified 		|| defaultBillRateIsModified  		|| firstNameIsModified  		|| lastNameIsModified  		|| userKeyIsModified  ;
     }
 
     /**
@@ -427,7 +427,7 @@ public class UserInfoBean
     public void resetIsModified()
     {
         lastUpdateIsModified = false;
-        defualtBillRateIsModified = false;
+        defaultBillRateIsModified = false;
         firstNameIsModified = false;
         lastNameIsModified = false;
         userKeyIsModified = false;
@@ -441,7 +441,7 @@ public class UserInfoBean
     public void copy(UserInfoBean bean)
     {
         setLastUpdate(bean.getLastUpdate());
-        setDefualtBillRate(bean.getDefualtBillRate());
+        setDefaultBillRate(bean.getDefaultBillRate());
         setFirstName(bean.getFirstName());
         setLastName(bean.getLastName());
         setUserKey(bean.getUserKey());
@@ -454,7 +454,7 @@ public class UserInfoBean
     {
         Map dictionnary = new HashMap();
         dictionnary.put("last_update", getLastUpdate() == null ? "" : getLastUpdate().toString());
-        dictionnary.put("defualt_bill_rate", getDefualtBillRate() == null ? "" : getDefualtBillRate().toString());
+        dictionnary.put("default_bill_rate", getDefaultBillRate() == null ? "" : getDefaultBillRate().toString());
         dictionnary.put("first_name", getFirstName() == null ? "" : getFirstName().toString());
         dictionnary.put("last_name", getLastName() == null ? "" : getLastName().toString());
         dictionnary.put("user_key", getUserKey() == null ? "" : getUserKey().toString());
@@ -480,8 +480,8 @@ public class UserInfoBean
             return "";
         } else if ("last_update".equalsIgnoreCase(column) || "lastUpdate".equalsIgnoreCase(column)) {
             return getLastUpdate() == null ? "" : getLastUpdate().toString();
-        } else if ("defualt_bill_rate".equalsIgnoreCase(column) || "defualtBillRate".equalsIgnoreCase(column)) {
-            return getDefualtBillRate() == null ? "" : getDefualtBillRate().toString();
+        } else if ("default_bill_rate".equalsIgnoreCase(column) || "defaultBillRate".equalsIgnoreCase(column)) {
+            return getDefaultBillRate() == null ? "" : getDefaultBillRate().toString();
         } else if ("first_name".equalsIgnoreCase(column) || "firstName".equalsIgnoreCase(column)) {
             return getFirstName() == null ? "" : getFirstName().toString();
         } else if ("last_name".equalsIgnoreCase(column) || "lastName".equalsIgnoreCase(column)) {
@@ -504,7 +504,7 @@ public class UserInfoBean
 		UserInfoBean obj = (UserInfoBean) object;
 		return new EqualsBuilder()
             .append(getLastUpdate(), obj.getLastUpdate())
-            .append(getDefualtBillRate(), obj.getDefualtBillRate())
+            .append(getDefaultBillRate(), obj.getDefaultBillRate())
             .append(getFirstName(), obj.getFirstName())
             .append(getLastName(), obj.getLastName())
             .append(getUserKey(), obj.getUserKey())
@@ -518,7 +518,7 @@ public class UserInfoBean
 	{
 		return new HashCodeBuilder(-82280557, -700257973)
             .append(getLastUpdate())
-            .append(getDefualtBillRate())
+            .append(getDefaultBillRate())
             .append(getFirstName())
             .append(getLastName())
             .append(getUserKey())
@@ -544,7 +544,7 @@ public class UserInfoBean
 	public String toString(ToStringStyle style) {
 		return new ToStringBuilder(this, style)
             .append("last_update", getLastUpdate())
-            .append("defualt_bill_rate", getDefualtBillRate())
+            .append("default_bill_rate", getDefaultBillRate())
             .append("first_name", getFirstName())
             .append("last_name", getLastName())
             .append("user_key", getUserKey())
@@ -557,7 +557,7 @@ public class UserInfoBean
         UserInfoBean obj = (UserInfoBean) object;
         return new CompareToBuilder()
             .append(getLastUpdate(), obj.getLastUpdate())
-            .append(getDefualtBillRate(), obj.getDefualtBillRate())
+            .append(getDefaultBillRate(), obj.getDefaultBillRate())
             .append(getFirstName(), obj.getFirstName())
             .append(getLastName(), obj.getLastName())
             .append(getUserKey(), obj.getUserKey())

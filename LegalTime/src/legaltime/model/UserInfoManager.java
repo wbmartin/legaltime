@@ -49,9 +49,9 @@ public class UserInfoManager
     public static final int ID_LAST_UPDATE = 0;
 
     /**
-     * Identify the defualt_bill_rate field.
+     * Identify the default_bill_rate field.
      */
-    public static final int ID_DEFUALT_BILL_RATE = 1;
+    public static final int ID_DEFAULT_BILL_RATE = 1;
 
     /**
      * Identify the first_name field.
@@ -74,7 +74,7 @@ public class UserInfoManager
     private static final String[] FULL_FIELD_NAMES =
     {
         "user_info.last_update"
-        ,"user_info.defualt_bill_rate"
+        ,"user_info.default_bill_rate"
         ,"user_info.first_name"
         ,"user_info.last_name"
         ,"user_info.user_key"
@@ -86,7 +86,7 @@ public class UserInfoManager
     public static final String[] FIELD_NAMES =
     {
         "last_update"
-        ,"defualt_bill_rate"
+        ,"default_bill_rate"
         ,"first_name"
         ,"last_name"
         ,"user_key"
@@ -96,7 +96,7 @@ public class UserInfoManager
      * Field that contains the comma separated fields of the user_info table.
      */
     public static final String ALL_FULL_FIELDS = "user_info.last_update"
-                            + ",user_info.defualt_bill_rate"
+                            + ",user_info.default_bill_rate"
                             + ",user_info.first_name"
                             + ",user_info.last_name"
                             + ",user_info.user_key";
@@ -105,7 +105,7 @@ public class UserInfoManager
      * Field that contains the comma separated fields of the user_info table.
      */
     public static final String ALL_FIELDS = "last_update"
-                            + ",defualt_bill_rate"
+                            + ",default_bill_rate"
                             + ",first_name"
                             + ",last_name"
                             + ",user_key";
@@ -465,11 +465,11 @@ public class UserInfoManager
                 _dirtyCount++;
             }
 
-            if (bean.isDefualtBillRateModified()) {
+            if (bean.isDefaultBillRateModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
                 }
-                sql.append("defualt_bill_rate");
+                sql.append("default_bill_rate");
                 _dirtyCount++;
             }
 
@@ -571,13 +571,13 @@ public class UserInfoManager
                 sql.append("last_update=?");
             }
 
-            if (bean.isDefualtBillRateModified()) {
+            if (bean.isDefaultBillRateModified()) {
                 if (useComma) {
                     sql.append(", ");
                 } else {
                     useComma=true;
                 }
-                sql.append("defualt_bill_rate=?");
+                sql.append("default_bill_rate=?");
             }
 
             if (bean.isFirstNameModified()) {
@@ -1043,12 +1043,12 @@ public class UserInfoManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("last_update = ?");
                 }
             }
-            if (bean.isDefualtBillRateModified()) {
+            if (bean.isDefaultBillRateModified()) {
                 _dirtyCount ++;
-                if (bean.getDefualtBillRate() == null) {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("defualt_bill_rate IS NULL");
+                if (bean.getDefaultBillRate() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("default_bill_rate IS NULL");
                 } else {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("defualt_bill_rate = ?");
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("default_bill_rate = ?");
                 }
             }
             if (bean.isFirstNameModified()) {
@@ -1103,9 +1103,9 @@ public class UserInfoManager
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getLastUpdate() + "]");
                 if (bean.getLastUpdate() == null) { ps.setNull(++_dirtyCount, Types.TIMESTAMP); } else { ps.setTimestamp(++_dirtyCount, new java.sql.Timestamp(bean.getLastUpdate().getTime())); }
             }
-            if (bean.isDefualtBillRateModified()) {
-                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getDefualtBillRate() + "]");
-                if (bean.getDefualtBillRate() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getDefualtBillRate()); }
+            if (bean.isDefaultBillRateModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getDefaultBillRate() + "]");
+                if (bean.getDefaultBillRate() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getDefaultBillRate()); }
             }
             if (bean.isFirstNameModified()) {
                 switch (searchType){
@@ -1247,7 +1247,7 @@ public class UserInfoManager
         try
         {
             bean.setLastUpdate(rs.getTimestamp(1));
-            bean.setDefualtBillRate(Manager.getDouble(rs, 2));
+            bean.setDefaultBillRate(Manager.getDouble(rs, 2));
             bean.setFirstName(rs.getString(3));
             bean.setLastName(rs.getString(4));
             bean.setUserKey(rs.getString(5));
@@ -1285,9 +1285,9 @@ public class UserInfoManager
                         ++pos;
                         bean.setLastUpdate(rs.getTimestamp(pos));
                         break;
-                    case ID_DEFUALT_BILL_RATE:
+                    case ID_DEFAULT_BILL_RATE:
                         ++pos;
-                        bean.setDefualtBillRate(Manager.getDouble(rs, pos));
+                        bean.setDefaultBillRate(Manager.getDouble(rs, pos));
                         break;
                     case ID_FIRST_NAME:
                         ++pos;
@@ -1330,7 +1330,7 @@ public class UserInfoManager
         try
         {
             bean.setLastUpdate(rs.getTimestamp("last_update"));
-            bean.setDefualtBillRate(Manager.getDouble(rs, "defualt_bill_rate"));
+            bean.setDefaultBillRate(Manager.getDouble(rs, "default_bill_rate"));
             bean.setFirstName(rs.getString("first_name"));
             bean.setLastName(rs.getString("last_name"));
             bean.setUserKey(rs.getString("user_key"));
