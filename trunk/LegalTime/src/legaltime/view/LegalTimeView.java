@@ -56,18 +56,19 @@ public class LegalTimeView extends FrameView {
     private PreferencesEditorView preferencesManager;
     private LogView logView;
     private final EasyLog easyLog;
+    private LegalTimeApp legalTimeApp;
 
 
     public LegalTimeView(SingleFrameApplication app) {
         super(app);
-        VersionManager vm = new VersionManager();
-        vm.backupDatabase();
+            legalTimeApp = (LegalTimeApp) app;
         
             AppPrefs appPrefs = AppPrefs.getInstance();
-            persistanceManager = PersistanceManager.getInstance();
+            
             easyLog =EasyLog.getInstance();
             initComponents();
             LegalTimeApp.getApplication().getMainFrame().setPreferredSize(new Dimension(800, 600));
+             
             // status bar initialization - message timeout, idle icon and busy animation, etc
             ResourceMap resourceMap = getResourceMap();
             int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
@@ -128,15 +129,54 @@ public class LegalTimeView extends FrameView {
             if (appPrefs.getValue(AppPrefs.JDBC_PASSWD).equals(AppPrefs.NOT_SET)) {
                 showPreferencesManager();
             }
+
+            
+        
+            persistanceManager = PersistanceManager.getInstance();
+    }
+
+    public void manageUpdates(){
+        VersionManager vm = new VersionManager();
+            String dbUpgradeResult = vm.installAllDbPatches();
+            if(dbUpgradeResult.equals(VersionManager.NEW_VERSION_FAILED)){
+                setLastActionText("ERROR: DB upgrade failed.  Please review Logs and email developer the error detail.");
+
+            }else if (dbUpgradeResult.equals(VersionManager.NEW_VERSION_INSTALLED)){
+
+                setLastActionText("New Database version successfully installed.  Application Restart Required");
+                JOptionPane.showInternalMessageDialog(getDesktop(),
+                        "Upgrades have completed.  The application will close.  Please re-open the application.");
+                legalTimeApp.exit();
+            }
+
+
+
+
+
             try {
                 SysCodeManager sysCodeManager = SysCodeManager.getInstance();
-                SysCodeBean sysCodeBean = sysCodeManager.loadByWhere("where code_id='DBVER'")[0];
+                SysCodeBean sysCodeBean = sysCodeManager.loadByWhere
+                        ("where code_id='DBVER'")[0];
+                if(!sysCodeBean.getDescription().equals(LegalTimeApp.DB_VER_REQ) ){
+                    JOptionPane.showInternalMessageDialog(getDesktop(),
+                        "There is a Database Version conflict.  Expecting: "
+                        + LegalTimeApp.DB_VER_REQ +" but found: "
+                        + sysCodeBean.getDescription()
+                        +".  The application may not be stable");
+
+
+                }
             } catch (DAOException ex) {
                 easyLog.addEntry(easyLog.SEVERE,"ERROR Loading DB Version"
                         ,this.getClass().getName(),ex);
-                setLastActionText("Critical Error Loading DB Version - Likely Database connectivity issue.  Check Preferences Tab.");
+                setLastActionText("Critical Error Loading DB Version - Likely database connectivity issue.  Check Preferences Tab.");
             }
+                      
 
+    }
+
+    public void loadCache(){
+        persistanceManager.loadCache();
     }
 
     @Action
@@ -525,8 +565,9 @@ public javax.swing.JDesktopPane getDesktop(){
         lblLastAction.setText("Last Action: "+ newText);
         if (newText.contains("Err")){
             lblLastAction.setBackground(Color.red);
+            
         }else{
-        lblLastAction.setBackground(statusMessageLabel.getBackground());
+            lblLastAction.setBackground(statusMessageLabel.getBackground());
         }
     }
     public void setProgressBarProgressValue(int value){

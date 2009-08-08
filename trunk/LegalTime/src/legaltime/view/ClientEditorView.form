@@ -35,71 +35,15 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="scrlChooser" min="-2" pref="337" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblEmail" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblFaxNum" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblCellPhone" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblFirstName" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblAddress" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblLastName" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblFaxNum1" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblCity" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblState" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblHomePhone" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblNotes" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblWorkPhone" alignment="1" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtFaxNum" alignment="0" pref="196" max="32767" attributes="1"/>
-                                  <Component id="txtFirstName" alignment="0" pref="196" max="32767" attributes="1"/>
-                                  <Component id="txtAddress" alignment="0" pref="196" max="32767" attributes="1"/>
-                                  <Component id="txtLastName" alignment="0" pref="196" max="32767" attributes="1"/>
-                                  <Component id="txtEmail" alignment="0" pref="196" max="32767" attributes="0"/>
-                                  <Component id="dtClientSince" alignment="0" pref="196" max="32767" attributes="1"/>
-                                  <Component id="txtCity" alignment="0" pref="196" max="32767" attributes="1"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="txtState" min="-2" pref="69" max="-2" attributes="1"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="lblZip" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="txtZip" pref="85" max="32767" attributes="1"/>
-                                  </Group>
-                                  <Component id="txtWorkPhone" alignment="0" pref="196" max="32767" attributes="1"/>
-                                  <Component id="txtHomePhone" alignment="0" pref="196" max="32767" attributes="1"/>
-                                  <Component id="scrlNotes" alignment="0" pref="196" max="32767" attributes="1"/>
-                                  <Component id="txtCellPhone" alignment="0" pref="196" max="32767" attributes="1"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="scrlBillRates" min="0" pref="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblBillingInformation" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="247" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="1">
-                              <Component id="lblBillingPlan" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cboBillingPlan" pref="273" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblFollowUpItems" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="631" max="-2" attributes="0"/>
+                      <EmptySpace pref="643" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="cmdClientAccount" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmdViewInvoiceable" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="479" max="-2" attributes="0"/>
+                      <EmptySpace pref="491" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="10" pref="10" max="10" attributes="0"/>
@@ -111,8 +55,69 @@
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="scrlFollowUp" min="-2" pref="644" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="scrlChooser" min="-2" pref="337" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblBillingInformation" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace pref="217" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="scrlBillRates" alignment="0" pref="302" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="lblBillingPlan" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="cboBillingPlan" pref="243" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="lblEmail" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblFaxNum" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblCellPhone" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblFirstName" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblAddress" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblLastName" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblFaxNum1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblCity" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblState" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblHomePhone" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblNotes" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblWorkPhone" alignment="1" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="txtFaxNum" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="txtFirstName" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="txtAddress" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="txtLastName" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="txtEmail" alignment="0" pref="208" max="32767" attributes="0"/>
+                                                  <Component id="dtClientSince" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="txtCity" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Component id="txtState" min="-2" pref="69" max="-2" attributes="1"/>
+                                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                      <Component id="lblZip" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                      <Component id="txtZip" pref="97" max="32767" attributes="1"/>
+                                                  </Group>
+                                                  <Component id="txtWorkPhone" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="txtHomePhone" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="scrlNotes" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="txtCellPhone" alignment="0" pref="208" max="32767" attributes="1"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Component id="scrlFollowUp" alignment="0" min="-2" pref="644" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -383,8 +388,8 @@
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="2">
-            <StringItem index="0" value="Monthly"/>
-            <StringItem index="1" value="Hourly"/>
+            <StringItem index="0" value="MONTHLY"/>
+            <StringItem index="1" value="HOURLY"/>
           </StringArray>
         </Property>
         <Property name="name" type="java.lang.String" value="cboBillPlan" noResource="true"/>

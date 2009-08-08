@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 import legaltime.model.GeneratedBean;
-import legaltime.model.ClientBean;
 import legaltime.model.InvoiceBean;
+import legaltime.model.ClientBean;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -32,7 +32,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class LaborRegisterBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -2624037848421318021L;
+	private static final long serialVersionUID = -5588431983981311479L;
 	
     private java.util.Date lastUpdate;
 
@@ -784,17 +784,6 @@ public class LaborRegisterBean
         return laborRegisterIdIsInitialized;
     }
 
-    /** The Client referenced by this bean. */
-    private ClientBean referencedClient;
-    /** Getter method for ClientBean. */
-    public ClientBean getClientBean() {
-        return this.referencedClient;
-    }
-    /** Setter method for ClientBean. */
-    public void setClientBean(ClientBean reference) {
-        this.referencedClient = reference;
-    }
-    
     /** The Invoice referenced by this bean. */
     private InvoiceBean referencedInvoice;
     /** Getter method for InvoiceBean. */
@@ -804,6 +793,17 @@ public class LaborRegisterBean
     /** Setter method for InvoiceBean. */
     public void setInvoiceBean(InvoiceBean reference) {
         this.referencedInvoice = reference;
+    }
+    
+    /** The Client referenced by this bean. */
+    private ClientBean referencedClient;
+    /** Getter method for ClientBean. */
+    public ClientBean getClientBean() {
+        return this.referencedClient;
+    }
+    /** Setter method for ClientBean. */
+    public void setClientBean(ClientBean reference) {
+        this.referencedClient = reference;
     }
     
     /**

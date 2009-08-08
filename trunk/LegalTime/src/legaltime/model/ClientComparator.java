@@ -42,6 +42,8 @@ public class ClientComparator implements Comparator
      * <ul>
      *   <li>ClientManager.ID_LAST_UPDATE
      *   <li>ClientManager.ID_ACTIVE_YN
+     *   <li>ClientManager.ID_MONTHLY_BILL_RATE
+     *   <li>ClientManager.ID_BILL_TYPE
      *   <li>ClientManager.ID_NOTE
      *   <li>ClientManager.ID_CLIENT_SINCE_DT
      *   <li>ClientManager.ID_EMAIL
@@ -76,6 +78,8 @@ public class ClientComparator implements Comparator
      * <ul>
      *   <li>ClientManager.ID_LAST_UPDATE
      *   <li>ClientManager.ID_ACTIVE_YN
+     *   <li>ClientManager.ID_MONTHLY_BILL_RATE
+     *   <li>ClientManager.ID_BILL_TYPE
      *   <li>ClientManager.ID_NOTE
      *   <li>ClientManager.ID_CLIENT_SINCE_DT
      *   <li>ClientManager.ID_EMAIL
@@ -130,6 +134,28 @@ public class ClientComparator implements Comparator
                     iReturn = 1;
                 } else {
                     iReturn = b1.getActiveYn().compareTo(b2.getActiveYn());
+                }
+                break;
+            case ClientManager.ID_MONTHLY_BILL_RATE:
+                if (b1.getMonthlyBillRate() == null && b2.getMonthlyBillRate() != null) {
+                    iReturn = -1;
+                } else if (b1.getMonthlyBillRate() == null && b2.getMonthlyBillRate() == null) {
+                    iReturn = 0;
+                } else if (b1.getMonthlyBillRate() != null && b2.getMonthlyBillRate() == null) {
+                    iReturn = 1;
+                } else {
+                    iReturn = b1.getMonthlyBillRate().compareTo(b2.getMonthlyBillRate());
+                }
+                break;
+            case ClientManager.ID_BILL_TYPE:
+                if (b1.getBillType() == null && b2.getBillType() != null) {
+                    iReturn = -1;
+                } else if (b1.getBillType() == null && b2.getBillType() == null) {
+                    iReturn = 0;
+                } else if (b1.getBillType() != null && b2.getBillType() == null) {
+                    iReturn = 1;
+                } else {
+                    iReturn = b1.getBillType().compareTo(b2.getBillType());
                 }
                 break;
             case ClientManager.ID_NOTE:

@@ -14,6 +14,7 @@ import org.jdesktop.application.SingleFrameApplication;
  */
 public class LegalTimeApp extends SingleFrameApplication {
 LegalTimeView legalTimeView;
+public static final String DB_VER_REQ ="DB-0.0.0.2";
 
     /**
      * At startup create and show the main frame of the application.
@@ -30,6 +31,8 @@ LegalTimeView legalTimeView;
     @Override protected void startup() {
         legalTimeView =  new LegalTimeView(this);
         show(legalTimeView);
+        legalTimeView.manageUpdates();
+        legalTimeView.loadCache();
     }
     public void hideMainWindow(){
         legalTimeView.getFrame().setVisible(false);

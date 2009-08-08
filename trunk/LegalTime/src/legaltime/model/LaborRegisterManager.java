@@ -24,10 +24,10 @@ import legaltime.model.Manager;
 import legaltime.model.exception.DAOException;
 import legaltime.model.exception.DataAccessException;
 import legaltime.model.exception.ObjectRetrievalException;
-import legaltime.model.ClientBean;
-import legaltime.model.ClientManager;
 import legaltime.model.InvoiceBean;
 import legaltime.model.InvoiceManager;
+import legaltime.model.ClientBean;
+import legaltime.model.ClientManager;
 
 /**
  * Handles database calls (save, load, count, etc...) for the labor_register table.
@@ -266,52 +266,6 @@ public class LaborRegisterManager
     // GET/SET FOREIGN KEY BEAN METHOD
     //////////////////////////////////////
     /**
-     * Retrieves the ClientBean object from the labor_register.client_id field.
-     *
-     * @param bean the LaborRegisterBean
-     * @return the associated ClientBean bean
-     * @throws DAOException
-     */
-    //3.2 GET IMPORTED VALUES
-    public ClientBean getClientBean(LaborRegisterBean bean) throws DAOException
-    {
-        ClientBean other = ClientManager.getInstance().createClientBean();
-        other.setClientId(bean.getClientId()); 
-        bean.setClientBean(ClientManager.getInstance().loadUniqueUsingTemplate(other)); 
-        return bean.getClientBean();
-    }
-
-    /**
-     * Associates the LaborRegisterBean object to the ClientBean object.
-     *
-     * @param bean the LaborRegisterBean object to use
-     * @param beanToSet the ClientBean object to associate to the LaborRegisterBean
-     * @return the associated ClientBean bean
-     * @throws Exception
-     */
-    //4.2 ADD IMPORTED VALUE
-    public ClientBean addClientBean(ClientBean beanToSet, LaborRegisterBean bean) throws Exception
-    {
-        beanToSet.setClientId(bean.getClientId());
-        return ClientManager.getInstance().save(beanToSet);
-    }
-
-    /**
-     * Associates the LaborRegisterBean object to the ClientBean object.
-     *
-     * @param bean the LaborRegisterBean object to use
-     * @param beanToSet the ClientBean object to associate to the LaborRegisterBean
-     * @return the associated ClientBean bean
-     * @throws Exception
-     */
-    //5.2 SET IMPORTED
-    public ClientBean setClientBean(LaborRegisterBean bean, ClientBean beanToSet) throws Exception
-    {
-        bean.setClientId(beanToSet.getClientId());
-        return ClientManager.getInstance().save(beanToSet);
-    }
-
-    /**
      * Retrieves the InvoiceBean object from the labor_register.invoice_id field.
      *
      * @param bean the LaborRegisterBean
@@ -355,6 +309,52 @@ public class LaborRegisterManager
     {
         bean.setInvoiceId(beanToSet.getInvoiceId());
         return InvoiceManager.getInstance().save(beanToSet);
+    }
+
+    /**
+     * Retrieves the ClientBean object from the labor_register.client_id field.
+     *
+     * @param bean the LaborRegisterBean
+     * @return the associated ClientBean bean
+     * @throws DAOException
+     */
+    //3.2 GET IMPORTED VALUES
+    public ClientBean getClientBean(LaborRegisterBean bean) throws DAOException
+    {
+        ClientBean other = ClientManager.getInstance().createClientBean();
+        other.setClientId(bean.getClientId()); 
+        bean.setClientBean(ClientManager.getInstance().loadUniqueUsingTemplate(other)); 
+        return bean.getClientBean();
+    }
+
+    /**
+     * Associates the LaborRegisterBean object to the ClientBean object.
+     *
+     * @param bean the LaborRegisterBean object to use
+     * @param beanToSet the ClientBean object to associate to the LaborRegisterBean
+     * @return the associated ClientBean bean
+     * @throws Exception
+     */
+    //4.2 ADD IMPORTED VALUE
+    public ClientBean addClientBean(ClientBean beanToSet, LaborRegisterBean bean) throws Exception
+    {
+        beanToSet.setClientId(bean.getClientId());
+        return ClientManager.getInstance().save(beanToSet);
+    }
+
+    /**
+     * Associates the LaborRegisterBean object to the ClientBean object.
+     *
+     * @param bean the LaborRegisterBean object to use
+     * @param beanToSet the ClientBean object to associate to the LaborRegisterBean
+     * @return the associated ClientBean bean
+     * @throws Exception
+     */
+    //5.2 SET IMPORTED
+    public ClientBean setClientBean(LaborRegisterBean bean, ClientBean beanToSet) throws Exception
+    {
+        bean.setClientId(beanToSet.getClientId());
+        return ClientManager.getInstance().save(beanToSet);
     }
 
 

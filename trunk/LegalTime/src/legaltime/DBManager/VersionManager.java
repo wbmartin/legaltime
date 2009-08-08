@@ -38,24 +38,24 @@ public class VersionManager {
     String version="";
     String verstionRequired ="DB-0.0.0.1";
     EasyLog easyLog;
+    public static final String  NEW_VERSION_INSTALLED ="NEW_VERSION_INSTALLED";
+    public static final String  NEW_VERSION_FAILED ="NEW_VERSION_FAILED";
+    public static final String  NO_NEW_VERSION ="NO_NEW_VERSION";
     public VersionManager(){
         appPrefs = AppPrefs.getInstance();
         easyLog = EasyLog.getInstance();
-//        appPrefs.getPrefs().put(AppPrefs.DB_NAME, "legal_time");
-//        appPrefs.getPrefs().put(AppPrefs.DB_NAME, "dummy");
-//        String jdbcUrl = appPrefs.getJDBC_URL();
+
         try {
             con = Manager.getInstance().getConnection();
-//                    DriverManager.getConnection(jdbcUrl,
-//                    appPrefs.getValue(AppPrefs.JDBC_USER),
-//                    appPrefs.getValue(AppPrefs.JDBC_PASSWD));
+            getDBVersion();
+
         } catch (SQLException ex) {
             Logger.getLogger(VersionManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public String getDBVersion() {
-        String verSQL = "select description from sys_code where code_id ='DBVersion';";
+        String verSQL = "select description from sys_code where code_id ='DBVer';";
         version = null;
         PreparedStatement ps =null;
         ResultSet rs =null;
@@ -77,23 +77,38 @@ public class VersionManager {
         return version;
     }
 
-    public void installAllDbPatches(){
-        backupDatabase();
-        if (version.equals("DB-0.0.0.0") && backupDatabase()){
-            applyPatch("DB-0.0.0.1");
+    public String installAllDbPatches(){
+        String patchInstalled =NO_NEW_VERSION;
+        getDBVersion();
+        if (version.equals("DB-0.0.0.0") && backupDatabase()
+                 && !patchInstalled.equals(NEW_VERSION_FAILED)){
+            if(applyPatch("DB-0.0.0.1")){
+                patchInstalled =NEW_VERSION_INSTALLED;
+            }else{
+                patchInstalled =NEW_VERSION_FAILED;
+            }
+            
         }
-        if (version.equals("DB-0.0.0.1")&& backupDatabase()){
-            applyPatch("DB-0.0.0.2");
+        if (version.equals("DB-0.0.0.1") && backupDatabase()
+                && !patchInstalled.equals(NEW_VERSION_FAILED)){
+            if(applyPatch("DB-0.0.0.2")){
+              patchInstalled =NEW_VERSION_INSTALLED;
+            }else{
+               patchInstalled =NEW_VERSION_FAILED;
+            }
+            
         }
 
-
+        return patchInstalled;
     }
 
-    public void applyPatch(String patch){
+    public boolean applyPatch(String patch){
+        boolean success = false;
         StringBuffer sqlToExecute = new StringBuffer();
         String line;
         String finalSQL;
         BufferedReader br;
+        int ndx=0;
         ArrayList<String> sqlCommands = new ArrayList<String>();
         ClassLoader cl = ResourceAnchor.class.getClassLoader();
         InputStream sqlTextStream = cl.getResourceAsStream(
@@ -101,7 +116,7 @@ public class VersionManager {
         try{
              br = new BufferedReader(new InputStreamReader(sqlTextStream));
               while (null != (line = br.readLine())) {
-                  if (!line.contains("--")){
+                  if (!line.contains("--") && line.length()>0){
                     sqlToExecute.append(line);
                   }
                  if(line.contains(";")){
@@ -114,7 +129,7 @@ public class VersionManager {
             easyLog.addEntry(EasyLog.SEVERE, "ErrorReadingFile",
                     this.getClass().getName(), EasyLog.getStackTrace(e));
         }catch(NullPointerException e){
-            easyLog.addEntry(EasyLog.SEVERE, "SQL FIle note Found",
+            easyLog.addEntry(EasyLog.SEVERE, "SQL File note Found",
                     this.getClass().getName(), patch);
         }
 
@@ -125,7 +140,8 @@ public class VersionManager {
             finalSQL=sqlToExecute.toString();
             System.out.println(finalSQL);
             con.setAutoCommit(false);
-            for(int ndx =0;ndx <sqlCommands.size();ndx++){
+            for(ndx =0;ndx <sqlCommands.size();ndx++){
+                if(sqlCommands.get(ndx).equals("")){continue;}
                ps = con.prepareStatement(sqlCommands.get(ndx));
                ps.execute();
             }
@@ -133,23 +149,29 @@ public class VersionManager {
             con.setAutoCommit(true);
             ps.close();
             version = patch;
+            if(sqlCommands.size() >0){success = true;}
         } catch (SQLException ex) {
+            easyLog.addEntry(EasyLog.SEVERE, "Attempting Roll Back DB Upgrade"+patch,
+                        this.getClass().getName(), ex);
+            easyLog.addEntry(EasyLog.SEVERE, "Offending Command Triggering Roll Back DB Upgrade:"
+                    +sqlCommands.get(ndx),this.getClass().getName(), ex);
             try {
                 con.rollback();
-                System.out.println("Rolling Back DB Upgrade"+patch);
-                easyLog.addEntry(EasyLog.SEVERE, "Rolling Back DB Upgrade"+patch,
+                //System.out.println("Rolling Back DB Upgrade"+patch);
+                easyLog.addEntry(EasyLog.SEVERE, "Rolled Back DB Upgrade"+patch,
                         this.getClass().getName(), "");
             } catch (SQLException ex1) {
-                Logger.getLogger(VersionManager.class.getName()).log(Level.SEVERE, null, ex1);
+                easyLog.addEntry(EasyLog.SEVERE, "Rolling Back DB Upgrade Failed: "+patch,
+                        this.getClass().getName(), ex1);
             }
-            Logger.getLogger(VersionManager.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
+
+        return success;
     }
 
     @SuppressWarnings("empty-statement")
     public boolean backupDatabase(){
-//        SELECT * FROM tutorials_tbl
-//    INTO OUTFILE '/tmp/tutorials.txt';
         ArrayList<String> tables = new ArrayList<String>();
         Statement s;
         ResultSet rs;
@@ -185,7 +207,7 @@ public class VersionManager {
             }
             rs.close();
             for(int ndx=0; ndx < tables.size();ndx++ ){
-                tableSql = "select * from " + tables.get(0) +";";
+                tableSql = "select * from " + tables.get(ndx) +";";
                 rs = s.executeQuery(tableSql);
                 rsMetaData = (ResultSetMetaData) rs.getMetaData();
                 numberOfColumns = rsMetaData.getColumnCount();
