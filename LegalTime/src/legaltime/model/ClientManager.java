@@ -60,74 +60,84 @@ public class ClientManager
     public static final int ID_ACTIVE_YN = 1;
 
     /**
+     * Identify the monthly_bill_rate field.
+     */
+    public static final int ID_MONTHLY_BILL_RATE = 2;
+
+    /**
+     * Identify the bill_type field.
+     */
+    public static final int ID_BILL_TYPE = 3;
+
+    /**
      * Identify the note field.
      */
-    public static final int ID_NOTE = 2;
+    public static final int ID_NOTE = 4;
 
     /**
      * Identify the client_since_dt field.
      */
-    public static final int ID_CLIENT_SINCE_DT = 3;
+    public static final int ID_CLIENT_SINCE_DT = 5;
 
     /**
      * Identify the email field.
      */
-    public static final int ID_EMAIL = 4;
+    public static final int ID_EMAIL = 6;
 
     /**
      * Identify the fax field.
      */
-    public static final int ID_FAX = 5;
+    public static final int ID_FAX = 7;
 
     /**
      * Identify the cell_phone field.
      */
-    public static final int ID_CELL_PHONE = 6;
+    public static final int ID_CELL_PHONE = 8;
 
     /**
      * Identify the home_phone field.
      */
-    public static final int ID_HOME_PHONE = 7;
+    public static final int ID_HOME_PHONE = 9;
 
     /**
      * Identify the work_phone field.
      */
-    public static final int ID_WORK_PHONE = 8;
+    public static final int ID_WORK_PHONE = 10;
 
     /**
      * Identify the zip field.
      */
-    public static final int ID_ZIP = 9;
+    public static final int ID_ZIP = 11;
 
     /**
      * Identify the state field.
      */
-    public static final int ID_STATE = 10;
+    public static final int ID_STATE = 12;
 
     /**
      * Identify the city field.
      */
-    public static final int ID_CITY = 11;
+    public static final int ID_CITY = 13;
 
     /**
      * Identify the address field.
      */
-    public static final int ID_ADDRESS = 12;
+    public static final int ID_ADDRESS = 14;
 
     /**
      * Identify the last_name field.
      */
-    public static final int ID_LAST_NAME = 13;
+    public static final int ID_LAST_NAME = 15;
 
     /**
      * Identify the first_name field.
      */
-    public static final int ID_FIRST_NAME = 14;
+    public static final int ID_FIRST_NAME = 16;
 
     /**
      * Identify the client_id field.
      */
-    public static final int ID_CLIENT_ID = 15;
+    public static final int ID_CLIENT_ID = 17;
 
     /**
      * Contains all the full fields of the client table.
@@ -136,6 +146,8 @@ public class ClientManager
     {
         "client.last_update"
         ,"client.active_yn"
+        ,"client.monthly_bill_rate"
+        ,"client.bill_type"
         ,"client.note"
         ,"client.client_since_dt"
         ,"client.email"
@@ -159,6 +171,8 @@ public class ClientManager
     {
         "last_update"
         ,"active_yn"
+        ,"monthly_bill_rate"
+        ,"bill_type"
         ,"note"
         ,"client_since_dt"
         ,"email"
@@ -180,6 +194,8 @@ public class ClientManager
      */
     public static final String ALL_FULL_FIELDS = "client.last_update"
                             + ",client.active_yn"
+                            + ",client.monthly_bill_rate"
+                            + ",client.bill_type"
                             + ",client.note"
                             + ",client.client_since_dt"
                             + ",client.email"
@@ -200,6 +216,8 @@ public class ClientManager
      */
     public static final String ALL_FIELDS = "last_update"
                             + ",active_yn"
+                            + ",monthly_bill_rate"
+                            + ",bill_type"
                             + ",note"
                             + ",client_since_dt"
                             + ",email"
@@ -665,6 +683,22 @@ public class ClientManager
                 _dirtyCount++;
             }
 
+            if (bean.isMonthlyBillRateModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("monthly_bill_rate");
+                _dirtyCount++;
+            }
+
+            if (bean.isBillTypeModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("bill_type");
+                _dirtyCount++;
+            }
+
             if (bean.isNoteModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
@@ -875,6 +909,24 @@ public class ClientManager
                     useComma=true;
                 }
                 sql.append("active_yn=?");
+            }
+
+            if (bean.isMonthlyBillRateModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("monthly_bill_rate=?");
+            }
+
+            if (bean.isBillTypeModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("bill_type=?");
             }
 
             if (bean.isNoteModified()) {
@@ -1447,6 +1499,22 @@ public class ClientManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("active_yn ").append(sqlEqualsOperation).append("?");
                 }
             }
+            if (bean.isMonthlyBillRateModified()) {
+                _dirtyCount ++;
+                if (bean.getMonthlyBillRate() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("monthly_bill_rate IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("monthly_bill_rate = ?");
+                }
+            }
+            if (bean.isBillTypeModified()) {
+                _dirtyCount ++;
+                if (bean.getBillType() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("bill_type IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("bill_type ").append(sqlEqualsOperation).append("?");
+                }
+            }
             if (bean.isNoteModified()) {
                 _dirtyCount ++;
                 if (bean.getNote() == null) {
@@ -1604,6 +1672,32 @@ public class ClientManager
                     case SEARCH_ENDING_LIKE:
                         // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getActiveYn() + "]");
                         if (bean.getActiveYn() + "%" == null) { ps.setNull(++_dirtyCount, Types.CHAR); } else { ps.setString(++_dirtyCount, bean.getActiveYn() + "%"); }
+                        break;
+                    default:
+                        throw new DAOException("Unknown search type " + searchType);
+                }
+            }
+            if (bean.isMonthlyBillRateModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getMonthlyBillRate() + "]");
+                if (bean.getMonthlyBillRate() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getMonthlyBillRate()); }
+            }
+            if (bean.isBillTypeModified()) {
+                switch (searchType){
+                    case SEARCH_EXACT:
+                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getBillType() + "]");
+                        if (bean.getBillType() == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getBillType()); }
+                        break;
+                    case SEARCH_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getBillType() + "%]");
+                        ps.setString(++_dirtyCount, "%" + bean.getBillType() + "%");
+                        break;
+                    case SEARCH_STARTING_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getBillType() + "%]");
+                        ps.setString(++_dirtyCount, "%" + bean.getBillType());
+                        break;
+                    case SEARCH_ENDING_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getBillType() + "]");
+                        if (bean.getBillType() + "%" == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getBillType() + "%"); }
                         break;
                     default:
                         throw new DAOException("Unknown search type " + searchType);
@@ -1956,20 +2050,22 @@ public class ClientManager
         {
             bean.setLastUpdate(rs.getTimestamp(1));
             bean.setActiveYn(rs.getString(2));
-            bean.setNote(rs.getString(3));
-            bean.setClientSinceDt(rs.getDate(4));
-            bean.setEmail(rs.getString(5));
-            bean.setFax(rs.getString(6));
-            bean.setCellPhone(rs.getString(7));
-            bean.setHomePhone(rs.getString(8));
-            bean.setWorkPhone(rs.getString(9));
-            bean.setZip(rs.getString(10));
-            bean.setState(rs.getString(11));
-            bean.setCity(rs.getString(12));
-            bean.setAddress(rs.getString(13));
-            bean.setLastName(rs.getString(14));
-            bean.setFirstName(rs.getString(15));
-            bean.setClientId(Manager.getInteger(rs, 16));
+            bean.setMonthlyBillRate(Manager.getDouble(rs, 3));
+            bean.setBillType(rs.getString(4));
+            bean.setNote(rs.getString(5));
+            bean.setClientSinceDt(rs.getDate(6));
+            bean.setEmail(rs.getString(7));
+            bean.setFax(rs.getString(8));
+            bean.setCellPhone(rs.getString(9));
+            bean.setHomePhone(rs.getString(10));
+            bean.setWorkPhone(rs.getString(11));
+            bean.setZip(rs.getString(12));
+            bean.setState(rs.getString(13));
+            bean.setCity(rs.getString(14));
+            bean.setAddress(rs.getString(15));
+            bean.setLastName(rs.getString(16));
+            bean.setFirstName(rs.getString(17));
+            bean.setClientId(Manager.getInteger(rs, 18));
         }
         catch(SQLException e)
         {
@@ -2007,6 +2103,14 @@ public class ClientManager
                     case ID_ACTIVE_YN:
                         ++pos;
                         bean.setActiveYn(rs.getString(pos));
+                        break;
+                    case ID_MONTHLY_BILL_RATE:
+                        ++pos;
+                        bean.setMonthlyBillRate(Manager.getDouble(rs, pos));
+                        break;
+                    case ID_BILL_TYPE:
+                        ++pos;
+                        bean.setBillType(rs.getString(pos));
                         break;
                     case ID_NOTE:
                         ++pos;
@@ -2094,6 +2198,8 @@ public class ClientManager
         {
             bean.setLastUpdate(rs.getTimestamp("last_update"));
             bean.setActiveYn(rs.getString("active_yn"));
+            bean.setMonthlyBillRate(Manager.getDouble(rs, "monthly_bill_rate"));
+            bean.setBillType(rs.getString("bill_type"));
             bean.setNote(rs.getString("note"));
             bean.setClientSinceDt(rs.getDate("client_since_dt"));
             bean.setEmail(rs.getString("email"));

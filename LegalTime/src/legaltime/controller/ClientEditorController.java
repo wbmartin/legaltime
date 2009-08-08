@@ -146,7 +146,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          clientEditorView.getTxtState().setText("");
          clientEditorView.getTxtWorkPhone().setText("");
          clientEditorView.getTxtZip().setText("");
-
+         clientEditorView.getCboBillingPlan().setSelectedIndex(0);
      }
 
     public void synchBeanToDisplay(ClientBean bean_){
@@ -167,6 +167,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          bean_.setState(clientEditorView.getTxtState().getText());
          bean_.setWorkPhone(clientEditorView.getTxtWorkPhone().getText());
          bean_.setZip(clientEditorView.getTxtZip().getText());
+         //bean_.setB
 
      }
      //Controller Function

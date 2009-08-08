@@ -41,15 +41,15 @@ import legaltime.model.exception.DAOException;
         manager.setJdbcPassword(appPrefs.getValue(AppPrefs.JDBC_PASSWD));
         clientCache = ClientCache.getInstance();
         clientManager = ClientManager.getInstance();
-        loadClientCache();
+       
 
         userInfoCache = UserInfoCache.getInstance();
         userInfoManager = UserInfoManager.getInstance();
-        loadUserInfoCache();
+        
 
         clientBillRateCache =ClientBillRateCache.getInstance();
         clientBillRateManager = ClientBillRateManager.getInstance();
-        loadClientBillRateCache();
+        
         
         
 
@@ -63,9 +63,11 @@ import legaltime.model.exception.DAOException;
         return instance;
     }
 
-    public int test(){
-        return 1;
-    }
+  public void loadCache(){
+      loadClientBillRateCache();
+       loadClientCache();
+       loadUserInfoCache();
+  }
 
     public DatabaseResult loadClientCache(){
         DatabaseResult result = DatabaseResult.PendingAction;
