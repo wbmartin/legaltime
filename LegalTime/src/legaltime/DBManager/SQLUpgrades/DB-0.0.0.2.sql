@@ -14,6 +14,10 @@ ALTER TABLE `user_info` CHANGE COLUMN `defualt_bill_rate` `default_bill_rate` DO
 --
 insert into user_info (user_key, last_name, first_name, default_bill_rate)
     values('brian', 'Boger','Brian', 300);
+insert into user_info (user_key, last_name, first_name, default_bill_rate)
+    values('clerk', 'Clerk','Clerk', 100);
+insert into user_info (user_key, last_name, first_name, default_bill_rate)
+    values('assist', 'Assistant','Assistant', 100);
 --
 INSERT INTO sys_code
     ( code_type, code_id, description, system_or_user, last_update) 

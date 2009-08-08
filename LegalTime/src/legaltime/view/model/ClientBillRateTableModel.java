@@ -5,11 +5,15 @@
 
 package legaltime.view.model;
 
-import java.lang.Double;
-import java.lang.String;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 import legaltime.cache.UserInfoCache;
 import legaltime.model.ClientBillRateBean;
+import legaltime.model.ClientBillRateManager;
+import legaltime.model.exception.DAOException;
+import legaltime.modelsafe.EasyLog;
 
 /**
  *
@@ -18,10 +22,18 @@ import legaltime.model.ClientBillRateBean;
 public class ClientBillRateTableModel extends AbstractTableModel {
    UserInfoCache userInfoCache ;
     String[] columnNames ={"Bill Level", "Hourly Rate"};
+    Class[] columnTypes={String.class, Double.class};
+    boolean[] isEditable ={false,true};
     //Class[] columnTypes ={String, Double};
     ClientBillRateBean[] clientBillRates;
+    ClientBillRateManager clientBillRateManager;
+    EasyLog easyLog;
+
+
     public ClientBillRateTableModel(){
         userInfoCache = UserInfoCache.getInstance();
+        clientBillRateManager = ClientBillRateManager.getInstance();
+        easyLog = EasyLog.getInstance();
     }
 
 
@@ -55,6 +67,7 @@ public class ClientBillRateTableModel extends AbstractTableModel {
         }
 
 
+
     }
 
     @Override
@@ -62,7 +75,36 @@ public class ClientBillRateTableModel extends AbstractTableModel {
         return columnNames[colIndex];
 
     }
+    @Override
+    public Class getColumnClass(int col){
+        return columnTypes[col];
 
+
+    }
+    @Override
+    public boolean isCellEditable(int row, int col){
+        return isEditable[col];
+    }
+
+    @Override
+    public void setValueAt(Object value, int row, int col) {
+        switch(col){
+            
+            case 1: clientBillRates[row].setBillRate((Double)value);
+            default: System.err.println("Out of bounds");
+        }
+        try {
+            clientBillRateManager.save(clientBillRates[row]);
+        } catch (DAOException ex) {
+            Logger.getLogger(ClientBillRateTableModel.class.getName()).log(Level.SEVERE, null, ex);
+            easyLog.addEntry(EasyLog.SEVERE,"Error: Update Client Bill Rate Failed"
+                    ,getClass().getName(),ex);
+        }
+
+    }
+
+
+    
     public Integer getClientIdByRow(int row){
         return clientBillRates[row].getClientId();
     }

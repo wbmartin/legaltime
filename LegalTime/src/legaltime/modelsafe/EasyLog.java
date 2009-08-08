@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import legaltime.LegalTimeApp;
 
 /**
  *
@@ -20,8 +21,10 @@ public class EasyLog {
     public static final int SEVERE =9;
     public static final int WARN =5;
     public static final int INFO =1;
+    LegalTimeApp app;
     protected EasyLog(){
         log= new ArrayList<LogEvent>();
+        app = LegalTimeApp.getApplication();
     }
     public static EasyLog getInstance(){
         if(instance ==null){
@@ -32,9 +35,10 @@ public class EasyLog {
     }
     public void addEntry(int logLevel_, String description_, String location_,String detail_){
         log.add(new LogEvent(logLevel_, description_, location_, detail_));
+        app.setStatusText(description_);
     }
     public void addEntry(int logLevel_, String description_, String location_,Throwable detail_){
-        log.add(new LogEvent(logLevel_, description_, location_, getStackTrace(detail_)));
+        addEntry(logLevel_, description_, location_, getStackTrace(detail_));
     }
     public int getEntryCount(){
         return log.size();

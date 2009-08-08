@@ -126,10 +126,10 @@ public class VersionManager {
               }
 
         }catch(java.io.IOException e){
-            easyLog.addEntry(EasyLog.SEVERE, "ErrorReadingFile",
+            easyLog.addEntry(EasyLog.SEVERE, "Error: Reading File While Applying Patch",
                     this.getClass().getName(), EasyLog.getStackTrace(e));
         }catch(NullPointerException e){
-            easyLog.addEntry(EasyLog.SEVERE, "SQL File note Found",
+            easyLog.addEntry(EasyLog.SEVERE, "Error: SQL Patch File Note Found",
                     this.getClass().getName(), patch);
         }
 

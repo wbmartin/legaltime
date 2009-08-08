@@ -16,11 +16,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 import legaltime.LegalTimeApp;
-import legaltime.cache.ClientCache;
+import legaltime.cache.UserInfoCache;
 import legaltime.model.ClientBean;
 import legaltime.model.ClientBillRateBean;
 import legaltime.model.ClientBillRateManager;
 import legaltime.model.ClientManager;
+import legaltime.model.Manager;
 import legaltime.model.exception.DAOException;
 import legaltime.modelsafe.EasyLog;
 import legaltime.modelsafe.PersistanceManager;
@@ -54,6 +55,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
         clientEditorView = new ClientEditorView(this);
         clientEditorView.addInternalFrameListener(this);
         persistanceManager = PersistanceManager.getInstance();
+        clientBillRateManager = ClientBillRateManager.getInstance();
         easyLog = EasyLog.getInstance();
 
         clientManager = ClientManager.getInstance();
@@ -64,6 +66,8 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
         clientBillRateManager = ClientBillRateManager.getInstance();
         clientBillRateTableModel = new ClientBillRateTableModel();
         clientEditorView.getTblBillRates().setModel(clientBillRateTableModel );
+        clientEditorView.getTblBillRates().setAutoCreateRowSorter(true);
+        clientEditorView.getTblBillRates().getRowSorter().toggleSortOrder(1);
         //clientEditorView.getTblClientSelect().setAutoCreateRowSorter(true);
 
         RowFilter<ClientManagerTableModel, Object> rf = new RowFilter<ClientManagerTableModel,Object>() {
@@ -80,6 +84,10 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          if (clientManagerTableModel.getRowCount()>0){
             setSelectedRow(currentSelectedRow);
          }
+         
+         //Note, init of client view must be below the Table construction
+         clientEditorView.buildClientManagerTableDisplay();
+
     }
     public static ClientEditorController getInstance(LegalTimeApp mainController_){
         if (instance == null){
@@ -144,7 +152,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
                 synchDisplayToBean(clientManagerTableModel.getBeanByRow(currentSelectedRow ));
             }
                 //currentSelectedRow = newSelectedRow;
-            System.out.println(clientEditorView.getTblClientSelect().getSelectedRow() +" "+currentSelectedRow);
+//            System.out.println(clientEditorView.getTblClientSelect().getSelectedRow() +" "+currentSelectedRow);
             mainController.setStatusText("Ready");
         }
 
@@ -209,23 +217,21 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          clientEditorView.getCboBillingPlan().setSelectedItem(bean_.getBillType());
 
          setClientBillRateTableClient(bean_.getClientId().intValue());
-         clientEditorView.getTblBillRates().revalidate();
+         
 
      }
 
 
     public void clearChangesToEditedBean(){
          synchDisplayToBean(clientManagerTableModel.getBeanByRow(currentSelectedRow ));
-         setClientBillRateTableClient(clientManagerTableModel
-                 .getBeanByRow(currentSelectedRow ).getClientId().intValue());
-         clientEditorView.getTblBillRates().revalidate();
+        
      }
 
 
 
     public void addNewClient(){
         ClientBillRateBean clientBillRateBean;
-        int newClientId = -1;
+        
         if (clientEditorView.getTblClientSelect().getRowCount() > 0) {
             saveChanges();
         }
@@ -245,20 +251,35 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
                     , getClass().getName(), ex);
         }
         persistanceManager.loadClientCache();
-        System.out.println("clients:" + ClientCache.getInstance().getLength());
+        //System.out.println("clients:" + ClientCache.getInstance().getLength());
         clientEditorView.getTblClientSelect().revalidate();
         clientEditorView.getTblClientSelect().repaint();
         clientEditorView.getTblClientSelect().getRowSorter().allRowsChanged();
         setSelectedRow(0);
-        clientBillRateBean = clientBillRateManager.createClientBillRateBean();
-        clientBillRateBean.setClientId(newClientBean.getClientId());
-        clientBillRateBean.setUserKey("brian");
-        clientBillRateBean.setBillRate(300D);
+
+
         try {
-            clientBillRateManager.save(clientBillRateBean);
+            Manager.getInstance().getConnection().setAutoCommit(false);
+            UserInfoCache userInfoCache = UserInfoCache.getInstance();
+            for(int ndx =0;ndx< userInfoCache.getCache().length;ndx++){
+                clientBillRateBean = clientBillRateManager.createClientBillRateBean();
+                clientBillRateBean.setClientId(newClientBean.getClientId());
+                clientBillRateBean.setUserKey(userInfoCache.getCache()[ndx].getUserKey());
+                clientBillRateBean.setBillRate(userInfoCache.getCache()[ndx].getDefaultBillRate());
+                clientBillRateManager.save(clientBillRateBean);
+
+            }
+            Manager.getInstance().getConnection().commit();
+            Manager.getInstance().getConnection().setAutoCommit(true);
+            setClientBillRateTableClient(newClientBean.getClientId());
+
         } catch (DAOException ex) {
             Logger.getLogger(ClientEditorController.class.getName()).log(Level.SEVERE, null, ex);
-            easyLog.addEntry(EasyLog.SEVERE, "Error adding new client bill Rate"
+            easyLog.addEntry(EasyLog.SEVERE, "Error: Adding New Client Bill Rate"
+                    , getClass().getName(), ex);
+        } catch (java.sql.SQLException ex) {
+            Logger.getLogger(ClientEditorController.class.getName()).log(Level.SEVERE, null, ex);
+            easyLog.addEntry(EasyLog.SEVERE, "Error: Adding New Client Bill Rate (SQL)"
                     , getClass().getName(), ex);
         }
 
@@ -291,20 +312,20 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
      }
 
      private void setClientBillRateTableClient(int client_){
-
-         String whereClause= "where client_id = " + client_;
-
-         clientBillRateManager = ClientBillRateManager.getInstance();
+        String whereClause= "where client_id = " + client_;
         try {
             clientBillRatebeans = clientBillRateManager.loadByWhere(whereClause);
             clientBillRateTableModel.setDataArray(clientBillRatebeans);
             clientEditorView.getTblBillRates().revalidate();
+            clientEditorView.getTblBillRates().repaint();
+            clientEditorView.getTblBillRates().getRowSorter().allRowsChanged();
             
         } catch (DAOException ex) {
             Logger.getLogger(ClientEditorController.class.getName()).log(Level.SEVERE, null, ex);
             easyLog.addEntry(EasyLog.SEVERE, "Error Loading Client Bill Rates"
                     , getClass().getName(), ex);
         }
+
 
      }
 
