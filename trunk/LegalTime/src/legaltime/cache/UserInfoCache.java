@@ -38,7 +38,7 @@ public class UserInfoCache {
         int ndx;
         for(ndx =0;ndx< userInfoBeans.length;ndx++){
             if (userInfoBeans[ndx].getUserKey().equals(userKey_)){
-                result = userInfoBeans[ndx].getUserKey();
+                result = userInfoBeans[ndx].getFirstName();
                 break;
             }
 

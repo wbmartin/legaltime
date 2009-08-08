@@ -17,6 +17,7 @@ package legaltime.view;
 import javax.swing.table.TableColumn;
 
 import legaltime.controller.ClientEditorController;
+import legaltime.view.renderer.CurrencyTableCellRenderer;
 import org.jdesktop.application.Action;
 
 
@@ -31,7 +32,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     public ClientEditorView(ClientEditorController clientEditorController_) {
         initComponents();
         clientEditorController = clientEditorController_;
-        buildClientManagerTableColumnModel();
+       // buildClientManagerTableColumnModel();
     }
 
      
@@ -533,7 +534,9 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
 
 
 
-    private void buildClientManagerTableColumnModel() {
+    public void buildClientManagerTableDisplay() {
+
+
         TableColumn tc;
         //Name
          tc = tblClientSelect.getColumnModel().getColumn(0);
@@ -556,8 +559,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
          tc.setPreferredWidth(50);
          tc.setMinWidth(25);
          tc.setMaxWidth(100);
-
-
+         tc.setCellRenderer(CurrencyTableCellRenderer.getInstance());
     }
  
 
