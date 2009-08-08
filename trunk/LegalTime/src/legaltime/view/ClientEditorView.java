@@ -527,6 +527,11 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     public javax.swing.JComboBox getCboBillingPlan(){
         return cboBillingPlan;
     }
+    public javax.swing.JTable getTblBillRates(){
+        return tblBillRates;
+    }
+
+
 
     private void buildClientManagerTableColumnModel() {
         TableColumn tc;
@@ -540,6 +545,19 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
          tc.setPreferredWidth(100);
          tc.setMinWidth(50);
          tc.setMaxWidth(200);
+
+         //BillLevel
+         tc = tblBillRates.getColumnModel().getColumn(0);
+         tc.setPreferredWidth(50);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(100);
+         //BillRate
+         tc = tblBillRates.getColumnModel().getColumn(1);
+         tc.setPreferredWidth(50);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(100);
+
+
     }
  
 

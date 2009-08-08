@@ -13,7 +13,7 @@ import legaltime.model.UserInfoBean;
  * @author bmartin
  */
 public class UserInfoCache {
-    private UserInfoBean[] cache;
+    private UserInfoBean[] userInfoBeans;
     static UserInfoCache instance = null;
 
     protected UserInfoCache(){
@@ -27,10 +27,26 @@ public class UserInfoCache {
     }
 
     public void setList(UserInfoBean[] cache_){
-        cache= cache_;
+        userInfoBeans= cache_;
     }
     public UserInfoBean[] getCache(){
-        return cache;
+        return userInfoBeans;
+    }
+
+    public String getNameFromUserKey(String userKey_ ){
+        String result = "";
+        int ndx;
+        for(ndx =0;ndx< userInfoBeans.length;ndx++){
+            if (userInfoBeans[ndx].getUserKey().equals(userKey_)){
+                result = userInfoBeans[ndx].getUserKey();
+                break;
+            }
+
+
+        }
+
+
+        return result;
     }
 
 

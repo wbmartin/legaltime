@@ -55,6 +55,7 @@ public class ClientManagerTableModel extends AbstractTableModel {
         return columnNames[colIndex];
 
     }
+    
 
     public Integer getClientIdByRow(int row){
         return clientCache.getCache()[row].getClientId();

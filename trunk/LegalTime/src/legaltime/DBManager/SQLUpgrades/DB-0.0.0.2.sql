@@ -10,6 +10,11 @@ ALTER TABLE `client`
 --
 ALTER TABLE `client` ADD COLUMN `monthly_bill_rate` DOUBLE  AFTER `bill_type`;
 --
+ALTER TABLE `user_info` CHANGE COLUMN `defualt_bill_rate` `default_bill_rate` DOUBLE DEFAULT NULL;
+--
+insert into user_info (user_key, last_name, first_name, default_bill_rate)
+    values('brian', 'Boger','Brian', 300);
+--
 INSERT INTO sys_code
     ( code_type, code_id, description, system_or_user, last_update) 
     VALUES ( 'VER', 'DBVer', 'DB-0.0.0.2', 'S', now());
