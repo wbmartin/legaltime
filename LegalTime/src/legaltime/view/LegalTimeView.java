@@ -569,7 +569,8 @@ public javax.swing.JDesktopPane getDesktop(){
         }else{
             lblLastAction.setBackground(statusMessageLabel.getBackground());
         }
-        easyLog.addEntry(EasyLog.INFO, newText, getClass().getName(), "LAST ACTTION");
+        //This should be handled within the EasyLog
+        //easyLog.addEntry(EasyLog.INFO, newText, getClass().getName(), "LAST ACTTION");
     }
     public void setProgressBarProgressValue(int value){
         if (value ==0 || value ==100){

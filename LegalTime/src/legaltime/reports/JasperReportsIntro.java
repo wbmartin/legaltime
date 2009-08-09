@@ -34,12 +34,12 @@ String UserDesktop = System.getProperty("user.home") + "/Desktop";
 UserDesktop = UserDesktop.replace("\\", "/");
 ClassLoader cl = ResourceAnchor.class.getClassLoader();
 InputStream jasperFile = cl.getResourceAsStream("legaltime/reports/BogerInvoice.jasper");
-        HashMap params = new HashMap();
-        params.put("test", "value");
+        
         JRInvoiceDataSource source = new JRInvoiceDataSource();
-        source.createDataSource();
+        //source.createDataSource();
       jasperPrint = JasperFillManager.fillReport(
-          jasperFile, params, source.createDataSource());
+          jasperFile, source.getParams(), source.createDataSource());
+
       JasperExportManager.exportReportToPdfFile(
           jasperPrint, UserDesktop+"/Invoice00123_JoeClient_20090715.pdf");
     }

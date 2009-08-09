@@ -277,9 +277,16 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
 
     @Action
     public void generateInvoice(){
+        int clientId=0;
+        try{
+            clientId = ((ClientBean)cboClient.getSelectedItem()).getClientId();
+        }catch(NullPointerException ex){
+           JOptionPane.showMessageDialog(this, "Please select a client to invoice.");
+           return;
+        }
 
         invoiceController.buildAndSaveInvoice(
-                ((ClientBean)cboClient.getSelectedItem()).getClientId()
+                clientId
                 ,laborRegisterTableModel.getLaborRegisterBeans());
         JOptionPane.showMessageDialog(this, "The PDF has been saved to your desktop." +
                 "In normal operations in would be saved to a centralized " +
