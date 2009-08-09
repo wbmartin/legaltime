@@ -35,7 +35,7 @@ public class EasyLog {
     }
     public void addEntry(int logLevel_, String description_, String location_,String detail_){
         log.add(new LogEvent(logLevel_, description_, location_, detail_));
-        app.setStatusText(description_);
+        app.setLastActionText(description_);
     }
     public void addEntry(int logLevel_, String description_, String location_,Throwable detail_){
         addEntry(logLevel_, description_, location_, getStackTrace(detail_));
