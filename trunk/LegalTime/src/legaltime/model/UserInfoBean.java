@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class UserInfoBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = 8684280526935727292L;
+	private static final long serialVersionUID = 2916248052941458827L;
 	
     private java.util.Date lastUpdate;
 

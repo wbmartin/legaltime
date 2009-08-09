@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 import legaltime.model.GeneratedBean;
-import legaltime.model.InvoiceBean;
 import legaltime.model.ClientBean;
+import legaltime.model.InvoiceBean;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -32,7 +32,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class LaborRegisterBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = 8743769952801126974L;
+	private static final long serialVersionUID = 2919553019374827083L;
 	
     private java.util.Date lastUpdate;
 
@@ -49,10 +49,20 @@ public class LaborRegisterBean
     private boolean invoiceIdIsModified = false;
     private boolean invoiceIdIsInitialized = false;
 
-    private java.util.Date date;
+    private Double billRate;
 
-    private boolean dateIsModified = false;
-    private boolean dateIsInitialized = false;
+    private boolean billRateIsModified = false;
+    private boolean billRateIsInitialized = false;
+
+    private Boolean invoiceable;
+
+    private boolean invoiceableIsModified = false;
+    private boolean invoiceableIsInitialized = false;
+
+    private java.util.Date activityDate;
+
+    private boolean activityDateIsModified = false;
+    private boolean activityDateIsInitialized = false;
 
     private java.util.Date endTime;
 
@@ -297,74 +307,215 @@ public class LaborRegisterBean
     }
 
     /**
-     * Getter method for date.
+     * Getter method for billRate.
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: labor_register.date</li>
-     * <li>column size: 10</li>
-     * <li>jdbc type returned by the driver: Types.DATE</li>
+     * <li>full name: labor_register.bill_rate</li>
+     * <li>column size: 22</li>
+     * <li>jdbc type returned by the driver: Types.DOUBLE</li>
      * </ul>
      *
-     * @return the value of date
+     * @return the value of billRate
      */
-    public java.util.Date getDate()
+    public Double getBillRate()
     {
-        return date;
+        return billRate;
     }
 
     /**
-     * Setter method for date.
+     * Setter method for billRate.
      * <br>
      * The new value is set only if compareTo() says it is different,
      * or if one of either the new value or the current value is null.
      * In case the new value is different, it is set and the field is marked as 'modified'.
      *
-     * @param newVal the new value to be assigned to date
+     * @param newVal the new value to be assigned to billRate
      */
-    public void setDate(java.util.Date newVal)
+    public void setBillRate(Double newVal)
     {
-        if ((newVal != null && date != null && (newVal.compareTo(date) == 0)) ||
-            (newVal == null && date == null && dateIsInitialized)) {
+        if ((newVal != null && billRate != null && (newVal.compareTo(billRate) == 0)) ||
+            (newVal == null && billRate == null && billRateIsInitialized)) {
             return;
         }
-        date = newVal;
-        dateIsModified = true;
-        dateIsInitialized = true;
+        billRate = newVal;
+        billRateIsModified = true;
+        billRateIsInitialized = true;
     }
 
     /**
-     * Setter method for date.
+     * Setter method for billRate.
      * <br>
      * Convenient for those who do not want to deal with Objects for primary types.
      *
-     * @param newVal the new value to be assigned to date
+     * @param newVal the new value to be assigned to billRate
      */
-    public void setDate(long newVal)
+    public void setBillRate(double newVal)
     {
-        setDate(new java.util.Date(newVal));
+        setBillRate(new Double(newVal));
     }
 
     /**
-     * Determines if the date has been modified.
+     * Determines if the billRate has been modified.
      *
      * @return true if the field has been modified, false if the field has not been modified
      */
-    public boolean isDateModified()
+    public boolean isBillRateModified()
     {
-        return dateIsModified;
+        return billRateIsModified;
     }
 
     /**
-     * Determines if the date has been initialized.
+     * Determines if the billRate has been initialized.
      * <br>
      * It is useful to determine if a field is null on purpose or just because it has not been initialized.
      *
      * @return true if the field has been initialized, false otherwise
      */
-    public boolean isDateInitialized()
+    public boolean isBillRateInitialized()
     {
-        return dateIsInitialized;
+        return billRateIsInitialized;
+    }
+
+    /**
+     * Getter method for invoiceable.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: labor_register.invoiceable</li>
+     * <li>column size: 0</li>
+     * <li>jdbc type returned by the driver: Types.BIT</li>
+     * </ul>
+     *
+     * @return the value of invoiceable
+     */
+    public Boolean getInvoiceable()
+    {
+        return invoiceable;
+    }
+
+    /**
+     * Setter method for invoiceable.
+     * <br>
+     * Attention, there will be no comparison with current value which
+     * means calling this method will mark the field as 'modified' in all cases.
+     *
+     * @param newVal the new value to be assigned to invoiceable
+     */
+    public void setInvoiceable(Boolean newVal)
+    {
+        if ((newVal != null && invoiceable != null && newVal.equals(invoiceable)) ||
+            (newVal == null && invoiceable == null && invoiceableIsInitialized)) {
+            return;
+        }
+        invoiceable = newVal;
+        invoiceableIsModified = true;
+        invoiceableIsInitialized = true;
+    }
+
+    /**
+     * Setter method for invoiceable.
+     * <br>
+     * Convenient for those who do not want to deal with Objects for primary types.
+     *
+     * @param newVal the new value to be assigned to invoiceable
+     */
+    public void setInvoiceable(boolean newVal)
+    {
+        setInvoiceable(new Boolean(newVal));
+    }
+
+    /**
+     * Determines if the invoiceable has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isInvoiceableModified()
+    {
+        return invoiceableIsModified;
+    }
+
+    /**
+     * Determines if the invoiceable has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isInvoiceableInitialized()
+    {
+        return invoiceableIsInitialized;
+    }
+
+    /**
+     * Getter method for activityDate.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: labor_register.activity_date</li>
+     * <li>column size: 10</li>
+     * <li>jdbc type returned by the driver: Types.DATE</li>
+     * </ul>
+     *
+     * @return the value of activityDate
+     */
+    public java.util.Date getActivityDate()
+    {
+        return activityDate;
+    }
+
+    /**
+     * Setter method for activityDate.
+     * <br>
+     * The new value is set only if compareTo() says it is different,
+     * or if one of either the new value or the current value is null.
+     * In case the new value is different, it is set and the field is marked as 'modified'.
+     *
+     * @param newVal the new value to be assigned to activityDate
+     */
+    public void setActivityDate(java.util.Date newVal)
+    {
+        if ((newVal != null && activityDate != null && (newVal.compareTo(activityDate) == 0)) ||
+            (newVal == null && activityDate == null && activityDateIsInitialized)) {
+            return;
+        }
+        activityDate = newVal;
+        activityDateIsModified = true;
+        activityDateIsInitialized = true;
+    }
+
+    /**
+     * Setter method for activityDate.
+     * <br>
+     * Convenient for those who do not want to deal with Objects for primary types.
+     *
+     * @param newVal the new value to be assigned to activityDate
+     */
+    public void setActivityDate(long newVal)
+    {
+        setActivityDate(new java.util.Date(newVal));
+    }
+
+    /**
+     * Determines if the activityDate has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isActivityDateModified()
+    {
+        return activityDateIsModified;
+    }
+
+    /**
+     * Determines if the activityDate has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isActivityDateInitialized()
+    {
+        return activityDateIsInitialized;
     }
 
     /**
@@ -784,17 +935,6 @@ public class LaborRegisterBean
         return laborRegisterIdIsInitialized;
     }
 
-    /** The Invoice referenced by this bean. */
-    private InvoiceBean referencedInvoice;
-    /** Getter method for InvoiceBean. */
-    public InvoiceBean getInvoiceBean() {
-        return this.referencedInvoice;
-    }
-    /** Setter method for InvoiceBean. */
-    public void setInvoiceBean(InvoiceBean reference) {
-        this.referencedInvoice = reference;
-    }
-    
     /** The Client referenced by this bean. */
     private ClientBean referencedClient;
     /** Getter method for ClientBean. */
@@ -804,6 +944,17 @@ public class LaborRegisterBean
     /** Setter method for ClientBean. */
     public void setClientBean(ClientBean reference) {
         this.referencedClient = reference;
+    }
+    
+    /** The Invoice referenced by this bean. */
+    private InvoiceBean referencedInvoice;
+    /** Getter method for InvoiceBean. */
+    public InvoiceBean getInvoiceBean() {
+        return this.referencedInvoice;
+    }
+    /** Setter method for InvoiceBean. */
+    public void setInvoiceBean(InvoiceBean reference) {
+        this.referencedInvoice = reference;
     }
     
     /**
@@ -835,7 +986,7 @@ public class LaborRegisterBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| userKeyIsModified  		|| invoiceIdIsModified  		|| dateIsModified  		|| endTimeIsModified  		|| startTimeIsModified  		|| minutesIsModified  		|| descriptionIsModified  		|| clientIdIsModified  		|| laborRegisterIdIsModified  ;
+        return lastUpdateIsModified 		|| userKeyIsModified  		|| invoiceIdIsModified  		|| billRateIsModified  		|| invoiceableIsModified  		|| activityDateIsModified  		|| endTimeIsModified  		|| startTimeIsModified  		|| minutesIsModified  		|| descriptionIsModified  		|| clientIdIsModified  		|| laborRegisterIdIsModified  ;
     }
 
     /**
@@ -846,7 +997,9 @@ public class LaborRegisterBean
         lastUpdateIsModified = false;
         userKeyIsModified = false;
         invoiceIdIsModified = false;
-        dateIsModified = false;
+        billRateIsModified = false;
+        invoiceableIsModified = false;
+        activityDateIsModified = false;
         endTimeIsModified = false;
         startTimeIsModified = false;
         minutesIsModified = false;
@@ -865,7 +1018,9 @@ public class LaborRegisterBean
         setLastUpdate(bean.getLastUpdate());
         setUserKey(bean.getUserKey());
         setInvoiceId(bean.getInvoiceId());
-        setDate(bean.getDate());
+        setBillRate(bean.getBillRate());
+        setInvoiceable(bean.getInvoiceable());
+        setActivityDate(bean.getActivityDate());
         setEndTime(bean.getEndTime());
         setStartTime(bean.getStartTime());
         setMinutes(bean.getMinutes());
@@ -883,7 +1038,9 @@ public class LaborRegisterBean
         dictionnary.put("last_update", getLastUpdate() == null ? "" : getLastUpdate().toString());
         dictionnary.put("user_key", getUserKey() == null ? "" : getUserKey().toString());
         dictionnary.put("invoice_id", getInvoiceId() == null ? "" : getInvoiceId().toString());
-        dictionnary.put("date", getDate() == null ? "" : getDate().toString());
+        dictionnary.put("bill_rate", getBillRate() == null ? "" : getBillRate().toString());
+        dictionnary.put("invoiceable", getInvoiceable() == null ? "" : getInvoiceable().toString());
+        dictionnary.put("activity_date", getActivityDate() == null ? "" : getActivityDate().toString());
         dictionnary.put("end_time", getEndTime() == null ? "" : getEndTime().toString());
         dictionnary.put("start_time", getStartTime() == null ? "" : getStartTime().toString());
         dictionnary.put("minutes", getMinutes() == null ? "" : getMinutes().toString());
@@ -917,8 +1074,12 @@ public class LaborRegisterBean
             return getUserKey() == null ? "" : getUserKey().toString();
         } else if ("invoice_id".equalsIgnoreCase(column) || "invoiceId".equalsIgnoreCase(column)) {
             return getInvoiceId() == null ? "" : getInvoiceId().toString();
-        } else if ("date".equalsIgnoreCase(column) || "date".equalsIgnoreCase(column)) {
-            return getDate() == null ? "" : getDate().toString();
+        } else if ("bill_rate".equalsIgnoreCase(column) || "billRate".equalsIgnoreCase(column)) {
+            return getBillRate() == null ? "" : getBillRate().toString();
+        } else if ("invoiceable".equalsIgnoreCase(column) || "invoiceable".equalsIgnoreCase(column)) {
+            return getInvoiceable() == null ? "" : getInvoiceable().toString();
+        } else if ("activity_date".equalsIgnoreCase(column) || "activityDate".equalsIgnoreCase(column)) {
+            return getActivityDate() == null ? "" : getActivityDate().toString();
         } else if ("end_time".equalsIgnoreCase(column) || "endTime".equalsIgnoreCase(column)) {
             return getEndTime() == null ? "" : getEndTime().toString();
         } else if ("start_time".equalsIgnoreCase(column) || "startTime".equalsIgnoreCase(column)) {
@@ -949,7 +1110,9 @@ public class LaborRegisterBean
             .append(getLastUpdate(), obj.getLastUpdate())
             .append(getUserKey(), obj.getUserKey())
             .append(getInvoiceId(), obj.getInvoiceId())
-            .append(getDate(), obj.getDate())
+            .append(getBillRate(), obj.getBillRate())
+            .append(getInvoiceable(), obj.getInvoiceable())
+            .append(getActivityDate(), obj.getActivityDate())
             .append(getEndTime(), obj.getEndTime())
             .append(getStartTime(), obj.getStartTime())
             .append(getMinutes(), obj.getMinutes())
@@ -968,7 +1131,9 @@ public class LaborRegisterBean
             .append(getLastUpdate())
             .append(getUserKey())
             .append(getInvoiceId())
-            .append(getDate())
+            .append(getBillRate())
+            .append(getInvoiceable())
+            .append(getActivityDate())
             .append(getEndTime())
             .append(getStartTime())
             .append(getMinutes())
@@ -999,7 +1164,9 @@ public class LaborRegisterBean
             .append("last_update", getLastUpdate())
             .append("user_key", getUserKey())
             .append("invoice_id", getInvoiceId())
-            .append("date", getDate())
+            .append("bill_rate", getBillRate())
+            .append("invoiceable", getInvoiceable())
+            .append("activity_date", getActivityDate())
             .append("end_time", getEndTime())
             .append("start_time", getStartTime())
             .append("minutes", getMinutes())
@@ -1017,7 +1184,9 @@ public class LaborRegisterBean
             .append(getLastUpdate(), obj.getLastUpdate())
             .append(getUserKey(), obj.getUserKey())
             .append(getInvoiceId(), obj.getInvoiceId())
-            .append(getDate(), obj.getDate())
+            .append(getBillRate(), obj.getBillRate())
+            .append(getInvoiceable(), obj.getInvoiceable())
+            .append(getActivityDate(), obj.getActivityDate())
             .append(getEndTime(), obj.getEndTime())
             .append(getStartTime(), obj.getStartTime())
             .append(getMinutes(), obj.getMinutes())

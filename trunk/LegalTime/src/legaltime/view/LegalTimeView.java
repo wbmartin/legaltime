@@ -49,7 +49,7 @@ public class LegalTimeView extends FrameView {
     private ClientEditorView clientManager;
     private FollowupManager followupManager;
     private ClientAccounting clientAccounting;
-    private InvoiceManager invoiceManager;
+    private InvoiceEditorView invoiceManager;
     private ExpenseManager expenseManager;
     private TimeEditor timeEditor;
     private PersistanceManager persistanceManager;
@@ -491,7 +491,7 @@ public javax.swing.JDesktopPane getDesktop(){
     public void showInvoiceManager(){
         if (invoiceManager == null) {
             //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-            invoiceManager = new InvoiceManager();
+            invoiceManager = new InvoiceEditorView();
             invoiceManager.setMainController(LegalTimeApp.getApplication());
 
         }
@@ -569,6 +569,7 @@ public javax.swing.JDesktopPane getDesktop(){
         }else{
             lblLastAction.setBackground(statusMessageLabel.getBackground());
         }
+        easyLog.addEntry(EasyLog.INFO, newText, getClass().getName(), "LAST ACTTION");
     }
     public void setProgressBarProgressValue(int value){
         if (value ==0 || value ==100){

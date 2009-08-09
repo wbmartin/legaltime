@@ -40,7 +40,10 @@ public class ClientComboBoxModel implements ComboBoxModel {
     }
 
     public Object getElementAt(int index) {
-        return array[index];
+        if (array[index].getActiveYn().equals("Y")){
+          return array[index];
+        }
+          return null;
     }
 
     public void addListDataListener(ListDataListener l) {

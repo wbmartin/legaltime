@@ -6,6 +6,7 @@
 package legaltime.view.renderer;
 
 import java.text.DecimalFormat;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -30,6 +31,7 @@ import javax.swing.table.DefaultTableCellRenderer;
         }
         try{
             setText((value == null) ? "" : formatter.format(value));
+            setHorizontalAlignment(SwingConstants.RIGHT);
         }catch(Exception e){
             setText("");
         }

@@ -24,10 +24,10 @@ import legaltime.model.Manager;
 import legaltime.model.exception.DAOException;
 import legaltime.model.exception.DataAccessException;
 import legaltime.model.exception.ObjectRetrievalException;
-import legaltime.model.InvoiceBean;
-import legaltime.model.InvoiceManager;
 import legaltime.model.ClientBean;
 import legaltime.model.ClientManager;
+import legaltime.model.InvoiceBean;
+import legaltime.model.InvoiceManager;
 
 /**
  * Handles database calls (save, load, count, etc...) for the labor_register table.
@@ -61,39 +61,49 @@ public class LaborRegisterManager
     public static final int ID_INVOICE_ID = 2;
 
     /**
-     * Identify the date field.
+     * Identify the bill_rate field.
      */
-    public static final int ID_DATE = 3;
+    public static final int ID_BILL_RATE = 3;
+
+    /**
+     * Identify the invoiceable field.
+     */
+    public static final int ID_INVOICEABLE = 4;
+
+    /**
+     * Identify the activity_date field.
+     */
+    public static final int ID_ACTIVITY_DATE = 5;
 
     /**
      * Identify the end_time field.
      */
-    public static final int ID_END_TIME = 4;
+    public static final int ID_END_TIME = 6;
 
     /**
      * Identify the start_time field.
      */
-    public static final int ID_START_TIME = 5;
+    public static final int ID_START_TIME = 7;
 
     /**
      * Identify the minutes field.
      */
-    public static final int ID_MINUTES = 6;
+    public static final int ID_MINUTES = 8;
 
     /**
      * Identify the description field.
      */
-    public static final int ID_DESCRIPTION = 7;
+    public static final int ID_DESCRIPTION = 9;
 
     /**
      * Identify the client_id field.
      */
-    public static final int ID_CLIENT_ID = 8;
+    public static final int ID_CLIENT_ID = 10;
 
     /**
      * Identify the labor_register_id field.
      */
-    public static final int ID_LABOR_REGISTER_ID = 9;
+    public static final int ID_LABOR_REGISTER_ID = 11;
 
     /**
      * Contains all the full fields of the labor_register table.
@@ -103,7 +113,9 @@ public class LaborRegisterManager
         "labor_register.last_update"
         ,"labor_register.user_key"
         ,"labor_register.invoice_id"
-        ,"labor_register.date"
+        ,"labor_register.bill_rate"
+        ,"labor_register.invoiceable"
+        ,"labor_register.activity_date"
         ,"labor_register.end_time"
         ,"labor_register.start_time"
         ,"labor_register.minutes"
@@ -120,7 +132,9 @@ public class LaborRegisterManager
         "last_update"
         ,"user_key"
         ,"invoice_id"
-        ,"date"
+        ,"bill_rate"
+        ,"invoiceable"
+        ,"activity_date"
         ,"end_time"
         ,"start_time"
         ,"minutes"
@@ -135,7 +149,9 @@ public class LaborRegisterManager
     public static final String ALL_FULL_FIELDS = "labor_register.last_update"
                             + ",labor_register.user_key"
                             + ",labor_register.invoice_id"
-                            + ",labor_register.date"
+                            + ",labor_register.bill_rate"
+                            + ",labor_register.invoiceable"
+                            + ",labor_register.activity_date"
                             + ",labor_register.end_time"
                             + ",labor_register.start_time"
                             + ",labor_register.minutes"
@@ -149,7 +165,9 @@ public class LaborRegisterManager
     public static final String ALL_FIELDS = "last_update"
                             + ",user_key"
                             + ",invoice_id"
-                            + ",date"
+                            + ",bill_rate"
+                            + ",invoiceable"
+                            + ",activity_date"
                             + ",end_time"
                             + ",start_time"
                             + ",minutes"
@@ -266,52 +284,6 @@ public class LaborRegisterManager
     // GET/SET FOREIGN KEY BEAN METHOD
     //////////////////////////////////////
     /**
-     * Retrieves the InvoiceBean object from the labor_register.invoice_id field.
-     *
-     * @param bean the LaborRegisterBean
-     * @return the associated InvoiceBean bean
-     * @throws DAOException
-     */
-    //3.2 GET IMPORTED VALUES
-    public InvoiceBean getInvoiceBean(LaborRegisterBean bean) throws DAOException
-    {
-        InvoiceBean other = InvoiceManager.getInstance().createInvoiceBean();
-        other.setInvoiceId(bean.getInvoiceId()); 
-        bean.setInvoiceBean(InvoiceManager.getInstance().loadUniqueUsingTemplate(other)); 
-        return bean.getInvoiceBean();
-    }
-
-    /**
-     * Associates the LaborRegisterBean object to the InvoiceBean object.
-     *
-     * @param bean the LaborRegisterBean object to use
-     * @param beanToSet the InvoiceBean object to associate to the LaborRegisterBean
-     * @return the associated InvoiceBean bean
-     * @throws Exception
-     */
-    //4.2 ADD IMPORTED VALUE
-    public InvoiceBean addInvoiceBean(InvoiceBean beanToSet, LaborRegisterBean bean) throws Exception
-    {
-        beanToSet.setInvoiceId(bean.getInvoiceId());
-        return InvoiceManager.getInstance().save(beanToSet);
-    }
-
-    /**
-     * Associates the LaborRegisterBean object to the InvoiceBean object.
-     *
-     * @param bean the LaborRegisterBean object to use
-     * @param beanToSet the InvoiceBean object to associate to the LaborRegisterBean
-     * @return the associated InvoiceBean bean
-     * @throws Exception
-     */
-    //5.2 SET IMPORTED
-    public InvoiceBean setInvoiceBean(LaborRegisterBean bean, InvoiceBean beanToSet) throws Exception
-    {
-        bean.setInvoiceId(beanToSet.getInvoiceId());
-        return InvoiceManager.getInstance().save(beanToSet);
-    }
-
-    /**
      * Retrieves the ClientBean object from the labor_register.client_id field.
      *
      * @param bean the LaborRegisterBean
@@ -355,6 +327,52 @@ public class LaborRegisterManager
     {
         bean.setClientId(beanToSet.getClientId());
         return ClientManager.getInstance().save(beanToSet);
+    }
+
+    /**
+     * Retrieves the InvoiceBean object from the labor_register.invoice_id field.
+     *
+     * @param bean the LaborRegisterBean
+     * @return the associated InvoiceBean bean
+     * @throws DAOException
+     */
+    //3.2 GET IMPORTED VALUES
+    public InvoiceBean getInvoiceBean(LaborRegisterBean bean) throws DAOException
+    {
+        InvoiceBean other = InvoiceManager.getInstance().createInvoiceBean();
+        other.setInvoiceId(bean.getInvoiceId()); 
+        bean.setInvoiceBean(InvoiceManager.getInstance().loadUniqueUsingTemplate(other)); 
+        return bean.getInvoiceBean();
+    }
+
+    /**
+     * Associates the LaborRegisterBean object to the InvoiceBean object.
+     *
+     * @param bean the LaborRegisterBean object to use
+     * @param beanToSet the InvoiceBean object to associate to the LaborRegisterBean
+     * @return the associated InvoiceBean bean
+     * @throws Exception
+     */
+    //4.2 ADD IMPORTED VALUE
+    public InvoiceBean addInvoiceBean(InvoiceBean beanToSet, LaborRegisterBean bean) throws Exception
+    {
+        beanToSet.setInvoiceId(bean.getInvoiceId());
+        return InvoiceManager.getInstance().save(beanToSet);
+    }
+
+    /**
+     * Associates the LaborRegisterBean object to the InvoiceBean object.
+     *
+     * @param bean the LaborRegisterBean object to use
+     * @param beanToSet the InvoiceBean object to associate to the LaborRegisterBean
+     * @return the associated InvoiceBean bean
+     * @throws Exception
+     */
+    //5.2 SET IMPORTED
+    public InvoiceBean setInvoiceBean(LaborRegisterBean bean, InvoiceBean beanToSet) throws Exception
+    {
+        bean.setInvoiceId(beanToSet.getInvoiceId());
+        return InvoiceManager.getInstance().save(beanToSet);
     }
 
 
@@ -595,11 +613,27 @@ public class LaborRegisterManager
                 _dirtyCount++;
             }
 
-            if (bean.isDateModified()) {
+            if (bean.isBillRateModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
                 }
-                sql.append("date");
+                sql.append("bill_rate");
+                _dirtyCount++;
+            }
+
+            if (bean.isInvoiceableModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("invoiceable");
+                _dirtyCount++;
+            }
+
+            if (bean.isActivityDateModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("activity_date");
                 _dirtyCount++;
             }
 
@@ -743,13 +777,31 @@ public class LaborRegisterManager
                 sql.append("invoice_id=?");
             }
 
-            if (bean.isDateModified()) {
+            if (bean.isBillRateModified()) {
                 if (useComma) {
                     sql.append(", ");
                 } else {
                     useComma=true;
                 }
-                sql.append("date=?");
+                sql.append("bill_rate=?");
+            }
+
+            if (bean.isInvoiceableModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("invoiceable=?");
+            }
+
+            if (bean.isActivityDateModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("activity_date=?");
             }
 
             if (bean.isEndTimeModified()) {
@@ -1290,12 +1342,28 @@ public class LaborRegisterManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoice_id = ?");
                 }
             }
-            if (bean.isDateModified()) {
+            if (bean.isBillRateModified()) {
                 _dirtyCount ++;
-                if (bean.getDate() == null) {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("date IS NULL");
+                if (bean.getBillRate() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("bill_rate IS NULL");
                 } else {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("date = ?");
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("bill_rate = ?");
+                }
+            }
+            if (bean.isInvoiceableModified()) {
+                _dirtyCount ++;
+                if (bean.getInvoiceable() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoiceable IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoiceable = ?");
+                }
+            }
+            if (bean.isActivityDateModified()) {
+                _dirtyCount ++;
+                if (bean.getActivityDate() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("activity_date IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("activity_date = ?");
                 }
             }
             if (bean.isEndTimeModified()) {
@@ -1400,9 +1468,17 @@ public class LaborRegisterManager
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getInvoiceId() + "]");
                 if (bean.getInvoiceId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getInvoiceId()); }
             }
-            if (bean.isDateModified()) {
-                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getDate() + "]");
-                if (bean.getDate() == null) { ps.setNull(++_dirtyCount, Types.DATE); } else { ps.setDate(++_dirtyCount, new java.sql.Date(bean.getDate().getTime())); }
+            if (bean.isBillRateModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getBillRate() + "]");
+                if (bean.getBillRate() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getBillRate()); }
+            }
+            if (bean.isInvoiceableModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getInvoiceable() + "]");
+                if (bean.getInvoiceable() == null) { ps.setNull(++_dirtyCount, Types.BIT); } else { Manager.setBoolean(ps, ++_dirtyCount, bean.getInvoiceable()); }
+            }
+            if (bean.isActivityDateModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getActivityDate() + "]");
+                if (bean.getActivityDate() == null) { ps.setNull(++_dirtyCount, Types.DATE); } else { ps.setDate(++_dirtyCount, new java.sql.Date(bean.getActivityDate().getTime())); }
             }
             if (bean.isEndTimeModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getEndTime() + "]");
@@ -1522,13 +1598,15 @@ public class LaborRegisterManager
             bean.setLastUpdate(rs.getTimestamp(1));
             bean.setUserKey(rs.getString(2));
             bean.setInvoiceId(Manager.getInteger(rs, 3));
-            bean.setDate(rs.getDate(4));
-            bean.setEndTime(rs.getTimestamp(5));
-            bean.setStartTime(rs.getTimestamp(6));
-            bean.setMinutes(Manager.getInteger(rs, 7));
-            bean.setDescription(rs.getString(8));
-            bean.setClientId(Manager.getInteger(rs, 9));
-            bean.setLaborRegisterId(Manager.getInteger(rs, 10));
+            bean.setBillRate(Manager.getDouble(rs, 4));
+            bean.setInvoiceable(Manager.getBoolean(rs, 5));
+            bean.setActivityDate(rs.getDate(6));
+            bean.setEndTime(rs.getTimestamp(7));
+            bean.setStartTime(rs.getTimestamp(8));
+            bean.setMinutes(Manager.getInteger(rs, 9));
+            bean.setDescription(rs.getString(10));
+            bean.setClientId(Manager.getInteger(rs, 11));
+            bean.setLaborRegisterId(Manager.getInteger(rs, 12));
         }
         catch(SQLException e)
         {
@@ -1571,9 +1649,17 @@ public class LaborRegisterManager
                         ++pos;
                         bean.setInvoiceId(Manager.getInteger(rs, pos));
                         break;
-                    case ID_DATE:
+                    case ID_BILL_RATE:
                         ++pos;
-                        bean.setDate(rs.getDate(pos));
+                        bean.setBillRate(Manager.getDouble(rs, pos));
+                        break;
+                    case ID_INVOICEABLE:
+                        ++pos;
+                        bean.setInvoiceable(Manager.getBoolean(rs, pos));
+                        break;
+                    case ID_ACTIVITY_DATE:
+                        ++pos;
+                        bean.setActivityDate(rs.getDate(pos));
                         break;
                     case ID_END_TIME:
                         ++pos;
@@ -1630,7 +1716,9 @@ public class LaborRegisterManager
             bean.setLastUpdate(rs.getTimestamp("last_update"));
             bean.setUserKey(rs.getString("user_key"));
             bean.setInvoiceId(Manager.getInteger(rs, "invoice_id"));
-            bean.setDate(rs.getDate("date"));
+            bean.setBillRate(Manager.getDouble(rs, "bill_rate"));
+            bean.setInvoiceable(Manager.getBoolean(rs, "invoiceable"));
+            bean.setActivityDate(rs.getDate("activity_date"));
             bean.setEndTime(rs.getTimestamp("end_time"));
             bean.setStartTime(rs.getTimestamp("start_time"));
             bean.setMinutes(Manager.getInteger(rs, "minutes"));

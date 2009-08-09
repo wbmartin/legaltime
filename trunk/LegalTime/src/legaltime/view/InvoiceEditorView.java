@@ -11,9 +11,12 @@
 
 package legaltime.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import javax.swing.event.TableModelEvent;
 import legaltime.view.model.LaborRegisterTableModel;
 import legaltime.view.renderer.CurrencyTableCellRenderer;
-import java.text.NumberFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,14 +24,21 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
+
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import legaltime.LegalTimeApp;
-import legaltime.reports.JasperReportsIntro;
+import legaltime.cache.ClientCache;
+import legaltime.controller.InvoiceController;
+import legaltime.model.ClientBean;
+import legaltime.model.LaborInvoiceItemBean;
+import legaltime.model.LaborInvoiceItemManager;
+import legaltime.model.LaborRegisterBean;
 import legaltime.model.LaborRegisterManager;
 import legaltime.model.exception.DAOException;
+import legaltime.modelsafe.EasyLog;
+import legaltime.view.model.ClientComboBoxModel;
+import legaltime.view.renderer.ClientComboBoxRenderer;
 import org.jdesktop.application.Action;
 
 
@@ -36,25 +46,46 @@ import org.jdesktop.application.Action;
  *
  * @author bmartin
  */
-public class InvoiceManager extends javax.swing.JInternalFrame {
-LegalTimeApp mainController;
-LaborRegisterTableModel laborRegisterTableModel;
-LaborRegisterManager laborRegisterManager;
+public class InvoiceEditorView extends javax.swing.JInternalFrame implements ActionListener, TableModelListener {
+    private LegalTimeApp mainController;
+    private LaborRegisterTableModel laborRegisterTableModel;
+    
+    private LaborRegisterBean[] invoiceableItems;
+    private EasyLog easyLog;
+    private ClientComboBoxRenderer clientComboBoxRenderer;
+    private DecimalFormat currencyFormatter;
+    private InvoiceController invoiceController;
+
+    private LaborInvoiceItemBean laborInvoiceItemBean;
+    private LaborInvoiceItemManager laborInvoiceItemManager;
+    private LaborRegisterManager laborRegisterManager;
     /** Creates new form InvoiceManager */
-    public InvoiceManager() {
+    public InvoiceEditorView() {
         initComponents();
-        
+        invoiceController = new InvoiceController();
+        easyLog = EasyLog.getInstance();
         laborRegisterManager =LaborRegisterManager.getInstance();
         laborRegisterTableModel = new LaborRegisterTableModel();
+        tblLaborRegister.setAutoCreateRowSorter(true);
+
+        currencyFormatter = new DecimalFormat("$#,##0.00");
         
-        try {
-            laborRegisterTableModel.setList(laborRegisterManager.loadAll());
-        } catch (DAOException ex) {
-            Logger.getLogger(InvoiceManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+//        try {
+//            laborRegisterTableModel.setList(laborRegisterManager.loadAll());
+//        } catch (DAOException ex) {
+//            Logger.getLogger(InvoiceManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         tblLaborRegister.setModel(laborRegisterTableModel);
-        lblAccountBalanceValue.setText(laborRegisterTableModel.getTotalBill().toString());
+        //lblAccountBalanceValue.setText(laborRegisterTableModel.getTotalBill().toString());
         formatTableLaborRegister();
+        ClientComboBoxModel clientComboBoxModel = new ClientComboBoxModel();
+        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+        cboClient.setModel(clientComboBoxModel);
+        clientComboBoxRenderer = new ClientComboBoxRenderer ();
+        cboClient.setRenderer(clientComboBoxRenderer );
+        cboClient.addActionListener(this);
+        laborRegisterTableModel.addTableModelListener(this);
     }
  public void setMainController(LegalTimeApp mainController_){
         mainController = mainController_;
@@ -82,7 +113,7 @@ LaborRegisterManager laborRegisterManager;
 
         setClosable(true);
         setIconifiable(true);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(InvoiceManager.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(InvoiceEditorView.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
@@ -174,7 +205,7 @@ LaborRegisterManager laborRegisterManager;
         tblOtherCharges.getColumnModel().getColumn(2).setMaxWidth(75);
         tblOtherCharges.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("tblOtherCharges.columnModel.title2")); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getActionMap(InvoiceManager.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getActionMap(InvoiceEditorView.class, this);
         cmdGenerateInvoice.setAction(actionMap.get("generateInvoice")); // NOI18N
         cmdGenerateInvoice.setText(resourceMap.getString("cmdGenerateInvoice.text")); // NOI18N
         cmdGenerateInvoice.setName("cmdGenerateInvoice"); // NOI18N
@@ -186,12 +217,12 @@ LaborRegisterManager laborRegisterManager;
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblClient)
                         .addGap(18, 18, 18)
-                        .addComponent(cboClient, 0, 507, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                        .addComponent(cboClient, 0, 509, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
                     .addComponent(lblOtherCharges)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblBillableHours)
@@ -223,7 +254,7 @@ LaborRegisterManager laborRegisterManager;
                 .addComponent(lblOtherCharges)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         pack();
@@ -246,9 +277,17 @@ LaborRegisterManager laborRegisterManager;
 
     @Action
     public void generateInvoice(){
-         JasperReportsIntro test = new JasperReportsIntro();
-        test.makeReport();
-         JOptionPane.showMessageDialog(this,"The PDF has been saved to your desktop.  In normal operations in would be saved to a centralized archive and displayed for the user.");
+
+        invoiceController.buildAndSaveInvoice(
+                ((ClientBean)cboClient.getSelectedItem()).getClientId()
+                ,laborRegisterTableModel.getLaborRegisterBeans());
+        JOptionPane.showMessageDialog(this, "The PDF has been saved to your desktop." +
+                "In normal operations in would be saved to a centralized " +
+                "archive and displayed for the user.");
+
+        refreshLaborRegisterTable();
+
+        
     }
 
     public void initializeComponents(){
@@ -284,7 +323,7 @@ LaborRegisterManager laborRegisterManager;
          tc.setPreferredWidth(75);
          tc.setMinWidth(50);
          tc.setMaxWidth(100);
-//         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+ //         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 //    renderer.setHorizontalAlignment(SwingConstants.RIGHT);
 //    tc.setCellRenderer(renderer);
 
@@ -312,5 +351,34 @@ LaborRegisterManager laborRegisterManager;
          tc.setMaxWidth(100);
          tc.setCellRenderer(CurrencyTableCellRenderer.getInstance());
 
+    }
+
+    public void actionPerformed(ActionEvent e) {
+       refreshLaborRegisterTable();
+    }
+
+    public void refreshLaborRegisterTable(){
+         int clientId;
+        try{
+            clientId= ((ClientBean) cboClient.getSelectedItem()).getClientId();
+        }catch(NullPointerException  ex){
+            clientId=0;
+        }
+        invoiceableItems = invoiceController.getInvoiceableLaborItems(clientId);
+        laborRegisterTableModel.setList(invoiceableItems);
+        tblLaborRegister.revalidate();
+        tblLaborRegister.getRowSorter().allRowsChanged();
+
+        lblAccountBalanceValue.setText(
+          currencyFormatter.format(
+             invoiceController.getInvoiceTotal(
+               laborRegisterTableModel.getLaborRegisterBeans())));
+    }
+
+    public void tableChanged(TableModelEvent e) {
+        lblAccountBalanceValue.setText(
+          currencyFormatter.format(
+             invoiceController.getInvoiceTotal(
+               laborRegisterTableModel.getLaborRegisterBeans())));
     }
 }
