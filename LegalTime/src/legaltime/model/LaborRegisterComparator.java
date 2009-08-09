@@ -43,7 +43,8 @@ public class LaborRegisterComparator implements Comparator
      *   <li>LaborRegisterManager.ID_LAST_UPDATE
      *   <li>LaborRegisterManager.ID_USER_KEY
      *   <li>LaborRegisterManager.ID_INVOICE_ID
-     *   <li>LaborRegisterManager.ID_DATE
+     *   <li>LaborRegisterManager.ID_BILL_RATE
+     *   <li>LaborRegisterManager.ID_ACTIVITY_DATE
      *   <li>LaborRegisterManager.ID_END_TIME
      *   <li>LaborRegisterManager.ID_START_TIME
      *   <li>LaborRegisterManager.ID_MINUTES
@@ -71,7 +72,9 @@ public class LaborRegisterComparator implements Comparator
      *   <li>LaborRegisterManager.ID_LAST_UPDATE
      *   <li>LaborRegisterManager.ID_USER_KEY
      *   <li>LaborRegisterManager.ID_INVOICE_ID
-     *   <li>LaborRegisterManager.ID_DATE
+     *   <li>LaborRegisterManager.ID_BILL_RATE
+     *   <li>LaborRegisterManager.ID_INVOICEABLE
+     *   <li>LaborRegisterManager.ID_ACTIVITY_DATE
      *   <li>LaborRegisterManager.ID_END_TIME
      *   <li>LaborRegisterManager.ID_START_TIME
      *   <li>LaborRegisterManager.ID_MINUTES
@@ -131,15 +134,26 @@ public class LaborRegisterComparator implements Comparator
                     iReturn = b1.getInvoiceId().compareTo(b2.getInvoiceId());
                 }
                 break;
-            case LaborRegisterManager.ID_DATE:
-                if (b1.getDate() == null && b2.getDate() != null) {
+            case LaborRegisterManager.ID_BILL_RATE:
+                if (b1.getBillRate() == null && b2.getBillRate() != null) {
                     iReturn = -1;
-                } else if (b1.getDate() == null && b2.getDate() == null) {
+                } else if (b1.getBillRate() == null && b2.getBillRate() == null) {
                     iReturn = 0;
-                } else if (b1.getDate() != null && b2.getDate() == null) {
+                } else if (b1.getBillRate() != null && b2.getBillRate() == null) {
                     iReturn = 1;
                 } else {
-                    iReturn = b1.getDate().compareTo(b2.getDate());
+                    iReturn = b1.getBillRate().compareTo(b2.getBillRate());
+                }
+                break;
+            case LaborRegisterManager.ID_ACTIVITY_DATE:
+                if (b1.getActivityDate() == null && b2.getActivityDate() != null) {
+                    iReturn = -1;
+                } else if (b1.getActivityDate() == null && b2.getActivityDate() == null) {
+                    iReturn = 0;
+                } else if (b1.getActivityDate() != null && b2.getActivityDate() == null) {
+                    iReturn = 1;
+                } else {
+                    iReturn = b1.getActivityDate().compareTo(b2.getActivityDate());
                 }
                 break;
             case LaborRegisterManager.ID_END_TIME:

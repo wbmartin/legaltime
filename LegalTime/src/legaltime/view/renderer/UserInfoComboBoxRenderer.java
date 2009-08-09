@@ -11,18 +11,18 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import javax.swing.border.EmptyBorder;
 import legaltime.model.ClientBean;
+import legaltime.model.UserInfoBean;
 
 /**
  *
  * @author bmartin
  */
-public class ClientComboBoxRenderer extends JLabel implements ListCellRenderer{
-ClientBean clientBean;
-protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
-    public ClientComboBoxRenderer() {
-
+public class UserInfoComboBoxRenderer extends JLabel implements ListCellRenderer{
+UserInfoBean bean;
+protected DefaultListCellRenderer defaultRenderer ;
+    public UserInfoComboBoxRenderer() {
+        defaultRenderer = new DefaultListCellRenderer();
 //        setOpaque(false);
 //        setAlignmentX(0F);
 //        setAlignmentY(0F);
@@ -32,18 +32,19 @@ protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer(
 //        setVerticalAlignment(CENTER);
 //        setVerticalTextPosition(CENTER);
 //
+//
 //        setBorder( javax.swing.BorderFactory.createEmptyBorder());
     }
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-       JLabel renderer = (JLabel) defaultRenderer
-        .getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        //int selectedIndex = ((Integer)value).intValue();
-try{
-        clientBean = (ClientBean)value;
-}catch(ClassCastException e){
-//    e.printStackTrace();
-}
+        JLabel renderer = (JLabel) defaultRenderer
+            .getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        try{
+                bean = (UserInfoBean)value;
+        }catch(ClassCastException e){
+        //    e.printStackTrace();
+            //No idea why it balks at casting an object to a bean when it works
+        }
 
         if (isSelected) {
             renderer.setBackground(list.getSelectionBackground());
@@ -52,13 +53,16 @@ try{
         } else {
             renderer.setBackground(list.getBackground());
             renderer.setForeground(list.getForeground());
+            
         }
+
+
         try{
-            renderer.setText(clientBean.getLastName() +", "+ clientBean.getFirstName());
+            renderer.setText(bean.getFirstName());
         }catch(NullPointerException nex){
-            renderer.setVisible(false);
+            renderer.setText("");
+
         }
-        
 
         return renderer;
     }

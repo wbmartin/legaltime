@@ -41,16 +41,16 @@ public class ClientBillRateCache {
         }
     }
 
-       public double getBillRate(int client_id, String userKey_){
+       public double getBillRate(int clientId_, String userKey_){
         double billRate =300D;
         for (int ndx = 0;ndx< cache.length;ndx++){
             //TODO: add clientbased bill rates
-            if (cache[ndx].getUserKey().equals(userKey_)){
+            if (cache[ndx].getClientId() == clientId_ && cache[ndx].getUserKey().equals(userKey_)){
                 billRate = cache[ndx].getBillRate();
                 break;
             }
         }
-        billRate =300D;
+
         return billRate;
     }
 }

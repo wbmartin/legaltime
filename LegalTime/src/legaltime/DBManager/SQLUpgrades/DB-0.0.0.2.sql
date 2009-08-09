@@ -19,6 +19,12 @@ insert into user_info (user_key, last_name, first_name, default_bill_rate)
 insert into user_info (user_key, last_name, first_name, default_bill_rate)
     values('assist', 'Assistant','Assistant', 100);
 --
+ALTER TABLE `labor_register` CHANGE `date` `activity_date` DATE;
+--
+ALTER TABLE `labor_register` ADD COLUMN `invoiceable` BOOL  AFTER `activity_date`;
+--
+ALTER TABLE `labor_register` ADD COLUMN `bill_rate` DOUBLE  AFTER `invoiceable`;
+--
 INSERT INTO sys_code
     ( code_type, code_id, description, system_or_user, last_update) 
     VALUES ( 'VER', 'DBVer', 'DB-0.0.0.2', 'S', now());
