@@ -52,9 +52,9 @@ public class ExpenseInvoiceItemManager
     public static final int ID_INVOICE_ID = 1;
 
     /**
-     * Identify the hours_billed field.
+     * Identify the amount field.
      */
-    public static final int ID_HOURS_BILLED = 2;
+    public static final int ID_AMOUNT = 2;
 
     /**
      * Identify the expense_description field.
@@ -78,7 +78,7 @@ public class ExpenseInvoiceItemManager
     {
         "expense_invoice_item.last_update"
         ,"expense_invoice_item.invoice_id"
-        ,"expense_invoice_item.hours_billed"
+        ,"expense_invoice_item.amount"
         ,"expense_invoice_item.expense_description"
         ,"expense_invoice_item.expense_date"
         ,"expense_invoice_item.expense_invoice_item_id"
@@ -91,7 +91,7 @@ public class ExpenseInvoiceItemManager
     {
         "last_update"
         ,"invoice_id"
-        ,"hours_billed"
+        ,"amount"
         ,"expense_description"
         ,"expense_date"
         ,"expense_invoice_item_id"
@@ -102,7 +102,7 @@ public class ExpenseInvoiceItemManager
      */
     public static final String ALL_FULL_FIELDS = "expense_invoice_item.last_update"
                             + ",expense_invoice_item.invoice_id"
-                            + ",expense_invoice_item.hours_billed"
+                            + ",expense_invoice_item.amount"
                             + ",expense_invoice_item.expense_description"
                             + ",expense_invoice_item.expense_date"
                             + ",expense_invoice_item.expense_invoice_item_id";
@@ -112,7 +112,7 @@ public class ExpenseInvoiceItemManager
      */
     public static final String ALL_FIELDS = "last_update"
                             + ",invoice_id"
-                            + ",hours_billed"
+                            + ",amount"
                             + ",expense_description"
                             + ",expense_date"
                             + ",expense_invoice_item_id";
@@ -447,11 +447,11 @@ public class ExpenseInvoiceItemManager
                 _dirtyCount++;
             }
 
-            if (bean.isHoursBilledModified()) {
+            if (bean.isAmountModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
                 }
-                sql.append("hours_billed");
+                sql.append("amount");
                 _dirtyCount++;
             }
 
@@ -579,13 +579,13 @@ public class ExpenseInvoiceItemManager
                 sql.append("invoice_id=?");
             }
 
-            if (bean.isHoursBilledModified()) {
+            if (bean.isAmountModified()) {
                 if (useComma) {
                     sql.append(", ");
                 } else {
                     useComma=true;
                 }
-                sql.append("hours_billed=?");
+                sql.append("amount=?");
             }
 
             if (bean.isExpenseDescriptionModified()) {
@@ -1059,12 +1059,12 @@ public class ExpenseInvoiceItemManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoice_id = ?");
                 }
             }
-            if (bean.isHoursBilledModified()) {
+            if (bean.isAmountModified()) {
                 _dirtyCount ++;
-                if (bean.getHoursBilled() == null) {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("hours_billed IS NULL");
+                if (bean.getAmount() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("amount IS NULL");
                 } else {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("hours_billed = ?");
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("amount = ?");
                 }
             }
             if (bean.isExpenseDescriptionModified()) {
@@ -1123,9 +1123,9 @@ public class ExpenseInvoiceItemManager
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getInvoiceId() + "]");
                 if (bean.getInvoiceId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getInvoiceId()); }
             }
-            if (bean.isHoursBilledModified()) {
-                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getHoursBilled() + "]");
-                if (bean.getHoursBilled() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getHoursBilled()); }
+            if (bean.isAmountModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getAmount() + "]");
+                if (bean.getAmount() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getAmount()); }
             }
             if (bean.isExpenseDescriptionModified()) {
                 switch (searchType){
@@ -1232,7 +1232,7 @@ public class ExpenseInvoiceItemManager
         {
             bean.setLastUpdate(rs.getTimestamp(1));
             bean.setInvoiceId(Manager.getInteger(rs, 2));
-            bean.setHoursBilled(Manager.getDouble(rs, 3));
+            bean.setAmount(Manager.getDouble(rs, 3));
             bean.setExpenseDescription(rs.getString(4));
             bean.setExpenseDate(rs.getDate(5));
             bean.setExpenseInvoiceItemId(Manager.getInteger(rs, 6));
@@ -1274,9 +1274,9 @@ public class ExpenseInvoiceItemManager
                         ++pos;
                         bean.setInvoiceId(Manager.getInteger(rs, pos));
                         break;
-                    case ID_HOURS_BILLED:
+                    case ID_AMOUNT:
                         ++pos;
-                        bean.setHoursBilled(Manager.getDouble(rs, pos));
+                        bean.setAmount(Manager.getDouble(rs, pos));
                         break;
                     case ID_EXPENSE_DESCRIPTION:
                         ++pos;
@@ -1320,7 +1320,7 @@ public class ExpenseInvoiceItemManager
         {
             bean.setLastUpdate(rs.getTimestamp("last_update"));
             bean.setInvoiceId(Manager.getInteger(rs, "invoice_id"));
-            bean.setHoursBilled(Manager.getDouble(rs, "hours_billed"));
+            bean.setAmount(Manager.getDouble(rs, "amount"));
             bean.setExpenseDescription(rs.getString("expense_description"));
             bean.setExpenseDate(rs.getDate("expense_date"));
             bean.setExpenseInvoiceItemId(Manager.getInteger(rs, "expense_invoice_item_id"));

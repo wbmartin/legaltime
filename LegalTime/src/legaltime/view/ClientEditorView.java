@@ -32,6 +32,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     public ClientEditorView(ClientEditorController clientEditorController_) {
         initComponents();
         clientEditorController = clientEditorController_;
+        cboBillingPlan.addActionListener(clientEditorController);
        // buildClientManagerTableColumnModel();
     }
 
@@ -90,6 +91,8 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         lblEmail = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         cmdClearChanges = new javax.swing.JButton();
+        lblMonthlyRate = new javax.swing.JLabel();
+        txtMonthlyRate = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -172,14 +175,13 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         lblFaxNum.setName("lblFaxNum"); // NOI18N
 
         lblBillingInformation.setText(resourceMap.getString("lblBillingInformation.text")); // NOI18N
-        lblBillingInformation.setEnabled(false);
         lblBillingInformation.setName("lblBillingInformation"); // NOI18N
 
         cboBillingPlan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MONTHLY", "HOURLY" }));
+        cboBillingPlan.setActionCommand(resourceMap.getString("cboBillPlan.actionCommand")); // NOI18N
         cboBillingPlan.setName("cboBillPlan"); // NOI18N
 
         lblBillingPlan.setText(resourceMap.getString("lblBillingPlan.text")); // NOI18N
-        lblBillingPlan.setEnabled(false);
         lblBillingPlan.setName("lblBillingPlan"); // NOI18N
 
         scrlBillRates.setEnabled(false);
@@ -263,6 +265,12 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         cmdClearChanges.setText(resourceMap.getString("cmdClearChanges.text")); // NOI18N
         cmdClearChanges.setName("cmdClearChanges"); // NOI18N
 
+        lblMonthlyRate.setText(resourceMap.getString("lblMonthlyRate.text")); // NOI18N
+        lblMonthlyRate.setName("lblMonthlyRate"); // NOI18N
+
+        txtMonthlyRate.setText(resourceMap.getString("txtMonthlyRate.text")); // NOI18N
+        txtMonthlyRate.setName("txtMonthlyRate"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -272,7 +280,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblFollowUpItems)
-                        .addContainerGap(643, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(647, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cmdClientAccount)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -284,8 +292,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdDeleteClient)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmdClearChanges)
-                        .addContainerGap())
+                        .addComponent(cmdClearChanges))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -294,14 +301,18 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addComponent(lblBillingInformation)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 223, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(scrlBillRates, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+                                            .addComponent(scrlBillRates, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                 .addComponent(lblBillingPlan)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(cboBillingPlan, 0, 243, Short.MAX_VALUE))
+                                                .addComponent(cboBillingPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(lblMonthlyRate)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtMonthlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(30, 30, 30)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,24 +330,24 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                                                     .addComponent(lblWorkPhone, javax.swing.GroupLayout.Alignment.TRAILING))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtFaxNum, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                                    .addComponent(txtFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                                    .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                                    .addComponent(txtLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                                    .addComponent(dtClientSince, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                                    .addComponent(txtCity, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                                                    .addComponent(txtFaxNum, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                                    .addComponent(txtFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                                    .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                                    .addComponent(txtLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                                    .addComponent(dtClientSince, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                                    .addComponent(txtCity, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addComponent(txtState, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addGap(18, 18, 18)
                                                         .addComponent(lblZip)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                        .addComponent(txtZip, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
-                                                    .addComponent(txtWorkPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                                    .addComponent(txtHomePhone, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                                    .addComponent(scrlNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                                                    .addComponent(txtCellPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))))
-                                        .addGap(42, 42, 42))))
+                                                        .addComponent(txtZip, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE))
+                                                    .addComponent(txtWorkPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                                    .addComponent(txtHomePhone, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                                    .addComponent(scrlNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                                    .addComponent(txtCellPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))))
+                                        .addGap(40, 40, 40))))
                             .addComponent(scrlFollowUp, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32))))
         );
@@ -398,10 +409,12 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                                 .addGap(24, 24, 24)
                                 .addComponent(lblBillingInformation))
                             .addComponent(scrlNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cboBillingPlan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblBillingPlan))
+                            .addComponent(lblBillingPlan)
+                            .addComponent(txtMonthlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblMonthlyRate))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(scrlBillRates, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(scrlChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -418,7 +431,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cmdViewInvoiceable)
                     .addComponent(cmdClientAccount))
-                .addGap(29, 29, 29))
+                .addContainerGap())
         );
 
         pack();
@@ -448,6 +461,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel lblFollowUpItems;
     private javax.swing.JLabel lblHomePhone;
     private javax.swing.JLabel lblLastName;
+    private javax.swing.JLabel lblMonthlyRate;
     private javax.swing.JLabel lblNotes;
     private javax.swing.JLabel lblState;
     private javax.swing.JLabel lblWorkPhone;
@@ -466,6 +480,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtHomePhone;
     private javax.swing.JTextField txtLastName;
+    private javax.swing.JTextField txtMonthlyRate;
     private javax.swing.JTextPane txtNote;
     private javax.swing.JTextField txtState;
     private javax.swing.JTextField txtWorkPhone;
@@ -530,6 +545,9 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     }
     public javax.swing.JTable getTblBillRates(){
         return tblBillRates;
+    }
+    public javax.swing.JTextField getTxtMonthlyRate() {
+        return txtMonthlyRate;
     }
 
 

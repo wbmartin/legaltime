@@ -42,7 +42,7 @@ public class ExpenseInvoiceItemComparator implements Comparator
      * <ul>
      *   <li>ExpenseInvoiceItemManager.ID_LAST_UPDATE
      *   <li>ExpenseInvoiceItemManager.ID_INVOICE_ID
-     *   <li>ExpenseInvoiceItemManager.ID_HOURS_BILLED
+     *   <li>ExpenseInvoiceItemManager.ID_AMOUNT
      *   <li>ExpenseInvoiceItemManager.ID_EXPENSE_DESCRIPTION
      *   <li>ExpenseInvoiceItemManager.ID_EXPENSE_DATE
      *   <li>ExpenseInvoiceItemManager.ID_EXPENSE_INVOICE_ITEM_ID
@@ -66,7 +66,7 @@ public class ExpenseInvoiceItemComparator implements Comparator
      * <ul>
      *   <li>ExpenseInvoiceItemManager.ID_LAST_UPDATE
      *   <li>ExpenseInvoiceItemManager.ID_INVOICE_ID
-     *   <li>ExpenseInvoiceItemManager.ID_HOURS_BILLED
+     *   <li>ExpenseInvoiceItemManager.ID_AMOUNT
      *   <li>ExpenseInvoiceItemManager.ID_EXPENSE_DESCRIPTION
      *   <li>ExpenseInvoiceItemManager.ID_EXPENSE_DATE
      *   <li>ExpenseInvoiceItemManager.ID_EXPENSE_INVOICE_ITEM_ID
@@ -112,15 +112,15 @@ public class ExpenseInvoiceItemComparator implements Comparator
                     iReturn = b1.getInvoiceId().compareTo(b2.getInvoiceId());
                 }
                 break;
-            case ExpenseInvoiceItemManager.ID_HOURS_BILLED:
-                if (b1.getHoursBilled() == null && b2.getHoursBilled() != null) {
+            case ExpenseInvoiceItemManager.ID_AMOUNT:
+                if (b1.getAmount() == null && b2.getAmount() != null) {
                     iReturn = -1;
-                } else if (b1.getHoursBilled() == null && b2.getHoursBilled() == null) {
+                } else if (b1.getAmount() == null && b2.getAmount() == null) {
                     iReturn = 0;
-                } else if (b1.getHoursBilled() != null && b2.getHoursBilled() == null) {
+                } else if (b1.getAmount() != null && b2.getAmount() == null) {
                     iReturn = 1;
                 } else {
-                    iReturn = b1.getHoursBilled().compareTo(b2.getHoursBilled());
+                    iReturn = b1.getAmount().compareTo(b2.getAmount());
                 }
                 break;
             case ExpenseInvoiceItemManager.ID_EXPENSE_DESCRIPTION:

@@ -6,6 +6,8 @@
 package legaltime.controller;
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +35,7 @@ import legaltime.view.model.ClientManagerTableModel;
  *
  * @author bmartin
  */
-public class ClientEditorController implements  InternalFrameListener, ListSelectionListener {
+public class ClientEditorController implements  InternalFrameListener, ListSelectionListener, ActionListener {
 
     private static ClientEditorController instance = null;
     private ClientEditorView clientEditorView;
@@ -171,6 +173,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          clientEditorView.getTxtWorkPhone().setText("");
          clientEditorView.getTxtZip().setText("");
          clientEditorView.getCboBillingPlan().setSelectedIndex(0);
+         clientEditorView.getTxtMonthlyRate().setText("");
 
          clientBillRateTableModel.setDataArray(new ClientBillRateBean[]{});
          clientEditorView.getTblBillRates().revalidate();
@@ -195,7 +198,12 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          bean_.setWorkPhone(clientEditorView.getTxtWorkPhone().getText());
          bean_.setZip(clientEditorView.getTxtZip().getText());
          bean_.setBillType((String)clientEditorView.getCboBillingPlan().getSelectedItem());
-
+         try{
+            bean_.setMonthlyBillRate(Double.parseDouble(
+                    clientEditorView.getTxtMonthlyRate().getText()));
+         }catch (Exception e){
+            bean_.setMonthlyBillRate(0);
+         }
 
 
      }
@@ -215,7 +223,11 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          clientEditorView.getTxtWorkPhone().setText(bean_.getWorkPhone());
          clientEditorView.getTxtZip().setText(bean_.getZip());
          clientEditorView.getCboBillingPlan().setSelectedItem(bean_.getBillType());
-
+         try{
+         clientEditorView.getTxtMonthlyRate().setText(bean_.getMonthlyBillRate().toString());
+         }catch(NullPointerException ex){
+            clientEditorView.getTxtMonthlyRate().setText("");
+         }
          setClientBillRateTableClient(bean_.getClientId().intValue());
          
 
@@ -240,6 +252,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
         newClientBean.setFirstName("New");
         newClientBean.setClientSinceDt(new Date());
         newClientBean.setActiveYn("Y");
+        newClientBean.setMonthlyBillRate(300);
         //synchDisplayToBean(newClientBean);
         try {
             newClientBean = clientManager.save(newClientBean);
@@ -360,6 +373,25 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
 
     public void internalFrameDeactivated(InternalFrameEvent e) {
 
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        try{
+            //if (e.getActionCommand().equals("cboBillPlanChanged")){
+            
+                if (clientEditorView.getCboBillingPlan().getSelectedItem().equals("HOURLY")){
+                    clientEditorView.getTxtMonthlyRate().setEnabled(false);
+                    clientEditorView.getTblBillRates().setVisible(true);
+                }else{
+                    clientEditorView.getTxtMonthlyRate().setEnabled(true);
+                    clientEditorView.getTblBillRates().setVisible(false);
+                }
+            
+
+           //}
+        }catch(NullPointerException ex){
+
+            }
     }
    
 

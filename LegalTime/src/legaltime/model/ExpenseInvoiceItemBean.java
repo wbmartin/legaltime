@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class ExpenseInvoiceItemBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = 2931120406186583275L;
+	private static final long serialVersionUID = 2541437596433541156L;
 	
     private java.util.Date lastUpdate;
 
@@ -42,10 +42,10 @@ public class ExpenseInvoiceItemBean
     private boolean invoiceIdIsModified = false;
     private boolean invoiceIdIsInitialized = false;
 
-    private Double hoursBilled;
+    private Double amount;
 
-    private boolean hoursBilledIsModified = false;
-    private boolean hoursBilledIsInitialized = false;
+    private boolean amountIsModified = false;
+    private boolean amountIsInitialized = false;
 
     private String expenseDescription;
 
@@ -215,74 +215,74 @@ public class ExpenseInvoiceItemBean
     }
 
     /**
-     * Getter method for hoursBilled.
+     * Getter method for amount.
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: expense_invoice_item.hours_billed</li>
+     * <li>full name: expense_invoice_item.amount</li>
      * <li>column size: 22</li>
      * <li>jdbc type returned by the driver: Types.DOUBLE</li>
      * </ul>
      *
-     * @return the value of hoursBilled
+     * @return the value of amount
      */
-    public Double getHoursBilled()
+    public Double getAmount()
     {
-        return hoursBilled;
+        return amount;
     }
 
     /**
-     * Setter method for hoursBilled.
+     * Setter method for amount.
      * <br>
      * The new value is set only if compareTo() says it is different,
      * or if one of either the new value or the current value is null.
      * In case the new value is different, it is set and the field is marked as 'modified'.
      *
-     * @param newVal the new value to be assigned to hoursBilled
+     * @param newVal the new value to be assigned to amount
      */
-    public void setHoursBilled(Double newVal)
+    public void setAmount(Double newVal)
     {
-        if ((newVal != null && hoursBilled != null && (newVal.compareTo(hoursBilled) == 0)) ||
-            (newVal == null && hoursBilled == null && hoursBilledIsInitialized)) {
+        if ((newVal != null && amount != null && (newVal.compareTo(amount) == 0)) ||
+            (newVal == null && amount == null && amountIsInitialized)) {
             return;
         }
-        hoursBilled = newVal;
-        hoursBilledIsModified = true;
-        hoursBilledIsInitialized = true;
+        amount = newVal;
+        amountIsModified = true;
+        amountIsInitialized = true;
     }
 
     /**
-     * Setter method for hoursBilled.
+     * Setter method for amount.
      * <br>
      * Convenient for those who do not want to deal with Objects for primary types.
      *
-     * @param newVal the new value to be assigned to hoursBilled
+     * @param newVal the new value to be assigned to amount
      */
-    public void setHoursBilled(double newVal)
+    public void setAmount(double newVal)
     {
-        setHoursBilled(new Double(newVal));
+        setAmount(new Double(newVal));
     }
 
     /**
-     * Determines if the hoursBilled has been modified.
+     * Determines if the amount has been modified.
      *
      * @return true if the field has been modified, false if the field has not been modified
      */
-    public boolean isHoursBilledModified()
+    public boolean isAmountModified()
     {
-        return hoursBilledIsModified;
+        return amountIsModified;
     }
 
     /**
-     * Determines if the hoursBilled has been initialized.
+     * Determines if the amount has been initialized.
      * <br>
      * It is useful to determine if a field is null on purpose or just because it has not been initialized.
      *
      * @return true if the field has been initialized, false otherwise
      */
-    public boolean isHoursBilledInitialized()
+    public boolean isAmountInitialized()
     {
-        return hoursBilledIsInitialized;
+        return amountIsInitialized;
     }
 
     /**
@@ -516,7 +516,7 @@ public class ExpenseInvoiceItemBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| invoiceIdIsModified  		|| hoursBilledIsModified  		|| expenseDescriptionIsModified  		|| expenseDateIsModified  		|| expenseInvoiceItemIdIsModified  ;
+        return lastUpdateIsModified 		|| invoiceIdIsModified  		|| amountIsModified  		|| expenseDescriptionIsModified  		|| expenseDateIsModified  		|| expenseInvoiceItemIdIsModified  ;
     }
 
     /**
@@ -526,7 +526,7 @@ public class ExpenseInvoiceItemBean
     {
         lastUpdateIsModified = false;
         invoiceIdIsModified = false;
-        hoursBilledIsModified = false;
+        amountIsModified = false;
         expenseDescriptionIsModified = false;
         expenseDateIsModified = false;
         expenseInvoiceItemIdIsModified = false;
@@ -541,7 +541,7 @@ public class ExpenseInvoiceItemBean
     {
         setLastUpdate(bean.getLastUpdate());
         setInvoiceId(bean.getInvoiceId());
-        setHoursBilled(bean.getHoursBilled());
+        setAmount(bean.getAmount());
         setExpenseDescription(bean.getExpenseDescription());
         setExpenseDate(bean.getExpenseDate());
         setExpenseInvoiceItemId(bean.getExpenseInvoiceItemId());
@@ -555,7 +555,7 @@ public class ExpenseInvoiceItemBean
         Map dictionnary = new HashMap();
         dictionnary.put("last_update", getLastUpdate() == null ? "" : getLastUpdate().toString());
         dictionnary.put("invoice_id", getInvoiceId() == null ? "" : getInvoiceId().toString());
-        dictionnary.put("hours_billed", getHoursBilled() == null ? "" : getHoursBilled().toString());
+        dictionnary.put("amount", getAmount() == null ? "" : getAmount().toString());
         dictionnary.put("expense_description", getExpenseDescription() == null ? "" : getExpenseDescription().toString());
         dictionnary.put("expense_date", getExpenseDate() == null ? "" : getExpenseDate().toString());
         dictionnary.put("expense_invoice_item_id", getExpenseInvoiceItemId() == null ? "" : getExpenseInvoiceItemId().toString());
@@ -583,8 +583,8 @@ public class ExpenseInvoiceItemBean
             return getLastUpdate() == null ? "" : getLastUpdate().toString();
         } else if ("invoice_id".equalsIgnoreCase(column) || "invoiceId".equalsIgnoreCase(column)) {
             return getInvoiceId() == null ? "" : getInvoiceId().toString();
-        } else if ("hours_billed".equalsIgnoreCase(column) || "hoursBilled".equalsIgnoreCase(column)) {
-            return getHoursBilled() == null ? "" : getHoursBilled().toString();
+        } else if ("amount".equalsIgnoreCase(column) || "amount".equalsIgnoreCase(column)) {
+            return getAmount() == null ? "" : getAmount().toString();
         } else if ("expense_description".equalsIgnoreCase(column) || "expenseDescription".equalsIgnoreCase(column)) {
             return getExpenseDescription() == null ? "" : getExpenseDescription().toString();
         } else if ("expense_date".equalsIgnoreCase(column) || "expenseDate".equalsIgnoreCase(column)) {
@@ -608,7 +608,7 @@ public class ExpenseInvoiceItemBean
 		return new EqualsBuilder()
             .append(getLastUpdate(), obj.getLastUpdate())
             .append(getInvoiceId(), obj.getInvoiceId())
-            .append(getHoursBilled(), obj.getHoursBilled())
+            .append(getAmount(), obj.getAmount())
             .append(getExpenseDescription(), obj.getExpenseDescription())
             .append(getExpenseDate(), obj.getExpenseDate())
             .append(getExpenseInvoiceItemId(), obj.getExpenseInvoiceItemId())
@@ -623,7 +623,7 @@ public class ExpenseInvoiceItemBean
 		return new HashCodeBuilder(-82280557, -700257973)
             .append(getLastUpdate())
             .append(getInvoiceId())
-            .append(getHoursBilled())
+            .append(getAmount())
             .append(getExpenseDescription())
             .append(getExpenseDate())
             .append(getExpenseInvoiceItemId())
@@ -650,7 +650,7 @@ public class ExpenseInvoiceItemBean
 		return new ToStringBuilder(this, style)
             .append("last_update", getLastUpdate())
             .append("invoice_id", getInvoiceId())
-            .append("hours_billed", getHoursBilled())
+            .append("amount", getAmount())
             .append("expense_description", getExpenseDescription())
             .append("expense_date", getExpenseDate())
             .append("expense_invoice_item_id", getExpenseInvoiceItemId())
@@ -664,7 +664,7 @@ public class ExpenseInvoiceItemBean
         return new CompareToBuilder()
             .append(getLastUpdate(), obj.getLastUpdate())
             .append(getInvoiceId(), obj.getInvoiceId())
-            .append(getHoursBilled(), obj.getHoursBilled())
+            .append(getAmount(), obj.getAmount())
             .append(getExpenseDescription(), obj.getExpenseDescription())
             .append(getExpenseDate(), obj.getExpenseDate())
             .append(getExpenseInvoiceItemId(), obj.getExpenseInvoiceItemId())

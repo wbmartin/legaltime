@@ -37,7 +37,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblFollowUpItems" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="643" max="-2" attributes="0"/>
+                      <EmptySpace pref="647" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="cmdClientAccount" min="-2" max="-2" attributes="0"/>
@@ -52,7 +52,6 @@
                       <Component id="cmdDeleteClient" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmdClearChanges" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
@@ -62,15 +61,19 @@
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="lblBillingInformation" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="217" max="32767" attributes="0"/>
+                                      <EmptySpace pref="223" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="scrlBillRates" alignment="0" pref="302" max="32767" attributes="0"/>
+                                          <Component id="scrlBillRates" alignment="0" pref="308" max="32767" attributes="0"/>
                                           <Group type="102" alignment="0" attributes="0">
                                               <Component id="lblBillingPlan" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="cboBillingPlan" pref="243" max="32767" attributes="0"/>
+                                              <Component id="cboBillingPlan" min="-2" pref="100" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="lblMonthlyRate" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="txtMonthlyRate" min="-2" pref="67" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="1" attributes="0">
                                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
@@ -90,28 +93,28 @@
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="txtFaxNum" alignment="0" pref="208" max="32767" attributes="1"/>
-                                                  <Component id="txtFirstName" alignment="0" pref="208" max="32767" attributes="1"/>
-                                                  <Component id="txtAddress" alignment="0" pref="208" max="32767" attributes="1"/>
-                                                  <Component id="txtLastName" alignment="0" pref="208" max="32767" attributes="1"/>
-                                                  <Component id="txtEmail" alignment="0" pref="208" max="32767" attributes="0"/>
-                                                  <Component id="dtClientSince" alignment="0" pref="208" max="32767" attributes="1"/>
-                                                  <Component id="txtCity" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="txtFaxNum" alignment="0" pref="214" max="32767" attributes="1"/>
+                                                  <Component id="txtFirstName" alignment="0" pref="214" max="32767" attributes="1"/>
+                                                  <Component id="txtAddress" alignment="0" pref="214" max="32767" attributes="1"/>
+                                                  <Component id="txtLastName" alignment="0" pref="214" max="32767" attributes="1"/>
+                                                  <Component id="txtEmail" alignment="0" pref="214" max="32767" attributes="0"/>
+                                                  <Component id="dtClientSince" alignment="0" pref="214" max="32767" attributes="1"/>
+                                                  <Component id="txtCity" alignment="0" pref="214" max="32767" attributes="1"/>
                                                   <Group type="102" alignment="0" attributes="0">
                                                       <Component id="txtState" min="-2" pref="69" max="-2" attributes="1"/>
                                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                                       <Component id="lblZip" min="-2" max="-2" attributes="0"/>
                                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                      <Component id="txtZip" pref="97" max="32767" attributes="1"/>
+                                                      <Component id="txtZip" pref="103" max="32767" attributes="1"/>
                                                   </Group>
-                                                  <Component id="txtWorkPhone" alignment="0" pref="208" max="32767" attributes="1"/>
-                                                  <Component id="txtHomePhone" alignment="0" pref="208" max="32767" attributes="1"/>
-                                                  <Component id="scrlNotes" alignment="0" pref="208" max="32767" attributes="1"/>
-                                                  <Component id="txtCellPhone" alignment="0" pref="208" max="32767" attributes="1"/>
+                                                  <Component id="txtWorkPhone" alignment="0" pref="214" max="32767" attributes="1"/>
+                                                  <Component id="txtHomePhone" alignment="0" pref="214" max="32767" attributes="1"/>
+                                                  <Component id="scrlNotes" alignment="0" pref="214" max="32767" attributes="1"/>
+                                                  <Component id="txtCellPhone" alignment="0" pref="214" max="32767" attributes="1"/>
                                               </Group>
                                           </Group>
                                       </Group>
-                                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -194,10 +197,12 @@
                           </Group>
                           <Component id="scrlNotes" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cboBillingPlan" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblBillingPlan" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtMonthlyRate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblMonthlyRate" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="scrlBillRates" min="-2" pref="88" max="-2" attributes="0"/>
@@ -219,7 +224,7 @@
                   <Component id="cmdViewInvoiceable" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdClientAccount" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -380,7 +385,6 @@
     <Component class="javax.swing.JLabel" name="lblBillingInformation">
       <Properties>
         <Property name="text" type="java.lang.String" resourceKey="lblBillingInformation.text"/>
-        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="lblBillingInformation" noResource="true"/>
       </Properties>
     </Component>
@@ -392,13 +396,13 @@
             <StringItem index="1" value="HOURLY"/>
           </StringArray>
         </Property>
+        <Property name="actionCommand" type="java.lang.String" resourceKey="cboBillPlan.actionCommand"/>
         <Property name="name" type="java.lang.String" value="cboBillPlan" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblBillingPlan">
       <Properties>
         <Property name="text" type="java.lang.String" resourceKey="lblBillingPlan.text"/>
-        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="lblBillingPlan" noResource="true"/>
       </Properties>
     </Component>
@@ -582,6 +586,18 @@
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="cmdClearChanges.text"/>
         <Property name="name" type="java.lang.String" value="cmdClearChanges" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMonthlyRate">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lblMonthlyRate.text"/>
+        <Property name="name" type="java.lang.String" value="lblMonthlyRate" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtMonthlyRate">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="txtMonthlyRate.text"/>
+        <Property name="name" type="java.lang.String" value="txtMonthlyRate" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

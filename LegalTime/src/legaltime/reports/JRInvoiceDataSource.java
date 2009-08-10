@@ -21,7 +21,6 @@ import legaltime.model.LaborInvoiceItemBean;
 import legaltime.model.LaborInvoiceItemManager;
 import legaltime.model.exception.DAOException;
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
@@ -35,7 +34,7 @@ public JRInvoiceDataSource(){
 }
    public JRDataSource createDataSource(){
 
-       return new JRBeanCollectionDataSource(createBeanCollection());
+       return new JRBeanCollectionDataSource(GetLaborBeans());
    }
 
    public JRDataSource createExpenses(){
@@ -75,7 +74,7 @@ public JRInvoiceDataSource(){
 
    }
 
-   public static ArrayList createBeanCollection(){
+   public static ArrayList GetLaborBeans(){
       LaborInvoiceItemManager laborInvoiceItemManager = LaborInvoiceItemManager.getInstance();
       LaborInvoiceItemBean bean = laborInvoiceItemManager.createLaborInvoiceItemBean();
       ArrayList<LaborInvoiceItemBean> laborInvoiceItems;
@@ -86,30 +85,8 @@ public JRInvoiceDataSource(){
             Logger.getLogger(JRInvoiceDataSource.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-      laborInvoiceItems = new ArrayList(java.util.Arrays.asList(beanList));;
+      laborInvoiceItems = new ArrayList(java.util.Arrays.asList(beanList));
       return laborInvoiceItems;
-      //beans[0] = laborInvoiceItemManager.createLaborInvoiceItemBean();
-      //beans[0].setActivityDate(new Date());
-//      bean.setActivityDate(new Date());
-//      bean.setActivityDescription("test");
-//      bean.setBillRate(300D);
-//      bean.setHoursBilled(1D);
-//      bean.setInvoiceId(1);
-//      bean.setLaborInvoiceItemId(1);
-//
-//
-//        coll.add(bean);
-//        LaborInvoiceItemBean bean2 = laborInvoiceItemManager.createLaborInvoiceItemBean();
-//      //beans[0] = laborInvoiceItemManager.createLaborInvoiceItemBean();
-//      //beans[0].setActivityDate(new Date());
-//      bean2.setActivityDate(new Date());
-//      bean2.setActivityDescription("test");
-//      bean2.setBillRate(400D);
-//      bean2.setHoursBilled(1D);
-//      bean2.setInvoiceId(1);
-//      bean2.setLaborInvoiceItemId(1);
-//      coll.add(bean2);
-//      return coll;
 
   }
 
