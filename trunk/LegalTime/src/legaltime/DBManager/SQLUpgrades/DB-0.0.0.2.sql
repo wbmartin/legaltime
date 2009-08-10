@@ -15,9 +15,9 @@ ALTER TABLE `user_info` CHANGE COLUMN `defualt_bill_rate` `default_bill_rate` DO
 insert into user_info (user_key, last_name, first_name, default_bill_rate)
     values('brian', 'Boger','Brian', 300);
 insert into user_info (user_key, last_name, first_name, default_bill_rate)
-    values('clerk', 'Clerk','Clerk', 100);
+    values('clerk', 'Clerk','Clerk', 75);
 insert into user_info (user_key, last_name, first_name, default_bill_rate)
-    values('assist', 'Assistant','Assistant', 100);
+    values('assist', 'Assistant','Assistant', 75);
 --
 ALTER TABLE `labor_register` CHANGE `date` `activity_date` DATE;
 --
@@ -25,8 +25,9 @@ ALTER TABLE `labor_register` ADD COLUMN `invoiceable` BOOL  AFTER `activity_date
 --
 ALTER TABLE `labor_register` ADD COLUMN `bill_rate` DOUBLE  AFTER `invoiceable`;
 --
+ALTER TABLE expense_invoice_item CHANGE `hours_billed` amount DOUBLE;
+--
 INSERT INTO sys_code
     ( code_type, code_id, description, system_or_user, last_update) 
     VALUES ( 'VER', 'DBVer', 'DB-0.0.0.2', 'S', now());
 
---TODO Fix Expense Invoice Item

@@ -208,6 +208,7 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getActionMap(InvoiceEditorView.class, this);
         cmdGenerateInvoice.setAction(actionMap.get("generateInvoice")); // NOI18N
         cmdGenerateInvoice.setText(resourceMap.getString("cmdGenerateInvoice.text")); // NOI18N
+        cmdGenerateInvoice.setEnabled(false);
         cmdGenerateInvoice.setName("cmdGenerateInvoice"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
