@@ -62,19 +62,24 @@ public class LaborInvoiceItemManager
     public static final int ID_HOURS_BILLED = 3;
 
     /**
+     * Identify the user_key field.
+     */
+    public static final int ID_USER_KEY = 4;
+
+    /**
      * Identify the activity_description field.
      */
-    public static final int ID_ACTIVITY_DESCRIPTION = 4;
+    public static final int ID_ACTIVITY_DESCRIPTION = 5;
 
     /**
      * Identify the activity_date field.
      */
-    public static final int ID_ACTIVITY_DATE = 5;
+    public static final int ID_ACTIVITY_DATE = 6;
 
     /**
      * Identify the labor_invoice_item_id field.
      */
-    public static final int ID_LABOR_INVOICE_ITEM_ID = 6;
+    public static final int ID_LABOR_INVOICE_ITEM_ID = 7;
 
     /**
      * Contains all the full fields of the labor_invoice_item table.
@@ -85,6 +90,7 @@ public class LaborInvoiceItemManager
         ,"labor_invoice_item.bill_rate"
         ,"labor_invoice_item.invoice_id"
         ,"labor_invoice_item.hours_billed"
+        ,"labor_invoice_item.user_key"
         ,"labor_invoice_item.activity_description"
         ,"labor_invoice_item.activity_date"
         ,"labor_invoice_item.labor_invoice_item_id"
@@ -99,6 +105,7 @@ public class LaborInvoiceItemManager
         ,"bill_rate"
         ,"invoice_id"
         ,"hours_billed"
+        ,"user_key"
         ,"activity_description"
         ,"activity_date"
         ,"labor_invoice_item_id"
@@ -111,6 +118,7 @@ public class LaborInvoiceItemManager
                             + ",labor_invoice_item.bill_rate"
                             + ",labor_invoice_item.invoice_id"
                             + ",labor_invoice_item.hours_billed"
+                            + ",labor_invoice_item.user_key"
                             + ",labor_invoice_item.activity_description"
                             + ",labor_invoice_item.activity_date"
                             + ",labor_invoice_item.labor_invoice_item_id";
@@ -122,6 +130,7 @@ public class LaborInvoiceItemManager
                             + ",bill_rate"
                             + ",invoice_id"
                             + ",hours_billed"
+                            + ",user_key"
                             + ",activity_description"
                             + ",activity_date"
                             + ",labor_invoice_item_id";
@@ -472,6 +481,14 @@ public class LaborInvoiceItemManager
                 _dirtyCount++;
             }
 
+            if (bean.isUserKeyModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("user_key");
+                _dirtyCount++;
+            }
+
             if (bean.isActivityDescriptionModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
@@ -612,6 +629,15 @@ public class LaborInvoiceItemManager
                     useComma=true;
                 }
                 sql.append("hours_billed=?");
+            }
+
+            if (bean.isUserKeyModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("user_key=?");
             }
 
             if (bean.isActivityDescriptionModified()) {
@@ -1101,6 +1127,14 @@ public class LaborInvoiceItemManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("hours_billed = ?");
                 }
             }
+            if (bean.isUserKeyModified()) {
+                _dirtyCount ++;
+                if (bean.getUserKey() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("user_key IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("user_key ").append(sqlEqualsOperation).append("?");
+                }
+            }
             if (bean.isActivityDescriptionModified()) {
                 _dirtyCount ++;
                 if (bean.getActivityDescription() == null) {
@@ -1164,6 +1198,28 @@ public class LaborInvoiceItemManager
             if (bean.isHoursBilledModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getHoursBilled() + "]");
                 if (bean.getHoursBilled() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getHoursBilled()); }
+            }
+            if (bean.isUserKeyModified()) {
+                switch (searchType){
+                    case SEARCH_EXACT:
+                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getUserKey() + "]");
+                        if (bean.getUserKey() == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getUserKey()); }
+                        break;
+                    case SEARCH_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getUserKey() + "%]");
+                        ps.setString(++_dirtyCount, "%" + bean.getUserKey() + "%");
+                        break;
+                    case SEARCH_STARTING_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getUserKey() + "%]");
+                        ps.setString(++_dirtyCount, "%" + bean.getUserKey());
+                        break;
+                    case SEARCH_ENDING_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getUserKey() + "]");
+                        if (bean.getUserKey() + "%" == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getUserKey() + "%"); }
+                        break;
+                    default:
+                        throw new DAOException("Unknown search type " + searchType);
+                }
             }
             if (bean.isActivityDescriptionModified()) {
                 switch (searchType){
@@ -1272,9 +1328,10 @@ public class LaborInvoiceItemManager
             bean.setBillRate(Manager.getDouble(rs, 2));
             bean.setInvoiceId(Manager.getInteger(rs, 3));
             bean.setHoursBilled(Manager.getDouble(rs, 4));
-            bean.setActivityDescription(rs.getString(5));
-            bean.setActivityDate(rs.getDate(6));
-            bean.setLaborInvoiceItemId(Manager.getInteger(rs, 7));
+            bean.setUserKey(rs.getString(5));
+            bean.setActivityDescription(rs.getString(6));
+            bean.setActivityDate(rs.getDate(7));
+            bean.setLaborInvoiceItemId(Manager.getInteger(rs, 8));
         }
         catch(SQLException e)
         {
@@ -1321,6 +1378,10 @@ public class LaborInvoiceItemManager
                         ++pos;
                         bean.setHoursBilled(Manager.getDouble(rs, pos));
                         break;
+                    case ID_USER_KEY:
+                        ++pos;
+                        bean.setUserKey(rs.getString(pos));
+                        break;
                     case ID_ACTIVITY_DESCRIPTION:
                         ++pos;
                         bean.setActivityDescription(rs.getString(pos));
@@ -1365,6 +1426,7 @@ public class LaborInvoiceItemManager
             bean.setBillRate(Manager.getDouble(rs, "bill_rate"));
             bean.setInvoiceId(Manager.getInteger(rs, "invoice_id"));
             bean.setHoursBilled(Manager.getDouble(rs, "hours_billed"));
+            bean.setUserKey(rs.getString("user_key"));
             bean.setActivityDescription(rs.getString("activity_description"));
             bean.setActivityDate(rs.getDate("activity_date"));
             bean.setLaborInvoiceItemId(Manager.getInteger(rs, "labor_invoice_item_id"));

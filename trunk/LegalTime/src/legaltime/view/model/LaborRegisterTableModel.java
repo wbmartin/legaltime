@@ -115,11 +115,17 @@ public class LaborRegisterTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object value, int row, int col) {
+      try{
         switch(col){
             case 0: laborRegisterBeans[row].setInvoiceable((Boolean)value);
                     break;
+            case 2: laborRegisterBeans[row].setDescription((String) value);
+                    break;
+            case 3: laborRegisterBeans[row].setMinutes((int)Double.parseDouble((String)value)*60);
+                    break;
             case 4: laborRegisterBeans[row].setUserKey(((UserInfoBean)((JComboBox)value).getSelectedItem()).getUserKey());
                     break;
+            case 5: laborRegisterBeans[row].setBillRate(Double.parseDouble(value.toString()));
             default: System.err.println("Out of bounds");
         }
         try {
@@ -132,7 +138,10 @@ public class LaborRegisterTableModel extends AbstractTableModel {
                     ,getClass().getName(),ex);
         }
         fireTableChanged(new TableModelEvent(this));
-
+      }catch(Exception e){
+          easyLog.addEntry(EasyLog.SEVERE,"Error updating Labor Register"
+                    ,getClass().getName(),e);
+      }
 
     }
 

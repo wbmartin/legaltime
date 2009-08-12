@@ -44,6 +44,7 @@ public class LaborInvoiceItemComparator implements Comparator
      *   <li>LaborInvoiceItemManager.ID_BILL_RATE
      *   <li>LaborInvoiceItemManager.ID_INVOICE_ID
      *   <li>LaborInvoiceItemManager.ID_HOURS_BILLED
+     *   <li>LaborInvoiceItemManager.ID_USER_KEY
      *   <li>LaborInvoiceItemManager.ID_ACTIVITY_DESCRIPTION
      *   <li>LaborInvoiceItemManager.ID_ACTIVITY_DATE
      *   <li>LaborInvoiceItemManager.ID_LABOR_INVOICE_ITEM_ID
@@ -69,6 +70,7 @@ public class LaborInvoiceItemComparator implements Comparator
      *   <li>LaborInvoiceItemManager.ID_BILL_RATE
      *   <li>LaborInvoiceItemManager.ID_INVOICE_ID
      *   <li>LaborInvoiceItemManager.ID_HOURS_BILLED
+     *   <li>LaborInvoiceItemManager.ID_USER_KEY
      *   <li>LaborInvoiceItemManager.ID_ACTIVITY_DESCRIPTION
      *   <li>LaborInvoiceItemManager.ID_ACTIVITY_DATE
      *   <li>LaborInvoiceItemManager.ID_LABOR_INVOICE_ITEM_ID
@@ -134,6 +136,17 @@ public class LaborInvoiceItemComparator implements Comparator
                     iReturn = 1;
                 } else {
                     iReturn = b1.getHoursBilled().compareTo(b2.getHoursBilled());
+                }
+                break;
+            case LaborInvoiceItemManager.ID_USER_KEY:
+                if (b1.getUserKey() == null && b2.getUserKey() != null) {
+                    iReturn = -1;
+                } else if (b1.getUserKey() == null && b2.getUserKey() == null) {
+                    iReturn = 0;
+                } else if (b1.getUserKey() != null && b2.getUserKey() == null) {
+                    iReturn = 1;
+                } else {
+                    iReturn = b1.getUserKey().compareTo(b2.getUserKey());
                 }
                 break;
             case LaborInvoiceItemManager.ID_ACTIVITY_DESCRIPTION:

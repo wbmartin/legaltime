@@ -57,7 +57,7 @@ public class UserInfoTest {
             userInfoManager.save(userInfoBean);
         } catch (DAOException ex) {
             Logger.getLogger(UserInfoTest.class.getName()).log(Level.SEVERE, null, ex);
-            easyLog.addEntry(EasyLog.INFO, "Error Saving UserInfo", getClass().getName(), ex);
+            //easyLog.addEntry(EasyLog.INFO, "Error Saving UserInfo", getClass().getName(), ex);
         }
 
      userInfoBean = userInfoManager.createUserInfoBean();
