@@ -383,6 +383,7 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
 
         lblAccountBalanceValue.setText(
           currencyFormatter.format(invoiceController.getInvoiceTotal(invoiceableItems)));
+        double test = invoiceController.getInvoiceTotal(invoiceableItems);
     }
 
     public void tableChanged(TableModelEvent e) {

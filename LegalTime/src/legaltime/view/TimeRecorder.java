@@ -327,11 +327,11 @@ public class TimeRecorder extends javax.swing.JFrame implements ListSelectionLis
     // End of variables declaration//GEN-END:variables
 
     public void synchDisplayToBean(){
-        int clientId = ((ClientBean)cboClient.getSelectedItem()).getClientId();
+        ClientBean beanToSave = ((ClientBean)cboClient.getSelectedItem());
         String userKey = ((UserInfoBean)cboUserId.getSelectedItem()).getUserKey();
         laborRegisterBean = laborRegisterManager.createLaborRegisterBean();
        
-        laborRegisterBean.setClientId(clientId);
+        laborRegisterBean.setClientId(beanToSave.getClientId());
         
         laborRegisterBean.setActivityDate(dtRecordDate.getDate());
         laborRegisterBean.setDescription(txtWorkDescription.getText());
@@ -340,7 +340,14 @@ public class TimeRecorder extends javax.swing.JFrame implements ListSelectionLis
         laborRegisterBean.setMinutes(getMinutes());
         
         laborRegisterBean.setUserKey(userKey );
-        laborRegisterBean.setBillRate(clientBillRateCache.getBillRate(clientId,userKey    ));
+
+        if(beanToSave.getBillType().equals("HOURLY")){
+            laborRegisterBean.setBillRate(clientBillRateCache.
+                    getBillRate(beanToSave.getClientId(),userKey));
+        }else{
+            laborRegisterBean.setBillRate(0D);
+        }
+        
         
 
     }

@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class LaborInvoiceItemBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = 2533175176055153220L;
+	private static final long serialVersionUID = -3024996979292251999L;
 	
     private java.util.Date lastUpdate;
 
@@ -51,6 +51,11 @@ public class LaborInvoiceItemBean
 
     private boolean hoursBilledIsModified = false;
     private boolean hoursBilledIsInitialized = false;
+
+    private String userKey;
+
+    private boolean userKeyIsModified = false;
+    private boolean userKeyIsInitialized = false;
 
     private String activityDescription;
 
@@ -362,6 +367,65 @@ public class LaborInvoiceItemBean
     }
 
     /**
+     * Getter method for userKey.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: labor_invoice_item.user_key</li>
+     * <li>column size: 20</li>
+     * <li>jdbc type returned by the driver: Types.VARCHAR</li>
+     * </ul>
+     *
+     * @return the value of userKey
+     */
+    public String getUserKey()
+    {
+        return userKey;
+    }
+
+    /**
+     * Setter method for userKey.
+     * <br>
+     * The new value is set only if compareTo() says it is different,
+     * or if one of either the new value or the current value is null.
+     * In case the new value is different, it is set and the field is marked as 'modified'.
+     *
+     * @param newVal the new value to be assigned to userKey
+     */
+    public void setUserKey(String newVal)
+    {
+        if ((newVal != null && userKey != null && (newVal.compareTo(userKey) == 0)) ||
+            (newVal == null && userKey == null && userKeyIsInitialized)) {
+            return;
+        }
+        userKey = newVal;
+        userKeyIsModified = true;
+        userKeyIsInitialized = true;
+    }
+
+    /**
+     * Determines if the userKey has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isUserKeyModified()
+    {
+        return userKeyIsModified;
+    }
+
+    /**
+     * Determines if the userKey has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isUserKeyInitialized()
+    {
+        return userKeyIsInitialized;
+    }
+
+    /**
      * Getter method for activityDescription.
      * <br>
      * Meta Data Information (in progress):
@@ -592,7 +656,7 @@ public class LaborInvoiceItemBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| billRateIsModified  		|| invoiceIdIsModified  		|| hoursBilledIsModified  		|| activityDescriptionIsModified  		|| activityDateIsModified  		|| laborInvoiceItemIdIsModified  ;
+        return lastUpdateIsModified 		|| billRateIsModified  		|| invoiceIdIsModified  		|| hoursBilledIsModified  		|| userKeyIsModified  		|| activityDescriptionIsModified  		|| activityDateIsModified  		|| laborInvoiceItemIdIsModified  ;
     }
 
     /**
@@ -604,6 +668,7 @@ public class LaborInvoiceItemBean
         billRateIsModified = false;
         invoiceIdIsModified = false;
         hoursBilledIsModified = false;
+        userKeyIsModified = false;
         activityDescriptionIsModified = false;
         activityDateIsModified = false;
         laborInvoiceItemIdIsModified = false;
@@ -620,6 +685,7 @@ public class LaborInvoiceItemBean
         setBillRate(bean.getBillRate());
         setInvoiceId(bean.getInvoiceId());
         setHoursBilled(bean.getHoursBilled());
+        setUserKey(bean.getUserKey());
         setActivityDescription(bean.getActivityDescription());
         setActivityDate(bean.getActivityDate());
         setLaborInvoiceItemId(bean.getLaborInvoiceItemId());
@@ -635,6 +701,7 @@ public class LaborInvoiceItemBean
         dictionnary.put("bill_rate", getBillRate() == null ? "" : getBillRate().toString());
         dictionnary.put("invoice_id", getInvoiceId() == null ? "" : getInvoiceId().toString());
         dictionnary.put("hours_billed", getHoursBilled() == null ? "" : getHoursBilled().toString());
+        dictionnary.put("user_key", getUserKey() == null ? "" : getUserKey().toString());
         dictionnary.put("activity_description", getActivityDescription() == null ? "" : getActivityDescription().toString());
         dictionnary.put("activity_date", getActivityDate() == null ? "" : getActivityDate().toString());
         dictionnary.put("labor_invoice_item_id", getLaborInvoiceItemId() == null ? "" : getLaborInvoiceItemId().toString());
@@ -666,6 +733,8 @@ public class LaborInvoiceItemBean
             return getInvoiceId() == null ? "" : getInvoiceId().toString();
         } else if ("hours_billed".equalsIgnoreCase(column) || "hoursBilled".equalsIgnoreCase(column)) {
             return getHoursBilled() == null ? "" : getHoursBilled().toString();
+        } else if ("user_key".equalsIgnoreCase(column) || "userKey".equalsIgnoreCase(column)) {
+            return getUserKey() == null ? "" : getUserKey().toString();
         } else if ("activity_description".equalsIgnoreCase(column) || "activityDescription".equalsIgnoreCase(column)) {
             return getActivityDescription() == null ? "" : getActivityDescription().toString();
         } else if ("activity_date".equalsIgnoreCase(column) || "activityDate".equalsIgnoreCase(column)) {
@@ -691,6 +760,7 @@ public class LaborInvoiceItemBean
             .append(getBillRate(), obj.getBillRate())
             .append(getInvoiceId(), obj.getInvoiceId())
             .append(getHoursBilled(), obj.getHoursBilled())
+            .append(getUserKey(), obj.getUserKey())
             .append(getActivityDescription(), obj.getActivityDescription())
             .append(getActivityDate(), obj.getActivityDate())
             .append(getLaborInvoiceItemId(), obj.getLaborInvoiceItemId())
@@ -707,6 +777,7 @@ public class LaborInvoiceItemBean
             .append(getBillRate())
             .append(getInvoiceId())
             .append(getHoursBilled())
+            .append(getUserKey())
             .append(getActivityDescription())
             .append(getActivityDate())
             .append(getLaborInvoiceItemId())
@@ -735,6 +806,7 @@ public class LaborInvoiceItemBean
             .append("bill_rate", getBillRate())
             .append("invoice_id", getInvoiceId())
             .append("hours_billed", getHoursBilled())
+            .append("user_key", getUserKey())
             .append("activity_description", getActivityDescription())
             .append("activity_date", getActivityDate())
             .append("labor_invoice_item_id", getLaborInvoiceItemId())
@@ -750,6 +822,7 @@ public class LaborInvoiceItemBean
             .append(getBillRate(), obj.getBillRate())
             .append(getInvoiceId(), obj.getInvoiceId())
             .append(getHoursBilled(), obj.getHoursBilled())
+            .append(getUserKey(), obj.getUserKey())
             .append(getActivityDescription(), obj.getActivityDescription())
             .append(getActivityDate(), obj.getActivityDate())
             .append(getLaborInvoiceItemId(), obj.getLaborInvoiceItemId())

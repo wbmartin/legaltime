@@ -10,6 +10,7 @@ import java.util.prefs.Preferences;
 /**
  *
  * @author bmartin
+ * Prefs are stored HKEY_Current_User > Software > Javasoft > Prefs > legaltime
  */
 
 public class AppPrefs {

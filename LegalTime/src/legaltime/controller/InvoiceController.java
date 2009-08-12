@@ -50,10 +50,9 @@ public class InvoiceController {
         try{
             for (int ndx=0; ndx< laborRegisterBeans.length;ndx++){
                if (laborRegisterBeans[ndx].getInvoiceable().equals(true)){
-                    billRate =clientBillRateCache.getBillRate(
-                            laborRegisterBeans[ndx].getClientId()
-                            , laborRegisterBeans[ndx].getUserKey());
-                   result += laborRegisterBeans[ndx].getMinutes()/60 * billRate;
+
+                   result += laborRegisterBeans[ndx].getMinutes()/60 
+                              * laborRegisterBeans[ndx].getBillRate();
                }
 
             }
@@ -94,6 +93,8 @@ public class InvoiceController {
                     laborInvoiceItemBean.setHoursBilled(
                             laborRegisterBeans_[ndx].getMinutes()/60);
                     laborInvoiceItemBean.setInvoiceId(invoiceBean.getInvoiceId());
+                    laborInvoiceItemBean.setUserKey(
+                            laborRegisterBeans_[ndx].getUserKey());
 
                     laborInvoiceItemBean = laborInvoiceItemManager.save(laborInvoiceItemBean);
 
@@ -107,7 +108,7 @@ public class InvoiceController {
             }
             manager.endTransaction(true);
             InvoiceReport test = new InvoiceReport();
-            test.makeReport();
+            test.makeReport(invoiceBean.getInvoiceId());
              app.setLastActionText("Invoice Successfully Created.");
         } catch (SQLException ex) {
             try {
@@ -131,7 +132,7 @@ public class InvoiceController {
         try {
             invoiceableItems = laborRegisterManager.loadByWhere(
                     "where client_id = " + clientId_+
-                    " and invoice_id is null");
+                    " and invoice_id is null ");
         } catch (DAOException ex) {
              invoiceableItems = null;
             Logger.getLogger(InvoiceEditorView.class.getName()).log(Level.SEVERE, null, ex);

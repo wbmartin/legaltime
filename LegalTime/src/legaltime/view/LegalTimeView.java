@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import legaltime.DBManager.VersionManager;
 import legaltime.controller.ClientEditorController;
+import legaltime.controller.MonthlyCycleManager;
 import legaltime.model.SysCodeBean;
 import legaltime.model.SysCodeManager;
 import legaltime.modelsafe.EasyLog;
@@ -206,7 +207,7 @@ public class LegalTimeView extends FrameView {
     @Action
     public void demoReport(){
         InvoiceReport test = new InvoiceReport();
-        test.makeReport();
+        test.makeReport(1);
     }
 
     /** This method is called from within the constructor to
@@ -466,8 +467,8 @@ public javax.swing.JDesktopPane getDesktop(){
 
     @Action
     public void showMonthlyBillingCycle() {
-        JOptionPane.showMessageDialog(this.getFrame(),"This menu item would display a menu that would provide "+
-        "options for generating invoices for monthly payment plans.");
+        MonthlyCycleManager monthlyCycleManager = new MonthlyCycleManager();
+        monthlyCycleManager.assessMonthlyRetainers(new java.util.Date());
     }
     @Action
     public void showFollowupManager(){
