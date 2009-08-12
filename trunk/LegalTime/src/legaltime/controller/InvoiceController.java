@@ -19,7 +19,8 @@ import legaltime.model.LaborRegisterManager;
 import legaltime.model.Manager;
 import legaltime.model.exception.DAOException;
 import legaltime.modelsafe.EasyLog;
-import legaltime.reports.JasperReportsIntro;
+import legaltime.reports.InvoiceReport;
+
 import legaltime.view.InvoiceEditorView;
 
 /**
@@ -57,6 +58,8 @@ public class InvoiceController {
 
             }
         }catch(NullPointerException e){
+            easyLog.addEntry(EasyLog.INFO, "Error getting Invoice Total"
+                    , getClass().getName(), e);
 
         }
         return result;
@@ -103,11 +106,13 @@ public class InvoiceController {
 
             }
             manager.endTransaction(true);
-            JasperReportsIntro test = new JasperReportsIntro();
+            InvoiceReport test = new InvoiceReport();
             test.makeReport();
              app.setLastActionText("Invoice Successfully Created.");
         } catch (SQLException ex) {
             try {
+                easyLog.addEntry(EasyLog.INFO, "Rolling Back Invoice"
+                    , getClass().getName(), ex);
                 manager.endTransaction(false);//rollback if failed
             } catch (SQLException ex1) {
                 Logger.getLogger(InvoiceEditorView.class.getName()).log(Level.SEVERE, null, ex1);

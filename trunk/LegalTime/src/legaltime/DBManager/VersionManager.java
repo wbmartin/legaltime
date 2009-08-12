@@ -51,6 +51,7 @@ public class VersionManager {
 
         } catch (SQLException ex) {
             Logger.getLogger(VersionManager.class.getName()).log(Level.SEVERE, null, ex);
+            easyLog.addEntry(EasyLog.INFO, "Error Gettting DB Version", getClass().getName(), ex);
         }
     }
 
@@ -72,6 +73,7 @@ public class VersionManager {
             ps.close();
         }catch(SQLException e){
             version = "DB-0.0.0.0";
+            easyLog.addEntry(EasyLog.INFO, "Error: No system code table.", getClass().getName(), e);
         }
 
         return version;
@@ -80,18 +82,18 @@ public class VersionManager {
     public String installAllDbPatches(){
         String patchInstalled =NO_NEW_VERSION;
         getDBVersion();
-        if (version.equals("DB-0.0.0.0") && backupDatabase()
-                 && !patchInstalled.equals(NEW_VERSION_FAILED)){
-            if(applyPatch("DB-0.0.0.1")){
+        if (version.equals("DB-0.0.0.0") && !patchInstalled.equals(NEW_VERSION_FAILED)){
+            if (!backupDatabase()){patchInstalled =NEW_VERSION_FAILED;}
+            else if(applyPatch("DB-0.0.0.1")){
                 patchInstalled =NEW_VERSION_INSTALLED;
             }else{
                 patchInstalled =NEW_VERSION_FAILED;
             }
             
         }
-        if (version.equals("DB-0.0.0.1") && backupDatabase()
-                && !patchInstalled.equals(NEW_VERSION_FAILED)){
-            if(applyPatch("DB-0.0.0.2")){
+        if (version.equals("DB-0.0.0.1") && !patchInstalled.equals(NEW_VERSION_FAILED)){
+            if (!backupDatabase()){patchInstalled =NEW_VERSION_FAILED;}
+            else if(applyPatch("DB-0.0.0.2")){
               patchInstalled =NEW_VERSION_INSTALLED;
             }else{
                patchInstalled =NEW_VERSION_FAILED;
@@ -176,7 +178,7 @@ public class VersionManager {
         Statement s;
         ResultSet rs;
         boolean result = false;
-        String sql = "show tables;";
+        //String sql = "show tables;";
          ResultSetMetaData rsMetaData;
         int numberOfColumns ;
         StringBuffer writeLine= new StringBuffer();
@@ -187,14 +189,19 @@ public class VersionManager {
         if(appPrefs.getValue(AppPrefs.EBACKUP_PATH).equals(AppPrefs.NOT_SET)){
             return false;
         }
+        
         String filePathPrefix = appPrefs.getValue(AppPrefs.EBACKUP_PATH)
-                +"\\"+ Integer.toString(1900+now.getYear())
+                +"\\LegalTimeEbackup"+ Integer.toString(1900+now.getYear())
                 +"_"+ Integer.toString(now.getMonth())
                 +"_"+ Integer.toString(now.getDay())
                 +"_"+ Integer.toString(now.getHours())
                 +"_"+ Integer.toString(now.getMinutes())
-                +"_"+ Integer.toString(now.getSeconds()) +"_" ;
-        
+                +"_"+ Integer.toString(now.getSeconds()) ;
+        boolean success =(new File(filePathPrefix)).mkdir();
+        if (! success){
+            return success;
+        }
+        filePathPrefix +="\\";
 
         try {
             s = con.createStatement();
@@ -215,7 +222,7 @@ public class VersionManager {
                 for (int i = 1; i < numberOfColumns + 1; i++) {
                    writeLine.append(rsMetaData.getColumnName(i) +"|");
                 }
-                fstream = new FileWriter(filePathPrefix + tables.get(0) +".txt");
+                fstream = new FileWriter(filePathPrefix + tables.get(ndx) +".txt");
                 out = new BufferedWriter(fstream);
                 
                 out.write(writeLine.toString());
@@ -234,7 +241,7 @@ public class VersionManager {
                 }
                 out.close();
                 fstream.close();
-                rs.close();
+                //rs.close();
 
             }
             

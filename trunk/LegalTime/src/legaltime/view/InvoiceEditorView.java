@@ -77,6 +77,7 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
 //            Logger.getLogger(InvoiceManager.class.getName()).log(Level.SEVERE, null, ex);
 //        }
         tblLaborRegister.setModel(laborRegisterTableModel);
+        tblLaborRegister.getRowSorter().toggleSortOrder(1);
         //lblAccountBalanceValue.setText(laborRegisterTableModel.getTotalBill().toString());
         formatTableLaborRegister();
         ClientComboBoxModel clientComboBoxModel = new ClientComboBoxModel();
@@ -208,7 +209,6 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getActionMap(InvoiceEditorView.class, this);
         cmdGenerateInvoice.setAction(actionMap.get("generateInvoice")); // NOI18N
         cmdGenerateInvoice.setText(resourceMap.getString("cmdGenerateInvoice.text")); // NOI18N
-        cmdGenerateInvoice.setEnabled(false);
         cmdGenerateInvoice.setName("cmdGenerateInvoice"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -227,7 +227,7 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
                     .addComponent(lblOtherCharges)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblBillableHours)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 246, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
                         .addComponent(lblAccountBalance)
                         .addGap(18, 18, 18)
                         .addComponent(lblAccountBalanceValue)
@@ -283,7 +283,9 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
             clientId = ((ClientBean)cboClient.getSelectedItem()).getClientId();
         }catch(NullPointerException ex){
            JOptionPane.showMessageDialog(this, "Please select a client to invoice.");
+           easyLog.addEntry(EasyLog.INFO, "User Attempted Invoice before selecting Client", getClass().getName(), ex);
            return;
+
         }
 
         invoiceController.buildAndSaveInvoice(
@@ -371,6 +373,8 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
             clientId= ((ClientBean) cboClient.getSelectedItem()).getClientId();
         }catch(NullPointerException  ex){
             clientId=0;
+            easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
+                    , getClass().getName(), ex);
         }
         invoiceableItems = invoiceController.getInvoiceableLaborItems(clientId);
         laborRegisterTableModel.setList(invoiceableItems);
@@ -378,9 +382,7 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
         tblLaborRegister.getRowSorter().allRowsChanged();
 
         lblAccountBalanceValue.setText(
-          currencyFormatter.format(
-             invoiceController.getInvoiceTotal(
-               laborRegisterTableModel.getLaborRegisterBeans())));
+          currencyFormatter.format(invoiceController.getInvoiceTotal(invoiceableItems)));
     }
 
     public void tableChanged(TableModelEvent e) {

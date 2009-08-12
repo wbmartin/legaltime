@@ -85,6 +85,8 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          setListeners();
          if (clientManagerTableModel.getRowCount()>0){
             setSelectedRow(currentSelectedRow);
+         }else{
+             addNewClient();
          }
          
          //Note, init of client view must be below the Table construction
@@ -390,8 +392,9 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
 
            //}
         }catch(NullPointerException ex){
-
-            }
+            easyLog.addEntry(EasyLog.INFO, "Error Changing Billing Plan"
+                    , getClass().getName(), ex);
+        }
     }
    
 

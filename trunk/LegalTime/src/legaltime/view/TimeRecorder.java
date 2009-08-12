@@ -28,6 +28,7 @@ import legaltime.model.LaborRegisterBean;
 import legaltime.model.LaborRegisterManager;
 import legaltime.model.UserInfoBean;
 import legaltime.model.exception.DAOException;
+import legaltime.modelsafe.EasyLog;
 import legaltime.view.renderer.ClientBillMinutesListCellRenderer;
 import org.jdesktop.application.Action;
 
@@ -46,10 +47,11 @@ public class TimeRecorder extends javax.swing.JFrame implements ListSelectionLis
     UserInfoCache userInfoCache;
     UserInfoComboBoxModel userInfoComboBoxModel;
     ClientBillRateCache clientBillRateCache;
-
+    EasyLog easyLog;
 
     /** Creates new form TimeRecorder */
     public TimeRecorder() {
+        easyLog= EasyLog.getInstance();
         initComponents();
         laborRegisterManager = LaborRegisterManager.getInstance();
         clientBillRateCache = ClientBillRateCache.getInstance();
@@ -353,6 +355,8 @@ public class TimeRecorder extends javax.swing.JFrame implements ListSelectionLis
             laborRegisterManager.save(laborRegisterBean);
         } catch (DAOException ex) {
             Logger.getLogger(TimeRecorder.class.getName()).log(Level.SEVERE, null, ex);
+            easyLog.addEntry(EasyLog.INFO, "Error Saving Labor Register."
+                    , getClass().getName(), ex);
         }
         clearForm();
 

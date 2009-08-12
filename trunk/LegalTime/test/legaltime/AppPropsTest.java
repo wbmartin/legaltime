@@ -58,4 +58,11 @@ public class AppPropsTest {
 //        fail("The test case is a prototype.");
 //    }
 
+    @Test
+    public void testSetEBackupPath(){
+        AppPrefs appPrefs = AppPrefs.getInstance();
+        appPrefs.getPrefs().put(AppPrefs.EBACKUP_PATH,AppPrefs.NOT_SET );
+    }
+
+
 }

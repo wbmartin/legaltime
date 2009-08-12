@@ -38,7 +38,7 @@
                   <Component id="lblOtherCharges" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblBillableHours" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="246" max="32767" attributes="0"/>
+                      <EmptySpace pref="258" max="32767" attributes="0"/>
                       <Component id="lblAccountBalance" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="lblAccountBalanceValue" min="-2" max="-2" attributes="0"/>
@@ -238,7 +238,6 @@
           <action class="legaltime.view.InvoiceManager" id="generateInvoice" methodName="generateInvoice"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="cmdGenerateInvoice.text"/>
-        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="cmdGenerateInvoice" noResource="true"/>
       </Properties>
     </Component>

@@ -46,7 +46,8 @@ public class AppPrefs {
         temp = prefs.get(EBACKUP_PATH, NOT_SET);
         if (temp.equals(NOT_SET)){
             //changed to prompt user on startup if not setup. 2009-08-04 WBM
-            prefs.put(EBACKUP_PATH, NOT_SET);
+            prefs.put(EBACKUP_PATH, "C:\\");
+            //prefs.put(EBACKUP_PATH, NOT_SET);
         }
         
 
@@ -75,6 +76,8 @@ public class AppPrefs {
         String ret=prefs.get(key_, NOT_SET);
         return ret;
     }
+
+
 
 
     
