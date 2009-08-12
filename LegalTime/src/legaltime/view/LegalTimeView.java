@@ -31,8 +31,9 @@ import legaltime.controller.ClientEditorController;
 import legaltime.model.SysCodeBean;
 import legaltime.model.SysCodeManager;
 import legaltime.modelsafe.EasyLog;
-import legaltime.reports.JasperReportsIntro;
+
 import legaltime.modelsafe.PersistanceManager;
+import legaltime.reports.InvoiceReport;
 
 /**
  * The application's main frame.
@@ -140,12 +141,16 @@ public class LegalTimeView extends FrameView {
             String dbUpgradeResult = vm.installAllDbPatches();
             if(dbUpgradeResult.equals(VersionManager.NEW_VERSION_FAILED)){
                 setLastActionText("ERROR: DB upgrade failed.  Please review Logs and email developer the error detail.");
+                JOptionPane.showInternalConfirmDialog(getDesktop(), 
+                        "The application Failed a database upgrade and may not be stable.  Contact the developer."
+                        ,"Warning",JOptionPane.WARNING_MESSAGE);
 
             }else if (dbUpgradeResult.equals(VersionManager.NEW_VERSION_INSTALLED)){
 
                 setLastActionText("New Database version successfully installed.  Application Restart Required");
                 JOptionPane.showInternalMessageDialog(getDesktop(),
-                        "Upgrades have completed.  The application will close.  Please re-open the application.");
+                        "Upgrades have completed.  The application will close.  Please re-open the application."
+                        ,"Notice",JOptionPane.WARNING_MESSAGE);
                 legalTimeApp.exit();
             }
 
@@ -162,7 +167,8 @@ public class LegalTimeView extends FrameView {
                         "There is a Database Version conflict.  Expecting: "
                         + LegalTimeApp.DB_VER_REQ +" but found: "
                         + sysCodeBean.getDescription()
-                        +".  The application may not be stable");
+                        +".  The application may not be stable.  Please restart the application and contact the developer"
+                        ,"Warning",JOptionPane.WARNING_MESSAGE);
 
 
                 }
@@ -170,6 +176,12 @@ public class LegalTimeView extends FrameView {
                 easyLog.addEntry(easyLog.SEVERE,"ERROR Loading DB Version"
                         ,this.getClass().getName(),ex);
                 setLastActionText("Critical Error Loading DB Version - Likely database connectivity issue.  Check Preferences Tab.");
+            }catch(java.lang.ArrayIndexOutOfBoundsException e){
+                 JOptionPane.showInternalMessageDialog(getDesktop(),
+                        "There application couldn't determine the Database Version.  " +
+                        "The application is not stable.  Please contact the developer","Warning",JOptionPane.WARNING_MESSAGE);
+                 easyLog.addEntry(EasyLog.INFO, "Error Determining Database Version"
+                    , getClass().getName(), e);
             }
                       
 
@@ -193,7 +205,7 @@ public class LegalTimeView extends FrameView {
 
     @Action
     public void demoReport(){
-        JasperReportsIntro test = new JasperReportsIntro();
+        InvoiceReport test = new InvoiceReport();
         test.makeReport();
     }
 

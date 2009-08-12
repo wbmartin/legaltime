@@ -108,6 +108,8 @@ import legaltime.model.exception.DAOException;
         } catch (DAOException ex) {
             Logger.getLogger(PersistanceManager.class.getName()).log(Level.SEVERE, null, ex);
             result = DatabaseResult.SelectFailed;
+            easyLog.addEntry(EasyLog.INFO, "Error loading client bill rate cache"
+                    , getClass().getName(), ex);
         }
         return result;
 

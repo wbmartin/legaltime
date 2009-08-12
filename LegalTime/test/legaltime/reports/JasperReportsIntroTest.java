@@ -43,7 +43,7 @@ public class JasperReportsIntroTest {
     @Test
     public void testMakeReport() {
         System.out.println("makeReport");
-        JasperReportsIntro instance = new JasperReportsIntro();
+        InvoiceReport instance = new InvoiceReport();
         instance.makeReport();
         // TODO review the generated test code and remove the default call to fail.
         
