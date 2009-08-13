@@ -69,9 +69,19 @@ public class ExpenseRegisterManager
     public static final int ID_DESCRIPTION = 4;
 
     /**
+     * Identify the expense_date field.
+     */
+    public static final int ID_EXPENSE_DATE = 5;
+
+    /**
+     * Identify the invoiceable field.
+     */
+    public static final int ID_INVOICEABLE = 6;
+
+    /**
      * Identify the expense_register_id field.
      */
-    public static final int ID_EXPENSE_REGISTER_ID = 5;
+    public static final int ID_EXPENSE_REGISTER_ID = 7;
 
     /**
      * Contains all the full fields of the expense_register table.
@@ -83,6 +93,8 @@ public class ExpenseRegisterManager
         ,"expense_register.invoice_id"
         ,"expense_register.amount"
         ,"expense_register.description"
+        ,"expense_register.expense_date"
+        ,"expense_register.invoiceable"
         ,"expense_register.expense_register_id"
     };
 
@@ -96,6 +108,8 @@ public class ExpenseRegisterManager
         ,"invoice_id"
         ,"amount"
         ,"description"
+        ,"expense_date"
+        ,"invoiceable"
         ,"expense_register_id"
     };
 
@@ -107,6 +121,8 @@ public class ExpenseRegisterManager
                             + ",expense_register.invoice_id"
                             + ",expense_register.amount"
                             + ",expense_register.description"
+                            + ",expense_register.expense_date"
+                            + ",expense_register.invoiceable"
                             + ",expense_register.expense_register_id";
 
     /**
@@ -117,6 +133,8 @@ public class ExpenseRegisterManager
                             + ",invoice_id"
                             + ",amount"
                             + ",description"
+                            + ",expense_date"
+                            + ",invoiceable"
                             + ",expense_register_id";
 
     private static ExpenseRegisterManager singleton = new ExpenseRegisterManager();
@@ -523,6 +541,22 @@ public class ExpenseRegisterManager
                 _dirtyCount++;
             }
 
+            if (bean.isExpenseDateModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("expense_date");
+                _dirtyCount++;
+            }
+
+            if (bean.isInvoiceableModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("invoiceable");
+                _dirtyCount++;
+            }
+
             if (bean.isExpenseRegisterIdModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
@@ -656,6 +690,24 @@ public class ExpenseRegisterManager
                     useComma=true;
                 }
                 sql.append("description=?");
+            }
+
+            if (bean.isExpenseDateModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("expense_date=?");
+            }
+
+            if (bean.isInvoiceableModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("invoiceable=?");
             }
 
             if (bean.isExpenseRegisterIdModified()) {
@@ -1158,7 +1210,7 @@ public class ExpenseRegisterManager
                 if (bean.getAmount() == null) {
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("amount IS NULL");
                 } else {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("amount ").append(sqlEqualsOperation).append("?");
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("amount = ?");
                 }
             }
             if (bean.isDescriptionModified()) {
@@ -1167,6 +1219,22 @@ public class ExpenseRegisterManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("description IS NULL");
                 } else {
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("description ").append(sqlEqualsOperation).append("?");
+                }
+            }
+            if (bean.isExpenseDateModified()) {
+                _dirtyCount ++;
+                if (bean.getExpenseDate() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("expense_date IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("expense_date = ?");
+                }
+            }
+            if (bean.isInvoiceableModified()) {
+                _dirtyCount ++;
+                if (bean.getInvoiceable() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoiceable IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoiceable = ?");
                 }
             }
             if (bean.isExpenseRegisterIdModified()) {
@@ -1214,26 +1282,8 @@ public class ExpenseRegisterManager
                 if (bean.getInvoiceId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getInvoiceId()); }
             }
             if (bean.isAmountModified()) {
-                switch (searchType){
-                    case SEARCH_EXACT:
-                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getAmount() + "]");
-                        if (bean.getAmount() == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getAmount()); }
-                        break;
-                    case SEARCH_LIKE:
-                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getAmount() + "%]");
-                        ps.setString(++_dirtyCount, "%" + bean.getAmount() + "%");
-                        break;
-                    case SEARCH_STARTING_LIKE:
-                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getAmount() + "%]");
-                        ps.setString(++_dirtyCount, "%" + bean.getAmount());
-                        break;
-                    case SEARCH_ENDING_LIKE:
-                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getAmount() + "]");
-                        if (bean.getAmount() + "%" == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getAmount() + "%"); }
-                        break;
-                    default:
-                        throw new DAOException("Unknown search type " + searchType);
-                }
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getAmount() + "]");
+                if (bean.getAmount() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getAmount()); }
             }
             if (bean.isDescriptionModified()) {
                 switch (searchType){
@@ -1256,6 +1306,14 @@ public class ExpenseRegisterManager
                     default:
                         throw new DAOException("Unknown search type " + searchType);
                 }
+            }
+            if (bean.isExpenseDateModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getExpenseDate() + "]");
+                if (bean.getExpenseDate() == null) { ps.setNull(++_dirtyCount, Types.DATE); } else { ps.setDate(++_dirtyCount, new java.sql.Date(bean.getExpenseDate().getTime())); }
+            }
+            if (bean.isInvoiceableModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getInvoiceable() + "]");
+                if (bean.getInvoiceable() == null) { ps.setNull(++_dirtyCount, Types.BIT); } else { Manager.setBoolean(ps, ++_dirtyCount, bean.getInvoiceable()); }
             }
             if (bean.isExpenseRegisterIdModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getExpenseRegisterId() + "]");
@@ -1337,9 +1395,11 @@ public class ExpenseRegisterManager
             bean.setLastUpdate(rs.getTimestamp(1));
             bean.setClientId(Manager.getInteger(rs, 2));
             bean.setInvoiceId(Manager.getInteger(rs, 3));
-            bean.setAmount(rs.getString(4));
+            bean.setAmount(Manager.getDouble(rs, 4));
             bean.setDescription(rs.getString(5));
-            bean.setExpenseRegisterId(Manager.getInteger(rs, 6));
+            bean.setExpenseDate(rs.getDate(6));
+            bean.setInvoiceable(Manager.getBoolean(rs, 7));
+            bean.setExpenseRegisterId(Manager.getInteger(rs, 8));
         }
         catch(SQLException e)
         {
@@ -1384,11 +1444,19 @@ public class ExpenseRegisterManager
                         break;
                     case ID_AMOUNT:
                         ++pos;
-                        bean.setAmount(rs.getString(pos));
+                        bean.setAmount(Manager.getDouble(rs, pos));
                         break;
                     case ID_DESCRIPTION:
                         ++pos;
                         bean.setDescription(rs.getString(pos));
+                        break;
+                    case ID_EXPENSE_DATE:
+                        ++pos;
+                        bean.setExpenseDate(rs.getDate(pos));
+                        break;
+                    case ID_INVOICEABLE:
+                        ++pos;
+                        bean.setInvoiceable(Manager.getBoolean(rs, pos));
                         break;
                     case ID_EXPENSE_REGISTER_ID:
                         ++pos;
@@ -1425,8 +1493,10 @@ public class ExpenseRegisterManager
             bean.setLastUpdate(rs.getTimestamp("last_update"));
             bean.setClientId(Manager.getInteger(rs, "client_id"));
             bean.setInvoiceId(Manager.getInteger(rs, "invoice_id"));
-            bean.setAmount(rs.getString("amount"));
+            bean.setAmount(Manager.getDouble(rs, "amount"));
             bean.setDescription(rs.getString("description"));
+            bean.setExpenseDate(rs.getDate("expense_date"));
+            bean.setInvoiceable(Manager.getBoolean(rs, "invoiceable"));
             bean.setExpenseRegisterId(Manager.getInteger(rs, "expense_register_id"));
         }
         catch(SQLException e)

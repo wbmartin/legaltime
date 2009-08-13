@@ -129,6 +129,11 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         txtFirstName.setName("txtFirstName"); // NOI18N
 
         txtLastName.setName("txtLastName"); // NOI18N
+        txtLastName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtLastNameFocusGained(evt);
+            }
+        });
 
         lblLastName.setText(resourceMap.getString("lblLastName.text")); // NOI18N
         lblLastName.setName("lblLastName"); // NOI18N
@@ -436,6 +441,12 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtLastNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLastNameFocusGained
+        if(txtLastName.getText().equals("_Customer")){
+            txtLastName.selectAll();
+        }
+    }//GEN-LAST:event_txtLastNameFocusGained
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

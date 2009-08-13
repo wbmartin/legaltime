@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class ClientAccountRegisterBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -3008472142830443423L;
+	private static final long serialVersionUID = -9217311445927180370L;
 	
     private java.util.Date lastUpdate;
 

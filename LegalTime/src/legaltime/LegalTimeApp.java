@@ -14,7 +14,7 @@ import org.jdesktop.application.SingleFrameApplication;
  */
 public class LegalTimeApp extends SingleFrameApplication {
 LegalTimeView legalTimeView;
-public static final String DB_VER_REQ ="DB-0.0.0.2";
+
 
     /**
      * At startup create and show the main frame of the application.

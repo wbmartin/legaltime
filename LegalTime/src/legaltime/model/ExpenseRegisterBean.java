@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class ExpenseRegisterBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -3018387042130548191L;
+	private static final long serialVersionUID = -9212353991982160690L;
 	
     private java.util.Date lastUpdate;
 
@@ -48,7 +48,7 @@ public class ExpenseRegisterBean
     private boolean invoiceIdIsModified = false;
     private boolean invoiceIdIsInitialized = false;
 
-    private String amount;
+    private Double amount;
 
     private boolean amountIsModified = false;
     private boolean amountIsInitialized = false;
@@ -57,6 +57,16 @@ public class ExpenseRegisterBean
 
     private boolean descriptionIsModified = false;
     private boolean descriptionIsInitialized = false;
+
+    private java.util.Date expenseDate;
+
+    private boolean expenseDateIsModified = false;
+    private boolean expenseDateIsInitialized = false;
+
+    private Boolean invoiceable;
+
+    private boolean invoiceableIsModified = false;
+    private boolean invoiceableIsInitialized = false;
 
     private Integer expenseRegisterId;
 
@@ -293,13 +303,13 @@ public class ExpenseRegisterBean
      * Meta Data Information (in progress):
      * <ul>
      * <li>full name: expense_register.amount</li>
-     * <li>column size: 20</li>
-     * <li>jdbc type returned by the driver: Types.VARCHAR</li>
+     * <li>column size: 22</li>
+     * <li>jdbc type returned by the driver: Types.DOUBLE</li>
      * </ul>
      *
      * @return the value of amount
      */
-    public String getAmount()
+    public Double getAmount()
     {
         return amount;
     }
@@ -313,7 +323,7 @@ public class ExpenseRegisterBean
      *
      * @param newVal the new value to be assigned to amount
      */
-    public void setAmount(String newVal)
+    public void setAmount(Double newVal)
     {
         if ((newVal != null && amount != null && (newVal.compareTo(amount) == 0)) ||
             (newVal == null && amount == null && amountIsInitialized)) {
@@ -322,6 +332,18 @@ public class ExpenseRegisterBean
         amount = newVal;
         amountIsModified = true;
         amountIsInitialized = true;
+    }
+
+    /**
+     * Setter method for amount.
+     * <br>
+     * Convenient for those who do not want to deal with Objects for primary types.
+     *
+     * @param newVal the new value to be assigned to amount
+     */
+    public void setAmount(double newVal)
+    {
+        setAmount(new Double(newVal));
     }
 
     /**
@@ -403,6 +425,147 @@ public class ExpenseRegisterBean
     public boolean isDescriptionInitialized()
     {
         return descriptionIsInitialized;
+    }
+
+    /**
+     * Getter method for expenseDate.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: expense_register.expense_date</li>
+     * <li>column size: 10</li>
+     * <li>jdbc type returned by the driver: Types.DATE</li>
+     * </ul>
+     *
+     * @return the value of expenseDate
+     */
+    public java.util.Date getExpenseDate()
+    {
+        return expenseDate;
+    }
+
+    /**
+     * Setter method for expenseDate.
+     * <br>
+     * The new value is set only if compareTo() says it is different,
+     * or if one of either the new value or the current value is null.
+     * In case the new value is different, it is set and the field is marked as 'modified'.
+     *
+     * @param newVal the new value to be assigned to expenseDate
+     */
+    public void setExpenseDate(java.util.Date newVal)
+    {
+        if ((newVal != null && expenseDate != null && (newVal.compareTo(expenseDate) == 0)) ||
+            (newVal == null && expenseDate == null && expenseDateIsInitialized)) {
+            return;
+        }
+        expenseDate = newVal;
+        expenseDateIsModified = true;
+        expenseDateIsInitialized = true;
+    }
+
+    /**
+     * Setter method for expenseDate.
+     * <br>
+     * Convenient for those who do not want to deal with Objects for primary types.
+     *
+     * @param newVal the new value to be assigned to expenseDate
+     */
+    public void setExpenseDate(long newVal)
+    {
+        setExpenseDate(new java.util.Date(newVal));
+    }
+
+    /**
+     * Determines if the expenseDate has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isExpenseDateModified()
+    {
+        return expenseDateIsModified;
+    }
+
+    /**
+     * Determines if the expenseDate has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isExpenseDateInitialized()
+    {
+        return expenseDateIsInitialized;
+    }
+
+    /**
+     * Getter method for invoiceable.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: expense_register.invoiceable</li>
+     * <li>column size: 0</li>
+     * <li>jdbc type returned by the driver: Types.BIT</li>
+     * </ul>
+     *
+     * @return the value of invoiceable
+     */
+    public Boolean getInvoiceable()
+    {
+        return invoiceable;
+    }
+
+    /**
+     * Setter method for invoiceable.
+     * <br>
+     * Attention, there will be no comparison with current value which
+     * means calling this method will mark the field as 'modified' in all cases.
+     *
+     * @param newVal the new value to be assigned to invoiceable
+     */
+    public void setInvoiceable(Boolean newVal)
+    {
+        if ((newVal != null && invoiceable != null && newVal.equals(invoiceable)) ||
+            (newVal == null && invoiceable == null && invoiceableIsInitialized)) {
+            return;
+        }
+        invoiceable = newVal;
+        invoiceableIsModified = true;
+        invoiceableIsInitialized = true;
+    }
+
+    /**
+     * Setter method for invoiceable.
+     * <br>
+     * Convenient for those who do not want to deal with Objects for primary types.
+     *
+     * @param newVal the new value to be assigned to invoiceable
+     */
+    public void setInvoiceable(boolean newVal)
+    {
+        setInvoiceable(new Boolean(newVal));
+    }
+
+    /**
+     * Determines if the invoiceable has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isInvoiceableModified()
+    {
+        return invoiceableIsModified;
+    }
+
+    /**
+     * Determines if the invoiceable has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isInvoiceableInitialized()
+    {
+        return invoiceableIsInitialized;
     }
 
     /**
@@ -517,7 +680,7 @@ public class ExpenseRegisterBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| clientIdIsModified  		|| invoiceIdIsModified  		|| amountIsModified  		|| descriptionIsModified  		|| expenseRegisterIdIsModified  ;
+        return lastUpdateIsModified 		|| clientIdIsModified  		|| invoiceIdIsModified  		|| amountIsModified  		|| descriptionIsModified  		|| expenseDateIsModified  		|| invoiceableIsModified  		|| expenseRegisterIdIsModified  ;
     }
 
     /**
@@ -530,6 +693,8 @@ public class ExpenseRegisterBean
         invoiceIdIsModified = false;
         amountIsModified = false;
         descriptionIsModified = false;
+        expenseDateIsModified = false;
+        invoiceableIsModified = false;
         expenseRegisterIdIsModified = false;
     }
 
@@ -545,6 +710,8 @@ public class ExpenseRegisterBean
         setInvoiceId(bean.getInvoiceId());
         setAmount(bean.getAmount());
         setDescription(bean.getDescription());
+        setExpenseDate(bean.getExpenseDate());
+        setInvoiceable(bean.getInvoiceable());
         setExpenseRegisterId(bean.getExpenseRegisterId());
     }
 
@@ -559,6 +726,8 @@ public class ExpenseRegisterBean
         dictionnary.put("invoice_id", getInvoiceId() == null ? "" : getInvoiceId().toString());
         dictionnary.put("amount", getAmount() == null ? "" : getAmount().toString());
         dictionnary.put("description", getDescription() == null ? "" : getDescription().toString());
+        dictionnary.put("expense_date", getExpenseDate() == null ? "" : getExpenseDate().toString());
+        dictionnary.put("invoiceable", getInvoiceable() == null ? "" : getInvoiceable().toString());
         dictionnary.put("expense_register_id", getExpenseRegisterId() == null ? "" : getExpenseRegisterId().toString());
         return dictionnary;
     }
@@ -590,6 +759,10 @@ public class ExpenseRegisterBean
             return getAmount() == null ? "" : getAmount().toString();
         } else if ("description".equalsIgnoreCase(column) || "description".equalsIgnoreCase(column)) {
             return getDescription() == null ? "" : getDescription().toString();
+        } else if ("expense_date".equalsIgnoreCase(column) || "expenseDate".equalsIgnoreCase(column)) {
+            return getExpenseDate() == null ? "" : getExpenseDate().toString();
+        } else if ("invoiceable".equalsIgnoreCase(column) || "invoiceable".equalsIgnoreCase(column)) {
+            return getInvoiceable() == null ? "" : getInvoiceable().toString();
         } else if ("expense_register_id".equalsIgnoreCase(column) || "expenseRegisterId".equalsIgnoreCase(column)) {
             return getExpenseRegisterId() == null ? "" : getExpenseRegisterId().toString();
         }
@@ -612,6 +785,8 @@ public class ExpenseRegisterBean
             .append(getInvoiceId(), obj.getInvoiceId())
             .append(getAmount(), obj.getAmount())
             .append(getDescription(), obj.getDescription())
+            .append(getExpenseDate(), obj.getExpenseDate())
+            .append(getInvoiceable(), obj.getInvoiceable())
             .append(getExpenseRegisterId(), obj.getExpenseRegisterId())
             .isEquals();
 	}
@@ -627,6 +802,8 @@ public class ExpenseRegisterBean
             .append(getInvoiceId())
             .append(getAmount())
             .append(getDescription())
+            .append(getExpenseDate())
+            .append(getInvoiceable())
             .append(getExpenseRegisterId())
             .toHashCode();
 	}
@@ -654,6 +831,8 @@ public class ExpenseRegisterBean
             .append("invoice_id", getInvoiceId())
             .append("amount", getAmount())
             .append("description", getDescription())
+            .append("expense_date", getExpenseDate())
+            .append("invoiceable", getInvoiceable())
             .append("expense_register_id", getExpenseRegisterId())
             .toString();
 	}
@@ -668,6 +847,8 @@ public class ExpenseRegisterBean
             .append(getInvoiceId(), obj.getInvoiceId())
             .append(getAmount(), obj.getAmount())
             .append(getDescription(), obj.getDescription())
+            .append(getExpenseDate(), obj.getExpenseDate())
+            .append(getInvoiceable(), obj.getInvoiceable())
             .append(getExpenseRegisterId(), obj.getExpenseRegisterId())
             .toComparison();
    }

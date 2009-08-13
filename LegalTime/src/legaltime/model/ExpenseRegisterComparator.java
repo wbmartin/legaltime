@@ -45,6 +45,7 @@ public class ExpenseRegisterComparator implements Comparator
      *   <li>ExpenseRegisterManager.ID_INVOICE_ID
      *   <li>ExpenseRegisterManager.ID_AMOUNT
      *   <li>ExpenseRegisterManager.ID_DESCRIPTION
+     *   <li>ExpenseRegisterManager.ID_EXPENSE_DATE
      *   <li>ExpenseRegisterManager.ID_EXPENSE_REGISTER_ID
      * </ul>
      */
@@ -69,6 +70,8 @@ public class ExpenseRegisterComparator implements Comparator
      *   <li>ExpenseRegisterManager.ID_INVOICE_ID
      *   <li>ExpenseRegisterManager.ID_AMOUNT
      *   <li>ExpenseRegisterManager.ID_DESCRIPTION
+     *   <li>ExpenseRegisterManager.ID_EXPENSE_DATE
+     *   <li>ExpenseRegisterManager.ID_INVOICEABLE
      *   <li>ExpenseRegisterManager.ID_EXPENSE_REGISTER_ID
      * </ul>
      *
@@ -143,6 +146,17 @@ public class ExpenseRegisterComparator implements Comparator
                     iReturn = 1;
                 } else {
                     iReturn = b1.getDescription().compareTo(b2.getDescription());
+                }
+                break;
+            case ExpenseRegisterManager.ID_EXPENSE_DATE:
+                if (b1.getExpenseDate() == null && b2.getExpenseDate() != null) {
+                    iReturn = -1;
+                } else if (b1.getExpenseDate() == null && b2.getExpenseDate() == null) {
+                    iReturn = 0;
+                } else if (b1.getExpenseDate() != null && b2.getExpenseDate() == null) {
+                    iReturn = 1;
+                } else {
+                    iReturn = b1.getExpenseDate().compareTo(b2.getExpenseDate());
                 }
                 break;
             case ExpenseRegisterManager.ID_EXPENSE_REGISTER_ID:

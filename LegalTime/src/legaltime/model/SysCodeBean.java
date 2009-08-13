@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class SysCodeBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -3021692012858883743L;
+	private static final long serialVersionUID = 9216212757753930926L;
 	
     private java.util.Date lastUpdate;
 

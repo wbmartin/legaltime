@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import legaltime.DBManager.VersionManager;
 import legaltime.controller.ClientEditorController;
+import legaltime.controller.InvoiceViewController;
 import legaltime.controller.MonthlyCycleManager;
 import legaltime.model.SysCodeBean;
 import legaltime.model.SysCodeManager;
@@ -141,46 +142,47 @@ public class LegalTimeView extends FrameView {
         VersionManager vm = new VersionManager();
             String dbUpgradeResult = vm.installAllDbPatches();
             if(dbUpgradeResult.equals(VersionManager.NEW_VERSION_FAILED)){
-                setLastActionText("ERROR: DB upgrade failed.  Please review Logs and email developer the error detail.");
+                setLastActionText("ERROR: DB upgrade failed.  Please review " +
+                        "Logs and email developer the error detail.");
                 JOptionPane.showInternalConfirmDialog(getDesktop(), 
-                        "The application Failed a database upgrade and may not be stable.  Contact the developer."
+                        "The application Failed a database upgrade and may " +
+                        "not be stable.  Contact the developer."
                         ,"Warning",JOptionPane.WARNING_MESSAGE);
 
             }else if (dbUpgradeResult.equals(VersionManager.NEW_VERSION_INSTALLED)){
 
-                setLastActionText("New Database version successfully installed.  Application Restart Required");
+                setLastActionText("New Database version successfully installed." +
+                        "  Application Restart Required");
                 JOptionPane.showInternalMessageDialog(getDesktop(),
-                        "Upgrades have completed.  The application will close.  Please re-open the application."
+                        "Upgrades have completed.  The application will close." +
+                        "  Please re-open the application."
                         ,"Notice",JOptionPane.WARNING_MESSAGE);
                 legalTimeApp.exit();
             }
 
-
-
-
-
             try {
-                SysCodeManager sysCodeManager = SysCodeManager.getInstance();
-                SysCodeBean sysCodeBean = sysCodeManager.loadByWhere
-                        ("where code_id='DBVER'")[0];
-                if(!sysCodeBean.getDescription().equals(LegalTimeApp.DB_VER_REQ) ){
+                if (VersionManager.INSTALLED_VERSION.equals("NOT SET")){
+                    setLastActionText("Critical Error Loading DB Version " +
+                            "- Likely database connectivity issue.  " +
+                            "Check Preferences Tab.");
+                }
+                else if(!VersionManager.INSTALLED_VERSION.equals(VersionManager.REQUIRED_DB_VERSION) ){
                     JOptionPane.showInternalMessageDialog(getDesktop(),
                         "There is a Database Version conflict.  Expecting: "
-                        + LegalTimeApp.DB_VER_REQ +" but found: "
-                        + sysCodeBean.getDescription()
-                        +".  The application may not be stable.  Please restart the application and contact the developer"
+                        + VersionManager.REQUIRED_DB_VERSION+" but found: "
+                        + VersionManager.INSTALLED_VERSION
+                        +".  The application may not be stable.  Please restart " +
+                        "the application and contact the developer"
                         ,"Warning",JOptionPane.WARNING_MESSAGE);
 
 
                 }
-            } catch (DAOException ex) {
-                easyLog.addEntry(easyLog.SEVERE,"ERROR Loading DB Version"
-                        ,this.getClass().getName(),ex);
-                setLastActionText("Critical Error Loading DB Version - Likely database connectivity issue.  Check Preferences Tab.");
             }catch(java.lang.ArrayIndexOutOfBoundsException e){
                  JOptionPane.showInternalMessageDialog(getDesktop(),
                         "There application couldn't determine the Database Version.  " +
-                        "The application is not stable.  Please contact the developer","Warning",JOptionPane.WARNING_MESSAGE);
+                        "The application is not stable.  " +
+                        "Please contact the developer"
+                        ,"Warning",JOptionPane.WARNING_MESSAGE);
                  easyLog.addEntry(EasyLog.INFO, "Error Determining Database Version"
                     , getClass().getName(), e);
             }
@@ -502,17 +504,18 @@ public javax.swing.JDesktopPane getDesktop(){
 
     @Action
     public void showInvoiceManager(){
-        if (invoiceManager == null) {
-            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-            invoiceManager = new InvoiceEditorView();
-            invoiceManager.setMainController(LegalTimeApp.getApplication());
-
-        }
-        invoiceManager.setVisible(true);
-        desktop.add(invoiceManager);
-        try {
-            invoiceManager.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {}
+        InvoiceViewController.getInstance(LegalTimeApp.getApplication()).showInvoiceEditorViewer();
+//        if (invoiceManager == null) {
+//            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
+//            invoiceManager = new InvoiceEditorView();
+//            invoiceManager.setMainController(LegalTimeApp.getApplication());
+//
+//        }
+//        invoiceManager.setVisible(true);
+//        desktop.add(invoiceManager);
+//        try {
+//            invoiceManager.setSelected(true);
+//        } catch (java.beans.PropertyVetoException e) {}
     }
 
     @Action
