@@ -10,12 +10,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.String;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,18 +33,20 @@ public class VersionManager {
     private Connection con;
     AppPrefs appPrefs;
     String version="";
-    String verstionRequired ="DB-0.0.0.1";
+    
     EasyLog easyLog;
     public static final String  NEW_VERSION_INSTALLED ="NEW_VERSION_INSTALLED";
     public static final String  NEW_VERSION_FAILED ="NEW_VERSION_FAILED";
     public static final String  NO_NEW_VERSION ="NO_NEW_VERSION";
+    public static final String REQUIRED_DB_VERSION ="DB-0.0.0.3";
+    public static String INSTALLED_VERSION="NOT SET";
     public VersionManager(){
         appPrefs = AppPrefs.getInstance();
         easyLog = EasyLog.getInstance();
 
         try {
             con = Manager.getInstance().getConnection();
-            getDBVersion();
+            INSTALLED_VERSION = getDBVersion();
 
         } catch (SQLException ex) {
             Logger.getLogger(VersionManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,6 +98,15 @@ public class VersionManager {
                patchInstalled =NEW_VERSION_FAILED;
             }
             
+        }
+        if (version.equals("DB-0.0.0.2") && !patchInstalled.equals(NEW_VERSION_FAILED)){
+            if (!backupDatabase()){patchInstalled =NEW_VERSION_FAILED;}
+            else if(applyPatch("DB-0.0.0.3")){
+              patchInstalled =NEW_VERSION_INSTALLED;
+            }else{
+               patchInstalled =NEW_VERSION_FAILED;
+            }
+
         }
 
         return patchInstalled;

@@ -11,34 +11,16 @@
 
 package legaltime.view;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import javax.swing.event.TableModelEvent;
-import legaltime.view.model.LaborRegisterTableModel;
 import legaltime.view.renderer.CurrencyTableCellRenderer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
 
 
-import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import legaltime.LegalTimeApp;
-import legaltime.cache.ClientCache;
-import legaltime.controller.InvoiceController;
-import legaltime.model.ClientBean;
-import legaltime.model.LaborInvoiceItemBean;
-import legaltime.model.LaborInvoiceItemManager;
-import legaltime.model.LaborRegisterBean;
-import legaltime.model.LaborRegisterManager;
-import legaltime.model.exception.DAOException;
-import legaltime.modelsafe.EasyLog;
-import legaltime.view.model.ClientComboBoxModel;
-import legaltime.view.renderer.ClientComboBoxRenderer;
+import legaltime.controller.InvoiceViewController;
 import org.jdesktop.application.Action;
 
 
@@ -46,51 +28,25 @@ import org.jdesktop.application.Action;
  *
  * @author bmartin
  */
-public class InvoiceEditorView extends javax.swing.JInternalFrame implements ActionListener, TableModelListener {
-    private LegalTimeApp mainController;
-    private LaborRegisterTableModel laborRegisterTableModel;
-    
-    private LaborRegisterBean[] invoiceableItems;
-    private EasyLog easyLog;
-    private ClientComboBoxRenderer clientComboBoxRenderer;
-    private DecimalFormat currencyFormatter;
-    private InvoiceController invoiceController;
+public class InvoiceEditorView extends javax.swing.JInternalFrame  {
 
-    private LaborInvoiceItemBean laborInvoiceItemBean;
-    private LaborInvoiceItemManager laborInvoiceItemManager;
-    private LaborRegisterManager laborRegisterManager;
+    private DecimalFormat currencyFormatter;
+    private InvoiceViewController invoiceViewController ;
+    
     /** Creates new form InvoiceManager */
-    public InvoiceEditorView() {
+    public InvoiceEditorView(InvoiceViewController invoiceViewController_) {
+         invoiceViewController = invoiceViewController_;
         initComponents();
-        invoiceController = new InvoiceController();
-        easyLog = EasyLog.getInstance();
-        laborRegisterManager =LaborRegisterManager.getInstance();
-        laborRegisterTableModel = new LaborRegisterTableModel();
-        tblLaborRegister.setAutoCreateRowSorter(true);
+       
 
         currencyFormatter = new DecimalFormat("$#,##0.00");
+
+
         
-        
-//        try {
-//            laborRegisterTableModel.setList(laborRegisterManager.loadAll());
-//        } catch (DAOException ex) {
-//            Logger.getLogger(InvoiceManager.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        tblLaborRegister.setModel(laborRegisterTableModel);
-        tblLaborRegister.getRowSorter().toggleSortOrder(1);
-        //lblAccountBalanceValue.setText(laborRegisterTableModel.getTotalBill().toString());
-        formatTableLaborRegister();
-        ClientComboBoxModel clientComboBoxModel = new ClientComboBoxModel();
-        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
-        cboClient.setModel(clientComboBoxModel);
-        clientComboBoxRenderer = new ClientComboBoxRenderer ();
-        cboClient.setRenderer(clientComboBoxRenderer );
-        cboClient.addActionListener(this);
-        laborRegisterTableModel.addTableModelListener(this);
+
+
     }
- public void setMainController(LegalTimeApp mainController_){
-        mainController = mainController_;
-    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -276,35 +232,26 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
     private javax.swing.JTable tblOtherCharges;
     // End of variables declaration//GEN-END:variables
 
+    public javax.swing.JComboBox getCboClient(){
+        return cboClient;
+    }
+    public javax.swing.JTable getTblLaborRegister(){
+        return tblLaborRegister;
+    }
+    public javax.swing.JTable getTblOtherCharges(){
+        return tblOtherCharges;
+    }
+
     @Action
     public void generateInvoice(){
-        int clientId=0;
-        try{
-            clientId = ((ClientBean)cboClient.getSelectedItem()).getClientId();
-        }catch(NullPointerException ex){
-           JOptionPane.showMessageDialog(this, "Please select a client to invoice.");
-           easyLog.addEntry(EasyLog.INFO, "User Attempted Invoice before selecting Client", getClass().getName(), ex);
-           return;
-
-        }
-
-        invoiceController.buildAndSaveInvoice(
-                clientId
-                ,laborRegisterTableModel.getLaborRegisterBeans());
-        JOptionPane.showMessageDialog(this, "The PDF has been saved to your desktop." +
-                "In normal operations in would be saved to a centralized " +
-                "archive and displayed for the user.");
-
-        refreshLaborRegisterTable();
-
-        
-    }
+        invoiceViewController.generateInvoice();
+     }
 
     public void initializeComponents(){
 
     }
 
-    private void formatTableLaborRegister() {
+    public void formatTableLaborRegister() {
          TableColumn tc;
          //CurrencyTableCellRenderer currencyTableCellRenderer  = CurrencyTableCellRenderer.getInstance();
         //Name
@@ -363,33 +310,12 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame implements Act
 
     }
 
-    public void actionPerformed(ActionEvent e) {
-       refreshLaborRegisterTable();
-    }
+   
 
-    public void refreshLaborRegisterTable(){
-         int clientId;
-        try{
-            clientId= ((ClientBean) cboClient.getSelectedItem()).getClientId();
-        }catch(NullPointerException  ex){
-            clientId=0;
-            easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
-                    , getClass().getName(), ex);
-        }
-        invoiceableItems = invoiceController.getInvoiceableLaborItems(clientId);
-        laborRegisterTableModel.setList(invoiceableItems);
-        tblLaborRegister.revalidate();
-        tblLaborRegister.getRowSorter().allRowsChanged();
 
+
+    public void setAccountBalance(Double newValue_){
         lblAccountBalanceValue.setText(
-          currencyFormatter.format(invoiceController.getInvoiceTotal(invoiceableItems)));
-        double test = invoiceController.getInvoiceTotal(invoiceableItems);
-    }
-
-    public void tableChanged(TableModelEvent e) {
-        lblAccountBalanceValue.setText(
-          currencyFormatter.format(
-             invoiceController.getInvoiceTotal(
-               laborRegisterTableModel.getLaborRegisterBeans())));
+          currencyFormatter.format(newValue_));
     }
 }

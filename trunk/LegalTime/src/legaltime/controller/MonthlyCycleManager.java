@@ -31,8 +31,9 @@ public class MonthlyCycleManager {
         LaborRegisterBean laborRegisterBean;
         LaborRegisterManager laborRegisterManager;
         laborRegisterManager = LaborRegisterManager.getInstance();
+
         try {
-             clients = clientManager.loadByWhere("where bill_type ='MONTHLY'");
+             clients = clientManager.loadByWhere("where bill_type ='MONTHLY' and monthly_bill_rate >0");
         } catch (DAOException ex) {
             Logger.getLogger(MonthlyCycleManager.class.getName()).log(Level.SEVERE, null, ex);
         }
