@@ -44,7 +44,7 @@ public class JasperReportsIntroTest {
     public void testMakeReport() {
         System.out.println("makeReport");
         InvoiceReport instance = new InvoiceReport();
-        instance.makeReport();
+        instance.makeReport(3);
         // TODO review the generated test code and remove the default call to fail.
         
     }

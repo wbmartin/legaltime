@@ -13,6 +13,8 @@ import javax.swing.event.TableModelListener;
 import legaltime.LegalTimeApp;
 import legaltime.cache.ClientCache;
 import legaltime.model.ClientBean;
+import legaltime.model.ExpenseRegisterBean;
+import legaltime.model.ExpenseRegisterManager;
 import legaltime.model.LaborInvoiceItemBean;
 import legaltime.model.LaborInvoiceItemManager;
 import legaltime.model.LaborRegisterBean;
@@ -20,6 +22,7 @@ import legaltime.model.LaborRegisterManager;
 import legaltime.modelsafe.EasyLog;
 import legaltime.view.InvoiceEditorView;
 import legaltime.view.model.ClientComboBoxModel;
+import legaltime.view.model.ExpenseRegisterTableModel;
 import legaltime.view.model.LaborRegisterTableModel;
 import legaltime.view.renderer.ClientComboBoxRenderer;
 
@@ -34,11 +37,15 @@ public class InvoiceViewController implements TableModelListener, ActionListener
     private LaborRegisterTableModel laborRegisterTableModel;
 
     private LaborRegisterBean[] invoiceableItems;
+    private ExpenseRegisterBean[] expensableItems;
 
     private ClientComboBoxRenderer clientComboBoxRenderer;
     private LaborInvoiceItemBean laborInvoiceItemBean;
     private LaborInvoiceItemManager laborInvoiceItemManager;
     private LaborRegisterManager laborRegisterManager;
+
+    ExpenseRegisterManager expenseRegisterManager;
+    ExpenseRegisterTableModel  expenseRegisterTableModel;
 
         private LegalTimeApp mainController;
     private static InvoiceViewController instance;
@@ -56,6 +63,15 @@ public class InvoiceViewController implements TableModelListener, ActionListener
         invoiceEditorView.getTblLaborRegister().getRowSorter().toggleSortOrder(1);
         laborRegisterTableModel.addTableModelListener(this);
         invoiceEditorView.formatTableLaborRegister();
+        
+
+        expenseRegisterManager =ExpenseRegisterManager.getInstance();
+        expenseRegisterTableModel = new ExpenseRegisterTableModel();
+        invoiceEditorView.getTblExpenseRegister().setAutoCreateRowSorter(true);
+        invoiceEditorView.getTblExpenseRegister().setModel(expenseRegisterTableModel);
+        invoiceEditorView.getTblExpenseRegister().getRowSorter().toggleSortOrder(1);
+        expenseRegisterTableModel.addTableModelListener(this);
+        invoiceEditorView.formatTableExpenseRegister();
 
 
         ClientComboBoxModel clientComboBoxModel = new ClientComboBoxModel();
@@ -94,14 +110,15 @@ public class InvoiceViewController implements TableModelListener, ActionListener
      public void tableChanged(TableModelEvent e) {
         invoiceEditorView.setAccountBalance(
              invoiceController.getInvoiceTotal(
-               laborRegisterTableModel.getLaborRegisterBeans()));
+               laborRegisterTableModel.getLaborRegisterBeans()
+               , expenseRegisterTableModel.getExpenseRegisterBeans()));
     }
 
-      public void actionPerformed(ActionEvent e) {
-       refreshLaborRegisterTable();
+    public void actionPerformed(ActionEvent e) {
+       refreshLaborAndExpenseRegisterTable();
     }
 
-    public void refreshLaborRegisterTable(){
+    public void refreshLaborAndExpenseRegisterTable(){
          int clientId;
         try{
             clientId= ((ClientBean) invoiceEditorView.getCboClient().getSelectedItem()).getClientId();
@@ -110,13 +127,28 @@ public class InvoiceViewController implements TableModelListener, ActionListener
             easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
                     , getClass().getName(), ex);
         }
-        invoiceableItems = invoiceController.getInvoiceableLaborItems(clientId);
+        
+        refreshLaborRegisterTable(clientId);
+        refreshExpenseRegisterTable(clientId);
+
+        invoiceEditorView.setAccountBalance(
+                invoiceController.getInvoiceTotal(invoiceableItems
+                    , expensableItems));
+        
+    }
+    public void refreshLaborRegisterTable(int clientId_){
+        invoiceableItems = invoiceController.getInvoiceableLaborItems(clientId_);
         laborRegisterTableModel.setList(invoiceableItems);
         invoiceEditorView.getTblLaborRegister().revalidate();
         invoiceEditorView.getTblLaborRegister().getRowSorter().allRowsChanged();
+    }
 
-        invoiceEditorView.setAccountBalance(invoiceController.getInvoiceTotal(invoiceableItems));
-        double test = invoiceController.getInvoiceTotal(invoiceableItems);
+    public void  refreshExpenseRegisterTable(int clientId_){
+        expensableItems = invoiceController.getInvoiceableExpenseItems(clientId_);
+        expenseRegisterTableModel.setList(expensableItems);
+        invoiceEditorView.getTblExpenseRegister().revalidate();
+        invoiceEditorView.getTblExpenseRegister().getRowSorter().allRowsChanged();
+
     }
 
     public void generateInvoice(){
@@ -133,14 +165,30 @@ public class InvoiceViewController implements TableModelListener, ActionListener
 
         invoiceController.buildAndSaveInvoice(
                 clientId
-                ,laborRegisterTableModel.getLaborRegisterBeans());
+                ,laborRegisterTableModel.getLaborRegisterBeans()
+                ,expenseRegisterTableModel.getExpenseRegisterBeans());
         JOptionPane.showMessageDialog(invoiceEditorView, "The PDF has been saved to your desktop." +
                 "In normal operations in would be saved to a centralized " +
                 "archive and displayed for the user.");
 
-        refreshLaborRegisterTable();
+        refreshLaborAndExpenseRegisterTable();
 
 
+    }
+
+    public void addAdminExpense() {
+        //invoiceEditorView.getTblExpenseRegister().getT
+        int clientId=0;
+        try{
+            clientId = ((ClientBean)invoiceEditorView.getCboClient().getSelectedItem()).getClientId();
+        }catch(NullPointerException ex){
+           JOptionPane.showMessageDialog(invoiceEditorView, "Please select a client to add an Expense to.");
+           easyLog.addEntry(EasyLog.INFO, "User Attempted Adding Expense Before Selecting Client", getClass().getName(), ex);
+           return;
+
+        }
+        expenseRegisterTableModel.addRow(clientId,0D,"Administrative Expense",true,new java.util.Date());
+        refreshExpenseRegisterTable(clientId);
     }
 
 }

@@ -101,11 +101,12 @@ public class ExpenseRegisterTableModel extends AbstractTableModel {
         switch(col){
             case 0: expenseRegisterBeans[row].setInvoiceable((Boolean)value);
                     break;
-            case 2: expenseRegisterBeans[row].setExpenseDate((Date) value);
+            case 1: expenseRegisterBeans[row].setExpenseDate((Date) value);
                     break;
-            case 3: expenseRegisterBeans[row].setDescription((String)value);
+            case 2: expenseRegisterBeans[row].setDescription((String)value);
                     break;
-            case 4: expenseRegisterBeans[row].setAmount(Double.parseDouble(value.toString()));
+            case 3: expenseRegisterBeans[row].setAmount(Double.parseDouble(value.toString()));
+                    break;
             default: System.err.println("Out of bounds");
         }
         try {
@@ -114,12 +115,12 @@ public class ExpenseRegisterTableModel extends AbstractTableModel {
 
         } catch (DAOException ex) {
             Logger.getLogger(ExpenseRegisterTableModel.class.getName()).log(Level.SEVERE, null, ex);
-            easyLog.addEntry(EasyLog.SEVERE,"Error updating Expense Register"
+            easyLog.addEntry(EasyLog.SEVERE,"Error Updating Expense Register"
                     ,getClass().getName(),ex);
         }
         fireTableChanged(new TableModelEvent(this));
       }catch(Exception e){
-          easyLog.addEntry(EasyLog.SEVERE,"Error updating Expense Register"
+          easyLog.addEntry(EasyLog.SEVERE,"Error Updating Expense Register"
                     ,getClass().getName(),e);
       }
 
@@ -132,6 +133,29 @@ public class ExpenseRegisterTableModel extends AbstractTableModel {
      */
     public ExpenseRegisterBean[] getExpenseRegisterBeans() {
         return expenseRegisterBeans;
+    }
+
+    public void addRow(int ClientId_,Double amount_
+            ,String description_, Boolean invoiceable_
+            ,java.util.Date expenseDate_){
+        ExpenseRegisterBean expenseRegisterBean = expenseRegisterManager.createExpenseRegisterBean();
+        expenseRegisterBean.setAmount(0D);
+        expenseRegisterBean.setClientId(ClientId_);
+        expenseRegisterBean.setDescription(description_);
+        expenseRegisterBean.setInvoiceable(invoiceable_);
+        expenseRegisterBean.setExpenseDate(expenseDate_);
+        try {
+            expenseRegisterManager.save(expenseRegisterBean);
+            legalTimeApp.setLastActionText("Added Expense Register Entry");
+
+        } catch (DAOException ex) {
+            Logger.getLogger(ExpenseRegisterTableModel.class.getName()).log(Level.SEVERE, null, ex);
+            easyLog.addEntry(EasyLog.SEVERE,"Error adding Expense Register entry"
+                    ,getClass().getName(),ex);
+        }
+        fireTableChanged(new TableModelEvent(this));
+
+
     }
 
    

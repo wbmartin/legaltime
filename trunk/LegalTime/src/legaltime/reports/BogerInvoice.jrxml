@@ -216,17 +216,12 @@
 			<staticText>
 				<reportElement x="208" y="7" width="124" height="18"/>
 				<textElement/>
-				<text><![CDATA[Invoice Version 0.0.0.17]]></text>
+				<text><![CDATA[Invoice Version 0.0.0.20]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
 	<summary>
 		<band height="293" splitType="Stretch">
-			<subreport>
-				<reportElement x="2" y="28" width="554" height="100"/>
-				<dataSourceExpression><![CDATA[$P{Expenses}]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "BogerInvoice_ExpenseSubReport.jasper"]]></subreportExpression>
-			</subreport>
 			<staticText>
 				<reportElement x="151" y="8" width="167" height="20"/>
 				<textElement/>
@@ -308,6 +303,11 @@
 			<line>
 				<reportElement x="449" y="275" width="100" height="1"/>
 			</line>
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="28" width="554" height="100" isPrintWhenDetailOverflows="true"/>
+				<dataSourceExpression><![CDATA[$P{Expenses}]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "BogerInvoice_ExpenseSubReport.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</summary>
 </jasperReport>

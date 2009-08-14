@@ -21,6 +21,7 @@ import javax.swing.JCheckBox;
 import javax.swing.table.TableColumn;
 import legaltime.LegalTimeApp;
 import legaltime.controller.InvoiceViewController;
+import legaltime.view.renderer.DateTableCellEditor;
 import org.jdesktop.application.Action;
 
 
@@ -65,8 +66,9 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
         lblBillableHours = new javax.swing.JLabel();
         lblOtherCharges = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblOtherCharges = new javax.swing.JTable();
+        tblExpenseRegister = new javax.swing.JTable();
         cmdGenerateInvoice = new javax.swing.JButton();
+        cmdAddExpense = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -139,7 +141,7 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
-        tblOtherCharges.setModel(new javax.swing.table.DefaultTableModel(
+        tblExpenseRegister.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -150,22 +152,26 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
                 "Date", "Description", "Total"
             }
         ));
-        tblOtherCharges.setName("tblOtherCharges"); // NOI18N
-        jScrollPane2.setViewportView(tblOtherCharges);
-        tblOtherCharges.getColumnModel().getColumn(0).setMinWidth(75);
-        tblOtherCharges.getColumnModel().getColumn(0).setPreferredWidth(75);
-        tblOtherCharges.getColumnModel().getColumn(0).setMaxWidth(100);
-        tblOtherCharges.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("tblOtherCharges.columnModel.title0")); // NOI18N
-        tblOtherCharges.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("tblOtherCharges.columnModel.title1")); // NOI18N
-        tblOtherCharges.getColumnModel().getColumn(2).setMinWidth(75);
-        tblOtherCharges.getColumnModel().getColumn(2).setPreferredWidth(75);
-        tblOtherCharges.getColumnModel().getColumn(2).setMaxWidth(75);
-        tblOtherCharges.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("tblOtherCharges.columnModel.title2")); // NOI18N
+        tblExpenseRegister.setName("tblExpenseRegister"); // NOI18N
+        jScrollPane2.setViewportView(tblExpenseRegister);
+        tblExpenseRegister.getColumnModel().getColumn(0).setMinWidth(75);
+        tblExpenseRegister.getColumnModel().getColumn(0).setPreferredWidth(75);
+        tblExpenseRegister.getColumnModel().getColumn(0).setMaxWidth(100);
+        tblExpenseRegister.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("tblExpenseRegister.columnModel.title0")); // NOI18N
+        tblExpenseRegister.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("tblExpenseRegister.columnModel.title1")); // NOI18N
+        tblExpenseRegister.getColumnModel().getColumn(2).setMinWidth(75);
+        tblExpenseRegister.getColumnModel().getColumn(2).setPreferredWidth(75);
+        tblExpenseRegister.getColumnModel().getColumn(2).setMaxWidth(75);
+        tblExpenseRegister.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("tblExpenseRegister.columnModel.title2")); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getActionMap(InvoiceEditorView.class, this);
         cmdGenerateInvoice.setAction(actionMap.get("generateInvoice")); // NOI18N
         cmdGenerateInvoice.setText(resourceMap.getString("cmdGenerateInvoice.text")); // NOI18N
         cmdGenerateInvoice.setName("cmdGenerateInvoice"); // NOI18N
+
+        cmdAddExpense.setAction(actionMap.get("addExpense")); // NOI18N
+        cmdAddExpense.setText(resourceMap.getString("cmdAddExpense.text")); // NOI18N
+        cmdAddExpense.setName("cmdAddExpense"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,7 +186,10 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
                         .addGap(18, 18, 18)
                         .addComponent(cboClient, 0, 509, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
-                    .addComponent(lblOtherCharges)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblOtherCharges)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdAddExpense))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblBillableHours)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
@@ -208,10 +217,12 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblOtherCharges)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblOtherCharges)
+                    .addComponent(cmdAddExpense))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         pack();
@@ -220,6 +231,7 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboClient;
+    private javax.swing.JButton cmdAddExpense;
     private javax.swing.JButton cmdGenerateInvoice;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -228,8 +240,8 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel lblBillableHours;
     private javax.swing.JLabel lblClient;
     private javax.swing.JLabel lblOtherCharges;
+    private javax.swing.JTable tblExpenseRegister;
     private javax.swing.JTable tblLaborRegister;
-    private javax.swing.JTable tblOtherCharges;
     // End of variables declaration//GEN-END:variables
 
     public javax.swing.JComboBox getCboClient(){
@@ -238,8 +250,8 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
     public javax.swing.JTable getTblLaborRegister(){
         return tblLaborRegister;
     }
-    public javax.swing.JTable getTblOtherCharges(){
-        return tblOtherCharges;
+    public javax.swing.JTable getTblExpenseRegister(){
+        return tblExpenseRegister;
     }
 
     @Action
@@ -309,13 +321,43 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
          tc.setCellRenderer(CurrencyTableCellRenderer.getInstance());
 
     }
+public void formatTableExpenseRegister() {
+         TableColumn tc;
+         //CurrencyTableCellRenderer currencyTableCellRenderer  = CurrencyTableCellRenderer.getInstance();
+        //Name
+         //?
+         tc = tblExpenseRegister.getColumnModel().getColumn(0);
+         tc.setPreferredWidth(25);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(25);
 
-   
+         //Date
+         tc = tblExpenseRegister.getColumnModel().getColumn(1);
+         tc.setPreferredWidth(75);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(200);
+         tc.setCellEditor(new DateTableCellEditor());
+         //Description
+         tc = tblExpenseRegister.getColumnModel().getColumn(2);
+         tc.setPreferredWidth(200);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(350);
+         //Amount
+         tc = tblExpenseRegister.getColumnModel().getColumn(3);
+         tc.setPreferredWidth(50);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(150);
+         tc.setCellRenderer(CurrencyTableCellRenderer.getInstance());
+}
 
 
 
     public void setAccountBalance(Double newValue_){
         lblAccountBalanceValue.setText(
           currencyFormatter.format(newValue_));
+    }
+    @Action
+    public void addExpense(){
+         invoiceViewController.addAdminExpense();
     }
 }
