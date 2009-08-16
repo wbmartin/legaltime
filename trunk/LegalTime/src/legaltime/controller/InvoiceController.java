@@ -5,6 +5,8 @@
 
 package legaltime.controller;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,8 @@ import legaltime.model.LaborInvoiceItemManager;
 import legaltime.model.LaborRegisterBean;
 import legaltime.model.LaborRegisterManager;
 import legaltime.model.Manager;
+import legaltime.model.PaymentLogBean;
+import legaltime.model.PaymentLogManager;
 import legaltime.model.exception.DAOException;
 import legaltime.modelsafe.EasyLog;
 import legaltime.reports.InvoiceReport;
@@ -40,6 +44,7 @@ public class InvoiceController {
     private ExpenseInvoiceItemManager expenseInvoiceItemManager;
     private LaborRegisterManager laborRegisterManager;
     private ExpenseRegisterManager expenseRegisterManager;
+    private PaymentLogManager paymentLogManager;
     private EasyLog easyLog;
     LegalTimeApp app;
 
@@ -49,6 +54,7 @@ public class InvoiceController {
         manager = Manager.getInstance();
         laborRegisterManager =LaborRegisterManager.getInstance();
         expenseRegisterManager = ExpenseRegisterManager.getInstance();
+        paymentLogManager= PaymentLogManager.getInstance();
         app = LegalTimeApp.getApplication();
         laborInvoiceItemManager = LaborInvoiceItemManager.getInstance();
         expenseInvoiceItemManager = ExpenseInvoiceItemManager.getInstance();
@@ -84,7 +90,8 @@ public class InvoiceController {
 
     public void buildAndSaveInvoice(int clientId_
             , LaborRegisterBean[] laborRegisterBeans_
-            , ExpenseRegisterBean[] expenseRegisterBeans_){
+            , ExpenseRegisterBean[] expenseRegisterBeans_
+            , PaymentLogBean[] paymentLogBeans_){
         try {
             InvoiceManager invoiceManager = InvoiceManager.getInstance();
             InvoiceBean invoiceBean = invoiceManager.createInvoiceBean();
@@ -94,7 +101,7 @@ public class InvoiceController {
             invoiceBean.setInvoiceTotalAmt(getInvoiceTotal(
                     laborRegisterBeans_
                     , expenseRegisterBeans_));
-            invoiceBean.setPrevBalanceDue(0);
+            invoiceBean.setPrevBalanceDue(getPreviousBalance(clientId_));
 
             
             manager.beginTransaction();
@@ -150,6 +157,16 @@ public class InvoiceController {
 
 
             }
+            
+            
+            rowCount = paymentLogBeans_.length;
+
+            for (int ndx = 0; ndx < rowCount ; ndx++) {
+                  paymentLogBeans_[ndx].setInvoiceId(invoiceBean.getInvoiceId());
+                   paymentLogBeans_[ndx] = paymentLogManager.save(paymentLogBeans_[ndx]);
+            }
+
+
 
 
             manager.endTransaction(true);
@@ -206,4 +223,28 @@ public class InvoiceController {
         }
         return invoiceableItems;
     }
+
+     public Double getPreviousBalance(int clientId_){
+       Double previousBalance=0D;
+       ResultSet rs = null;
+       PreparedStatement ps;
+        try {
+            ps = manager.getConnection().prepareStatement(
+                    "select sum(tran_amt) from "
+                    + "client_account_register "
+                    + "where client_id = " + clientId_);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                previousBalance= rs.getDouble(0);
+            }
+            if(previousBalance.isNaN()){
+                previousBalance=0D;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+       return previousBalance;
+   }
 }

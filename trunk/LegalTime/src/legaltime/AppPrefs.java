@@ -24,6 +24,7 @@ public class AppPrefs {
     public static final String  JDBC_PASSWD ="JDBC_PASSWD";
 
     public static final String  EBACKUP_PATH ="EBACKUP_PATH";
+    public static final String  INVOICE_OUTPUT_PATH ="INVOICE_OUTPUT_PATH";
     
     protected AppPrefs(){
        
@@ -50,6 +51,14 @@ public class AppPrefs {
             prefs.put(EBACKUP_PATH, "C:\\");
             //prefs.put(EBACKUP_PATH, NOT_SET);
         }
+        temp = prefs.get(INVOICE_OUTPUT_PATH, NOT_SET);
+        if (temp.equals(NOT_SET)){
+            
+            prefs.put(INVOICE_OUTPUT_PATH, "C:\\");
+            //prefs.put(EBACKUP_PATH, NOT_SET);
+        }
+
+
         
 
     }

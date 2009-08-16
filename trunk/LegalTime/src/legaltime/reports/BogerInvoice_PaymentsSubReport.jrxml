@@ -13,53 +13,53 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="41" splitType="Stretch">
+		<band height="34" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="21" width="50" height="20"/>
+				<reportElement x="0" y="12" width="40" height="20"/>
 				<textElement>
 					<font size="12" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="69" y="21" width="232" height="20"/>
+				<reportElement x="51" y="12" width="232" height="20"/>
 				<textElement>
 					<font size="12" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Payment Description]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="507" y="19" width="48" height="20"/>
+				<reportElement x="488" y="10" width="67" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="40" width="50" height="1"/>
+				<reportElement x="0" y="31" width="40" height="1"/>
 			</line>
 			<line>
-				<reportElement x="69" y="39" width="377" height="1"/>
+				<reportElement x="51" y="30" width="423" height="1"/>
 			</line>
 			<line>
-				<reportElement x="478" y="39" width="77" height="1"/>
+				<reportElement x="488" y="30" width="67" height="1"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="26" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="50" height="20"/>
+		<band height="23" splitType="Stretch">
+			<textField pattern="MM/dd/yy">
+				<reportElement x="0" y="0" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{effectiveDate}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="69" y="0" width="377" height="20"/>
+				<reportElement x="51" y="0" width="423" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="$ #,##0.00" isBlankWhenNull="true">
-				<reportElement x="494" y="0" width="61" height="20"/>
+				<reportElement x="488" y="0" width="67" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{amount}]]></textFieldExpression>
 			</textField>
