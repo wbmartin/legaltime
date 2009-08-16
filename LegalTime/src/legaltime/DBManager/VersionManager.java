@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import legaltime.AppPrefs;
 import legaltime.ResourceAnchor;
+import legaltime.TextUtils;
 import legaltime.model.Manager;
 import legaltime.modelsafe.EasyLog;
 
@@ -199,13 +200,19 @@ public class VersionManager {
         }
         
         String filePathPrefix = appPrefs.getValue(AppPrefs.EBACKUP_PATH)
-                +"\\LegalTimeEbackup"+ Integer.toString(1900+now.getYear())
-                +"_"+ Integer.toString(now.getMonth())
-                +"_"+ Integer.toString(now.getDay())
-                +"_"+ Integer.toString(now.getHours())
-                +"_"+ Integer.toString(now.getMinutes())
-                +"_"+ Integer.toString(now.getSeconds()) ;
-        boolean success =(new File(filePathPrefix)).mkdir();
+                +File.separatorChar +"LegalTimeEbackup"+ Integer.toString(1900+now.getYear())
+                +TextUtils.frontZeroFill( Integer.toString(now.getMonth()+1),2)
+                +TextUtils.frontZeroFill( Integer.toString(now.getDate()),2)
+                +TextUtils.frontZeroFill( Integer.toString(now.getHours()),2)
+                +TextUtils.frontZeroFill( Integer.toString(now.getMinutes()),2)
+                +TextUtils.frontZeroFill( Integer.toString(now.getSeconds()),2) ;
+
+         File dir = new File(filePathPrefix);
+        boolean success =dir.exists();
+        if(!success){
+            success =(dir).mkdir();
+        }
+
         if (! success){
             return success;
         }

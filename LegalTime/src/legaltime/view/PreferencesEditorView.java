@@ -12,10 +12,7 @@
 package legaltime.view;
 
 
-import java.beans.PropertyVetoException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+
 import legaltime.AppPrefs;
 import legaltime.LegalTimeApp;
 import org.jdesktop.application.Action;
@@ -33,6 +30,7 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         appPrefs = AppPrefs.getInstance();
         loadCurrentPreferences();
         txtEbackupPath.setEditable(false);
+        txtInvoiceOutputPath.setEditable(false);
     }
     public void setMainController(LegalTimeApp mainController_){
         mainController = mainController_;
@@ -60,6 +58,9 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         lblEBackupPath = new javax.swing.JLabel();
         txtEbackupPath = new javax.swing.JTextField();
         cmdChooseEBackupPath = new javax.swing.JButton();
+        txtInvoiceOutputPath = new javax.swing.JTextField();
+        cmdChooseInvoiceOutputPath = new javax.swing.JButton();
+        lblInvoiceOutputPath = new javax.swing.JLabel();
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(PreferencesEditorView.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
@@ -104,6 +105,15 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         cmdChooseEBackupPath.setText(resourceMap.getString("cmdChooseEBackupPath.text")); // NOI18N
         cmdChooseEBackupPath.setName("cmdChooseEBackupPath"); // NOI18N
 
+        txtInvoiceOutputPath.setName("txtInvoiceOutputPath"); // NOI18N
+
+        cmdChooseInvoiceOutputPath.setAction(actionMap.get("ChooseInvoiceOutputPath")); // NOI18N
+        cmdChooseInvoiceOutputPath.setText(resourceMap.getString("cmdChooseInvoiceOutputPath.text")); // NOI18N
+        cmdChooseInvoiceOutputPath.setName("cmdChooseInvoiceOutputPath"); // NOI18N
+
+        lblInvoiceOutputPath.setText(resourceMap.getString("lblInvoiceOutputPath.text")); // NOI18N
+        lblInvoiceOutputPath.setName("lblInvoiceOutputPath"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -140,6 +150,14 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
                                 .addComponent(txtMysqlIp, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtDbName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(77, Short.MAX_VALUE)
+                .addComponent(lblInvoiceOutputPath)
+                .addGap(18, 18, 18)
+                .addComponent(txtInvoiceOutputPath, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdChooseInvoiceOutputPath)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,7 +183,12 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
                     .addComponent(txtEbackupPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblEBackupPath)
                     .addComponent(cmdChooseEBackupPath))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtInvoiceOutputPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblInvoiceOutputPath)
+                    .addComponent(cmdChooseInvoiceOutputPath))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdOk)
                     .addComponent(cmdCancel))
@@ -179,9 +202,11 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdCancel;
     private javax.swing.JButton cmdChooseEBackupPath;
+    private javax.swing.JButton cmdChooseInvoiceOutputPath;
     private javax.swing.JButton cmdOk;
     private javax.swing.JLabel lblDBUserName;
     private javax.swing.JLabel lblEBackupPath;
+    private javax.swing.JLabel lblInvoiceOutputPath;
     private javax.swing.JLabel lblMysqlIp;
     private javax.swing.JLabel lblMysqlIp1;
     private javax.swing.JLabel lbldbPasswd;
@@ -189,6 +214,7 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtDBUserName;
     private javax.swing.JTextField txtDbName;
     private javax.swing.JTextField txtEbackupPath;
+    private javax.swing.JTextField txtInvoiceOutputPath;
     private javax.swing.JTextField txtMysqlIp;
     // End of variables declaration//GEN-END:variables
 
@@ -199,6 +225,7 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         appPrefs.getPrefs().put(AppPrefs.JDBC_USER, txtDBUserName.getText());
         appPrefs.getPrefs().put(AppPrefs.JDBC_PASSWD, txtDBPasswd.getText());
         appPrefs.getPrefs().put(AppPrefs.EBACKUP_PATH, txtEbackupPath.getText());
+        appPrefs.getPrefs().put(AppPrefs.INVOICE_OUTPUT_PATH, txtInvoiceOutputPath.getText());
 
     }
     private void loadCurrentPreferences(){
@@ -207,6 +234,7 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         txtDBUserName.setText(appPrefs.getPrefs().get(AppPrefs.JDBC_USER,AppPrefs.NOT_SET ));
         txtDBPasswd.setText(appPrefs.getPrefs().get(AppPrefs.JDBC_PASSWD,AppPrefs.NOT_SET ));
         txtEbackupPath.setText(appPrefs.getPrefs().get(AppPrefs.EBACKUP_PATH,AppPrefs.NOT_SET ));
+        txtInvoiceOutputPath.setText(appPrefs.getPrefs().get(AppPrefs.INVOICE_OUTPUT_PATH,AppPrefs.NOT_SET ));
     }
 
     @Action
@@ -231,6 +259,19 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         fileChooserView.setVisible(true);
         if(fileChooserView.isSelectionConfirmed()){
             txtEbackupPath.setText( fileChooserView.getSelectedFilePath());
+        }
+        fileChooserView.dispose();
+
+    }
+
+    @Action
+    public void ChooseInvoiceOutputPath(){
+        FileChooserView fileChooserView =
+                    new FileChooserView(mainController.getMainFrame());
+        fileChooserView.setFileSelectionMode(FileChooserView.DIRECTORIES);
+        fileChooserView.setVisible(true);
+        if(fileChooserView.isSelectionConfirmed()){
+            txtInvoiceOutputPath.setText( fileChooserView.getSelectedFilePath());
         }
         fileChooserView.dispose();
 

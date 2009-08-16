@@ -67,6 +67,15 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="77" max="32767" attributes="0"/>
+              <Component id="lblInvoiceOutputPath" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="txtInvoiceOutputPath" min="-2" pref="445" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cmdChooseInvoiceOutputPath" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -98,7 +107,13 @@
                   <Component id="lblEBackupPath" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdChooseEBackupPath" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="91" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtInvoiceOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblInvoiceOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmdChooseInvoiceOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="62" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cmdOk" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdCancel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -190,6 +205,26 @@
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="cmdChooseEBackupPath.text"/>
         <Property name="name" type="java.lang.String" value="cmdChooseEBackupPath" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtInvoiceOutputPath">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="txtInvoiceOutputPath" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdChooseInvoiceOutputPath">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="legaltime.view.PreferencesEditorView" id="ChooseInvoiceOutputPath" methodName="ChooseInvoiceOutputPath"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="cmdChooseInvoiceOutputPath.text"/>
+        <Property name="name" type="java.lang.String" value="cmdChooseInvoiceOutputPath" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblInvoiceOutputPath">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lblInvoiceOutputPath.text"/>
+        <Property name="name" type="java.lang.String" value="lblInvoiceOutputPath" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

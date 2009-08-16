@@ -10,7 +10,7 @@ ALTER TABLE `expense_register` CHANGE COLUMN `amount` `amount` DOUBLE DEFAULT NU
 --
 CREATE TABLE IF NOT EXISTS payment_log
 (
-	payment_log_id INT NOT NULL,
+	payment_log_id INT NOT NULL AUTO_INCREMENT,
 	effective_date DATE,
 	description VARCHAR(255),
 	amount DOUBLE,

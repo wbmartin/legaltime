@@ -63,7 +63,7 @@
 				</staticText>
 				<subreport>
 					<reportElement x="0" y="43" width="555" height="23"/>
-					<dataSourceExpression><![CDATA[]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[$P{Payments}]]></dataSourceExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "BogerInvoice_PaymentsSubReport.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
@@ -139,7 +139,7 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="27" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<staticText>
 				<reportElement x="1" y="0" width="50" height="20"/>
 				<textElement>
@@ -169,14 +169,26 @@
 				<text><![CDATA[Description]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="488" y="0" width="64" height="20"/>
+				<reportElement x="488" y="0" width="67" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<line>
-				<reportElement x="1" y="23" width="553" height="1"/>
+				<reportElement x="1" y="19" width="40" height="1"/>
+			</line>
+			<line>
+				<reportElement x="51" y="19" width="88" height="1"/>
+			</line>
+			<line>
+				<reportElement x="151" y="19" width="248" height="1"/>
+			</line>
+			<line>
+				<reportElement x="411" y="19" width="63" height="1"/>
+			</line>
+			<line>
+				<reportElement x="488" y="19" width="67" height="1"/>
 			</line>
 		</band>
 	</columnHeader>
@@ -187,7 +199,7 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{hoursBilled}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="MM/dd/yy">
 				<reportElement x="3" y="0" width="48" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{activityDate}]]></textFieldExpression>
@@ -263,7 +275,7 @@
 			<staticText>
 				<reportElement x="208" y="7" width="124" height="18"/>
 				<textElement/>
-				<text><![CDATA[Invoice Version 0.0.0.21]]></text>
+				<text><![CDATA[Invoice Version 0.0.0.23]]></text>
 			</staticText>
 		</band>
 	</pageFooter>

@@ -7,6 +7,8 @@ package legaltime.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -19,6 +21,9 @@ import legaltime.model.LaborInvoiceItemBean;
 import legaltime.model.LaborInvoiceItemManager;
 import legaltime.model.LaborRegisterBean;
 import legaltime.model.LaborRegisterManager;
+import legaltime.model.PaymentLogBean;
+import legaltime.model.PaymentLogManager;
+import legaltime.model.exception.DAOException;
 import legaltime.modelsafe.EasyLog;
 import legaltime.view.InvoiceEditorView;
 import legaltime.view.model.ClientComboBoxModel;
@@ -162,11 +167,22 @@ public class InvoiceViewController implements TableModelListener, ActionListener
            return;
 
         }
+        PaymentLogManager paymentLogManager = PaymentLogManager.getInstance();
+        PaymentLogBean[] paymentsLogBeans = null;
+        try {
+            paymentsLogBeans = paymentLogManager.loadByWhere("where invoice_id is null and "
+                    + "client_id = " + clientId);
+        } catch (DAOException ex) {
+            Logger.getLogger(InvoiceViewController.class.getName()).log(Level.SEVERE, null, ex);
+             easyLog.addEntry(EasyLog.INFO, "Error Loaing Payments", getClass().getName(), ex);
+
+        }
 
         invoiceController.buildAndSaveInvoice(
                 clientId
                 ,laborRegisterTableModel.getLaborRegisterBeans()
-                ,expenseRegisterTableModel.getExpenseRegisterBeans());
+                ,expenseRegisterTableModel.getExpenseRegisterBeans()
+                ,paymentsLogBeans);
         JOptionPane.showMessageDialog(invoiceEditorView, "The PDF has been saved to your desktop." +
                 "In normal operations in would be saved to a centralized " +
                 "archive and displayed for the user.");

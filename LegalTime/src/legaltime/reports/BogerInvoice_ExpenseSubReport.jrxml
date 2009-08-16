@@ -7,63 +7,59 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="19" splitType="Stretch">
-			<line>
-				<reportElement x="0" y="8" width="555" height="1"/>
-			</line>
-		</band>
+		<band height="1" splitType="Stretch"/>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="29" splitType="Stretch">
+		<band height="27" splitType="Stretch">
 			<staticText>
-				<reportElement x="79" y="7" width="232" height="20"/>
+				<reportElement x="51" y="7" width="232" height="20"/>
 				<textElement>
 					<font size="12" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Expenses]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="507" y="7" width="48" height="20"/>
+				<reportElement x="488" y="5" width="67" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Amount]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="7" width="50" height="20"/>
+				<reportElement x="0" y="7" width="40" height="20"/>
 				<textElement>
 					<font size="12" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Date]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="26" width="69" height="1"/>
+				<reportElement x="0" y="26" width="40" height="1"/>
 			</line>
 			<line>
-				<reportElement x="79" y="26" width="355" height="1"/>
+				<reportElement x="51" y="26" width="425" height="1"/>
 			</line>
 			<line>
-				<reportElement x="455" y="26" width="100" height="1"/>
+				<reportElement x="488" y="25" width="67" height="1"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="22" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="79" y="0" width="355" height="20"/>
+				<reportElement x="51" y="0" width="425" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{expenseDescription}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="0" y="0" width="69" height="20"/>
+			<textField pattern="MM/dd/yy">
+				<reportElement x="0" y="0" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{expenseDate}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="$ #,##0.00" isBlankWhenNull="false">
-				<reportElement x="455" y="0" width="100" height="20"/>
+				<reportElement x="488" y="0" width="67" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{amount}]]></textFieldExpression>
 			</textField>
@@ -73,7 +69,7 @@
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="5" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
 		<band splitType="Stretch"/>
