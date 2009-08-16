@@ -154,8 +154,11 @@ public class InvoiceController {
 
             manager.endTransaction(true);
             InvoiceReport test = new InvoiceReport();
-            test.makeReport(invoiceBean.getInvoiceId());
-             app.setLastActionText("Invoice Successfully Created.");
+            if(test.makeReport(invoiceBean.getInvoiceId())){
+                 app.setLastActionText("Invoice Successfully Created.");
+            }else{
+                app.setLastActionText("Error: Invoice Generation Failed.");
+            }
         } catch (SQLException ex) {
             try {
                 easyLog.addEntry(EasyLog.INFO, "Rolling Back Invoice"

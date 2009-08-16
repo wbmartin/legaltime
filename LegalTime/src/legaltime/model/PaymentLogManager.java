@@ -24,20 +24,16 @@ import legaltime.model.Manager;
 import legaltime.model.exception.DAOException;
 import legaltime.model.exception.DataAccessException;
 import legaltime.model.exception.ObjectRetrievalException;
-import legaltime.model.ExpenseRegisterBean;
-import legaltime.model.ExpenseRegisterManager;
-import legaltime.model.LaborRegisterBean;
-import legaltime.model.LaborRegisterManager;
-import legaltime.model.PaymentLogBean;
-import legaltime.model.PaymentLogManager;
 import legaltime.model.ClientBean;
 import legaltime.model.ClientManager;
+import legaltime.model.InvoiceBean;
+import legaltime.model.InvoiceManager;
 
 /**
- * Handles database calls (save, load, count, etc...) for the invoice table.
+ * Handles database calls (save, load, count, etc...) for the payment_log table.
  * @author sql2java
  */
-public class InvoiceManager 
+public class PaymentLogManager 
 {
 
     /* set =QUERY for loadUsingTemplate */
@@ -50,111 +46,102 @@ public class InvoiceManager
     public static final int SEARCH_ENDING_LIKE = 3;
 
     /**
-     * Identify the last_update field.
-     */
-    public static final int ID_LAST_UPDATE = 0;
-
-    /**
      * Identify the client_id field.
      */
-    public static final int ID_CLIENT_ID = 1;
-
-    /**
-     * Identify the prev_balance_due field.
-     */
-    public static final int ID_PREV_BALANCE_DUE = 2;
-
-    /**
-     * Identify the invoice_total_amt field.
-     */
-    public static final int ID_INVOICE_TOTAL_AMT = 3;
-
-    /**
-     * Identify the generated_date field.
-     */
-    public static final int ID_GENERATED_DATE = 4;
-
-    /**
-     * Identify the invoice_dt field.
-     */
-    public static final int ID_INVOICE_DT = 5;
+    public static final int ID_CLIENT_ID = 0;
 
     /**
      * Identify the invoice_id field.
      */
-    public static final int ID_INVOICE_ID = 6;
+    public static final int ID_INVOICE_ID = 1;
 
     /**
-     * Contains all the full fields of the invoice table.
+     * Identify the amount field.
+     */
+    public static final int ID_AMOUNT = 2;
+
+    /**
+     * Identify the description field.
+     */
+    public static final int ID_DESCRIPTION = 3;
+
+    /**
+     * Identify the effective_date field.
+     */
+    public static final int ID_EFFECTIVE_DATE = 4;
+
+    /**
+     * Identify the payment_log_id field.
+     */
+    public static final int ID_PAYMENT_LOG_ID = 5;
+
+    /**
+     * Contains all the full fields of the payment_log table.
      */
     private static final String[] FULL_FIELD_NAMES =
     {
-        "invoice.last_update"
-        ,"invoice.client_id"
-        ,"invoice.prev_balance_due"
-        ,"invoice.invoice_total_amt"
-        ,"invoice.generated_date"
-        ,"invoice.invoice_dt"
-        ,"invoice.invoice_id"
+        "payment_log.client_id"
+        ,"payment_log.invoice_id"
+        ,"payment_log.amount"
+        ,"payment_log.description"
+        ,"payment_log.effective_date"
+        ,"payment_log.payment_log_id"
     };
 
     /**
-     * Contains all the fields of the invoice table.
+     * Contains all the fields of the payment_log table.
      */
     public static final String[] FIELD_NAMES =
     {
-        "last_update"
-        ,"client_id"
-        ,"prev_balance_due"
-        ,"invoice_total_amt"
-        ,"generated_date"
-        ,"invoice_dt"
+        "client_id"
         ,"invoice_id"
+        ,"amount"
+        ,"description"
+        ,"effective_date"
+        ,"payment_log_id"
     };
 
     /**
-     * Field that contains the comma separated fields of the invoice table.
+     * Field that contains the comma separated fields of the payment_log table.
      */
-    public static final String ALL_FULL_FIELDS = "invoice.last_update"
-                            + ",invoice.client_id"
-                            + ",invoice.prev_balance_due"
-                            + ",invoice.invoice_total_amt"
-                            + ",invoice.generated_date"
-                            + ",invoice.invoice_dt"
-                            + ",invoice.invoice_id";
+    public static final String ALL_FULL_FIELDS = "payment_log.client_id"
+                            + ",payment_log.invoice_id"
+                            + ",payment_log.amount"
+                            + ",payment_log.description"
+                            + ",payment_log.effective_date"
+                            + ",payment_log.payment_log_id";
 
     /**
-     * Field that contains the comma separated fields of the invoice table.
+     * Field that contains the comma separated fields of the payment_log table.
      */
-    public static final String ALL_FIELDS = "last_update"
-                            + ",client_id"
-                            + ",prev_balance_due"
-                            + ",invoice_total_amt"
-                            + ",generated_date"
-                            + ",invoice_dt"
-                            + ",invoice_id";
+    public static final String ALL_FIELDS = "client_id"
+                            + ",invoice_id"
+                            + ",amount"
+                            + ",description"
+                            + ",effective_date"
+                            + ",payment_log_id";
 
-    private static InvoiceManager singleton = new InvoiceManager();
+    private static PaymentLogManager singleton = new PaymentLogManager();
 
     /**
-     * Get the InvoiceManager singleton.
+     * Get the PaymentLogManager singleton.
      *
-     * @return InvoiceManager
+     * @return PaymentLogManager
      */
-    public static InvoiceManager getInstance()
+    public static PaymentLogManager getInstance()
     {
         return singleton;
     }
 
 
     /**
-     * Creates a new InvoiceBean instance.
+     * Creates a new PaymentLogBean instance.
      *
-     * @return the new InvoiceBean
+     * @return the new PaymentLogBean
      */
-    public InvoiceBean createInvoiceBean()
+    public PaymentLogBean createPaymentLogBean()
     {
-        return new InvoiceBean();
+        return new PaymentLogBean();
     }
 
     //////////////////////////////////////
@@ -162,27 +149,27 @@ public class InvoiceManager
     //////////////////////////////////////
 
     /**
-     * Loads a InvoiceBean from the invoice using its key fields.
+     * Loads a PaymentLogBean from the payment_log using its key fields.
      *
-     * @param invoiceId Integer - PK# 1
-     * @return a unique InvoiceBean
+     * @param paymentLogId Integer - PK# 1
+     * @return a unique PaymentLogBean
      * @throws DAOException
      */
     //1
-    public InvoiceBean loadByPrimaryKey(Integer invoiceId) throws DAOException
+    public PaymentLogBean loadByPrimaryKey(Integer paymentLogId) throws DAOException
     {
         Connection c = null;
         PreparedStatement ps = null;
         try
         {
             c = this.getConnection();
-            StringBuffer sql = new StringBuffer("SELECT " + ALL_FIELDS + " FROM invoice WHERE invoice_id=?");
+            StringBuffer sql = new StringBuffer("SELECT " + ALL_FIELDS + " FROM payment_log WHERE payment_log_id=?");
             // System.out.println("loadByPrimaryKey: " + sql);
             ps = c.prepareStatement(sql.toString(),
                                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                                     ResultSet.CONCUR_READ_ONLY);
-            if (invoiceId == null) { ps.setNull(1, Types.INTEGER); } else { Manager.setInteger(ps, 1, invoiceId); }
-            InvoiceBean pReturn[] = this.loadByPreparedStatement(ps);
+            if (paymentLogId == null) { ps.setNull(1, Types.INTEGER); } else { Manager.setInteger(ps, 1, paymentLogId); }
+            PaymentLogBean pReturn[] = this.loadByPreparedStatement(ps);
             if (pReturn.length < 1) {
                 throw new ObjectRetrievalException();
             } else {
@@ -203,24 +190,24 @@ public class InvoiceManager
     /**
      * Deletes rows according to its keys.
      *
-     * @param invoiceId Integer - PK# 1
+     * @param paymentLogId Integer - PK# 1
      * @return the number of deleted rows
      * @throws DAOException
      */
     //2
-    public int deleteByPrimaryKey(Integer invoiceId) throws DAOException
+    public int deleteByPrimaryKey(Integer paymentLogId) throws DAOException
     {
         Connection c = null;
         PreparedStatement ps = null;
         try
         {
             c = this.getConnection();
-            StringBuffer sql = new StringBuffer("DELETE FROM invoice WHERE invoice_id=?");
+            StringBuffer sql = new StringBuffer("DELETE FROM payment_log WHERE payment_log_id=?");
             // System.out.println("deleteByPrimaryKey: " + sql);
             ps = c.prepareStatement(sql.toString(),
                                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                                     ResultSet.CONCUR_READ_ONLY);
-            if (invoiceId == null) { ps.setNull(1, Types.INTEGER); } else { Manager.setInteger(ps, 1, invoiceId); }
+            if (paymentLogId == null) { ps.setNull(1, Types.INTEGER); } else { Manager.setInteger(ps, 1, paymentLogId); }
             return ps.executeUpdate();
         }
         catch(SQLException e)
@@ -234,110 +221,19 @@ public class InvoiceManager
         }
     }
 
-    //////////////////////////////////////
-    // GET/SET IMPORTED KEY BEAN METHOD
-    //////////////////////////////////////
-    /**
-     * Retrieves the ExpenseRegisterBean object from the invoice.invoice_id field.
-     *
-     * @param bean the InvoiceBean
-     * @return the associated ExpenseRegisterBean bean
-     * @throws DAOException
-     */
-    //3.1 GET IMPORTED
-    public ExpenseRegisterBean[] getExpenseRegisterBeans(InvoiceBean bean) throws DAOException
-    {
-        ExpenseRegisterBean other = ExpenseRegisterManager.getInstance().createExpenseRegisterBean();
-        other.setInvoiceId(bean.getInvoiceId());
-        return ExpenseRegisterManager.getInstance().loadUsingTemplate(other);
-    }
-
-    /**
-     * Associates the InvoiceBean object to the ExpenseRegisterBean object.
-     *
-     * @param bean the InvoiceBean object to use
-     * @param beanToSet the ExpenseRegisterBean object to associate to the InvoiceBean
-     * @return the associated ExpenseRegisterBean bean
-     */
-    //4.1 SET IMPORTED
-    public InvoiceBean setExpenseRegisterBean(InvoiceBean bean,ExpenseRegisterBean beanToSet)
-    {
-        bean.setInvoiceId(beanToSet.getInvoiceId());
-        return bean;
-    }
-
-    /**
-     * Retrieves the LaborRegisterBean object from the invoice.invoice_id field.
-     *
-     * @param bean the InvoiceBean
-     * @return the associated LaborRegisterBean bean
-     * @throws DAOException
-     */
-    //3.1 GET IMPORTED
-    public LaborRegisterBean[] getLaborRegisterBeans(InvoiceBean bean) throws DAOException
-    {
-        LaborRegisterBean other = LaborRegisterManager.getInstance().createLaborRegisterBean();
-        other.setInvoiceId(bean.getInvoiceId());
-        return LaborRegisterManager.getInstance().loadUsingTemplate(other);
-    }
-
-    /**
-     * Associates the InvoiceBean object to the LaborRegisterBean object.
-     *
-     * @param bean the InvoiceBean object to use
-     * @param beanToSet the LaborRegisterBean object to associate to the InvoiceBean
-     * @return the associated LaborRegisterBean bean
-     */
-    //4.1 SET IMPORTED
-    public InvoiceBean setLaborRegisterBean(InvoiceBean bean,LaborRegisterBean beanToSet)
-    {
-        bean.setInvoiceId(beanToSet.getInvoiceId());
-        return bean;
-    }
-
-    /**
-     * Retrieves the PaymentLogBean object from the invoice.invoice_id field.
-     *
-     * @param bean the InvoiceBean
-     * @return the associated PaymentLogBean bean
-     * @throws DAOException
-     */
-    //3.1 GET IMPORTED
-    public PaymentLogBean[] getPaymentLogBeans(InvoiceBean bean) throws DAOException
-    {
-        PaymentLogBean other = PaymentLogManager.getInstance().createPaymentLogBean();
-        other.setInvoiceId(bean.getInvoiceId());
-        return PaymentLogManager.getInstance().loadUsingTemplate(other);
-    }
-
-    /**
-     * Associates the InvoiceBean object to the PaymentLogBean object.
-     *
-     * @param bean the InvoiceBean object to use
-     * @param beanToSet the PaymentLogBean object to associate to the InvoiceBean
-     * @return the associated PaymentLogBean bean
-     */
-    //4.1 SET IMPORTED
-    public InvoiceBean setPaymentLogBean(InvoiceBean bean,PaymentLogBean beanToSet)
-    {
-        bean.setInvoiceId(beanToSet.getInvoiceId());
-        return bean;
-    }
-
-
 
     //////////////////////////////////////
     // GET/SET FOREIGN KEY BEAN METHOD
     //////////////////////////////////////
     /**
-     * Retrieves the ClientBean object from the invoice.client_id field.
+     * Retrieves the ClientBean object from the payment_log.client_id field.
      *
-     * @param bean the InvoiceBean
+     * @param bean the PaymentLogBean
      * @return the associated ClientBean bean
      * @throws DAOException
      */
     //3.2 GET IMPORTED VALUES
-    public ClientBean getClientBean(InvoiceBean bean) throws DAOException
+    public ClientBean getClientBean(PaymentLogBean bean) throws DAOException
     {
         ClientBean other = ClientManager.getInstance().createClientBean();
         other.setClientId(bean.getClientId()); 
@@ -346,33 +242,79 @@ public class InvoiceManager
     }
 
     /**
-     * Associates the InvoiceBean object to the ClientBean object.
+     * Associates the PaymentLogBean object to the ClientBean object.
      *
-     * @param bean the InvoiceBean object to use
-     * @param beanToSet the ClientBean object to associate to the InvoiceBean
+     * @param bean the PaymentLogBean object to use
+     * @param beanToSet the ClientBean object to associate to the PaymentLogBean
      * @return the associated ClientBean bean
      * @throws Exception
      */
     //4.2 ADD IMPORTED VALUE
-    public ClientBean addClientBean(ClientBean beanToSet, InvoiceBean bean) throws Exception
+    public ClientBean addClientBean(ClientBean beanToSet, PaymentLogBean bean) throws Exception
     {
         beanToSet.setClientId(bean.getClientId());
         return ClientManager.getInstance().save(beanToSet);
     }
 
     /**
-     * Associates the InvoiceBean object to the ClientBean object.
+     * Associates the PaymentLogBean object to the ClientBean object.
      *
-     * @param bean the InvoiceBean object to use
-     * @param beanToSet the ClientBean object to associate to the InvoiceBean
+     * @param bean the PaymentLogBean object to use
+     * @param beanToSet the ClientBean object to associate to the PaymentLogBean
      * @return the associated ClientBean bean
      * @throws Exception
      */
     //5.2 SET IMPORTED
-    public ClientBean setClientBean(InvoiceBean bean, ClientBean beanToSet) throws Exception
+    public ClientBean setClientBean(PaymentLogBean bean, ClientBean beanToSet) throws Exception
     {
         bean.setClientId(beanToSet.getClientId());
         return ClientManager.getInstance().save(beanToSet);
+    }
+
+    /**
+     * Retrieves the InvoiceBean object from the payment_log.invoice_id field.
+     *
+     * @param bean the PaymentLogBean
+     * @return the associated InvoiceBean bean
+     * @throws DAOException
+     */
+    //3.2 GET IMPORTED VALUES
+    public InvoiceBean getInvoiceBean(PaymentLogBean bean) throws DAOException
+    {
+        InvoiceBean other = InvoiceManager.getInstance().createInvoiceBean();
+        other.setInvoiceId(bean.getInvoiceId()); 
+        bean.setInvoiceBean(InvoiceManager.getInstance().loadUniqueUsingTemplate(other)); 
+        return bean.getInvoiceBean();
+    }
+
+    /**
+     * Associates the PaymentLogBean object to the InvoiceBean object.
+     *
+     * @param bean the PaymentLogBean object to use
+     * @param beanToSet the InvoiceBean object to associate to the PaymentLogBean
+     * @return the associated InvoiceBean bean
+     * @throws Exception
+     */
+    //4.2 ADD IMPORTED VALUE
+    public InvoiceBean addInvoiceBean(InvoiceBean beanToSet, PaymentLogBean bean) throws Exception
+    {
+        beanToSet.setInvoiceId(bean.getInvoiceId());
+        return InvoiceManager.getInstance().save(beanToSet);
+    }
+
+    /**
+     * Associates the PaymentLogBean object to the InvoiceBean object.
+     *
+     * @param bean the PaymentLogBean object to use
+     * @param beanToSet the InvoiceBean object to associate to the PaymentLogBean
+     * @return the associated InvoiceBean bean
+     * @throws Exception
+     */
+    //5.2 SET IMPORTED
+    public InvoiceBean setInvoiceBean(PaymentLogBean bean, InvoiceBean beanToSet) throws Exception
+    {
+        bean.setInvoiceId(beanToSet.getInvoiceId());
+        return InvoiceManager.getInstance().save(beanToSet);
     }
 
 
@@ -382,28 +324,28 @@ public class InvoiceManager
     //////////////////////////////////////
 
     /**
-     * Loads all the rows from invoice.
+     * Loads all the rows from payment_log.
      *
-     * @return an array of InvoiceManager bean
+     * @return an array of PaymentLogManager bean
      * @throws DAOException
      */
     //5
-    public InvoiceBean[] loadAll() throws DAOException
+    public PaymentLogBean[] loadAll() throws DAOException
     {
         return this.loadUsingTemplate(null);
     }
 
 
     /**
-     * Loads the given number of rows from invoice, given the start row.
+     * Loads the given number of rows from payment_log, given the start row.
      *
      * @param startRow the start row to be used (first row = 1, last row = -1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
-     * @return an array of InvoiceManager bean
+     * @return an array of PaymentLogManager bean
      * @throws DAOException
      */
     //6
-    public InvoiceBean[] loadAll(int startRow, int numRows) throws DAOException
+    public PaymentLogBean[] loadAll(int startRow, int numRows) throws DAOException
     {
         return this.loadUsingTemplate(null, startRow, numRows);
     }
@@ -412,50 +354,50 @@ public class InvoiceManager
     // SQL 'WHERE' METHOD
     //////////////////////////////////////
     /**
-     * Retrieves an array of InvoiceBean given a sql 'where' clause.
+     * Retrieves an array of PaymentLogBean given a sql 'where' clause.
      *
      * @param where the sql 'where' clause
-     * @return the resulting InvoiceBean table
+     * @return the resulting PaymentLogBean table
      * @throws DAOException
      */
     //7
-    public InvoiceBean[] loadByWhere(String where) throws DAOException
+    public PaymentLogBean[] loadByWhere(String where) throws DAOException
     {
         return this.loadByWhere(where, null);
     }
 
     /**
-     * Retrieves an array of InvoiceBean given a sql where clause, and a list of fields.
+     * Retrieves an array of PaymentLogBean given a sql where clause, and a list of fields.
      * It is up to you to pass the 'WHERE' in your where clausis.
      *
      * @param where the sql 'WHERE' clause
      * @param fieldList array of field's ID
-     * @return the resulting InvoiceBean table
+     * @return the resulting PaymentLogBean table
      * @throws DAOException
      */
     //8
-    public InvoiceBean[] loadByWhere(String where, int[] fieldList) throws DAOException
+    public PaymentLogBean[] loadByWhere(String where, int[] fieldList) throws DAOException
     {
         return this.loadByWhere(where, fieldList, 1, -1);
     }
 
     /**
-     * Retrieves an array of InvoiceBean given a sql where clause and a list of fields, and startRow and numRows.
+     * Retrieves an array of PaymentLogBean given a sql where clause and a list of fields, and startRow and numRows.
      * It is up to you to pass the 'WHERE' in your where clausis.
      *
      * @param where the sql 'where' clause
      * @param startRow the start row to be used (first row = 1, last row = -1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
      * @param fieldList table of the field's associated constants
-     * @return the resulting InvoiceBean table
+     * @return the resulting PaymentLogBean table
      * @throws DAOException
      */
     //9
-    public InvoiceBean[] loadByWhere(String where, int[] fieldList, int startRow, int numRows) throws DAOException
+    public PaymentLogBean[] loadByWhere(String where, int[] fieldList, int startRow, int numRows) throws DAOException
     {
         StringBuffer sql = new StringBuffer(128);
         if(fieldList == null) {
-            sql.append("SELECT ").append(ALL_FIELDS).append(" FROM invoice ").append(where);
+            sql.append("SELECT ").append(ALL_FIELDS).append(" FROM payment_log ").append(where);
         } else
         {
             sql.append("SELECT ");
@@ -466,7 +408,7 @@ public class InvoiceManager
                 }
                 sql.append(FULL_FIELD_NAMES[fieldList[i]]);
             }
-            sql.append(" FROM invoice ");
+            sql.append(" FROM payment_log ");
             sql.append(where);
         }
         Connection c = null;
@@ -494,7 +436,7 @@ public class InvoiceManager
 
 
     /**
-     * Deletes all rows from invoice table.
+     * Deletes all rows from payment_log table.
      * @return the number of deleted rows.
      * @throws DAOException
      */
@@ -506,7 +448,7 @@ public class InvoiceManager
 
 
     /**
-     * Deletes rows from the invoice table using a 'where' clause.
+     * Deletes rows from the payment_log table using a 'where' clause.
      * It is up to you to pass the 'WHERE' in your where clausis.
      * <br>Attention, if 'WHERE' is omitted it will delete all records.
      *
@@ -523,7 +465,7 @@ public class InvoiceManager
         try
         {
             c = this.getConnection();
-            StringBuffer sql = new StringBuffer("DELETE FROM invoice " + where);
+            StringBuffer sql = new StringBuffer("DELETE FROM payment_log " + where);
             // System.out.println("deleteByWhere: " + sql);
             ps = c.prepareStatement(sql.toString());
             return ps.executeUpdate();
@@ -544,14 +486,14 @@ public class InvoiceManager
     // SAVE
     //_____________________________________________________________________
     /**
-     * Saves the InvoiceBean bean into the database.
+     * Saves the PaymentLogBean bean into the database.
      *
-     * @param bean the InvoiceBean bean to be saved
+     * @param bean the PaymentLogBean bean to be saved
      * @return the inserted or updated bean
      * @throws DAOException
      */
     //12
-    public InvoiceBean save(InvoiceBean bean) throws DAOException
+    public PaymentLogBean save(PaymentLogBean bean) throws DAOException
     {
         if (bean.isNew()) {
             return this.insert(bean);
@@ -561,14 +503,14 @@ public class InvoiceManager
     }
 
     /**
-     * Insert the InvoiceBean bean into the database.
+     * Insert the PaymentLogBean bean into the database.
      *
-     * @param bean the InvoiceBean bean to be saved
+     * @param bean the PaymentLogBean bean to be saved
      * @return the inserted bean
      * @throws DAOException
      */
     //13
-    public InvoiceBean insert(InvoiceBean bean) throws DAOException
+    public PaymentLogBean insert(PaymentLogBean bean) throws DAOException
     {
         // mini checks
         if (!bean.isModified()) {
@@ -587,15 +529,7 @@ public class InvoiceManager
             c = this.getConnection();
             this.beforeInsert(bean); // listener callback
             int _dirtyCount = 0;
-            sql = new StringBuffer("INSERT into invoice (");
-
-            if (bean.isLastUpdateModified()) {
-                if (_dirtyCount>0) {
-                    sql.append(",");
-                }
-                sql.append("last_update");
-                _dirtyCount++;
-            }
+            sql = new StringBuffer("INSERT into payment_log (");
 
             if (bean.isClientIdModified()) {
                 if (_dirtyCount>0) {
@@ -605,43 +539,43 @@ public class InvoiceManager
                 _dirtyCount++;
             }
 
-            if (bean.isPrevBalanceDueModified()) {
-                if (_dirtyCount>0) {
-                    sql.append(",");
-                }
-                sql.append("prev_balance_due");
-                _dirtyCount++;
-            }
-
-            if (bean.isInvoiceTotalAmtModified()) {
-                if (_dirtyCount>0) {
-                    sql.append(",");
-                }
-                sql.append("invoice_total_amt");
-                _dirtyCount++;
-            }
-
-            if (bean.isGeneratedDateModified()) {
-                if (_dirtyCount>0) {
-                    sql.append(",");
-                }
-                sql.append("generated_date");
-                _dirtyCount++;
-            }
-
-            if (bean.isInvoiceDtModified()) {
-                if (_dirtyCount>0) {
-                    sql.append(",");
-                }
-                sql.append("invoice_dt");
-                _dirtyCount++;
-            }
-
             if (bean.isInvoiceIdModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
                 }
                 sql.append("invoice_id");
+                _dirtyCount++;
+            }
+
+            if (bean.isAmountModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("amount");
+                _dirtyCount++;
+            }
+
+            if (bean.isDescriptionModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("description");
+                _dirtyCount++;
+            }
+
+            if (bean.isEffectiveDateModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("effective_date");
+                _dirtyCount++;
+            }
+
+            if (bean.isPaymentLogIdModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("payment_log_id");
                 _dirtyCount++;
             }
 
@@ -663,7 +597,7 @@ public class InvoiceManager
 
             ps.executeUpdate();
 
-            if (!bean.isInvoiceIdModified())
+            if (!bean.isPaymentLogIdModified())
             {
                 PreparedStatement ps2 = null;
                 ResultSet rs = null;
@@ -671,7 +605,7 @@ public class InvoiceManager
                     ps2 = c.prepareStatement("SELECT last_insert_id()");
                     rs = ps2.executeQuery();
                     if(rs.next()) {
-                        bean.setInvoiceId(Manager.getInteger(rs, 1));
+                        bean.setPaymentLogId(Manager.getInteger(rs, 1));
                     } else {
                         this.getManager().log("ATTENTION: Could not retrieve generated key!");
                     }
@@ -698,14 +632,14 @@ public class InvoiceManager
     }
 
     /**
-     * Update the InvoiceBean bean record in the database according to the changes.
+     * Update the PaymentLogBean bean record in the database according to the changes.
      *
-     * @param bean the InvoiceBean bean to be updated
+     * @param bean the PaymentLogBean bean to be updated
      * @return the updated bean
      * @throws DAOException
      */
     //14
-    public InvoiceBean update(InvoiceBean bean) throws DAOException
+    public PaymentLogBean update(PaymentLogBean bean) throws DAOException
     {
         // mini checks
         if (!bean.isModified()) {
@@ -724,17 +658,8 @@ public class InvoiceManager
             c = this.getConnection();
 
             this.beforeUpdate(bean); // listener callback
-            sql = new StringBuffer("UPDATE invoice SET ");
+            sql = new StringBuffer("UPDATE payment_log SET ");
             boolean useComma=false;
-
-            if (bean.isLastUpdateModified()) {
-                if (useComma) {
-                    sql.append(", ");
-                } else {
-                    useComma=true;
-                }
-                sql.append("last_update=?");
-            }
 
             if (bean.isClientIdModified()) {
                 if (useComma) {
@@ -745,42 +670,6 @@ public class InvoiceManager
                 sql.append("client_id=?");
             }
 
-            if (bean.isPrevBalanceDueModified()) {
-                if (useComma) {
-                    sql.append(", ");
-                } else {
-                    useComma=true;
-                }
-                sql.append("prev_balance_due=?");
-            }
-
-            if (bean.isInvoiceTotalAmtModified()) {
-                if (useComma) {
-                    sql.append(", ");
-                } else {
-                    useComma=true;
-                }
-                sql.append("invoice_total_amt=?");
-            }
-
-            if (bean.isGeneratedDateModified()) {
-                if (useComma) {
-                    sql.append(", ");
-                } else {
-                    useComma=true;
-                }
-                sql.append("generated_date=?");
-            }
-
-            if (bean.isInvoiceDtModified()) {
-                if (useComma) {
-                    sql.append(", ");
-                } else {
-                    useComma=true;
-                }
-                sql.append("invoice_dt=?");
-            }
-
             if (bean.isInvoiceIdModified()) {
                 if (useComma) {
                     sql.append(", ");
@@ -789,8 +678,44 @@ public class InvoiceManager
                 }
                 sql.append("invoice_id=?");
             }
+
+            if (bean.isAmountModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("amount=?");
+            }
+
+            if (bean.isDescriptionModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("description=?");
+            }
+
+            if (bean.isEffectiveDateModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("effective_date=?");
+            }
+
+            if (bean.isPaymentLogIdModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("payment_log_id=?");
+            }
             sql.append(" WHERE ");
-            sql.append("invoice_id=?");
+            sql.append("payment_log_id=?");
             // System.out.println("update : " + sql.toString());
             ps = c.prepareStatement(sql.toString(),
                                     ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -803,7 +728,7 @@ public class InvoiceManager
                 return bean;
             }
 
-            if (bean.getInvoiceId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getInvoiceId()); }
+            if (bean.getPaymentLogId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getPaymentLogId()); }
             ps.executeUpdate();
             bean.resetIsModified();
             this.afterUpdate(bean); // listener callback
@@ -823,14 +748,14 @@ public class InvoiceManager
     }
 
     /**
-     * Saves an array of InvoiceBean beans into the database.
+     * Saves an array of PaymentLogBean beans into the database.
      *
-     * @param beans the InvoiceBean bean table to be saved
-     * @return the saved InvoiceBean array.
+     * @param beans the PaymentLogBean bean table to be saved
+     * @return the saved PaymentLogBean array.
      * @throws DAOException
      */
     //15
-    public InvoiceBean[] save(InvoiceBean[] beans) throws DAOException
+    public PaymentLogBean[] save(PaymentLogBean[] beans) throws DAOException
     {
         for (int iIndex = 0; iIndex < beans.length; iIndex ++)
         {
@@ -840,27 +765,27 @@ public class InvoiceManager
     }
 
     /**
-     * Insert an array of InvoiceBean beans into the database.
+     * Insert an array of PaymentLogBean beans into the database.
      *
-     * @param beans the InvoiceBean bean table to be inserted
-     * @return the saved InvoiceBean array.
+     * @param beans the PaymentLogBean bean table to be inserted
+     * @return the saved PaymentLogBean array.
      * @throws DAOException
      */
     //16
-    public InvoiceBean[] insert(InvoiceBean[] beans) throws DAOException
+    public PaymentLogBean[] insert(PaymentLogBean[] beans) throws DAOException
     {
         return this.save(beans);
     }
 
     /**
-     * Updates an array of InvoiceBean beans into the database.
+     * Updates an array of PaymentLogBean beans into the database.
      *
-     * @param beans the InvoiceBean bean table to be inserted
-     * @return the saved InvoiceBean array.
+     * @param beans the PaymentLogBean bean table to be inserted
+     * @return the saved PaymentLogBean array.
      * @throws DAOException
      */
     //17
-    public InvoiceBean[] update(InvoiceBean[] beans) throws DAOException
+    public PaymentLogBean[] update(PaymentLogBean[] beans) throws DAOException
     {
         return this.save(beans);
     }
@@ -872,16 +797,16 @@ public class InvoiceManager
     // USING TEMPLATE
     //_____________________________________________________________________
     /**
-     * Loads a unique InvoiceBean bean from a template one giving a c
+     * Loads a unique PaymentLogBean bean from a template one giving a c
      *
-     * @param bean the InvoiceBean bean to look for
+     * @param bean the PaymentLogBean bean to look for
      * @return the bean matching the template
      * @throws DAOException
      */
     //18
-    public InvoiceBean loadUniqueUsingTemplate(InvoiceBean bean) throws DAOException
+    public PaymentLogBean loadUniqueUsingTemplate(PaymentLogBean bean) throws DAOException
     {
-         InvoiceBean[] beans = this.loadUsingTemplate(bean);
+         PaymentLogBean[] beans = this.loadUsingTemplate(bean);
          if (beans.length == 0) {
              return null;
          }
@@ -892,51 +817,51 @@ public class InvoiceManager
      }
 
     /**
-     * Loads an array of InvoiceBean from a template one.
+     * Loads an array of PaymentLogBean from a template one.
      *
-     * @param bean the InvoiceBean template to look for
-     * @return all the InvoiceBean matching the template
+     * @param bean the PaymentLogBean template to look for
+     * @return all the PaymentLogBean matching the template
      * @throws DAOException
      */
     //19
-    public InvoiceBean[] loadUsingTemplate(InvoiceBean bean) throws DAOException
+    public PaymentLogBean[] loadUsingTemplate(PaymentLogBean bean) throws DAOException
     {
         return this.loadUsingTemplate(bean, 1, -1);
     }
 
     /**
-     * Loads an array of InvoiceBean from a template one, given the start row and number of rows.
+     * Loads an array of PaymentLogBean from a template one, given the start row and number of rows.
      *
-     * @param bean the InvoiceBean template to look for
+     * @param bean the PaymentLogBean template to look for
      * @param startRow the start row to be used (first row = 1, last row=-1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
-     * @return all the InvoiceBean matching the template
+     * @return all the PaymentLogBean matching the template
      * @throws DAOException
      */
     //20
-    public InvoiceBean[] loadUsingTemplate(InvoiceBean bean, int startRow, int numRows) throws DAOException
+    public PaymentLogBean[] loadUsingTemplate(PaymentLogBean bean, int startRow, int numRows) throws DAOException
     {
         return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT);
     }
 
     /**
-     * Loads an array of InvoiceBean from a template one, given the start row and number of rows.
+     * Loads an array of PaymentLogBean from a template one, given the start row and number of rows.
      *
-     * @param bean the InvoiceBean template to look for
+     * @param bean the PaymentLogBean template to look for
      * @param startRow the start row to be used (first row = 1, last row=-1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
      * @param searchType exact ?  like ? starting like ?
-     * @return all the InvoiceBean matching the template
+     * @return all the PaymentLogBean matching the template
      * @throws DAOException
      */
     //20
-    public InvoiceBean[] loadUsingTemplate(InvoiceBean bean, int startRow, int numRows, int searchType) throws DAOException
+    public PaymentLogBean[] loadUsingTemplate(PaymentLogBean bean, int startRow, int numRows, int searchType) throws DAOException
     {
         // System.out.println("loadUsingTemplate startRow:" + startRow + ", numRows:" + numRows + ", searchType:" + searchType);
         Connection c = null;
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer(128);
-        sql.append("SELECT ").append(ALL_FIELDS).append(" FROM invoice ");
+        sql.append("SELECT ").append(ALL_FIELDS).append(" FROM payment_log ");
         StringBuffer sqlWhere = new StringBuffer("");
 
         try
@@ -975,21 +900,21 @@ public class InvoiceManager
     }
 
     /**
-     * Deletes rows using a InvoiceBean template.
+     * Deletes rows using a PaymentLogBean template.
      *
-     * @param bean the InvoiceBean object(s) to be deleted
+     * @param bean the PaymentLogBean object(s) to be deleted
      * @return the number of deleted objects
      * @throws DAOException
      */
     //21
-    public int deleteUsingTemplate(InvoiceBean bean) throws DAOException
+    public int deleteUsingTemplate(PaymentLogBean bean) throws DAOException
     {
-        if (bean.isInvoiceIdInitialized()) {
-            return this.deleteByPrimaryKey(bean.getInvoiceId());
+        if (bean.isPaymentLogIdInitialized()) {
+            return this.deleteByPrimaryKey(bean.getPaymentLogId());
         }
         Connection c = null;
         PreparedStatement ps = null;
-        StringBuffer sql = new StringBuffer("DELETE FROM invoice ");
+        StringBuffer sql = new StringBuffer("DELETE FROM payment_log ");
         StringBuffer sqlWhere = new StringBuffer("");
 
         try
@@ -1032,29 +957,57 @@ public class InvoiceManager
     //_____________________________________________________________________
 
     /**
-     * Retrieves an array of InvoiceBean using the fk_client_invoice index.
+     * Retrieves an array of PaymentLogBean using the fk_invoice_paymentlog index.
      *
-     * @param clientId the client_id column's value filter.
-     * @return an array of InvoiceBean
+     * @param invoiceId the invoice_id column's value filter.
+     * @return an array of PaymentLogBean
      * @throws DAOException
      */
-    public InvoiceBean[] loadByfk_client_invoice(Integer clientId) throws DAOException
+    public PaymentLogBean[] loadByfk_invoice_paymentlog(Integer invoiceId) throws DAOException
     {
-        InvoiceBean bean = this.createInvoiceBean();
+        PaymentLogBean bean = this.createPaymentLogBean();
+        bean.setInvoiceId(invoiceId);
+        return loadUsingTemplate(bean);
+    }
+    
+    /**
+     * Deletes rows using the fk_invoice_paymentlog index.
+     *
+     * @param invoiceId the invoice_id column's value filter.
+     * @return the number of deleted objects
+     * @throws DAOException
+     */
+    public int deleteByfk_invoice_paymentlog(Integer invoiceId) throws DAOException
+    {
+        PaymentLogBean bean = this.createPaymentLogBean();
+        bean.setInvoiceId(invoiceId);
+        return deleteUsingTemplate(bean);
+    }
+    
+    /**
+     * Retrieves an array of PaymentLogBean using the fk_client_paymentlog index.
+     *
+     * @param clientId the client_id column's value filter.
+     * @return an array of PaymentLogBean
+     * @throws DAOException
+     */
+    public PaymentLogBean[] loadByfk_client_paymentlog(Integer clientId) throws DAOException
+    {
+        PaymentLogBean bean = this.createPaymentLogBean();
         bean.setClientId(clientId);
         return loadUsingTemplate(bean);
     }
     
     /**
-     * Deletes rows using the fk_client_invoice index.
+     * Deletes rows using the fk_client_paymentlog index.
      *
      * @param clientId the client_id column's value filter.
      * @return the number of deleted objects
      * @throws DAOException
      */
-    public int deleteByfk_client_invoice(Integer clientId) throws DAOException
+    public int deleteByfk_client_paymentlog(Integer clientId) throws DAOException
     {
-        InvoiceBean bean = this.createInvoiceBean();
+        PaymentLogBean bean = this.createPaymentLogBean();
         bean.setClientId(clientId);
         return deleteUsingTemplate(bean);
     }
@@ -1067,7 +1020,7 @@ public class InvoiceManager
     //_____________________________________________________________________
 
     /**
-     * Retrieves the number of rows of the table invoice.
+     * Retrieves the number of rows of the table payment_log.
      *
      * @return the number of rows returned
      * @throws DAOException
@@ -1079,7 +1032,7 @@ public class InvoiceManager
     }
 
     /**
-     * Retrieves the number of rows of the table invoice with a 'where' clause.
+     * Retrieves the number of rows of the table payment_log with a 'where' clause.
      * It is up to you to pass the 'WHERE' in your where clausis.
      *
      * @param where the restriction clause
@@ -1089,7 +1042,7 @@ public class InvoiceManager
     //25
     public int countWhere(String where) throws DAOException
     {
-        String sql = "SELECT COUNT(*) AS MCOUNT FROM invoice " + where;
+        String sql = "SELECT COUNT(*) AS MCOUNT FROM payment_log " + where;
         // System.out.println("countWhere: " + sql);
         Connection c = null;
         Statement st = null;
@@ -1122,7 +1075,7 @@ public class InvoiceManager
     }
 
     /**
-     * Retrieves the number of rows of the table invoice with a prepared statement.
+     * Retrieves the number of rows of the table payment_log with a prepared statement.
      *
      * @param ps the PreparedStatement to be used
      * @return the number of rows returned
@@ -1155,37 +1108,37 @@ public class InvoiceManager
     }
 
     /**
-     * count the number of elements of a specific InvoiceBean bean
+     * count the number of elements of a specific PaymentLogBean bean
      *
-     * @param bean the InvoiceBean bean to look for ant count
+     * @param bean the PaymentLogBean bean to look for ant count
      * @return the number of rows returned
      * @throws DAOException
      */
     //27
-    public int countUsingTemplate(InvoiceBean bean) throws DAOException
+    public int countUsingTemplate(PaymentLogBean bean) throws DAOException
     {
         return this.countUsingTemplate(bean, -1, -1);
     }
 
     /**
-     * count the number of elements of a specific InvoiceBean bean , given the start row and number of rows.
+     * count the number of elements of a specific PaymentLogBean bean , given the start row and number of rows.
      *
-     * @param bean the InvoiceBean template to look for and count
+     * @param bean the PaymentLogBean template to look for and count
      * @param startRow the start row to be used (first row = 1, last row=-1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
      * @return the number of rows returned
      * @throws DAOException
      */
     //20
-    public int countUsingTemplate(InvoiceBean bean, int startRow, int numRows) throws DAOException
+    public int countUsingTemplate(PaymentLogBean bean, int startRow, int numRows) throws DAOException
     {
         return this.countUsingTemplate(bean, startRow, numRows, SEARCH_EXACT);
     }
 
     /**
-     * count the number of elements of a specific InvoiceBean bean given the start row and number of rows and the search type
+     * count the number of elements of a specific PaymentLogBean bean given the start row and number of rows and the search type
      *
-     * @param bean the InvoiceBean template to look for
+     * @param bean the PaymentLogBean template to look for
      * @param startRow the start row to be used (first row = 1, last row=-1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
      * @param searchType exact ?  like ? starting like ?
@@ -1193,11 +1146,11 @@ public class InvoiceManager
      * @throws DAOException
      */
     //20
-    public int countUsingTemplate(InvoiceBean bean, int startRow, int numRows, int searchType) throws DAOException
+    public int countUsingTemplate(PaymentLogBean bean, int startRow, int numRows, int searchType) throws DAOException
     {
         Connection c = null;
         PreparedStatement ps = null;
-        StringBuffer sql = new StringBuffer("SELECT COUNT(*) AS MCOUNT FROM invoice");
+        StringBuffer sql = new StringBuffer("SELECT COUNT(*) AS MCOUNT FROM payment_log");
         StringBuffer sqlWhere = new StringBuffer("");
 
         try
@@ -1240,7 +1193,7 @@ public class InvoiceManager
      * @param searchType exact ?  like ? starting like ?
      * @return the number of clausis returned
      */
-    protected int fillWhere(StringBuffer sqlWhere, InvoiceBean bean, int searchType)
+    protected int fillWhere(StringBuffer sqlWhere, PaymentLogBean bean, int searchType)
     {
         if (bean == null) {
             return 0;
@@ -1252,14 +1205,6 @@ public class InvoiceManager
         }
         try
         {
-            if (bean.isLastUpdateModified()) {
-                _dirtyCount ++;
-                if (bean.getLastUpdate() == null) {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("last_update IS NULL");
-                } else {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("last_update = ?");
-                }
-            }
             if (bean.isClientIdModified()) {
                 _dirtyCount ++;
                 if (bean.getClientId() == null) {
@@ -1268,44 +1213,44 @@ public class InvoiceManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("client_id = ?");
                 }
             }
-            if (bean.isPrevBalanceDueModified()) {
-                _dirtyCount ++;
-                if (bean.getPrevBalanceDue() == null) {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("prev_balance_due IS NULL");
-                } else {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("prev_balance_due = ?");
-                }
-            }
-            if (bean.isInvoiceTotalAmtModified()) {
-                _dirtyCount ++;
-                if (bean.getInvoiceTotalAmt() == null) {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoice_total_amt IS NULL");
-                } else {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoice_total_amt = ?");
-                }
-            }
-            if (bean.isGeneratedDateModified()) {
-                _dirtyCount ++;
-                if (bean.getGeneratedDate() == null) {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("generated_date IS NULL");
-                } else {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("generated_date = ?");
-                }
-            }
-            if (bean.isInvoiceDtModified()) {
-                _dirtyCount ++;
-                if (bean.getInvoiceDt() == null) {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoice_dt IS NULL");
-                } else {
-                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoice_dt = ?");
-                }
-            }
             if (bean.isInvoiceIdModified()) {
                 _dirtyCount ++;
                 if (bean.getInvoiceId() == null) {
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoice_id IS NULL");
                 } else {
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("invoice_id = ?");
+                }
+            }
+            if (bean.isAmountModified()) {
+                _dirtyCount ++;
+                if (bean.getAmount() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("amount IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("amount = ?");
+                }
+            }
+            if (bean.isDescriptionModified()) {
+                _dirtyCount ++;
+                if (bean.getDescription() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("description IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("description ").append(sqlEqualsOperation).append("?");
+                }
+            }
+            if (bean.isEffectiveDateModified()) {
+                _dirtyCount ++;
+                if (bean.getEffectiveDate() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("effective_date IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("effective_date = ?");
+                }
+            }
+            if (bean.isPaymentLogIdModified()) {
+                _dirtyCount ++;
+                if (bean.getPaymentLogId() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("payment_log_id IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("payment_log_id = ?");
                 }
             }
         }
@@ -1324,7 +1269,7 @@ public class InvoiceManager
      * @return the number of clausis returned
      * @throws DAOException
      */
-    protected int fillPreparedStatement(PreparedStatement ps, InvoiceBean bean, int searchType) throws DAOException
+    protected int fillPreparedStatement(PreparedStatement ps, PaymentLogBean bean, int searchType) throws DAOException
     {
         if (bean == null) {
             return 0;
@@ -1332,33 +1277,47 @@ public class InvoiceManager
         int _dirtyCount = 0;
         try
         {
-            if (bean.isLastUpdateModified()) {
-                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getLastUpdate() + "]");
-                if (bean.getLastUpdate() == null) { ps.setNull(++_dirtyCount, Types.TIMESTAMP); } else { ps.setTimestamp(++_dirtyCount, new java.sql.Timestamp(bean.getLastUpdate().getTime())); }
-            }
             if (bean.isClientIdModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getClientId() + "]");
                 if (bean.getClientId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getClientId()); }
             }
-            if (bean.isPrevBalanceDueModified()) {
-                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getPrevBalanceDue() + "]");
-                if (bean.getPrevBalanceDue() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getPrevBalanceDue()); }
-            }
-            if (bean.isInvoiceTotalAmtModified()) {
-                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getInvoiceTotalAmt() + "]");
-                if (bean.getInvoiceTotalAmt() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getInvoiceTotalAmt()); }
-            }
-            if (bean.isGeneratedDateModified()) {
-                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getGeneratedDate() + "]");
-                if (bean.getGeneratedDate() == null) { ps.setNull(++_dirtyCount, Types.DATE); } else { ps.setDate(++_dirtyCount, new java.sql.Date(bean.getGeneratedDate().getTime())); }
-            }
-            if (bean.isInvoiceDtModified()) {
-                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getInvoiceDt() + "]");
-                if (bean.getInvoiceDt() == null) { ps.setNull(++_dirtyCount, Types.DATE); } else { ps.setDate(++_dirtyCount, new java.sql.Date(bean.getInvoiceDt().getTime())); }
-            }
             if (bean.isInvoiceIdModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getInvoiceId() + "]");
                 if (bean.getInvoiceId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getInvoiceId()); }
+            }
+            if (bean.isAmountModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getAmount() + "]");
+                if (bean.getAmount() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getAmount()); }
+            }
+            if (bean.isDescriptionModified()) {
+                switch (searchType){
+                    case SEARCH_EXACT:
+                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getDescription() + "]");
+                        if (bean.getDescription() == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getDescription()); }
+                        break;
+                    case SEARCH_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getDescription() + "%]");
+                        ps.setString(++_dirtyCount, "%" + bean.getDescription() + "%");
+                        break;
+                    case SEARCH_STARTING_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getDescription() + "%]");
+                        ps.setString(++_dirtyCount, "%" + bean.getDescription());
+                        break;
+                    case SEARCH_ENDING_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getDescription() + "]");
+                        if (bean.getDescription() + "%" == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getDescription() + "%"); }
+                        break;
+                    default:
+                        throw new DAOException("Unknown search type " + searchType);
+                }
+            }
+            if (bean.isEffectiveDateModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getEffectiveDate() + "]");
+                if (bean.getEffectiveDate() == null) { ps.setNull(++_dirtyCount, Types.DATE); } else { ps.setDate(++_dirtyCount, new java.sql.Date(bean.getEffectiveDate().getTime())); }
+            }
+            if (bean.isPaymentLogIdModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getPaymentLogId() + "]");
+                if (bean.getPaymentLogId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getPaymentLogId()); }
             }
         }
         catch(SQLException e)
@@ -1375,17 +1334,17 @@ public class InvoiceManager
     //_____________________________________________________________________
 
     /**
-     * decode a resultset in an array of InvoiceBean objects
+     * decode a resultset in an array of PaymentLogBean objects
      *
      * @param rs the resultset to decode
      * @param fieldList table of the field's associated constants
      * @param startRow the start row to be used (first row = 1, last row = -1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
-     * @return the resulting InvoiceBean table
+     * @return the resulting PaymentLogBean table
      * @throws DAOException
      */
     //28
-    public InvoiceBean[] decodeResultSet(ResultSet rs, int[] fieldList, int startRow, int numRows) throws DAOException
+    public PaymentLogBean[] decodeResultSet(ResultSet rs, int[] fieldList, int startRow, int numRows) throws DAOException
     {
         List v = new ArrayList();
         try
@@ -1408,7 +1367,7 @@ public class InvoiceManager
                     } while ( (count<numRows||numRows<0) && rs.next() );
                 }
             }
-            return (InvoiceBean[])v.toArray(new InvoiceBean[v.size()]);
+            return (PaymentLogBean[])v.toArray(new PaymentLogBean[v.size()]);
         }
         catch(SQLException e)
         {
@@ -1421,25 +1380,24 @@ public class InvoiceManager
     }
 
     /**
-     * Transforms a ResultSet iterating on the invoice on a InvoiceBean bean.
+     * Transforms a ResultSet iterating on the payment_log on a PaymentLogBean bean.
      *
      * @param rs the ResultSet to be transformed
-     * @return bean resulting InvoiceBean bean
+     * @return bean resulting PaymentLogBean bean
      * @throws DAOException
      */
     //29
-    public InvoiceBean decodeRow(ResultSet rs) throws DAOException
+    public PaymentLogBean decodeRow(ResultSet rs) throws DAOException
     {
-        InvoiceBean bean = this.createInvoiceBean();
+        PaymentLogBean bean = this.createPaymentLogBean();
         try
         {
-            bean.setLastUpdate(rs.getTimestamp(1));
-            bean.setClientId(Manager.getInteger(rs, 2));
-            bean.setPrevBalanceDue(Manager.getDouble(rs, 3));
-            bean.setInvoiceTotalAmt(Manager.getDouble(rs, 4));
-            bean.setGeneratedDate(rs.getDate(5));
-            bean.setInvoiceDt(rs.getDate(6));
-            bean.setInvoiceId(Manager.getInteger(rs, 7));
+            bean.setClientId(Manager.getInteger(rs, 1));
+            bean.setInvoiceId(Manager.getInteger(rs, 2));
+            bean.setAmount(Manager.getDouble(rs, 3));
+            bean.setDescription(rs.getString(4));
+            bean.setEffectiveDate(rs.getDate(5));
+            bean.setPaymentLogId(Manager.getInteger(rs, 6));
         }
         catch(SQLException e)
         {
@@ -1452,17 +1410,17 @@ public class InvoiceManager
     }
 
     /**
-     * Transforms a ResultSet iterating on the invoice table on a InvoiceBean bean according to a list of fields.
+     * Transforms a ResultSet iterating on the payment_log table on a PaymentLogBean bean according to a list of fields.
      *
      * @param rs the ResultSet to be transformed
      * @param fieldList table of the field's associated constants
-     * @return bean resulting InvoiceBean bean
+     * @return bean resulting PaymentLogBean bean
      * @throws DAOException
      */
     //30
-    public InvoiceBean decodeRow(ResultSet rs, int[] fieldList) throws DAOException
+    public PaymentLogBean decodeRow(ResultSet rs, int[] fieldList) throws DAOException
     {
-        InvoiceBean bean = this.createInvoiceBean();
+        PaymentLogBean bean = this.createPaymentLogBean();
         int pos = 0;
         try
         {
@@ -1470,33 +1428,29 @@ public class InvoiceManager
             {
                 switch(fieldList[i])
                 {
-                    case ID_LAST_UPDATE:
-                        ++pos;
-                        bean.setLastUpdate(rs.getTimestamp(pos));
-                        break;
                     case ID_CLIENT_ID:
                         ++pos;
                         bean.setClientId(Manager.getInteger(rs, pos));
                         break;
-                    case ID_PREV_BALANCE_DUE:
-                        ++pos;
-                        bean.setPrevBalanceDue(Manager.getDouble(rs, pos));
-                        break;
-                    case ID_INVOICE_TOTAL_AMT:
-                        ++pos;
-                        bean.setInvoiceTotalAmt(Manager.getDouble(rs, pos));
-                        break;
-                    case ID_GENERATED_DATE:
-                        ++pos;
-                        bean.setGeneratedDate(rs.getDate(pos));
-                        break;
-                    case ID_INVOICE_DT:
-                        ++pos;
-                        bean.setInvoiceDt(rs.getDate(pos));
-                        break;
                     case ID_INVOICE_ID:
                         ++pos;
                         bean.setInvoiceId(Manager.getInteger(rs, pos));
+                        break;
+                    case ID_AMOUNT:
+                        ++pos;
+                        bean.setAmount(Manager.getDouble(rs, pos));
+                        break;
+                    case ID_DESCRIPTION:
+                        ++pos;
+                        bean.setDescription(rs.getString(pos));
+                        break;
+                    case ID_EFFECTIVE_DATE:
+                        ++pos;
+                        bean.setEffectiveDate(rs.getDate(pos));
+                        break;
+                    case ID_PAYMENT_LOG_ID:
+                        ++pos;
+                        bean.setPaymentLogId(Manager.getInteger(rs, pos));
                         break;
                     default:
                         throw new DAOException("Unknown field id " + fieldList[i]);
@@ -1514,25 +1468,24 @@ public class InvoiceManager
     }
 
     /**
-     * Transforms a ResultSet iterating on the invoice on a InvoiceBean bean using the names of the columns
+     * Transforms a ResultSet iterating on the payment_log on a PaymentLogBean bean using the names of the columns
      *
      * @param rs the ResultSet to be transformed
-     * @return bean resulting InvoiceBean bean
+     * @return bean resulting PaymentLogBean bean
      * @throws DAOException
      */
     //31
-    public InvoiceBean metaDataDecodeRow(ResultSet rs) throws DAOException
+    public PaymentLogBean metaDataDecodeRow(ResultSet rs) throws DAOException
     {
-        InvoiceBean bean = this.createInvoiceBean();
+        PaymentLogBean bean = this.createPaymentLogBean();
         try
         {
-            bean.setLastUpdate(rs.getTimestamp("last_update"));
             bean.setClientId(Manager.getInteger(rs, "client_id"));
-            bean.setPrevBalanceDue(Manager.getDouble(rs, "prev_balance_due"));
-            bean.setInvoiceTotalAmt(Manager.getDouble(rs, "invoice_total_amt"));
-            bean.setGeneratedDate(rs.getDate("generated_date"));
-            bean.setInvoiceDt(rs.getDate("invoice_dt"));
             bean.setInvoiceId(Manager.getInteger(rs, "invoice_id"));
+            bean.setAmount(Manager.getDouble(rs, "amount"));
+            bean.setDescription(rs.getString("description"));
+            bean.setEffectiveDate(rs.getDate("effective_date"));
+            bean.setPaymentLogId(Manager.getInteger(rs, "payment_log_id"));
         }
         catch(SQLException e)
         {
@@ -1553,11 +1506,11 @@ public class InvoiceManager
      * Loads all the elements using a prepared statement.
      *
      * @param ps the PreparedStatement to be used
-     * @return an array of InvoiceBean
+     * @return an array of PaymentLogBean
      * @throws DAOException
      */
     //32
-    public InvoiceBean[] loadByPreparedStatement(PreparedStatement ps) throws DAOException
+    public PaymentLogBean[] loadByPreparedStatement(PreparedStatement ps) throws DAOException
     {
         return this.loadByPreparedStatement(ps, null);
     }
@@ -1567,11 +1520,11 @@ public class InvoiceManager
      *
      * @param ps the PreparedStatement to be used
      * @param fieldList table of the field's associated constants
-     * @return an array of InvoiceBean
+     * @return an array of PaymentLogBean
      * @throws DAOException
      */
     //33
-    public InvoiceBean[] loadByPreparedStatement(PreparedStatement ps, int[] fieldList) throws DAOException
+    public PaymentLogBean[] loadByPreparedStatement(PreparedStatement ps, int[] fieldList) throws DAOException
     {
         ResultSet rs =  null;
 		List v =  null;
@@ -1590,7 +1543,7 @@ public class InvoiceManager
 				}
 			}
 
-			return (InvoiceBean[])v.toArray(new InvoiceBean[0]);
+			return (PaymentLogBean[])v.toArray(new PaymentLogBean[0]);
         }
         catch(SQLException e)
         {
@@ -1611,11 +1564,11 @@ public class InvoiceManager
      * @param startRow the start row to be used (first row = 1, last row = -1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
      * @param fieldList table of the field's associated constants
-     * @return an array of InvoiceBean
+     * @return an array of PaymentLogBean
      * @throws DAOException
      */
     //34
-    public InvoiceBean[] loadByPreparedStatement(PreparedStatement ps, int[] fieldList, int startRow, int numRows) throws DAOException
+    public PaymentLogBean[] loadByPreparedStatement(PreparedStatement ps, int[] fieldList, int startRow, int numRows) throws DAOException
     {
         ResultSet rs =  null;
         try
@@ -1637,24 +1590,24 @@ public class InvoiceManager
     //
     // LISTENER
     //_____________________________________________________________________
-    private InvoiceListener listener = null;
+    private PaymentLogListener listener = null;
 
     /**
-     * Registers a unique InvoiceListener listener.
+     * Registers a unique PaymentLogListener listener.
      */
     //35
-    public void registerListener(InvoiceListener listener)
+    public void registerListener(PaymentLogListener listener)
     {
         this.listener = listener;
     }
 
     /**
-     * Before the save of the InvoiceBean bean.
+     * Before the save of the PaymentLogBean bean.
      *
-     * @param bean the InvoiceBean bean to be saved
+     * @param bean the PaymentLogBean bean to be saved
      */
     //36
-    private void beforeInsert(InvoiceBean bean) throws DAOException
+    private void beforeInsert(PaymentLogBean bean) throws DAOException
     {
         if (listener != null) {
             listener.beforeInsert(bean);
@@ -1662,12 +1615,12 @@ public class InvoiceManager
     }
 
     /**
-     * After the save of the InvoiceBean bean.
+     * After the save of the PaymentLogBean bean.
      *
-     * @param bean the InvoiceBean bean to be saved
+     * @param bean the PaymentLogBean bean to be saved
      */
     //37
-    private void afterInsert(InvoiceBean bean) throws DAOException
+    private void afterInsert(PaymentLogBean bean) throws DAOException
     {
         if (listener != null) {
             listener.afterInsert(bean);
@@ -1675,12 +1628,12 @@ public class InvoiceManager
     }
 
     /**
-     * Before the update of the InvoiceBean bean.
+     * Before the update of the PaymentLogBean bean.
      *
-     * @param bean the InvoiceBean bean to be updated
+     * @param bean the PaymentLogBean bean to be updated
      */
     //38
-    private void beforeUpdate(InvoiceBean bean) throws DAOException
+    private void beforeUpdate(PaymentLogBean bean) throws DAOException
     {
         if (listener != null) {
             listener.beforeUpdate(bean);
@@ -1688,12 +1641,12 @@ public class InvoiceManager
     }
 
     /**
-     * After the update of the InvoiceBean bean.
+     * After the update of the PaymentLogBean bean.
      *
-     * @param bean the InvoiceBean bean to be updated
+     * @param bean the PaymentLogBean bean to be updated
      */
     //39
-    private void afterUpdate(InvoiceBean bean) throws DAOException
+    private void afterUpdate(PaymentLogBean bean) throws DAOException
     {
         if (listener != null) {
             listener.afterUpdate(bean);
@@ -1701,11 +1654,11 @@ public class InvoiceManager
     }
 
     /**
-     * Before the delete of the InvoiceBean bean.
+     * Before the delete of the PaymentLogBean bean.
      *
-     * @param bean the InvoiceBean bean to be deleted
+     * @param bean the PaymentLogBean bean to be deleted
      */
-    private void beforeDelete(InvoiceBean bean) throws DAOException
+    private void beforeDelete(PaymentLogBean bean) throws DAOException
     {
         if (listener != null) {
             listener.beforeDelete(bean);
@@ -1713,11 +1666,11 @@ public class InvoiceManager
     }
 
     /**
-     * After the delete of the InvoiceBean bean.
+     * After the delete of the PaymentLogBean bean.
      *
-     * @param bean the InvoiceBean bean to be deleted
+     * @param bean the PaymentLogBean bean to be deleted
      */
-    private void afterDelete(InvoiceBean bean) throws DAOException
+    private void afterDelete(PaymentLogBean bean) throws DAOException
     {
         if (listener != null) {
             listener.afterDelete(bean);

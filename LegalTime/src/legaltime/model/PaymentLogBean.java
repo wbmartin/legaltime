@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 import legaltime.model.GeneratedBean;
+import legaltime.model.ClientBean;
+import legaltime.model.InvoiceBean;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -24,18 +26,18 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
- * ExpenseInvoiceItemBean is a mapping of expense_invoice_item Table.
+ * PaymentLogBean is a mapping of payment_log Table.
  * @author sql2java
 */
-public class ExpenseInvoiceItemBean
+public class PaymentLogBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = 4666353430743582637L;
+	private static final long serialVersionUID = 4704360561907186766L;
 	
-    private java.util.Date lastUpdate;
+    private Integer clientId;
 
-    private boolean lastUpdateIsModified = false;
-    private boolean lastUpdateIsInitialized = false;
+    private boolean clientIdIsModified = false;
+    private boolean clientIdIsInitialized = false;
 
     private Integer invoiceId;
 
@@ -47,100 +49,101 @@ public class ExpenseInvoiceItemBean
     private boolean amountIsModified = false;
     private boolean amountIsInitialized = false;
 
-    private String expenseDescription;
+    private String description;
 
-    private boolean expenseDescriptionIsModified = false;
-    private boolean expenseDescriptionIsInitialized = false;
+    private boolean descriptionIsModified = false;
+    private boolean descriptionIsInitialized = false;
 
-    private java.util.Date expenseDate;
+    private java.util.Date effectiveDate;
 
-    private boolean expenseDateIsModified = false;
-    private boolean expenseDateIsInitialized = false;
+    private boolean effectiveDateIsModified = false;
+    private boolean effectiveDateIsInitialized = false;
 
-    private Integer expenseInvoiceItemId;
+    private Integer paymentLogId;
 
-    private boolean expenseInvoiceItemIdIsModified = false;
-    private boolean expenseInvoiceItemIdIsInitialized = false;
+    private boolean paymentLogIdIsModified = false;
+    private boolean paymentLogIdIsInitialized = false;
 
     private boolean _isNew = true;
 
     /**
-     * Prefered methods to create a ExpenseInvoiceItemBean is via the createExpenseInvoiceItemBean method in ExpenseInvoiceItemManager or
-     * via the factory class ExpenseInvoiceItemFactory create method
+     * Prefered methods to create a PaymentLogBean is via the createPaymentLogBean method in PaymentLogManager or
+     * via the factory class PaymentLogFactory create method
      */
-    protected ExpenseInvoiceItemBean()
+    protected PaymentLogBean()
     {
     }
 
     /**
-     * Getter method for lastUpdate.
+     * Getter method for clientId.
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: expense_invoice_item.last_update</li>
-     * <li>column size: 19</li>
-     * <li>jdbc type returned by the driver: Types.TIMESTAMP</li>
+     * <li>full name: payment_log.client_id</li>
+     * <li> foreign key: client.client_id</li>
+     * <li>column size: 10</li>
+     * <li>jdbc type returned by the driver: Types.INTEGER</li>
      * </ul>
      *
-     * @return the value of lastUpdate
+     * @return the value of clientId
      */
-    public java.util.Date getLastUpdate()
+    public Integer getClientId()
     {
-        return lastUpdate;
+        return clientId;
     }
 
     /**
-     * Setter method for lastUpdate.
+     * Setter method for clientId.
      * <br>
      * The new value is set only if compareTo() says it is different,
      * or if one of either the new value or the current value is null.
      * In case the new value is different, it is set and the field is marked as 'modified'.
      *
-     * @param newVal the new value to be assigned to lastUpdate
+     * @param newVal the new value to be assigned to clientId
      */
-    public void setLastUpdate(java.util.Date newVal)
+    public void setClientId(Integer newVal)
     {
-        if ((newVal != null && lastUpdate != null && (newVal.compareTo(lastUpdate) == 0)) ||
-            (newVal == null && lastUpdate == null && lastUpdateIsInitialized)) {
+        if ((newVal != null && clientId != null && (newVal.compareTo(clientId) == 0)) ||
+            (newVal == null && clientId == null && clientIdIsInitialized)) {
             return;
         }
-        lastUpdate = newVal;
-        lastUpdateIsModified = true;
-        lastUpdateIsInitialized = true;
+        clientId = newVal;
+        clientIdIsModified = true;
+        clientIdIsInitialized = true;
     }
 
     /**
-     * Setter method for lastUpdate.
+     * Setter method for clientId.
      * <br>
      * Convenient for those who do not want to deal with Objects for primary types.
      *
-     * @param newVal the new value to be assigned to lastUpdate
+     * @param newVal the new value to be assigned to clientId
      */
-    public void setLastUpdate(long newVal)
+    public void setClientId(int newVal)
     {
-        setLastUpdate(new java.util.Date(newVal));
+        setClientId(new Integer(newVal));
     }
 
     /**
-     * Determines if the lastUpdate has been modified.
+     * Determines if the clientId has been modified.
      *
      * @return true if the field has been modified, false if the field has not been modified
      */
-    public boolean isLastUpdateModified()
+    public boolean isClientIdModified()
     {
-        return lastUpdateIsModified;
+        return clientIdIsModified;
     }
 
     /**
-     * Determines if the lastUpdate has been initialized.
+     * Determines if the clientId has been initialized.
      * <br>
      * It is useful to determine if a field is null on purpose or just because it has not been initialized.
      *
      * @return true if the field has been initialized, false otherwise
      */
-    public boolean isLastUpdateInitialized()
+    public boolean isClientIdInitialized()
     {
-        return lastUpdateIsInitialized;
+        return clientIdIsInitialized;
     }
 
     /**
@@ -148,7 +151,8 @@ public class ExpenseInvoiceItemBean
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: expense_invoice_item.invoice_id</li>
+     * <li>full name: payment_log.invoice_id</li>
+     * <li> foreign key: invoice.invoice_id</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.INTEGER</li>
      * </ul>
@@ -219,7 +223,7 @@ public class ExpenseInvoiceItemBean
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: expense_invoice_item.amount</li>
+     * <li>full name: payment_log.amount</li>
      * <li>column size: 22</li>
      * <li>jdbc type returned by the driver: Types.DOUBLE</li>
      * </ul>
@@ -286,207 +290,229 @@ public class ExpenseInvoiceItemBean
     }
 
     /**
-     * Getter method for expenseDescription.
+     * Getter method for description.
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: expense_invoice_item.expense_description</li>
+     * <li>full name: payment_log.description</li>
      * <li>column size: 255</li>
      * <li>jdbc type returned by the driver: Types.VARCHAR</li>
      * </ul>
      *
-     * @return the value of expenseDescription
+     * @return the value of description
      */
-    public String getExpenseDescription()
+    public String getDescription()
     {
-        return expenseDescription;
+        return description;
     }
 
     /**
-     * Setter method for expenseDescription.
+     * Setter method for description.
      * <br>
      * The new value is set only if compareTo() says it is different,
      * or if one of either the new value or the current value is null.
      * In case the new value is different, it is set and the field is marked as 'modified'.
      *
-     * @param newVal the new value to be assigned to expenseDescription
+     * @param newVal the new value to be assigned to description
      */
-    public void setExpenseDescription(String newVal)
+    public void setDescription(String newVal)
     {
-        if ((newVal != null && expenseDescription != null && (newVal.compareTo(expenseDescription) == 0)) ||
-            (newVal == null && expenseDescription == null && expenseDescriptionIsInitialized)) {
+        if ((newVal != null && description != null && (newVal.compareTo(description) == 0)) ||
+            (newVal == null && description == null && descriptionIsInitialized)) {
             return;
         }
-        expenseDescription = newVal;
-        expenseDescriptionIsModified = true;
-        expenseDescriptionIsInitialized = true;
+        description = newVal;
+        descriptionIsModified = true;
+        descriptionIsInitialized = true;
     }
 
     /**
-     * Determines if the expenseDescription has been modified.
+     * Determines if the description has been modified.
      *
      * @return true if the field has been modified, false if the field has not been modified
      */
-    public boolean isExpenseDescriptionModified()
+    public boolean isDescriptionModified()
     {
-        return expenseDescriptionIsModified;
+        return descriptionIsModified;
     }
 
     /**
-     * Determines if the expenseDescription has been initialized.
+     * Determines if the description has been initialized.
      * <br>
      * It is useful to determine if a field is null on purpose or just because it has not been initialized.
      *
      * @return true if the field has been initialized, false otherwise
      */
-    public boolean isExpenseDescriptionInitialized()
+    public boolean isDescriptionInitialized()
     {
-        return expenseDescriptionIsInitialized;
+        return descriptionIsInitialized;
     }
 
     /**
-     * Getter method for expenseDate.
+     * Getter method for effectiveDate.
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: expense_invoice_item.expense_date</li>
+     * <li>full name: payment_log.effective_date</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.DATE</li>
      * </ul>
      *
-     * @return the value of expenseDate
+     * @return the value of effectiveDate
      */
-    public java.util.Date getExpenseDate()
+    public java.util.Date getEffectiveDate()
     {
-        return expenseDate;
+        return effectiveDate;
     }
 
     /**
-     * Setter method for expenseDate.
+     * Setter method for effectiveDate.
      * <br>
      * The new value is set only if compareTo() says it is different,
      * or if one of either the new value or the current value is null.
      * In case the new value is different, it is set and the field is marked as 'modified'.
      *
-     * @param newVal the new value to be assigned to expenseDate
+     * @param newVal the new value to be assigned to effectiveDate
      */
-    public void setExpenseDate(java.util.Date newVal)
+    public void setEffectiveDate(java.util.Date newVal)
     {
-        if ((newVal != null && expenseDate != null && (newVal.compareTo(expenseDate) == 0)) ||
-            (newVal == null && expenseDate == null && expenseDateIsInitialized)) {
+        if ((newVal != null && effectiveDate != null && (newVal.compareTo(effectiveDate) == 0)) ||
+            (newVal == null && effectiveDate == null && effectiveDateIsInitialized)) {
             return;
         }
-        expenseDate = newVal;
-        expenseDateIsModified = true;
-        expenseDateIsInitialized = true;
+        effectiveDate = newVal;
+        effectiveDateIsModified = true;
+        effectiveDateIsInitialized = true;
     }
 
     /**
-     * Setter method for expenseDate.
+     * Setter method for effectiveDate.
      * <br>
      * Convenient for those who do not want to deal with Objects for primary types.
      *
-     * @param newVal the new value to be assigned to expenseDate
+     * @param newVal the new value to be assigned to effectiveDate
      */
-    public void setExpenseDate(long newVal)
+    public void setEffectiveDate(long newVal)
     {
-        setExpenseDate(new java.util.Date(newVal));
+        setEffectiveDate(new java.util.Date(newVal));
     }
 
     /**
-     * Determines if the expenseDate has been modified.
+     * Determines if the effectiveDate has been modified.
      *
      * @return true if the field has been modified, false if the field has not been modified
      */
-    public boolean isExpenseDateModified()
+    public boolean isEffectiveDateModified()
     {
-        return expenseDateIsModified;
+        return effectiveDateIsModified;
     }
 
     /**
-     * Determines if the expenseDate has been initialized.
+     * Determines if the effectiveDate has been initialized.
      * <br>
      * It is useful to determine if a field is null on purpose or just because it has not been initialized.
      *
      * @return true if the field has been initialized, false otherwise
      */
-    public boolean isExpenseDateInitialized()
+    public boolean isEffectiveDateInitialized()
     {
-        return expenseDateIsInitialized;
+        return effectiveDateIsInitialized;
     }
 
     /**
-     * Getter method for expenseInvoiceItemId.
+     * Getter method for paymentLogId.
      * <br>
      * PRIMARY KEY.<br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: expense_invoice_item.expense_invoice_item_id</li>
+     * <li>full name: payment_log.payment_log_id</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.INTEGER</li>
      * </ul>
      *
-     * @return the value of expenseInvoiceItemId
+     * @return the value of paymentLogId
      */
-    public Integer getExpenseInvoiceItemId()
+    public Integer getPaymentLogId()
     {
-        return expenseInvoiceItemId;
+        return paymentLogId;
     }
 
     /**
-     * Setter method for expenseInvoiceItemId.
+     * Setter method for paymentLogId.
      * <br>
      * The new value is set only if compareTo() says it is different,
      * or if one of either the new value or the current value is null.
      * In case the new value is different, it is set and the field is marked as 'modified'.
      *
-     * @param newVal the new value to be assigned to expenseInvoiceItemId
+     * @param newVal the new value to be assigned to paymentLogId
      */
-    public void setExpenseInvoiceItemId(Integer newVal)
+    public void setPaymentLogId(Integer newVal)
     {
-        if ((newVal != null && expenseInvoiceItemId != null && (newVal.compareTo(expenseInvoiceItemId) == 0)) ||
-            (newVal == null && expenseInvoiceItemId == null && expenseInvoiceItemIdIsInitialized)) {
+        if ((newVal != null && paymentLogId != null && (newVal.compareTo(paymentLogId) == 0)) ||
+            (newVal == null && paymentLogId == null && paymentLogIdIsInitialized)) {
             return;
         }
-        expenseInvoiceItemId = newVal;
-        expenseInvoiceItemIdIsModified = true;
-        expenseInvoiceItemIdIsInitialized = true;
+        paymentLogId = newVal;
+        paymentLogIdIsModified = true;
+        paymentLogIdIsInitialized = true;
     }
 
     /**
-     * Setter method for expenseInvoiceItemId.
+     * Setter method for paymentLogId.
      * <br>
      * Convenient for those who do not want to deal with Objects for primary types.
      *
-     * @param newVal the new value to be assigned to expenseInvoiceItemId
+     * @param newVal the new value to be assigned to paymentLogId
      */
-    public void setExpenseInvoiceItemId(int newVal)
+    public void setPaymentLogId(int newVal)
     {
-        setExpenseInvoiceItemId(new Integer(newVal));
+        setPaymentLogId(new Integer(newVal));
     }
 
     /**
-     * Determines if the expenseInvoiceItemId has been modified.
+     * Determines if the paymentLogId has been modified.
      *
      * @return true if the field has been modified, false if the field has not been modified
      */
-    public boolean isExpenseInvoiceItemIdModified()
+    public boolean isPaymentLogIdModified()
     {
-        return expenseInvoiceItemIdIsModified;
+        return paymentLogIdIsModified;
     }
 
     /**
-     * Determines if the expenseInvoiceItemId has been initialized.
+     * Determines if the paymentLogId has been initialized.
      * <br>
      * It is useful to determine if a field is null on purpose or just because it has not been initialized.
      *
      * @return true if the field has been initialized, false otherwise
      */
-    public boolean isExpenseInvoiceItemIdInitialized()
+    public boolean isPaymentLogIdInitialized()
     {
-        return expenseInvoiceItemIdIsInitialized;
+        return paymentLogIdIsInitialized;
     }
 
+    /** The Client referenced by this bean. */
+    private ClientBean referencedClient;
+    /** Getter method for ClientBean. */
+    public ClientBean getClientBean() {
+        return this.referencedClient;
+    }
+    /** Setter method for ClientBean. */
+    public void setClientBean(ClientBean reference) {
+        this.referencedClient = reference;
+    }
+    
+    /** The Invoice referenced by this bean. */
+    private InvoiceBean referencedInvoice;
+    /** Getter method for InvoiceBean. */
+    public InvoiceBean getInvoiceBean() {
+        return this.referencedInvoice;
+    }
+    /** Setter method for InvoiceBean. */
+    public void setInvoiceBean(InvoiceBean reference) {
+        this.referencedInvoice = reference;
+    }
+    
     /**
      * Determines if the current object is new.
      *
@@ -516,7 +542,7 @@ public class ExpenseInvoiceItemBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| invoiceIdIsModified  		|| amountIsModified  		|| expenseDescriptionIsModified  		|| expenseDateIsModified  		|| expenseInvoiceItemIdIsModified  ;
+        return clientIdIsModified 		|| invoiceIdIsModified  		|| amountIsModified  		|| descriptionIsModified  		|| effectiveDateIsModified  		|| paymentLogIdIsModified  ;
     }
 
     /**
@@ -524,12 +550,12 @@ public class ExpenseInvoiceItemBean
      */
     public void resetIsModified()
     {
-        lastUpdateIsModified = false;
+        clientIdIsModified = false;
         invoiceIdIsModified = false;
         amountIsModified = false;
-        expenseDescriptionIsModified = false;
-        expenseDateIsModified = false;
-        expenseInvoiceItemIdIsModified = false;
+        descriptionIsModified = false;
+        effectiveDateIsModified = false;
+        paymentLogIdIsModified = false;
     }
 
     /**
@@ -537,14 +563,14 @@ public class ExpenseInvoiceItemBean
      *
      * @param bean the bean to copy into the current bean
      */
-    public void copy(ExpenseInvoiceItemBean bean)
+    public void copy(PaymentLogBean bean)
     {
-        setLastUpdate(bean.getLastUpdate());
+        setClientId(bean.getClientId());
         setInvoiceId(bean.getInvoiceId());
         setAmount(bean.getAmount());
-        setExpenseDescription(bean.getExpenseDescription());
-        setExpenseDate(bean.getExpenseDate());
-        setExpenseInvoiceItemId(bean.getExpenseInvoiceItemId());
+        setDescription(bean.getDescription());
+        setEffectiveDate(bean.getEffectiveDate());
+        setPaymentLogId(bean.getPaymentLogId());
     }
 
     /**
@@ -553,12 +579,12 @@ public class ExpenseInvoiceItemBean
     public Map getDictionnary()
     {
         Map dictionnary = new HashMap();
-        dictionnary.put("last_update", getLastUpdate() == null ? "" : getLastUpdate().toString());
+        dictionnary.put("client_id", getClientId() == null ? "" : getClientId().toString());
         dictionnary.put("invoice_id", getInvoiceId() == null ? "" : getInvoiceId().toString());
         dictionnary.put("amount", getAmount() == null ? "" : getAmount().toString());
-        dictionnary.put("expense_description", getExpenseDescription() == null ? "" : getExpenseDescription().toString());
-        dictionnary.put("expense_date", getExpenseDate() == null ? "" : getExpenseDate().toString());
-        dictionnary.put("expense_invoice_item_id", getExpenseInvoiceItemId() == null ? "" : getExpenseInvoiceItemId().toString());
+        dictionnary.put("description", getDescription() == null ? "" : getDescription().toString());
+        dictionnary.put("effective_date", getEffectiveDate() == null ? "" : getEffectiveDate().toString());
+        dictionnary.put("payment_log_id", getPaymentLogId() == null ? "" : getPaymentLogId().toString());
         return dictionnary;
     }
 
@@ -568,7 +594,7 @@ public class ExpenseInvoiceItemBean
     public Map getPkDictionnary()
     {
         Map dictionnary = new HashMap();
-        dictionnary.put("expense_invoice_item_id", getExpenseInvoiceItemId() == null ? "" : getExpenseInvoiceItemId().toString());
+        dictionnary.put("payment_log_id", getPaymentLogId() == null ? "" : getPaymentLogId().toString());
         return dictionnary;
     }
 
@@ -579,18 +605,18 @@ public class ExpenseInvoiceItemBean
     {
         if (null == column || "".equals(column)) {
             return "";
-        } else if ("last_update".equalsIgnoreCase(column) || "lastUpdate".equalsIgnoreCase(column)) {
-            return getLastUpdate() == null ? "" : getLastUpdate().toString();
+        } else if ("client_id".equalsIgnoreCase(column) || "clientId".equalsIgnoreCase(column)) {
+            return getClientId() == null ? "" : getClientId().toString();
         } else if ("invoice_id".equalsIgnoreCase(column) || "invoiceId".equalsIgnoreCase(column)) {
             return getInvoiceId() == null ? "" : getInvoiceId().toString();
         } else if ("amount".equalsIgnoreCase(column) || "amount".equalsIgnoreCase(column)) {
             return getAmount() == null ? "" : getAmount().toString();
-        } else if ("expense_description".equalsIgnoreCase(column) || "expenseDescription".equalsIgnoreCase(column)) {
-            return getExpenseDescription() == null ? "" : getExpenseDescription().toString();
-        } else if ("expense_date".equalsIgnoreCase(column) || "expenseDate".equalsIgnoreCase(column)) {
-            return getExpenseDate() == null ? "" : getExpenseDate().toString();
-        } else if ("expense_invoice_item_id".equalsIgnoreCase(column) || "expenseInvoiceItemId".equalsIgnoreCase(column)) {
-            return getExpenseInvoiceItemId() == null ? "" : getExpenseInvoiceItemId().toString();
+        } else if ("description".equalsIgnoreCase(column) || "description".equalsIgnoreCase(column)) {
+            return getDescription() == null ? "" : getDescription().toString();
+        } else if ("effective_date".equalsIgnoreCase(column) || "effectiveDate".equalsIgnoreCase(column)) {
+            return getEffectiveDate() == null ? "" : getEffectiveDate().toString();
+        } else if ("payment_log_id".equalsIgnoreCase(column) || "paymentLogId".equalsIgnoreCase(column)) {
+            return getPaymentLogId() == null ? "" : getPaymentLogId().toString();
         }
         return "";
     }
@@ -600,18 +626,18 @@ public class ExpenseInvoiceItemBean
      */
     public boolean equals(Object object)
     {
-        if (!(object instanceof ExpenseInvoiceItemBean)) {
+        if (!(object instanceof PaymentLogBean)) {
             return false;
         }
 
-		ExpenseInvoiceItemBean obj = (ExpenseInvoiceItemBean) object;
+		PaymentLogBean obj = (PaymentLogBean) object;
 		return new EqualsBuilder()
-            .append(getLastUpdate(), obj.getLastUpdate())
+            .append(getClientId(), obj.getClientId())
             .append(getInvoiceId(), obj.getInvoiceId())
             .append(getAmount(), obj.getAmount())
-            .append(getExpenseDescription(), obj.getExpenseDescription())
-            .append(getExpenseDate(), obj.getExpenseDate())
-            .append(getExpenseInvoiceItemId(), obj.getExpenseInvoiceItemId())
+            .append(getDescription(), obj.getDescription())
+            .append(getEffectiveDate(), obj.getEffectiveDate())
+            .append(getPaymentLogId(), obj.getPaymentLogId())
             .isEquals();
 	}
 
@@ -621,12 +647,12 @@ public class ExpenseInvoiceItemBean
 	public int hashCode()
 	{
 		return new HashCodeBuilder(-82280557, -700257973)
-            .append(getLastUpdate())
+            .append(getClientId())
             .append(getInvoiceId())
             .append(getAmount())
-            .append(getExpenseDescription())
-            .append(getExpenseDate())
-            .append(getExpenseInvoiceItemId())
+            .append(getDescription())
+            .append(getEffectiveDate())
+            .append(getPaymentLogId())
             .toHashCode();
 	}
 
@@ -648,26 +674,26 @@ public class ExpenseInvoiceItemBean
 	 */
 	public String toString(ToStringStyle style) {
 		return new ToStringBuilder(this, style)
-            .append("last_update", getLastUpdate())
+            .append("client_id", getClientId())
             .append("invoice_id", getInvoiceId())
             .append("amount", getAmount())
-            .append("expense_description", getExpenseDescription())
-            .append("expense_date", getExpenseDate())
-            .append("expense_invoice_item_id", getExpenseInvoiceItemId())
+            .append("description", getDescription())
+            .append("effective_date", getEffectiveDate())
+            .append("payment_log_id", getPaymentLogId())
             .toString();
 	}
 
 
     public int compareTo(Object object)
     {
-        ExpenseInvoiceItemBean obj = (ExpenseInvoiceItemBean) object;
+        PaymentLogBean obj = (PaymentLogBean) object;
         return new CompareToBuilder()
-            .append(getLastUpdate(), obj.getLastUpdate())
+            .append(getClientId(), obj.getClientId())
             .append(getInvoiceId(), obj.getInvoiceId())
             .append(getAmount(), obj.getAmount())
-            .append(getExpenseDescription(), obj.getExpenseDescription())
-            .append(getExpenseDate(), obj.getExpenseDate())
-            .append(getExpenseInvoiceItemId(), obj.getExpenseInvoiceItemId())
+            .append(getDescription(), obj.getDescription())
+            .append(getEffectiveDate(), obj.getEffectiveDate())
+            .append(getPaymentLogId(), obj.getPaymentLogId())
             .toComparison();
    }
 }

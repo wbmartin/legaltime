@@ -20,6 +20,7 @@ import legaltime.model.ClientAccountRegisterBean;
 import legaltime.model.FollowupBean;
 import legaltime.model.InvoiceBean;
 import legaltime.model.LaborRegisterBean;
+import legaltime.model.PaymentLogBean;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -34,7 +35,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class ClientBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -9215658962710496242L;
+	private static final long serialVersionUID = 4674615851121970573L;
 	
     private java.util.Date lastUpdate;
 
@@ -1186,6 +1187,7 @@ public class ClientBean
      * <li> imported key: followup.client_id</li>
      * <li> imported key: invoice.client_id</li>
      * <li> imported key: labor_register.client_id</li>
+     * <li> imported key: payment_log.client_id</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.INTEGER</li>
      * </ul>

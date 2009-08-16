@@ -57,9 +57,8 @@ public class InvoiceReport   {
        return new JRBeanCollectionDataSource(getExpenseBeans(invoiceId_));
    }
 
-   public  void makeReport(int invoiceId_)
-  {
-
+   public  boolean makeReport(int invoiceId_){
+       boolean success = false;
     JasperPrint jasperPrint;
     try
     {
@@ -75,12 +74,14 @@ public class InvoiceReport   {
 
         JasperExportManager.exportReportToPdfFile(
           jasperPrint, UserDesktop+"/Invoice00123_JoeClient_20090715.pdf");
+        success = true;
     }
-    catch (JRException e)
-    {
+    catch (JRException e)    {
         EasyLog.getInstance().addEntry(EasyLog.INFO, "Error Building Report", "Jasper Report Intro", EasyLog.getStackTrace(e));
-      e.printStackTrace();
+      
     }
+
+    return success;
   }
 
    static public void  loadInvoice(int invoiceId_){
@@ -112,6 +113,7 @@ public class InvoiceReport   {
         params.put("TotalToRemit",currentServicesRendered);
         params.put("Expenses", createExpenses(invoiceId_));
         params.put("UserInfoCache",UserInfoCache.getInstance());
+        params.put("Expenses",null);
         return params;
    }
 

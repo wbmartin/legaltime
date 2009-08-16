@@ -18,6 +18,7 @@ import java.util.HashMap;
 import legaltime.model.GeneratedBean;
 import legaltime.model.ExpenseRegisterBean;
 import legaltime.model.LaborRegisterBean;
+import legaltime.model.PaymentLogBean;
 import legaltime.model.ClientBean;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -33,7 +34,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class InvoiceBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -9218963933438831794L;
+	private static final long serialVersionUID = 4710970494773923278L;
 	
     private java.util.Date lastUpdate;
 
@@ -516,6 +517,7 @@ public class InvoiceBean
      * <li>full name: invoice.invoice_id</li>
      * <li> imported key: expense_register.invoice_id</li>
      * <li> imported key: labor_register.invoice_id</li>
+     * <li> imported key: payment_log.invoice_id</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.INTEGER</li>
      * </ul>

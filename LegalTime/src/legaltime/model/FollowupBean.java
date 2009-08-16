@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class FollowupBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -9214006479493812114L;
+	private static final long serialVersionUID = 4664700947526898509L;
 	
     private java.util.Date lastUpdate;
 
