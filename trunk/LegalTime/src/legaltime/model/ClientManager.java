@@ -32,6 +32,8 @@ import legaltime.model.InvoiceBean;
 import legaltime.model.InvoiceManager;
 import legaltime.model.LaborRegisterBean;
 import legaltime.model.LaborRegisterManager;
+import legaltime.model.PaymentLogBean;
+import legaltime.model.PaymentLogManager;
 
 /**
  * Handles database calls (save, load, count, etc...) for the client table.
@@ -447,6 +449,35 @@ public class ClientManager
      */
     //4.1 SET IMPORTED
     public ClientBean setLaborRegisterBean(ClientBean bean,LaborRegisterBean beanToSet)
+    {
+        bean.setClientId(beanToSet.getClientId());
+        return bean;
+    }
+
+    /**
+     * Retrieves the PaymentLogBean object from the client.client_id field.
+     *
+     * @param bean the ClientBean
+     * @return the associated PaymentLogBean bean
+     * @throws DAOException
+     */
+    //3.1 GET IMPORTED
+    public PaymentLogBean[] getPaymentLogBeans(ClientBean bean) throws DAOException
+    {
+        PaymentLogBean other = PaymentLogManager.getInstance().createPaymentLogBean();
+        other.setClientId(bean.getClientId());
+        return PaymentLogManager.getInstance().loadUsingTemplate(other);
+    }
+
+    /**
+     * Associates the ClientBean object to the PaymentLogBean object.
+     *
+     * @param bean the ClientBean object to use
+     * @param beanToSet the PaymentLogBean object to associate to the ClientBean
+     * @return the associated PaymentLogBean bean
+     */
+    //4.1 SET IMPORTED
+    public ClientBean setPaymentLogBean(ClientBean bean,PaymentLogBean beanToSet)
     {
         bean.setClientId(beanToSet.getClientId());
         return bean;
