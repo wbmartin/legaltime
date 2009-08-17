@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class ClientAccountRegisterBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = 4677920817555338829L;
+	private static final long serialVersionUID = -1580624008700781562L;
 	
     private java.util.Date lastUpdate;
 
@@ -47,6 +47,11 @@ public class ClientAccountRegisterBean
 
     private boolean tranAmtIsModified = false;
     private boolean tranAmtIsInitialized = false;
+
+    private String description;
+
+    private boolean descriptionIsModified = false;
+    private boolean descriptionIsInitialized = false;
 
     private Integer clientId;
 
@@ -270,6 +275,65 @@ public class ClientAccountRegisterBean
     }
 
     /**
+     * Getter method for description.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: client_account_register.description</li>
+     * <li>column size: 255</li>
+     * <li>jdbc type returned by the driver: Types.VARCHAR</li>
+     * </ul>
+     *
+     * @return the value of description
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+    /**
+     * Setter method for description.
+     * <br>
+     * The new value is set only if compareTo() says it is different,
+     * or if one of either the new value or the current value is null.
+     * In case the new value is different, it is set and the field is marked as 'modified'.
+     *
+     * @param newVal the new value to be assigned to description
+     */
+    public void setDescription(String newVal)
+    {
+        if ((newVal != null && description != null && (newVal.compareTo(description) == 0)) ||
+            (newVal == null && description == null && descriptionIsInitialized)) {
+            return;
+        }
+        description = newVal;
+        descriptionIsModified = true;
+        descriptionIsInitialized = true;
+    }
+
+    /**
+     * Determines if the description has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isDescriptionModified()
+    {
+        return descriptionIsModified;
+    }
+
+    /**
+     * Determines if the description has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isDescriptionInitialized()
+    {
+        return descriptionIsInitialized;
+    }
+
+    /**
      * Getter method for clientId.
      * <br>
      * PRIMARY KEY.<br>
@@ -454,7 +518,7 @@ public class ClientAccountRegisterBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| tranTypeIsModified  		|| tranAmtIsModified  		|| clientIdIsModified  		|| clientAccountRegisterIdIsModified  ;
+        return lastUpdateIsModified 		|| tranTypeIsModified  		|| tranAmtIsModified  		|| descriptionIsModified  		|| clientIdIsModified  		|| clientAccountRegisterIdIsModified  ;
     }
 
     /**
@@ -465,6 +529,7 @@ public class ClientAccountRegisterBean
         lastUpdateIsModified = false;
         tranTypeIsModified = false;
         tranAmtIsModified = false;
+        descriptionIsModified = false;
         clientIdIsModified = false;
         clientAccountRegisterIdIsModified = false;
     }
@@ -479,6 +544,7 @@ public class ClientAccountRegisterBean
         setLastUpdate(bean.getLastUpdate());
         setTranType(bean.getTranType());
         setTranAmt(bean.getTranAmt());
+        setDescription(bean.getDescription());
         setClientId(bean.getClientId());
         setClientAccountRegisterId(bean.getClientAccountRegisterId());
     }
@@ -492,6 +558,7 @@ public class ClientAccountRegisterBean
         dictionnary.put("last_update", getLastUpdate() == null ? "" : getLastUpdate().toString());
         dictionnary.put("tran_type", getTranType() == null ? "" : getTranType().toString());
         dictionnary.put("tran_amt", getTranAmt() == null ? "" : getTranAmt().toString());
+        dictionnary.put("description", getDescription() == null ? "" : getDescription().toString());
         dictionnary.put("client_id", getClientId() == null ? "" : getClientId().toString());
         dictionnary.put("client_account_register_id", getClientAccountRegisterId() == null ? "" : getClientAccountRegisterId().toString());
         return dictionnary;
@@ -521,6 +588,8 @@ public class ClientAccountRegisterBean
             return getTranType() == null ? "" : getTranType().toString();
         } else if ("tran_amt".equalsIgnoreCase(column) || "tranAmt".equalsIgnoreCase(column)) {
             return getTranAmt() == null ? "" : getTranAmt().toString();
+        } else if ("description".equalsIgnoreCase(column) || "description".equalsIgnoreCase(column)) {
+            return getDescription() == null ? "" : getDescription().toString();
         } else if ("client_id".equalsIgnoreCase(column) || "clientId".equalsIgnoreCase(column)) {
             return getClientId() == null ? "" : getClientId().toString();
         } else if ("client_account_register_id".equalsIgnoreCase(column) || "clientAccountRegisterId".equalsIgnoreCase(column)) {
@@ -543,6 +612,7 @@ public class ClientAccountRegisterBean
             .append(getLastUpdate(), obj.getLastUpdate())
             .append(getTranType(), obj.getTranType())
             .append(getTranAmt(), obj.getTranAmt())
+            .append(getDescription(), obj.getDescription())
             .append(getClientId(), obj.getClientId())
             .append(getClientAccountRegisterId(), obj.getClientAccountRegisterId())
             .isEquals();
@@ -557,6 +627,7 @@ public class ClientAccountRegisterBean
             .append(getLastUpdate())
             .append(getTranType())
             .append(getTranAmt())
+            .append(getDescription())
             .append(getClientId())
             .append(getClientAccountRegisterId())
             .toHashCode();
@@ -583,6 +654,7 @@ public class ClientAccountRegisterBean
             .append("last_update", getLastUpdate())
             .append("tran_type", getTranType())
             .append("tran_amt", getTranAmt())
+            .append("description", getDescription())
             .append("client_id", getClientId())
             .append("client_account_register_id", getClientAccountRegisterId())
             .toString();
@@ -596,6 +668,7 @@ public class ClientAccountRegisterBean
             .append(getLastUpdate(), obj.getLastUpdate())
             .append(getTranType(), obj.getTranType())
             .append(getTranAmt(), obj.getTranAmt())
+            .append(getDescription(), obj.getDescription())
             .append(getClientId(), obj.getClientId())
             .append(getClientAccountRegisterId(), obj.getClientAccountRegisterId())
             .toComparison();
