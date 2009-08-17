@@ -43,6 +43,7 @@ public class ClientAccountRegisterComparator implements Comparator
      *   <li>ClientAccountRegisterManager.ID_LAST_UPDATE
      *   <li>ClientAccountRegisterManager.ID_TRAN_TYPE
      *   <li>ClientAccountRegisterManager.ID_TRAN_AMT
+     *   <li>ClientAccountRegisterManager.ID_DESCRIPTION
      *   <li>ClientAccountRegisterManager.ID_CLIENT_ID
      *   <li>ClientAccountRegisterManager.ID_CLIENT_ACCOUNT_REGISTER_ID
      * </ul>
@@ -66,6 +67,7 @@ public class ClientAccountRegisterComparator implements Comparator
      *   <li>ClientAccountRegisterManager.ID_LAST_UPDATE
      *   <li>ClientAccountRegisterManager.ID_TRAN_TYPE
      *   <li>ClientAccountRegisterManager.ID_TRAN_AMT
+     *   <li>ClientAccountRegisterManager.ID_DESCRIPTION
      *   <li>ClientAccountRegisterManager.ID_CLIENT_ID
      *   <li>ClientAccountRegisterManager.ID_CLIENT_ACCOUNT_REGISTER_ID
      * </ul>
@@ -119,6 +121,17 @@ public class ClientAccountRegisterComparator implements Comparator
                     iReturn = 1;
                 } else {
                     iReturn = b1.getTranAmt().compareTo(b2.getTranAmt());
+                }
+                break;
+            case ClientAccountRegisterManager.ID_DESCRIPTION:
+                if (b1.getDescription() == null && b2.getDescription() != null) {
+                    iReturn = -1;
+                } else if (b1.getDescription() == null && b2.getDescription() == null) {
+                    iReturn = 0;
+                } else if (b1.getDescription() != null && b2.getDescription() == null) {
+                    iReturn = 1;
+                } else {
+                    iReturn = b1.getDescription().compareTo(b2.getDescription());
                 }
                 break;
             case ClientAccountRegisterManager.ID_CLIENT_ID:

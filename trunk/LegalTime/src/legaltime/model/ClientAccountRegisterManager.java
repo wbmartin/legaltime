@@ -59,14 +59,19 @@ public class ClientAccountRegisterManager
     public static final int ID_TRAN_AMT = 2;
 
     /**
+     * Identify the description field.
+     */
+    public static final int ID_DESCRIPTION = 3;
+
+    /**
      * Identify the client_id field.
      */
-    public static final int ID_CLIENT_ID = 3;
+    public static final int ID_CLIENT_ID = 4;
 
     /**
      * Identify the client_account_register_id field.
      */
-    public static final int ID_CLIENT_ACCOUNT_REGISTER_ID = 4;
+    public static final int ID_CLIENT_ACCOUNT_REGISTER_ID = 5;
 
     /**
      * Contains all the full fields of the client_account_register table.
@@ -76,6 +81,7 @@ public class ClientAccountRegisterManager
         "client_account_register.last_update"
         ,"client_account_register.tran_type"
         ,"client_account_register.tran_amt"
+        ,"client_account_register.description"
         ,"client_account_register.client_id"
         ,"client_account_register.client_account_register_id"
     };
@@ -88,6 +94,7 @@ public class ClientAccountRegisterManager
         "last_update"
         ,"tran_type"
         ,"tran_amt"
+        ,"description"
         ,"client_id"
         ,"client_account_register_id"
     };
@@ -98,6 +105,7 @@ public class ClientAccountRegisterManager
     public static final String ALL_FULL_FIELDS = "client_account_register.last_update"
                             + ",client_account_register.tran_type"
                             + ",client_account_register.tran_amt"
+                            + ",client_account_register.description"
                             + ",client_account_register.client_id"
                             + ",client_account_register.client_account_register_id";
 
@@ -107,6 +115,7 @@ public class ClientAccountRegisterManager
     public static final String ALL_FIELDS = "last_update"
                             + ",tran_type"
                             + ",tran_amt"
+                            + ",description"
                             + ",client_id"
                             + ",client_account_register_id";
 
@@ -502,6 +511,14 @@ public class ClientAccountRegisterManager
                 _dirtyCount++;
             }
 
+            if (bean.isDescriptionModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("description");
+                _dirtyCount++;
+            }
+
             if (bean.isClientIdModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
@@ -608,6 +625,15 @@ public class ClientAccountRegisterManager
                     useComma=true;
                 }
                 sql.append("tran_amt=?");
+            }
+
+            if (bean.isDescriptionModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("description=?");
             }
 
             if (bean.isClientIdModified()) {
@@ -1078,6 +1104,14 @@ public class ClientAccountRegisterManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("tran_amt = ?");
                 }
             }
+            if (bean.isDescriptionModified()) {
+                _dirtyCount ++;
+                if (bean.getDescription() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("description IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("description ").append(sqlEqualsOperation).append("?");
+                }
+            }
             if (bean.isClientIdModified()) {
                 _dirtyCount ++;
                 if (bean.getClientId() == null) {
@@ -1147,6 +1181,28 @@ public class ClientAccountRegisterManager
             if (bean.isTranAmtModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getTranAmt() + "]");
                 if (bean.getTranAmt() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getTranAmt()); }
+            }
+            if (bean.isDescriptionModified()) {
+                switch (searchType){
+                    case SEARCH_EXACT:
+                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getDescription() + "]");
+                        if (bean.getDescription() == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getDescription()); }
+                        break;
+                    case SEARCH_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getDescription() + "%]");
+                        ps.setString(++_dirtyCount, "%" + bean.getDescription() + "%");
+                        break;
+                    case SEARCH_STARTING_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [" + bean.getDescription() + "%]");
+                        ps.setString(++_dirtyCount, "%" + bean.getDescription());
+                        break;
+                    case SEARCH_ENDING_LIKE:
+                        // System.out.println("Setting for " + _dirtyCount + " [%" + bean.getDescription() + "]");
+                        if (bean.getDescription() + "%" == null) { ps.setNull(++_dirtyCount, Types.VARCHAR); } else { ps.setString(++_dirtyCount, bean.getDescription() + "%"); }
+                        break;
+                    default:
+                        throw new DAOException("Unknown search type " + searchType);
+                }
             }
             if (bean.isClientIdModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getClientId() + "]");
@@ -1232,8 +1288,9 @@ public class ClientAccountRegisterManager
             bean.setLastUpdate(rs.getTimestamp(1));
             bean.setTranType(rs.getString(2));
             bean.setTranAmt(Manager.getDouble(rs, 3));
-            bean.setClientId(Manager.getInteger(rs, 4));
-            bean.setClientAccountRegisterId(Manager.getInteger(rs, 5));
+            bean.setDescription(rs.getString(4));
+            bean.setClientId(Manager.getInteger(rs, 5));
+            bean.setClientAccountRegisterId(Manager.getInteger(rs, 6));
         }
         catch(SQLException e)
         {
@@ -1276,6 +1333,10 @@ public class ClientAccountRegisterManager
                         ++pos;
                         bean.setTranAmt(Manager.getDouble(rs, pos));
                         break;
+                    case ID_DESCRIPTION:
+                        ++pos;
+                        bean.setDescription(rs.getString(pos));
+                        break;
                     case ID_CLIENT_ID:
                         ++pos;
                         bean.setClientId(Manager.getInteger(rs, pos));
@@ -1315,6 +1376,7 @@ public class ClientAccountRegisterManager
             bean.setLastUpdate(rs.getTimestamp("last_update"));
             bean.setTranType(rs.getString("tran_type"));
             bean.setTranAmt(Manager.getDouble(rs, "tran_amt"));
+            bean.setDescription(rs.getString("description"));
             bean.setClientId(Manager.getInteger(rs, "client_id"));
             bean.setClientAccountRegisterId(Manager.getInteger(rs, "client_account_register_id"));
         }

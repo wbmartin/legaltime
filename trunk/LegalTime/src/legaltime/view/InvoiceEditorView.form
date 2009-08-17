@@ -42,9 +42,9 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblBillableHours" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="258" max="32767" attributes="0"/>
+                      <EmptySpace pref="209" max="32767" attributes="0"/>
                       <Component id="lblAccountBalance" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                       <Component id="lblAccountBalanceValue" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Component id="cmdGenerateInvoice" min="-2" max="-2" attributes="0"/>

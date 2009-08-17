@@ -43,6 +43,7 @@ public class InvoiceReport   {
    LaborInvoiceItemManager laborInvoiceItemManager;
    static EasyLog easyLog;
    static Double currentServicesRendered;
+   static Double currentExpenses;
    static Double totalPaymentsReceived;
    static ClientBean clientBean;
    static ClientCache clientCache;
@@ -52,6 +53,7 @@ public class InvoiceReport   {
    public InvoiceReport(){
         easyLog = EasyLog.getInstance();
         currentServicesRendered=0D;
+        currentExpenses=0D;
         clientCache = ClientCache.getInstance();
         invoiceManager = InvoiceManager.getInstance();
         appPrefs = AppPrefs.getInstance();
@@ -144,11 +146,12 @@ public class InvoiceReport   {
         params.put("ClientState", clientBean.getState());
         params.put("ClientState", clientBean.getZip());
         params.put("CurrentServicesRenderedAmount",currentServicesRendered);
-        params.put("PreviousBalance",invoiceBean.getPrevBalanceDue());
-        params.put("TotalToRemit",currentServicesRendered);
         params.put("Expenses", createExpenses(invoiceId_));
+        params.put("CurrentExpenseAmount",currentExpenses);
+        params.put("TotalToRemit",currentServicesRendered + currentExpenses + invoiceBean.getPrevBalanceDue());
         params.put("UserInfoCache",UserInfoCache.getInstance());
         params.put("Payments",createPayments(invoiceId_));
+        params.put("PreviousBalance",invoiceBean.getPrevBalanceDue()+ totalPaymentsReceived);
         return params;
    }
 
@@ -161,6 +164,10 @@ public class InvoiceReport   {
        ExpenseInvoiceItemBean[] beans = new ExpenseInvoiceItemBean[] {};
         try {
             beans = expenseInvoiceItemManagernvoice.loadByWhere("where invoice_id ="+ invoiceId_);
+             currentExpenses =0D;
+            for(int ndx =0; ndx<beans.length;ndx++){
+                currentExpenses += beans[ndx].getAmount();
+            }
         } catch (DAOException ex) {
             Logger.getLogger(InvoiceReport.class.getName()).log(Level.SEVERE, null, ex);
 

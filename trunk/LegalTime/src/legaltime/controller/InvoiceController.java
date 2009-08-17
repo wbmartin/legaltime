@@ -12,6 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import legaltime.LegalTimeApp;
 import legaltime.cache.ClientBillRateCache;
+import legaltime.model.ClientAccountRegisterBean;
+import legaltime.model.ClientAccountRegisterManager;
 import legaltime.model.ExpenseInvoiceItemBean;
 import legaltime.model.ExpenseInvoiceItemManager;
 import legaltime.model.ExpenseRegisterBean;
@@ -46,6 +48,8 @@ public class InvoiceController {
     private ExpenseRegisterManager expenseRegisterManager;
     private PaymentLogManager paymentLogManager;
     private EasyLog easyLog;
+    private ClientAccountRegisterManager clientAccountRegisterManager;
+    private ClientAccountRegisterBean clientAccountRegisterBean;
     LegalTimeApp app;
 
     public InvoiceController(){
@@ -54,6 +58,7 @@ public class InvoiceController {
         manager = Manager.getInstance();
         laborRegisterManager =LaborRegisterManager.getInstance();
         expenseRegisterManager = ExpenseRegisterManager.getInstance();
+        clientAccountRegisterManager = ClientAccountRegisterManager.getInstance();
         paymentLogManager= PaymentLogManager.getInstance();
         app = LegalTimeApp.getApplication();
         laborInvoiceItemManager = LaborInvoiceItemManager.getInstance();
@@ -92,15 +97,17 @@ public class InvoiceController {
             , LaborRegisterBean[] laborRegisterBeans_
             , ExpenseRegisterBean[] expenseRegisterBeans_
             , PaymentLogBean[] paymentLogBeans_){
+        Double totalInvoiceAmount=0D;
         try {
             InvoiceManager invoiceManager = InvoiceManager.getInstance();
             InvoiceBean invoiceBean = invoiceManager.createInvoiceBean();
             invoiceBean.setClientId(clientId_);
             invoiceBean.setGeneratedDate(new java.util.Date());
             invoiceBean.setInvoiceDt(new java.util.Date());
-            invoiceBean.setInvoiceTotalAmt(getInvoiceTotal(
+            totalInvoiceAmount=getInvoiceTotal(
                     laborRegisterBeans_
-                    , expenseRegisterBeans_));
+                    , expenseRegisterBeans_);
+            invoiceBean.setInvoiceTotalAmt(totalInvoiceAmount);
             invoiceBean.setPrevBalanceDue(getPreviousBalance(clientId_));
 
             
@@ -167,6 +174,13 @@ public class InvoiceController {
             }
 
 
+
+            clientAccountRegisterBean = clientAccountRegisterManager.createClientAccountRegisterBean();
+            clientAccountRegisterBean.setClientId(clientId_);
+            clientAccountRegisterBean.setTranType("INVCE");
+            clientAccountRegisterBean.setTranAmt(totalInvoiceAmount);
+            clientAccountRegisterBean.setDescription("Invoice #"+ invoiceBean.getInvoiceId());
+            clientAccountRegisterManager.save(clientAccountRegisterBean);
 
 
             manager.endTransaction(true);
@@ -235,7 +249,7 @@ public class InvoiceController {
                     + "where client_id = " + clientId_);
             rs = ps.executeQuery();
             if(rs.next()){
-                previousBalance= rs.getDouble(0);
+                previousBalance= rs.getDouble(1);
             }
             if(previousBalance.isNaN()){
                 previousBalance=0D;
