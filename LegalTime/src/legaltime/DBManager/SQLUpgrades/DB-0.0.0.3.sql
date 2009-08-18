@@ -35,7 +35,10 @@ ALTER TABLE payment_log ADD
 	CONSTRAINT fk_client_paymentlog FOREIGN KEY (client_id)
 		REFERENCES client (client_id);
 --
-UPDATE legal_time.sys_code
-SET   description = 'DB-0.0.0.3', last_update = now()
+Alter TABLE client_account_register ADD column description varchar(255) after client_id;
+--
+alter table client change column `bill_type` `bill_type` varchar(25) default 'HOURLY';
+--
+UPDATE sys_code 
+SET description = 'DB-0.0.0.3', last_update = now()
 WHERE code_id = 'DBVer';
-

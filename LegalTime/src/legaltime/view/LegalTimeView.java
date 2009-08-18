@@ -458,6 +458,7 @@ public javax.swing.JDesktopPane getDesktop(){
             timeRecorder.setMainController(LegalTimeApp.getApplication());
             
         }
+        timeRecorder.getCboClient().revalidate();
         LegalTimeApp.getApplication().show(timeRecorder);
         LegalTimeApp.getApplication().hideMainWindow();
     }

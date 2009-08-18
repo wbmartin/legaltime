@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class TranTypeBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -1598801332674241562L;
+	private static final long serialVersionUID = -4576359634690155794L;
 	
     private java.util.Date lastUpdate;
 

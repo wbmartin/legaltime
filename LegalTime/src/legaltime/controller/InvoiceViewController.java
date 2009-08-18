@@ -48,11 +48,12 @@ public class InvoiceViewController implements TableModelListener, ActionListener
     private LaborInvoiceItemBean laborInvoiceItemBean;
     private LaborInvoiceItemManager laborInvoiceItemManager;
     private LaborRegisterManager laborRegisterManager;
+    private ClientComboBoxModel clientComboBoxModel;
 
-    ExpenseRegisterManager expenseRegisterManager;
-    ExpenseRegisterTableModel  expenseRegisterTableModel;
+    private ExpenseRegisterManager expenseRegisterManager;
+    private ExpenseRegisterTableModel  expenseRegisterTableModel;
 
-        private LegalTimeApp mainController;
+    private LegalTimeApp mainController;
     private static InvoiceViewController instance;
 
     protected InvoiceViewController(LegalTimeApp mainController_){
@@ -79,7 +80,7 @@ public class InvoiceViewController implements TableModelListener, ActionListener
         invoiceEditorView.formatTableExpenseRegister();
 
 
-        ClientComboBoxModel clientComboBoxModel = new ClientComboBoxModel();
+        clientComboBoxModel = new ClientComboBoxModel();
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         invoiceEditorView.getCboClient().setModel(clientComboBoxModel);
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
@@ -101,6 +102,8 @@ public class InvoiceViewController implements TableModelListener, ActionListener
             //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
             invoiceEditorView = new InvoiceEditorView(this);
         }
+        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+        invoiceEditorView.getCboClient().revalidate();
         invoiceEditorView.setVisible(true);
         mainController.getDesktop().add(invoiceEditorView);
         try {
@@ -183,9 +186,8 @@ public class InvoiceViewController implements TableModelListener, ActionListener
                 ,laborRegisterTableModel.getLaborRegisterBeans()
                 ,expenseRegisterTableModel.getExpenseRegisterBeans()
                 ,paymentsLogBeans);
-        JOptionPane.showMessageDialog(invoiceEditorView, "The PDF has been saved to your desktop." +
-                "In normal operations in would be saved to a centralized " +
-                "archive and displayed for the user.");
+        JOptionPane.showMessageDialog(invoiceEditorView, "The PDF has been saved to the output " +
+                "location specified in your File > Preferences Screen. " );
 
         refreshLaborAndExpenseRegisterTable();
 

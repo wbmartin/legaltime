@@ -235,6 +235,21 @@ public class ExpenseInvoiceItemManager
         return this.loadUsingTemplate(null);
     }
 
+    /**
+     * Loads all the rows from expense_invoice_item.
+     *
+     * @param orderBy orders the beans
+     * @return an array of ExpenseInvoiceItemManager bean
+     * @throws DAOException
+     */
+    //5
+    public ExpenseInvoiceItemBean[] loadAll(String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(null, orderBy);
+    }
+
+
+
 
     /**
      * Loads the given number of rows from expense_invoice_item, given the start row.
@@ -696,7 +711,8 @@ public class ExpenseInvoiceItemManager
     //
     // USING TEMPLATE
     //_____________________________________________________________________
-    /**
+
+ /**
      * Loads a unique ExpenseInvoiceItemBean bean from a template one giving a c
      *
      * @param bean the ExpenseInvoiceItemBean bean to look for
@@ -706,7 +722,21 @@ public class ExpenseInvoiceItemManager
     //18
     public ExpenseInvoiceItemBean loadUniqueUsingTemplate(ExpenseInvoiceItemBean bean) throws DAOException
     {
-         ExpenseInvoiceItemBean[] beans = this.loadUsingTemplate(bean);
+	return loadUniqueUsingTemplate(bean, "");
+
+    }
+    /**
+     * Loads a unique ExpenseInvoiceItemBean bean from a template one giving a c
+     *
+     * @param bean the ExpenseInvoiceItemBean bean to look for
+     * @param orderBy the order by clause for the list
+     * @return the bean matching the template
+     * @throws DAOException
+     */
+    //18
+    public ExpenseInvoiceItemBean loadUniqueUsingTemplate(ExpenseInvoiceItemBean bean, String orderBy) throws DAOException
+    {
+         ExpenseInvoiceItemBean[] beans = this.loadUsingTemplate(bean,orderBy);
          if (beans.length == 0) {
              return null;
          }
@@ -716,7 +746,8 @@ public class ExpenseInvoiceItemManager
          return beans[0];
      }
 
-    /**
+
+     /**
      * Loads an array of ExpenseInvoiceItemBean from a template one.
      *
      * @param bean the ExpenseInvoiceItemBean template to look for
@@ -726,8 +757,40 @@ public class ExpenseInvoiceItemManager
     //19
     public ExpenseInvoiceItemBean[] loadUsingTemplate(ExpenseInvoiceItemBean bean) throws DAOException
     {
-        return this.loadUsingTemplate(bean, 1, -1);
+        return this.loadUsingTemplate(bean, 1, -1, "");
     }
+
+    /**
+     * Loads an array of ExpenseInvoiceItemBean from a template one.
+     *
+     * @param bean the ExpenseInvoiceItemBean template to look for
+     * @param orderBy the orderby clause for sql
+     * @return all the ExpenseInvoiceItemBean matching the template
+     * @throws DAOException
+     */
+    //19
+    public ExpenseInvoiceItemBean[] loadUsingTemplate(ExpenseInvoiceItemBean bean, String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(bean, 1, -1, orderBy);
+    }
+
+
+     /**
+     * Loads an array of ExpenseInvoiceItemBean from a template one, given the start row and number of rows.
+     *
+     * @param bean the ExpenseInvoiceItemBean template to look for
+     * @param startRow the start row to be used (first row = 1, last row=-1)
+     * @param numRows the number of rows to be retrieved (all rows = a negative number)
+     * @param orderBy SQL order by Clause
+     * @return all the ExpenseInvoiceItemBean matching the template
+     * @throws DAOException
+     */
+    //20
+    public ExpenseInvoiceItemBean[] loadUsingTemplate(ExpenseInvoiceItemBean bean, int startRow, int numRows, String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT, orderBy);
+    }
+
 
     /**
      * Loads an array of ExpenseInvoiceItemBean from a template one, given the start row and number of rows.
@@ -741,7 +804,7 @@ public class ExpenseInvoiceItemManager
     //20
     public ExpenseInvoiceItemBean[] loadUsingTemplate(ExpenseInvoiceItemBean bean, int startRow, int numRows) throws DAOException
     {
-        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT);
+        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT,"");
     }
 
     /**
@@ -751,11 +814,12 @@ public class ExpenseInvoiceItemManager
      * @param startRow the start row to be used (first row = 1, last row=-1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
      * @param searchType exact ?  like ? starting like ?
+     * @param orderBy SQL orderBy Clause
      * @return all the ExpenseInvoiceItemBean matching the template
      * @throws DAOException
      */
     //20
-    public ExpenseInvoiceItemBean[] loadUsingTemplate(ExpenseInvoiceItemBean bean, int startRow, int numRows, int searchType) throws DAOException
+    public ExpenseInvoiceItemBean[] loadUsingTemplate(ExpenseInvoiceItemBean bean, int startRow, int numRows, int searchType, String orderBy) throws DAOException
     {
         // System.out.println("loadUsingTemplate startRow:" + startRow + ", numRows:" + numRows + ", searchType:" + searchType);
         Connection c = null;
@@ -772,6 +836,7 @@ public class ExpenseInvoiceItemManager
                // System.out.println("The bean to look is not initialized... loading all");
             }
             // System.out.println("loadUsingTemplate: " + sql.toString());
+	    sql.append(" " + orderBy);
 
             c = this.getConnection();
             int scrollType = ResultSet.TYPE_SCROLL_INSENSITIVE;

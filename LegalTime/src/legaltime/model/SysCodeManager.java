@@ -235,6 +235,21 @@ public class SysCodeManager
         return this.loadUsingTemplate(null);
     }
 
+    /**
+     * Loads all the rows from sys_code.
+     *
+     * @param orderBy orders the beans
+     * @return an array of SysCodeManager bean
+     * @throws DAOException
+     */
+    //5
+    public SysCodeBean[] loadAll(String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(null, orderBy);
+    }
+
+
+
 
     /**
      * Loads the given number of rows from sys_code, given the start row.
@@ -696,7 +711,8 @@ public class SysCodeManager
     //
     // USING TEMPLATE
     //_____________________________________________________________________
-    /**
+
+ /**
      * Loads a unique SysCodeBean bean from a template one giving a c
      *
      * @param bean the SysCodeBean bean to look for
@@ -706,7 +722,21 @@ public class SysCodeManager
     //18
     public SysCodeBean loadUniqueUsingTemplate(SysCodeBean bean) throws DAOException
     {
-         SysCodeBean[] beans = this.loadUsingTemplate(bean);
+	return loadUniqueUsingTemplate(bean, "");
+
+    }
+    /**
+     * Loads a unique SysCodeBean bean from a template one giving a c
+     *
+     * @param bean the SysCodeBean bean to look for
+     * @param orderBy the order by clause for the list
+     * @return the bean matching the template
+     * @throws DAOException
+     */
+    //18
+    public SysCodeBean loadUniqueUsingTemplate(SysCodeBean bean, String orderBy) throws DAOException
+    {
+         SysCodeBean[] beans = this.loadUsingTemplate(bean,orderBy);
          if (beans.length == 0) {
              return null;
          }
@@ -716,7 +746,8 @@ public class SysCodeManager
          return beans[0];
      }
 
-    /**
+
+     /**
      * Loads an array of SysCodeBean from a template one.
      *
      * @param bean the SysCodeBean template to look for
@@ -726,8 +757,40 @@ public class SysCodeManager
     //19
     public SysCodeBean[] loadUsingTemplate(SysCodeBean bean) throws DAOException
     {
-        return this.loadUsingTemplate(bean, 1, -1);
+        return this.loadUsingTemplate(bean, 1, -1, "");
     }
+
+    /**
+     * Loads an array of SysCodeBean from a template one.
+     *
+     * @param bean the SysCodeBean template to look for
+     * @param orderBy the orderby clause for sql
+     * @return all the SysCodeBean matching the template
+     * @throws DAOException
+     */
+    //19
+    public SysCodeBean[] loadUsingTemplate(SysCodeBean bean, String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(bean, 1, -1, orderBy);
+    }
+
+
+     /**
+     * Loads an array of SysCodeBean from a template one, given the start row and number of rows.
+     *
+     * @param bean the SysCodeBean template to look for
+     * @param startRow the start row to be used (first row = 1, last row=-1)
+     * @param numRows the number of rows to be retrieved (all rows = a negative number)
+     * @param orderBy SQL order by Clause
+     * @return all the SysCodeBean matching the template
+     * @throws DAOException
+     */
+    //20
+    public SysCodeBean[] loadUsingTemplate(SysCodeBean bean, int startRow, int numRows, String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT, orderBy);
+    }
+
 
     /**
      * Loads an array of SysCodeBean from a template one, given the start row and number of rows.
@@ -741,7 +804,7 @@ public class SysCodeManager
     //20
     public SysCodeBean[] loadUsingTemplate(SysCodeBean bean, int startRow, int numRows) throws DAOException
     {
-        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT);
+        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT,"");
     }
 
     /**
@@ -751,11 +814,12 @@ public class SysCodeManager
      * @param startRow the start row to be used (first row = 1, last row=-1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
      * @param searchType exact ?  like ? starting like ?
+     * @param orderBy SQL orderBy Clause
      * @return all the SysCodeBean matching the template
      * @throws DAOException
      */
     //20
-    public SysCodeBean[] loadUsingTemplate(SysCodeBean bean, int startRow, int numRows, int searchType) throws DAOException
+    public SysCodeBean[] loadUsingTemplate(SysCodeBean bean, int startRow, int numRows, int searchType, String orderBy) throws DAOException
     {
         // System.out.println("loadUsingTemplate startRow:" + startRow + ", numRows:" + numRows + ", searchType:" + searchType);
         Connection c = null;
@@ -772,6 +836,7 @@ public class SysCodeManager
                // System.out.println("The bean to look is not initialized... loading all");
             }
             // System.out.println("loadUsingTemplate: " + sql.toString());
+	    sql.append(" " + orderBy);
 
             c = this.getConnection();
             int scrollType = ResultSet.TYPE_SCROLL_INSENSITIVE;

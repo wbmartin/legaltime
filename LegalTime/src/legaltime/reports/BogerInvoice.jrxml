@@ -50,10 +50,14 @@
 			</band>
 			<band height="97">
 				<line>
-					<reportElement x="0" y="9" width="555" height="1"/>
+					<reportElement x="0" y="9" width="555" height="1">
+						<printWhenExpression><![CDATA[Boolean.valueOf(!($P{CurrentExpenseAmount}).equals("0")) ]]></printWhenExpression>
+					</reportElement>
 				</line>
 				<staticText>
-					<reportElement x="151" y="11" width="167" height="20"/>
+					<reportElement x="151" y="11" width="167" height="20">
+						<printWhenExpression><![CDATA[Boolean.valueOf(!($P{CurrentExpenseAmount}).equals("0")) ]]></printWhenExpression>
+					</reportElement>
 					<textElement/>
 					<text><![CDATA[Total For Other Charges]]></text>
 				</staticText>
@@ -63,7 +67,9 @@
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "BogerInvoice_PaymentsSubReport.jasper"]]></subreportExpression>
 				</subreport>
 				<textField pattern="$#,##0.00">
-					<reportElement x="489" y="11" width="67" height="20"/>
+					<reportElement x="489" y="11" width="67" height="20">
+						<printWhenExpression><![CDATA[Boolean.valueOf(!($P{CurrentExpenseAmount}).equals("1")) ]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression class="java.lang.Double"><![CDATA[$P{CurrentExpenseAmount}]]></textFieldExpression>
 				</textField>

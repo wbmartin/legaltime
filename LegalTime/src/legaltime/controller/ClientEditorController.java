@@ -109,6 +109,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
             //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
             clientEditorView = new ClientEditorView(this);
         }
+
         clientEditorView.setVisible(true);
         mainController.getDesktop().add(clientEditorView);
         try {
@@ -349,6 +350,8 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
 
      public void internalFrameClosing( InternalFrameEvent e ) {
         saveChanges();
+        
+        persistanceManager.loadClientCache();
         clientEditorView.dispose();
 
      }

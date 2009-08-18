@@ -305,6 +305,21 @@ public class ExpenseRegisterManager
         return this.loadUsingTemplate(null);
     }
 
+    /**
+     * Loads all the rows from expense_register.
+     *
+     * @param orderBy orders the beans
+     * @return an array of ExpenseRegisterManager bean
+     * @throws DAOException
+     */
+    //5
+    public ExpenseRegisterBean[] loadAll(String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(null, orderBy);
+    }
+
+
+
 
     /**
      * Loads the given number of rows from expense_register, given the start row.
@@ -800,7 +815,8 @@ public class ExpenseRegisterManager
     //
     // USING TEMPLATE
     //_____________________________________________________________________
-    /**
+
+ /**
      * Loads a unique ExpenseRegisterBean bean from a template one giving a c
      *
      * @param bean the ExpenseRegisterBean bean to look for
@@ -810,7 +826,21 @@ public class ExpenseRegisterManager
     //18
     public ExpenseRegisterBean loadUniqueUsingTemplate(ExpenseRegisterBean bean) throws DAOException
     {
-         ExpenseRegisterBean[] beans = this.loadUsingTemplate(bean);
+	return loadUniqueUsingTemplate(bean, "");
+
+    }
+    /**
+     * Loads a unique ExpenseRegisterBean bean from a template one giving a c
+     *
+     * @param bean the ExpenseRegisterBean bean to look for
+     * @param orderBy the order by clause for the list
+     * @return the bean matching the template
+     * @throws DAOException
+     */
+    //18
+    public ExpenseRegisterBean loadUniqueUsingTemplate(ExpenseRegisterBean bean, String orderBy) throws DAOException
+    {
+         ExpenseRegisterBean[] beans = this.loadUsingTemplate(bean,orderBy);
          if (beans.length == 0) {
              return null;
          }
@@ -820,7 +850,8 @@ public class ExpenseRegisterManager
          return beans[0];
      }
 
-    /**
+
+     /**
      * Loads an array of ExpenseRegisterBean from a template one.
      *
      * @param bean the ExpenseRegisterBean template to look for
@@ -830,8 +861,40 @@ public class ExpenseRegisterManager
     //19
     public ExpenseRegisterBean[] loadUsingTemplate(ExpenseRegisterBean bean) throws DAOException
     {
-        return this.loadUsingTemplate(bean, 1, -1);
+        return this.loadUsingTemplate(bean, 1, -1, "");
     }
+
+    /**
+     * Loads an array of ExpenseRegisterBean from a template one.
+     *
+     * @param bean the ExpenseRegisterBean template to look for
+     * @param orderBy the orderby clause for sql
+     * @return all the ExpenseRegisterBean matching the template
+     * @throws DAOException
+     */
+    //19
+    public ExpenseRegisterBean[] loadUsingTemplate(ExpenseRegisterBean bean, String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(bean, 1, -1, orderBy);
+    }
+
+
+     /**
+     * Loads an array of ExpenseRegisterBean from a template one, given the start row and number of rows.
+     *
+     * @param bean the ExpenseRegisterBean template to look for
+     * @param startRow the start row to be used (first row = 1, last row=-1)
+     * @param numRows the number of rows to be retrieved (all rows = a negative number)
+     * @param orderBy SQL order by Clause
+     * @return all the ExpenseRegisterBean matching the template
+     * @throws DAOException
+     */
+    //20
+    public ExpenseRegisterBean[] loadUsingTemplate(ExpenseRegisterBean bean, int startRow, int numRows, String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT, orderBy);
+    }
+
 
     /**
      * Loads an array of ExpenseRegisterBean from a template one, given the start row and number of rows.
@@ -845,7 +908,7 @@ public class ExpenseRegisterManager
     //20
     public ExpenseRegisterBean[] loadUsingTemplate(ExpenseRegisterBean bean, int startRow, int numRows) throws DAOException
     {
-        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT);
+        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT,"");
     }
 
     /**
@@ -855,11 +918,12 @@ public class ExpenseRegisterManager
      * @param startRow the start row to be used (first row = 1, last row=-1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
      * @param searchType exact ?  like ? starting like ?
+     * @param orderBy SQL orderBy Clause
      * @return all the ExpenseRegisterBean matching the template
      * @throws DAOException
      */
     //20
-    public ExpenseRegisterBean[] loadUsingTemplate(ExpenseRegisterBean bean, int startRow, int numRows, int searchType) throws DAOException
+    public ExpenseRegisterBean[] loadUsingTemplate(ExpenseRegisterBean bean, int startRow, int numRows, int searchType, String orderBy) throws DAOException
     {
         // System.out.println("loadUsingTemplate startRow:" + startRow + ", numRows:" + numRows + ", searchType:" + searchType);
         Connection c = null;
@@ -876,6 +940,7 @@ public class ExpenseRegisterManager
                // System.out.println("The bean to look is not initialized... loading all");
             }
             // System.out.println("loadUsingTemplate: " + sql.toString());
+	    sql.append(" " + orderBy);
 
             c = this.getConnection();
             int scrollType = ResultSet.TYPE_SCROLL_INSENSITIVE;
