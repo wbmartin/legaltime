@@ -300,6 +300,21 @@ public class FollowupManager
         return this.loadUsingTemplate(null);
     }
 
+    /**
+     * Loads all the rows from followup.
+     *
+     * @param orderBy orders the beans
+     * @return an array of FollowupManager bean
+     * @throws DAOException
+     */
+    //5
+    public FollowupBean[] loadAll(String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(null, orderBy);
+    }
+
+
+
 
     /**
      * Loads the given number of rows from followup, given the start row.
@@ -762,7 +777,8 @@ public class FollowupManager
     //
     // USING TEMPLATE
     //_____________________________________________________________________
-    /**
+
+ /**
      * Loads a unique FollowupBean bean from a template one giving a c
      *
      * @param bean the FollowupBean bean to look for
@@ -772,7 +788,21 @@ public class FollowupManager
     //18
     public FollowupBean loadUniqueUsingTemplate(FollowupBean bean) throws DAOException
     {
-         FollowupBean[] beans = this.loadUsingTemplate(bean);
+	return loadUniqueUsingTemplate(bean, "");
+
+    }
+    /**
+     * Loads a unique FollowupBean bean from a template one giving a c
+     *
+     * @param bean the FollowupBean bean to look for
+     * @param orderBy the order by clause for the list
+     * @return the bean matching the template
+     * @throws DAOException
+     */
+    //18
+    public FollowupBean loadUniqueUsingTemplate(FollowupBean bean, String orderBy) throws DAOException
+    {
+         FollowupBean[] beans = this.loadUsingTemplate(bean,orderBy);
          if (beans.length == 0) {
              return null;
          }
@@ -782,7 +812,8 @@ public class FollowupManager
          return beans[0];
      }
 
-    /**
+
+     /**
      * Loads an array of FollowupBean from a template one.
      *
      * @param bean the FollowupBean template to look for
@@ -792,8 +823,40 @@ public class FollowupManager
     //19
     public FollowupBean[] loadUsingTemplate(FollowupBean bean) throws DAOException
     {
-        return this.loadUsingTemplate(bean, 1, -1);
+        return this.loadUsingTemplate(bean, 1, -1, "");
     }
+
+    /**
+     * Loads an array of FollowupBean from a template one.
+     *
+     * @param bean the FollowupBean template to look for
+     * @param orderBy the orderby clause for sql
+     * @return all the FollowupBean matching the template
+     * @throws DAOException
+     */
+    //19
+    public FollowupBean[] loadUsingTemplate(FollowupBean bean, String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(bean, 1, -1, orderBy);
+    }
+
+
+     /**
+     * Loads an array of FollowupBean from a template one, given the start row and number of rows.
+     *
+     * @param bean the FollowupBean template to look for
+     * @param startRow the start row to be used (first row = 1, last row=-1)
+     * @param numRows the number of rows to be retrieved (all rows = a negative number)
+     * @param orderBy SQL order by Clause
+     * @return all the FollowupBean matching the template
+     * @throws DAOException
+     */
+    //20
+    public FollowupBean[] loadUsingTemplate(FollowupBean bean, int startRow, int numRows, String orderBy) throws DAOException
+    {
+        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT, orderBy);
+    }
+
 
     /**
      * Loads an array of FollowupBean from a template one, given the start row and number of rows.
@@ -807,7 +870,7 @@ public class FollowupManager
     //20
     public FollowupBean[] loadUsingTemplate(FollowupBean bean, int startRow, int numRows) throws DAOException
     {
-        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT);
+        return this.loadUsingTemplate(bean, startRow, numRows, SEARCH_EXACT,"");
     }
 
     /**
@@ -817,11 +880,12 @@ public class FollowupManager
      * @param startRow the start row to be used (first row = 1, last row=-1)
      * @param numRows the number of rows to be retrieved (all rows = a negative number)
      * @param searchType exact ?  like ? starting like ?
+     * @param orderBy SQL orderBy Clause
      * @return all the FollowupBean matching the template
      * @throws DAOException
      */
     //20
-    public FollowupBean[] loadUsingTemplate(FollowupBean bean, int startRow, int numRows, int searchType) throws DAOException
+    public FollowupBean[] loadUsingTemplate(FollowupBean bean, int startRow, int numRows, int searchType, String orderBy) throws DAOException
     {
         // System.out.println("loadUsingTemplate startRow:" + startRow + ", numRows:" + numRows + ", searchType:" + searchType);
         Connection c = null;
@@ -838,6 +902,7 @@ public class FollowupManager
                // System.out.println("The bean to look is not initialized... loading all");
             }
             // System.out.println("loadUsingTemplate: " + sql.toString());
+	    sql.append(" " + orderBy);
 
             c = this.getConnection();
             int scrollType = ResultSet.TYPE_SCROLL_INSENSITIVE;

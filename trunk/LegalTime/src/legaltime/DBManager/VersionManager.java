@@ -86,6 +86,7 @@ public class VersionManager {
             if (!backupDatabase()){patchInstalled =NEW_VERSION_FAILED;}
             else if(applyPatch("DB-0.0.0.1")){
                 patchInstalled =NEW_VERSION_INSTALLED;
+                INSTALLED_VERSION = "DB-0.0.0.1";
             }else{
                 patchInstalled =NEW_VERSION_FAILED;
             }
@@ -95,6 +96,7 @@ public class VersionManager {
             if (!backupDatabase()){patchInstalled =NEW_VERSION_FAILED;}
             else if(applyPatch("DB-0.0.0.2")){
               patchInstalled =NEW_VERSION_INSTALLED;
+              INSTALLED_VERSION = "DB-0.0.0.2";
             }else{
                patchInstalled =NEW_VERSION_FAILED;
             }
@@ -104,6 +106,7 @@ public class VersionManager {
             if (!backupDatabase()){patchInstalled =NEW_VERSION_FAILED;}
             else if(applyPatch("DB-0.0.0.3")){
               patchInstalled =NEW_VERSION_INSTALLED;
+              INSTALLED_VERSION = "DB-0.0.0.3";
             }else{
                patchInstalled =NEW_VERSION_FAILED;
             }
@@ -128,7 +131,7 @@ public class VersionManager {
              br = new BufferedReader(new InputStreamReader(sqlTextStream));
               while (null != (line = br.readLine())) {
                   if (!line.contains("--") && line.length()>0){
-                    sqlToExecute.append(line);
+                    sqlToExecute.append(" " + line);
                   }
                  if(line.contains(";")){
                      sqlCommands.add(sqlToExecute.toString());
@@ -148,8 +151,8 @@ public class VersionManager {
         PreparedStatement ps=null;
 
         try {
-            finalSQL=sqlToExecute.toString();
-            System.out.println(finalSQL);
+//            finalSQL=sqlToExecute.toString();
+//            System.out.println(finalSQL);
             con.setAutoCommit(false);
             for(ndx =0;ndx <sqlCommands.size();ndx++){
                 if(sqlCommands.get(ndx).equals("")){continue;}

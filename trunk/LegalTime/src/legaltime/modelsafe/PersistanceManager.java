@@ -73,7 +73,7 @@ import legaltime.model.exception.DAOException;
         DatabaseResult result = DatabaseResult.PendingAction;
 
         try {
-            clientCache.setList(clientManager.loadAll());
+            clientCache.setList(clientManager.loadAll("order by last_name"));
             result =DatabaseResult.Success;
         } catch (DAOException ex) {
             easyLog.addEntry(EasyLog.SEVERE, "Load Client Cache Failed",

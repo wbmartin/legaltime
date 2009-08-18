@@ -303,6 +303,9 @@ public class TimeRecorder extends javax.swing.JFrame implements ListSelectionLis
             }
         });
     }
+    public javax.swing.JComboBox getCboClient(){
+        return cboClient;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboClient;
