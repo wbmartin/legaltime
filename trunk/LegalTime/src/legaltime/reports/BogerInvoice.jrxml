@@ -51,12 +51,12 @@
 			<band height="97">
 				<line>
 					<reportElement x="0" y="9" width="555" height="1">
-						<printWhenExpression><![CDATA[Boolean.valueOf(!($P{CurrentExpenseAmount}).equals("0")) ]]></printWhenExpression>
+						<printWhenExpression><![CDATA[Boolean.valueOf(!($P{CurrentExpenseAmount}).equals("0"))]]></printWhenExpression>
 					</reportElement>
 				</line>
 				<staticText>
 					<reportElement x="151" y="11" width="167" height="20">
-						<printWhenExpression><![CDATA[Boolean.valueOf(!($P{CurrentExpenseAmount}).equals("0")) ]]></printWhenExpression>
+						<printWhenExpression><![CDATA[Boolean.valueOf(!($P{CurrentExpenseAmount}).equals("0"))]]></printWhenExpression>
 					</reportElement>
 					<textElement/>
 					<text><![CDATA[Total For Other Charges]]></text>
@@ -68,7 +68,7 @@
 				</subreport>
 				<textField pattern="$#,##0.00">
 					<reportElement x="489" y="11" width="67" height="20">
-						<printWhenExpression><![CDATA[Boolean.valueOf(!($P{CurrentExpenseAmount}).equals("1")) ]]></printWhenExpression>
+						<printWhenExpression><![CDATA[Boolean.valueOf(!($P{CurrentExpenseAmount}).equals("1"))]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression class="java.lang.Double"><![CDATA[$P{CurrentExpenseAmount}]]></textFieldExpression>
@@ -142,7 +142,7 @@
 				<textElement markup="none">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{ClientCity} +", "+ $P{ClientCity}  + " " +$P{ClientZip}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ClientCity} +", "+ $P{ClientState}  + " " +$P{ClientZip}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="474" y="103" width="28" height="20"/>

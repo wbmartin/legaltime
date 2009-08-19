@@ -1,6 +1,3 @@
---UPDATE legal_time.sys_code
---SET   description = 'DB-0.0.0.3'
---WHERE code_id = 'DBVer';
 ALTER TABLE `sys_code`
     MODIFY COLUMN `sys_code_id` INT(11) NOT NULL AUTO_INCREMENT;
 --

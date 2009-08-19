@@ -57,6 +57,7 @@ public class LegalTimeView extends FrameView {
     private TimeEditor timeEditor;
     private PersistanceManager persistanceManager;
     private PreferencesEditorView preferencesManager;
+    private DBAdminView dBAdminView;
     private LogView logView;
     private final EasyLog easyLog;
     private LegalTimeApp legalTimeApp;
@@ -243,6 +244,7 @@ public class LegalTimeView extends FrameView {
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         viewSystemLogMenuItem = new javax.swing.JMenuItem();
+        DBAdminMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
         statusMessageLabel = new javax.swing.JLabel();
         lblVersion = new javax.swing.JLabel();
@@ -361,6 +363,11 @@ public class LegalTimeView extends FrameView {
         viewSystemLogMenuItem.setName("viewSystemLogMenuItem"); // NOI18N
         helpMenu.add(viewSystemLogMenuItem);
 
+        DBAdminMenuItem.setAction(actionMap.get("showDBAdmin")); // NOI18N
+        DBAdminMenuItem.setText(resourceMap.getString("DBAdminMenuItem.text")); // NOI18N
+        DBAdminMenuItem.setName("DBAdminMenuItem"); // NOI18N
+        helpMenu.add(DBAdminMenuItem);
+
         menuBar.add(helpMenu);
 
         statusPanel.setMaximumSize(new java.awt.Dimension(32767, 30));
@@ -420,6 +427,7 @@ public class LegalTimeView extends FrameView {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu BillingMenu;
+    private javax.swing.JMenuItem DBAdminMenuItem;
     private javax.swing.JMenuItem ExpenseManagerMenuItem;
     private javax.swing.JMenuItem InvoiceManagerMenuItem;
     private javax.swing.JMenu InvoiceMenu;
@@ -559,6 +567,19 @@ public javax.swing.JDesktopPane getDesktop(){
         desktop.add(preferencesManager);
         try {
             preferencesManager.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {}
+    }
+
+    @Action
+    public void showDBAdmin(){
+        if (dBAdminView == null) {
+            dBAdminView = new DBAdminView();
+            dBAdminView.setMainController(LegalTimeApp.getApplication());
+        }
+        dBAdminView.setVisible(true);
+        desktop.add(dBAdminView);
+        try {
+            dBAdminView.setSelected(true);
         } catch (java.beans.PropertyVetoException e) {}
     }
 

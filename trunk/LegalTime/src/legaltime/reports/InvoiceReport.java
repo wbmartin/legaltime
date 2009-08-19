@@ -81,7 +81,7 @@ public class InvoiceReport   {
         String outputPath = appPrefs.getValue(AppPrefs.INVOICE_OUTPUT_PATH)
                 + File.separatorChar
                 + Integer.toString(1900+now.getYear())
-                + TextUtils.frontZeroFill( Integer.toString(now.getMonth())+1,2)
+                + TextUtils.frontZeroFill( Integer.toString(now.getMonth()+1),2)
                 + TextUtils.frontZeroFill( Integer.toString(now.getDate()),2);
 
           File dir = new File(outputPath);
@@ -144,7 +144,7 @@ public class InvoiceReport   {
         params.put("ClientAddress", clientBean.getAddress());
         params.put("ClientCity", clientBean.getCity());
         params.put("ClientState", clientBean.getState());
-        params.put("ClientState", clientBean.getZip());
+        params.put("ClientZip", clientBean.getZip());
         params.put("CurrentServicesRenderedAmount",currentServicesRendered);
         params.put("Expenses", createExpenses(invoiceId_));
         params.put("CurrentExpenseAmount",currentExpenses);
