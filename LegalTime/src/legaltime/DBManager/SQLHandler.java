@@ -125,5 +125,9 @@ public class SQLHandler {
         return success;
     }
 
+    public void clearResults() {
+        results.setLength(0);
+    }
+
 
 }
