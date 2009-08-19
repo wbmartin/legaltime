@@ -68,6 +68,7 @@ public class VersionManager {
                 version = rs.getString("description");
             }else{
                 version = "DB-0.0.0.1";
+                easyLog.addEntry(EasyLog.INFO, "Version Not found, assuming DB-0.0.0.1", getClass().getName(), "");
             }
             rs.close();
             ps.close();
@@ -83,32 +84,52 @@ public class VersionManager {
         String patchInstalled =NO_NEW_VERSION;
         getDBVersion();
         if (version.equals("DB-0.0.0.0") && !patchInstalled.equals(NEW_VERSION_FAILED)){
-            if (!backupDatabase()){patchInstalled =NEW_VERSION_FAILED;}
+            if (!backupDatabase()){
+                patchInstalled =NEW_VERSION_FAILED;
+                easyLog.addEntry(EasyLog.INFO, "Backup Failed while attempting " +
+                        "patch DB-0.0.0.1", getClass().getName(), "");
+            }
             else if(applyPatch("DB-0.0.0.1")){
                 patchInstalled =NEW_VERSION_INSTALLED;
                 INSTALLED_VERSION = "DB-0.0.0.1";
+                easyLog.addEntry(EasyLog.INFO, "Patch DB-0.0.0.1 installed"
+                        , getClass().getName(), "");
             }else{
                 patchInstalled =NEW_VERSION_FAILED;
+                easyLog.addEntry(EasyLog.INFO, "Patch Failed while attempting " +
+                        "patch DB-0.0.0.1", getClass().getName(), "");
             }
             
         }
         if (version.equals("DB-0.0.0.1") && !patchInstalled.equals(NEW_VERSION_FAILED)){
-            if (!backupDatabase()){patchInstalled =NEW_VERSION_FAILED;}
-            else if(applyPatch("DB-0.0.0.2")){
+            if (!backupDatabase()){
+                patchInstalled =NEW_VERSION_FAILED;
+                easyLog.addEntry(EasyLog.INFO, "Backup Failed while attempting" +
+                        " patch DB-0.0.0.2", getClass().getName(), "");
+            }else if(applyPatch("DB-0.0.0.2")){
               patchInstalled =NEW_VERSION_INSTALLED;
               INSTALLED_VERSION = "DB-0.0.0.2";
+              easyLog.addEntry(EasyLog.INFO, "Patch DB-0.0.0.2 installed"
+                      , getClass().getName(), "");
             }else{
                patchInstalled =NEW_VERSION_FAILED;
+               easyLog.addEntry(EasyLog.INFO, "Patch Failed while attempting" +
+                       " patch DB-0.0.0.2", getClass().getName(), "");
             }
             
         }
         if (version.equals("DB-0.0.0.2") && !patchInstalled.equals(NEW_VERSION_FAILED)){
-            if (!backupDatabase()){patchInstalled =NEW_VERSION_FAILED;}
+            if (!backupDatabase()){
+                patchInstalled =NEW_VERSION_FAILED;
+                easyLog.addEntry(EasyLog.INFO, "Backup Failed while attempting patch DB-0.0.0.3", getClass().getName(), "");
+            }
             else if(applyPatch("DB-0.0.0.3")){
               patchInstalled =NEW_VERSION_INSTALLED;
               INSTALLED_VERSION = "DB-0.0.0.3";
+              easyLog.addEntry(EasyLog.INFO, "Patch DB-0.0.0.3 installed", getClass().getName(), "");
             }else{
                patchInstalled =NEW_VERSION_FAILED;
+               easyLog.addEntry(EasyLog.INFO, "Patch Failed while attempting patch DB-0.0.0.3", getClass().getName(), "");
             }
 
         }
@@ -269,6 +290,8 @@ public class VersionManager {
                         this.getClass().getName(), ex);
             result = false;
         } catch(java.io.IOException e){
+            easyLog.addEntry(EasyLog.SEVERE, "Failed E DB Backup (IO)",
+                        this.getClass().getName(), e);
             result =false;
         }
 

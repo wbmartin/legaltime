@@ -82,10 +82,12 @@ public class InvoiceViewController implements TableModelListener, ActionListener
 
         clientComboBoxModel = new ClientComboBoxModel();
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+
         invoiceEditorView.getCboClient().setModel(clientComboBoxModel);
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
         invoiceEditorView.getCboClient().setRenderer(clientComboBoxRenderer );
         invoiceEditorView.getCboClient().addActionListener(this);
+        invoiceEditorView.getCboClient().setMaximumRowCount(30);
 
     }
 

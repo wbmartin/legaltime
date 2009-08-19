@@ -217,6 +217,15 @@
                 <Property name="name" type="java.lang.String" value="viewSystemLogMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="DBAdminMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="legaltime.view.LegalTimeView" id="showDBAdmin" methodName="showDBAdmin"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="DBAdminMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="DBAdminMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>

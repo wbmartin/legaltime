@@ -56,7 +56,10 @@ try{
         try{
             renderer.setText(clientBean.getLastName() +", "+ clientBean.getFirstName());
         }catch(NullPointerException nex){
+            renderer = new JLabel();
             renderer.setVisible(false);
+            renderer.setText(null);
+            
         }
         
 
