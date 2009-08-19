@@ -30,8 +30,6 @@ import legaltime.DBManager.VersionManager;
 import legaltime.controller.ClientEditorController;
 import legaltime.controller.InvoiceViewController;
 import legaltime.controller.MonthlyCycleManager;
-import legaltime.model.SysCodeBean;
-import legaltime.model.SysCodeManager;
 import legaltime.modelsafe.EasyLog;
 
 import legaltime.modelsafe.PersistanceManager;
@@ -61,6 +59,7 @@ public class LegalTimeView extends FrameView {
     private LogView logView;
     private final EasyLog easyLog;
     private LegalTimeApp legalTimeApp;
+    private VersionManager vm ;
 
 
     public LegalTimeView(SingleFrameApplication app) {
@@ -70,6 +69,7 @@ public class LegalTimeView extends FrameView {
             AppPrefs appPrefs = AppPrefs.getInstance();
             
             easyLog =EasyLog.getInstance();
+            vm = new VersionManager();
             initComponents();
             LegalTimeApp.getApplication().getMainFrame().setPreferredSize(new Dimension(800, 600));
              
@@ -137,10 +137,12 @@ public class LegalTimeView extends FrameView {
             
         
             persistanceManager = PersistanceManager.getInstance();
+            lblVersion.setText( "Version: " + LegalTimeApp.APP_VERSION
+                    +"|"+ VersionManager.INSTALLED_VERSION);
     }
 
     public void manageUpdates(){
-        VersionManager vm = new VersionManager();
+        
             String dbUpgradeResult = vm.installAllDbPatches();
             if(dbUpgradeResult.equals(VersionManager.NEW_VERSION_FAILED)){
                 setLastActionText("ERROR: DB upgrade failed.  Please review " +
