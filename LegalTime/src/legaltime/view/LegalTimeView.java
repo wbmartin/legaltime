@@ -27,8 +27,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import legaltime.DBManager.VersionManager;
+import legaltime.controller.ClientAccountRegisterController;
 import legaltime.controller.ClientEditorController;
-import legaltime.controller.InvoiceViewController;
+import legaltime.controller.InvoiceController;
 import legaltime.controller.MonthlyCycleManager;
 import legaltime.modelsafe.EasyLog;
 
@@ -49,7 +50,7 @@ public class LegalTimeView extends FrameView {
     private TimeRecorder timeRecorder;
     private ClientEditorView clientManager;
     private FollowupManager followupManager;
-    private ClientAccounting clientAccounting;
+    private ClientAccountRegisterView clientAccounting;
     private InvoiceEditorView invoiceManager;
     private ExpenseManager expenseManager;
     private TimeEditor timeEditor;
@@ -500,22 +501,12 @@ public javax.swing.JDesktopPane getDesktop(){
 
     @Action
     public void showClientAccounting(){
-        if (clientAccounting == null) {
-            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-            clientAccounting = new ClientAccounting();
-            clientAccounting.setMainController(LegalTimeApp.getApplication());
-
-        }
-        clientAccounting.setVisible(true);
-        desktop.add(clientAccounting);
-        try {
-            clientAccounting.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {}
+        ClientAccountRegisterController.getInstance(LegalTimeApp.getApplication()).showClientAccountRegisterView();
     }
 
     @Action
     public void showInvoiceManager(){
-        InvoiceViewController.getInstance(LegalTimeApp.getApplication()).showInvoiceEditorViewer();
+        InvoiceController.getInstance(LegalTimeApp.getApplication()).showInvoiceEditorViewer();
 //        if (invoiceManager == null) {
 //            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
 //            invoiceManager = new InvoiceEditorView();

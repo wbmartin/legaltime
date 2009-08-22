@@ -37,7 +37,7 @@ EventListModel eventListModel;
         eventListModel = new EventListModel();
         lstEvents.setModel(eventListModel);
         lstEvents.addListSelectionListener(this);
-        easylog.addEntry(EasyLog.INFO, "Constructed LOGView", this.getName(), "Detail here");
+        easylog.addEntry(EasyLog.INFO, "Constructed LOGView", this.getName(), "");
     }
 
 
@@ -172,6 +172,7 @@ EventListModel eventListModel;
         scrlEvents.repaint();
         lstEvents.revalidate();
         lstEvents.repaint();
+
         
 
     }

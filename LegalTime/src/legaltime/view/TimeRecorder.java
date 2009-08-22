@@ -60,6 +60,7 @@ public class TimeRecorder extends javax.swing.JFrame implements ListSelectionLis
         clientComboBoxModel.setList(clientCache.getCache());
         cboClient.setModel(clientComboBoxModel);
         cboClient.setRenderer(new ClientComboBoxRenderer());
+        cboClient.setMaximumRowCount(30);
 
         userInfoComboBoxModel= new UserInfoComboBoxModel();
         userInfoCache = UserInfoCache.getInstance();
