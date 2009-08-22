@@ -25,8 +25,6 @@ import legaltime.AppPrefs;
 import legaltime.ResourceAnchor;
 import legaltime.TextUtils;
 import legaltime.cache.UserInfoCache;
-import legaltime.model.ClientAccountRegisterManager;
-import legaltime.model.Manager;
 import legaltime.model.PaymentLogBean;
 import legaltime.model.PaymentLogManager;
 import legaltime.modelsafe.EasyLog;
@@ -50,6 +48,7 @@ public class InvoiceReport   {
    static InvoiceManager invoiceManager ;
    static InvoiceBean invoiceBean;
    private static AppPrefs appPrefs;
+   private String reportPath;
    public InvoiceReport(){
         easyLog = EasyLog.getInstance();
         currentServicesRendered=0D;
@@ -89,11 +88,19 @@ public class InvoiceReport   {
         if(!success){
             success =(dir).mkdir();
         }
-        if(!success){return false;}
+        if(!success){
+            easyLog.addEntry(EasyLog.INFO, "Error Creating Report Directory " +
+                    "Not Present and Could Not Create"
+                    , "Invoice Report",outputPath );
+            return false;
+        }
 
 
         ClassLoader cl = ResourceAnchor.class.getClassLoader();
         InputStream jasperFile = cl.getResourceAsStream("legaltime/reports/BogerInvoice.jasper");
+        reportPath =cl.getResource("legaltime/reports/").toString();
+        String temp = cl.getResource("legaltime/reports/").toString();
+        easyLog.addEntry(9,"FilePath", temp,"");
          loadInvoice(invoiceId_);
          String fileName = "Invoice"+ TextUtils.frontZeroFill(invoiceBean.getInvoiceId(), 5)
                  +"_" +clientBean.getLastName() + clientBean.getFirstName() + "_"
@@ -112,10 +119,16 @@ public class InvoiceReport   {
         JasperExportManager.exportReportToPdfFile(
           jasperPrint, outputPath+"/" + fileName);
         success = true;
+        easyLog.addEntry(EasyLog.INFO, "Invoice Created Successfully"
+                    , "Invoice Report",outputPath );
     }
     catch (JRException e)    {
-        EasyLog.getInstance().addEntry(EasyLog.INFO, "Error Building Report", "Jasper Report Intro", EasyLog.getStackTrace(e));
+        easyLog.addEntry(EasyLog.INFO, "Error Building Report", getClass().getName(), e);
+        success = false;
       
+    }catch(Exception e){
+      easyLog.addEntry(EasyLog.INFO, "Error General Exception Building report", getClass().getName(), e);
+      success = false;
     }
 
     return success;
@@ -132,13 +145,18 @@ public class InvoiceReport   {
             Logger.getLogger(InvoiceReport.class.getName()).log(Level.SEVERE, null, ex);
             easyLog.addEntry(EasyLog.INFO, "Error No invoice found"
                     , "Invoice Report", ex);
+        }catch(Exception e){
+            easyLog.addEntry(EasyLog.SEVERE, "Error: General Exception loading invoice"
+                    , "Invoice Report - loadInvoice", e);
         }
        clientBean = clientCache.getBeanById(invoiceBean.getClientId());
    }
 
 
    public java.util.HashMap getParams(int invoiceId_){
-        java.util.HashMap params = new java.util.HashMap();
+       java.util.HashMap params = new java.util.HashMap();
+       try{
+        params.put("SUBREPORT_DIR",reportPath);
         params.put("InvoiceDate", invoiceBean.getInvoiceDt());
         params.put("ClientName", clientBean.getFirstName() +" "+ clientBean.getLastName());
         params.put("ClientAddress", clientBean.getAddress());
@@ -152,13 +170,17 @@ public class InvoiceReport   {
         params.put("UserInfoCache",UserInfoCache.getInstance());
         params.put("Payments",createPayments(invoiceId_));
         params.put("PreviousBalance",invoiceBean.getPrevBalanceDue()+ totalPaymentsReceived);
+       }catch(Exception e){
+           easyLog.addEntry(EasyLog.INFO, "Error General Exception getParams"
+                    , "Invoice Report", e);
+       }
         return params;
    }
 
 
 
    public static ArrayList getExpenseBeans(int invoiceId_){
-       ArrayList expenseLines;
+       ArrayList expenseLines = null;
        ExpenseInvoiceItemManager expenseInvoiceItemManagernvoice =
                ExpenseInvoiceItemManager.getInstance();
        ExpenseInvoiceItemBean[] beans = new ExpenseInvoiceItemBean[] {};
@@ -168,11 +190,16 @@ public class InvoiceReport   {
             for(int ndx =0; ndx<beans.length;ndx++){
                 currentExpenses += beans[ndx].getAmount();
             }
+             expenseLines = new ArrayList(java.util.Arrays.asList(beans));
         } catch (DAOException ex) {
             Logger.getLogger(InvoiceReport.class.getName()).log(Level.SEVERE, null, ex);
 
-        }
-       expenseLines = new ArrayList(java.util.Arrays.asList(beans));
+        }catch(Exception e){
+           easyLog.addEntry(EasyLog.INFO, "Error General Exception getExpenseBeans"
+                    , "Invoice Report", e);
+       }
+
+       
        
        return expenseLines;
 
@@ -183,22 +210,26 @@ public class InvoiceReport   {
       LaborInvoiceItemBean bean = laborInvoiceItemManager.createLaborInvoiceItemBean();
       ArrayList<LaborInvoiceItemBean> laborInvoiceItems;
       LaborInvoiceItemBean[] beanList = null;
-      
+      laborInvoiceItems =null;
         try {
             beanList = laborInvoiceItemManager.loadByWhere("where invoice_id=" + invoiceId_);
             currentServicesRendered =0D;
             for(int ndx =0; ndx<beanList.length;ndx++){
                 currentServicesRendered += beanList[ndx].getBillRate() * beanList[ndx].getHoursBilled();
             }
+            laborInvoiceItems = new ArrayList(java.util.Arrays.asList(beanList));
             //Removing this monthly logic because it should be added into the labor history.
 //            if(clientBean.getBillType().equals("MONTHLY")){
 //                currentServicesRendered += clientBean.getMonthlyBillRate();
 //            }
         } catch (DAOException ex) {
             Logger.getLogger(InvoiceReport.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(Exception e){
+           easyLog.addEntry(EasyLog.INFO, "Error: General Exception getLaborBeans"
+                    , "Invoice Report", e);
         }
 
-      laborInvoiceItems = new ArrayList(java.util.Arrays.asList(beanList));
+      
       return laborInvoiceItems;
 
   }
@@ -209,19 +240,22 @@ public class InvoiceReport   {
       PaymentLogBean bean = paymentLogManager.createPaymentLogBean();
       ArrayList<PaymentLogBean> PaymentLogs;
       PaymentLogBean[] beanList = null;
-
+      PaymentLogs = null;
         try {
             beanList = paymentLogManager.loadByWhere("where invoice_id=" + invoiceId_);
             totalPaymentsReceived=0D;
             for(int ndx =0; ndx<beanList.length;ndx++){
                 totalPaymentsReceived += beanList[ndx].getAmount();
             }
-
+            PaymentLogs = new ArrayList(java.util.Arrays.asList(beanList));
         } catch (DAOException ex) {
             Logger.getLogger(InvoiceReport.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(Exception e){
+           easyLog.addEntry(EasyLog.INFO, "Error: General Exception getPaymentBeans"
+                    , "Invoice Report", e);
         }
 
-      PaymentLogs = new ArrayList(java.util.Arrays.asList(beanList));
+      
       return PaymentLogs;
 
   }

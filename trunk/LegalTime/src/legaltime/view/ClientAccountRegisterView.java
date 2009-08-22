@@ -11,16 +11,24 @@
 
 package legaltime.view;
 
+import javax.swing.table.TableColumn;
 import legaltime.LegalTimeApp;
+import legaltime.controller.ClientAccountRegisterController;
+import legaltime.view.renderer.CurrencyTableCellRenderer;
+import legaltime.view.renderer.DateTableCellEditor;
+import legaltime.view.renderer.DateTableCellRenderer;
 
 /**
  *
  * @author bmartin
  */
-public class ClientAccounting extends javax.swing.JInternalFrame {
+public class ClientAccountRegisterView extends javax.swing.JInternalFrame {
 LegalTimeApp mainController;
+ClientAccountRegisterController clientAccountRegisterController;
+    private final ClientAccountRegisterController clientAccountingController;
     /** Creates new form ClientAccounting */
-    public ClientAccounting() {
+    public ClientAccountRegisterView(ClientAccountRegisterController clientAccountRegisterController_) {
+        clientAccountingController = clientAccountRegisterController_;
         initComponents();
     }
 
@@ -42,6 +50,11 @@ LegalTimeApp mainController;
         lblClient = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(ClientAccountRegisterView.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -59,7 +72,6 @@ LegalTimeApp mainController;
         ));
         tblAccountRegister.setName("tblAccountRegister"); // NOI18N
         jScrollPane1.setViewportView(tblAccountRegister);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(ClientAccounting.class);
         tblAccountRegister.getColumnModel().getColumn(0).setMinWidth(75);
         tblAccountRegister.getColumnModel().getColumn(0).setPreferredWidth(75);
         tblAccountRegister.getColumnModel().getColumn(0).setMaxWidth(75);
@@ -127,5 +139,48 @@ LegalTimeApp mainController;
     private javax.swing.JLabel lblClient;
     private javax.swing.JTable tblAccountRegister;
     // End of variables declaration//GEN-END:variables
+
+    public javax.swing.JTable getTblAccountRegister(){
+        return tblAccountRegister;
+    }
+    public javax.swing.JComboBox getCboClient(){
+        return cboClient;
+    }
+    public void formatTblAccountRegister(){
+         TableColumn tc;
+         //Date
+         tc = tblAccountRegister.getColumnModel().getColumn(0);
+         tc.setPreferredWidth(50);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(75);
+         tc.setCellRenderer(DateTableCellRenderer.getInstance());
+         //Description
+         tc = tblAccountRegister.getColumnModel().getColumn(1);
+         tc.setPreferredWidth(200);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(400);
+         //Increase
+         tc = tblAccountRegister.getColumnModel().getColumn(2);
+         tc.setPreferredWidth(50);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(75);
+         tc.setCellRenderer(CurrencyTableCellRenderer.getInstance());
+         //Decrease
+         tc = tblAccountRegister.getColumnModel().getColumn(3);
+         tc.setPreferredWidth(50);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(75);
+         tc.setCellRenderer(CurrencyTableCellRenderer.getInstance());
+
+         //Total
+         tc = tblAccountRegister.getColumnModel().getColumn(4);
+         tc.setPreferredWidth(50);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(75);
+         tc.setCellRenderer(CurrencyTableCellRenderer.getInstance());
+
+
+    }
+
 
 }

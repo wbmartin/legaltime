@@ -20,7 +20,7 @@ import javax.swing.JCheckBox;
 
 import javax.swing.table.TableColumn;
 import legaltime.LegalTimeApp;
-import legaltime.controller.InvoiceViewController;
+import legaltime.controller.InvoiceController;
 import legaltime.view.renderer.DateTableCellEditor;
 import org.jdesktop.application.Action;
 
@@ -32,10 +32,10 @@ import org.jdesktop.application.Action;
 public class InvoiceEditorView extends javax.swing.JInternalFrame  {
 
     private DecimalFormat currencyFormatter;
-    private InvoiceViewController invoiceViewController ;
+    private InvoiceController invoiceViewController ;
     
     /** Creates new form InvoiceManager */
-    public InvoiceEditorView(InvoiceViewController invoiceViewController_) {
+    public InvoiceEditorView(InvoiceController invoiceViewController_) {
          invoiceViewController = invoiceViewController_;
         initComponents();
        
@@ -303,7 +303,7 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
          tc.setMaxWidth(100);
          javax.swing.JComboBox cboUser = new javax.swing.JComboBox();
          //cboUser.setModel(new UserInfoComboBoxModel());
-
+//TODO Cleanup cbouser
          cboUser.addItem("test");
          cboUser.addItem("test2");
          tc.setCellEditor(new DefaultCellEditor(cboUser));
