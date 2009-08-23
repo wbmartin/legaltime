@@ -170,7 +170,6 @@
                   <action class="legaltime.view.LegalTimeView" id="showExpenseManager" methodName="showExpenseManager"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="ExpenseManagerMenuItem.text"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="ExpenseManagerMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
@@ -180,20 +179,30 @@
                   <action class="legaltime.view.LegalTimeView" id="showTimeEditor" methodName="showTimeEditor"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="timeEditorMenuItem.text"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="timeEditorMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="InvoiceMenu">
+        <Menu class="javax.swing.JMenu" name="ReportsMenu">
           <Properties>
             <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
               <action class="legaltime.view.LegalTimeView" id="showExpenseManager" methodName="showExpenseManager"/>
             </Property>
-            <Property name="text" type="java.lang.String" resourceKey="InvoiceMenu.text"/>
-            <Property name="name" type="java.lang.String" value="InvoiceMenu" noResource="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="ReportsMenu.text"/>
+            <Property name="name" type="java.lang.String" value="ReportsMenu" noResource="true"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="legaltime.view.LegalTimeView" id="buildClientAddressLabelReport" methodName="buildClientAddressLabelReport"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="jMenuItem1.text"/>
+                <Property name="name" type="java.lang.String" value="jMenuItem1" noResource="true"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">
           <Properties>
