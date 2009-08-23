@@ -91,7 +91,7 @@ public class ClientBillRateTableModel extends AbstractTableModel {
         switch(col){
             
             case 1: clientBillRates[row].setBillRate((Double)value);
-            default: System.err.println("Out of bounds");
+            default: System.err.println("Out of bounds"+ getClass().getName());
         }
         try {
             clientBillRateManager.save(clientBillRates[row]);

@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import legaltime.model.GeneratedBean;
+import legaltime.model.ClientAccountRegisterBean;
 import legaltime.model.ClientBean;
 import legaltime.model.InvoiceBean;
 
@@ -32,8 +33,13 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class PaymentLogBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -4566444731095083730L;
+	private static final long serialVersionUID = -1399350662074295431L;
 	
+    private Integer clientAccountRegisterId;
+
+    private boolean clientAccountRegisterIdIsModified = false;
+    private boolean clientAccountRegisterIdIsInitialized = false;
+
     private Integer clientId;
 
     private boolean clientIdIsModified = false;
@@ -72,6 +78,78 @@ public class PaymentLogBean
      */
     protected PaymentLogBean()
     {
+    }
+
+    /**
+     * Getter method for clientAccountRegisterId.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: payment_log.client_account_register_id</li>
+     * <li> foreign key: client_account_register.client_account_register_id</li>
+     * <li>column size: 10</li>
+     * <li>jdbc type returned by the driver: Types.INTEGER</li>
+     * </ul>
+     *
+     * @return the value of clientAccountRegisterId
+     */
+    public Integer getClientAccountRegisterId()
+    {
+        return clientAccountRegisterId;
+    }
+
+    /**
+     * Setter method for clientAccountRegisterId.
+     * <br>
+     * The new value is set only if compareTo() says it is different,
+     * or if one of either the new value or the current value is null.
+     * In case the new value is different, it is set and the field is marked as 'modified'.
+     *
+     * @param newVal the new value to be assigned to clientAccountRegisterId
+     */
+    public void setClientAccountRegisterId(Integer newVal)
+    {
+        if ((newVal != null && clientAccountRegisterId != null && (newVal.compareTo(clientAccountRegisterId) == 0)) ||
+            (newVal == null && clientAccountRegisterId == null && clientAccountRegisterIdIsInitialized)) {
+            return;
+        }
+        clientAccountRegisterId = newVal;
+        clientAccountRegisterIdIsModified = true;
+        clientAccountRegisterIdIsInitialized = true;
+    }
+
+    /**
+     * Setter method for clientAccountRegisterId.
+     * <br>
+     * Convenient for those who do not want to deal with Objects for primary types.
+     *
+     * @param newVal the new value to be assigned to clientAccountRegisterId
+     */
+    public void setClientAccountRegisterId(int newVal)
+    {
+        setClientAccountRegisterId(new Integer(newVal));
+    }
+
+    /**
+     * Determines if the clientAccountRegisterId has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isClientAccountRegisterIdModified()
+    {
+        return clientAccountRegisterIdIsModified;
+    }
+
+    /**
+     * Determines if the clientAccountRegisterId has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isClientAccountRegisterIdInitialized()
+    {
+        return clientAccountRegisterIdIsInitialized;
     }
 
     /**
@@ -491,6 +569,17 @@ public class PaymentLogBean
         return paymentLogIdIsInitialized;
     }
 
+    /** The ClientAccountRegister referenced by this bean. */
+    private ClientAccountRegisterBean referencedClientAccountRegister;
+    /** Getter method for ClientAccountRegisterBean. */
+    public ClientAccountRegisterBean getClientAccountRegisterBean() {
+        return this.referencedClientAccountRegister;
+    }
+    /** Setter method for ClientAccountRegisterBean. */
+    public void setClientAccountRegisterBean(ClientAccountRegisterBean reference) {
+        this.referencedClientAccountRegister = reference;
+    }
+    
     /** The Client referenced by this bean. */
     private ClientBean referencedClient;
     /** Getter method for ClientBean. */
@@ -542,7 +631,7 @@ public class PaymentLogBean
      */
     public boolean isModified()
     {
-        return clientIdIsModified 		|| invoiceIdIsModified  		|| amountIsModified  		|| descriptionIsModified  		|| effectiveDateIsModified  		|| paymentLogIdIsModified  ;
+        return clientAccountRegisterIdIsModified 		|| clientIdIsModified  		|| invoiceIdIsModified  		|| amountIsModified  		|| descriptionIsModified  		|| effectiveDateIsModified  		|| paymentLogIdIsModified  ;
     }
 
     /**
@@ -550,6 +639,7 @@ public class PaymentLogBean
      */
     public void resetIsModified()
     {
+        clientAccountRegisterIdIsModified = false;
         clientIdIsModified = false;
         invoiceIdIsModified = false;
         amountIsModified = false;
@@ -565,6 +655,7 @@ public class PaymentLogBean
      */
     public void copy(PaymentLogBean bean)
     {
+        setClientAccountRegisterId(bean.getClientAccountRegisterId());
         setClientId(bean.getClientId());
         setInvoiceId(bean.getInvoiceId());
         setAmount(bean.getAmount());
@@ -579,6 +670,7 @@ public class PaymentLogBean
     public Map getDictionnary()
     {
         Map dictionnary = new HashMap();
+        dictionnary.put("client_account_register_id", getClientAccountRegisterId() == null ? "" : getClientAccountRegisterId().toString());
         dictionnary.put("client_id", getClientId() == null ? "" : getClientId().toString());
         dictionnary.put("invoice_id", getInvoiceId() == null ? "" : getInvoiceId().toString());
         dictionnary.put("amount", getAmount() == null ? "" : getAmount().toString());
@@ -605,6 +697,8 @@ public class PaymentLogBean
     {
         if (null == column || "".equals(column)) {
             return "";
+        } else if ("client_account_register_id".equalsIgnoreCase(column) || "clientAccountRegisterId".equalsIgnoreCase(column)) {
+            return getClientAccountRegisterId() == null ? "" : getClientAccountRegisterId().toString();
         } else if ("client_id".equalsIgnoreCase(column) || "clientId".equalsIgnoreCase(column)) {
             return getClientId() == null ? "" : getClientId().toString();
         } else if ("invoice_id".equalsIgnoreCase(column) || "invoiceId".equalsIgnoreCase(column)) {
@@ -632,6 +726,7 @@ public class PaymentLogBean
 
 		PaymentLogBean obj = (PaymentLogBean) object;
 		return new EqualsBuilder()
+            .append(getClientAccountRegisterId(), obj.getClientAccountRegisterId())
             .append(getClientId(), obj.getClientId())
             .append(getInvoiceId(), obj.getInvoiceId())
             .append(getAmount(), obj.getAmount())
@@ -647,6 +742,7 @@ public class PaymentLogBean
 	public int hashCode()
 	{
 		return new HashCodeBuilder(-82280557, -700257973)
+            .append(getClientAccountRegisterId())
             .append(getClientId())
             .append(getInvoiceId())
             .append(getAmount())
@@ -674,6 +770,7 @@ public class PaymentLogBean
 	 */
 	public String toString(ToStringStyle style) {
 		return new ToStringBuilder(this, style)
+            .append("client_account_register_id", getClientAccountRegisterId())
             .append("client_id", getClientId())
             .append("invoice_id", getInvoiceId())
             .append("amount", getAmount())
@@ -688,6 +785,7 @@ public class PaymentLogBean
     {
         PaymentLogBean obj = (PaymentLogBean) object;
         return new CompareToBuilder()
+            .append(getClientAccountRegisterId(), obj.getClientAccountRegisterId())
             .append(getClientId(), obj.getClientId())
             .append(getInvoiceId(), obj.getInvoiceId())
             .append(getAmount(), obj.getAmount())

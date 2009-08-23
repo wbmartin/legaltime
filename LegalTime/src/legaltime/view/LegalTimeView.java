@@ -31,6 +31,7 @@ import legaltime.controller.ClientAccountRegisterController;
 import legaltime.controller.ClientEditorController;
 import legaltime.controller.InvoiceController;
 import legaltime.controller.MonthlyCycleManager;
+import legaltime.controller.PaymentLogController;
 import legaltime.modelsafe.EasyLog;
 
 import legaltime.modelsafe.PersistanceManager;
@@ -210,11 +211,7 @@ public class LegalTimeView extends FrameView {
         
     }
 
-    @Action
-    public void demoReport(){
-        InvoiceReport test = new InvoiceReport();
-        test.makeReport(1);
-    }
+   
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -238,12 +235,13 @@ public class LegalTimeView extends FrameView {
         followupManagerMenuItem = new javax.swing.JMenuItem();
         BillingMenu = new javax.swing.JMenu();
         timeKeeperMenuItem = new javax.swing.JMenuItem();
+        InvoiceManagerMenuItem = new javax.swing.JMenuItem();
+        monthlyBillingCycleMenuItem = new javax.swing.JMenuItem();
+        invoiceAllOutstandingInvoicesMenuItem = new javax.swing.JMenuItem();
+        PaymentLogMenuItem = new javax.swing.JMenuItem();
         ExpenseManagerMenuItem = new javax.swing.JMenuItem();
         timeEditorMenuItem = new javax.swing.JMenuItem();
         InvoiceMenu = new javax.swing.JMenu();
-        monthlyBillingCycleMenuItem = new javax.swing.JMenuItem();
-        InvoiceManagerMenuItem = new javax.swing.JMenuItem();
-        invoiceAllOutstandingInvoicesMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         viewSystemLogMenuItem = new javax.swing.JMenuItem();
@@ -322,13 +320,34 @@ public class LegalTimeView extends FrameView {
         timeKeeperMenuItem.setName("timeKeeperMenuItem"); // NOI18N
         BillingMenu.add(timeKeeperMenuItem);
 
+        InvoiceManagerMenuItem.setAction(actionMap.get("showInvoiceManager")); // NOI18N
+        InvoiceManagerMenuItem.setText(resourceMap.getString("InvoiceManagerMenuItem.text")); // NOI18N
+        InvoiceManagerMenuItem.setName("InvoiceManagerMenuItem"); // NOI18N
+        BillingMenu.add(InvoiceManagerMenuItem);
+
+        monthlyBillingCycleMenuItem.setAction(actionMap.get("showMonthlyBillingCycle")); // NOI18N
+        monthlyBillingCycleMenuItem.setText(resourceMap.getString("monthlyBillingCycleMenuItem.text")); // NOI18N
+        monthlyBillingCycleMenuItem.setName("monthlyBillingCycleMenuItem"); // NOI18N
+        BillingMenu.add(monthlyBillingCycleMenuItem);
+
+        invoiceAllOutstandingInvoicesMenuItem.setText(resourceMap.getString("invoiceAllOutstandingInvoicesMenuItem.text")); // NOI18N
+        invoiceAllOutstandingInvoicesMenuItem.setName("invoiceAllOutstandingInvoicesMenuItem"); // NOI18N
+        BillingMenu.add(invoiceAllOutstandingInvoicesMenuItem);
+
+        PaymentLogMenuItem.setAction(actionMap.get("showPaymentLog")); // NOI18N
+        PaymentLogMenuItem.setText(resourceMap.getString("PaymentLogMenuItem.text")); // NOI18N
+        PaymentLogMenuItem.setName("PaymentLogMenuItem"); // NOI18N
+        BillingMenu.add(PaymentLogMenuItem);
+
         ExpenseManagerMenuItem.setAction(actionMap.get("showExpenseManager")); // NOI18N
         ExpenseManagerMenuItem.setText(resourceMap.getString("ExpenseManagerMenuItem.text")); // NOI18N
+        ExpenseManagerMenuItem.setEnabled(false);
         ExpenseManagerMenuItem.setName("ExpenseManagerMenuItem"); // NOI18N
         BillingMenu.add(ExpenseManagerMenuItem);
 
         timeEditorMenuItem.setAction(actionMap.get("showTimeEditor")); // NOI18N
         timeEditorMenuItem.setText(resourceMap.getString("timeEditorMenuItem.text")); // NOI18N
+        timeEditorMenuItem.setEnabled(false);
         timeEditorMenuItem.setName("timeEditorMenuItem"); // NOI18N
         BillingMenu.add(timeEditorMenuItem);
 
@@ -337,21 +356,6 @@ public class LegalTimeView extends FrameView {
         InvoiceMenu.setAction(actionMap.get("showExpenseManager")); // NOI18N
         InvoiceMenu.setText(resourceMap.getString("InvoiceMenu.text")); // NOI18N
         InvoiceMenu.setName("InvoiceMenu"); // NOI18N
-
-        monthlyBillingCycleMenuItem.setAction(actionMap.get("showMonthlyBillingCycle")); // NOI18N
-        monthlyBillingCycleMenuItem.setText(resourceMap.getString("monthlyBillingCycleMenuItem.text")); // NOI18N
-        monthlyBillingCycleMenuItem.setName("monthlyBillingCycleMenuItem"); // NOI18N
-        InvoiceMenu.add(monthlyBillingCycleMenuItem);
-
-        InvoiceManagerMenuItem.setAction(actionMap.get("showInvoiceManager")); // NOI18N
-        InvoiceManagerMenuItem.setText(resourceMap.getString("InvoiceManagerMenuItem.text")); // NOI18N
-        InvoiceManagerMenuItem.setName("InvoiceManagerMenuItem"); // NOI18N
-        InvoiceMenu.add(InvoiceManagerMenuItem);
-
-        invoiceAllOutstandingInvoicesMenuItem.setText(resourceMap.getString("invoiceAllOutstandingInvoicesMenuItem.text")); // NOI18N
-        invoiceAllOutstandingInvoicesMenuItem.setName("invoiceAllOutstandingInvoicesMenuItem"); // NOI18N
-        InvoiceMenu.add(invoiceAllOutstandingInvoicesMenuItem);
-
         menuBar.add(InvoiceMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
@@ -434,6 +438,7 @@ public class LegalTimeView extends FrameView {
     private javax.swing.JMenuItem ExpenseManagerMenuItem;
     private javax.swing.JMenuItem InvoiceManagerMenuItem;
     private javax.swing.JMenu InvoiceMenu;
+    private javax.swing.JMenuItem PaymentLogMenuItem;
     private javax.swing.JMenuItem clientAccountingMenuItem;
     private javax.swing.JMenuItem clientManagerMenuItem;
     private javax.swing.JMenu clientMenu;
@@ -477,6 +482,10 @@ public javax.swing.JDesktopPane getDesktop(){
     @Action
     public void showClientManager() {
         ClientEditorController.getInstance(LegalTimeApp.getApplication()).showClientEditorViewer();
+    }
+    @Action
+    public void showPaymentLog() {
+        PaymentLogController.getInstance(LegalTimeApp.getApplication()).showPaymentLogView();
     }
 
     @Action

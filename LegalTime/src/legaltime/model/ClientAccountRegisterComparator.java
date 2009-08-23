@@ -44,6 +44,7 @@ public class ClientAccountRegisterComparator implements Comparator
      *   <li>ClientAccountRegisterManager.ID_TRAN_TYPE
      *   <li>ClientAccountRegisterManager.ID_TRAN_AMT
      *   <li>ClientAccountRegisterManager.ID_DESCRIPTION
+     *   <li>ClientAccountRegisterManager.ID_EFFECTIVE_DATE
      *   <li>ClientAccountRegisterManager.ID_CLIENT_ID
      *   <li>ClientAccountRegisterManager.ID_CLIENT_ACCOUNT_REGISTER_ID
      * </ul>
@@ -68,6 +69,7 @@ public class ClientAccountRegisterComparator implements Comparator
      *   <li>ClientAccountRegisterManager.ID_TRAN_TYPE
      *   <li>ClientAccountRegisterManager.ID_TRAN_AMT
      *   <li>ClientAccountRegisterManager.ID_DESCRIPTION
+     *   <li>ClientAccountRegisterManager.ID_EFFECTIVE_DATE
      *   <li>ClientAccountRegisterManager.ID_CLIENT_ID
      *   <li>ClientAccountRegisterManager.ID_CLIENT_ACCOUNT_REGISTER_ID
      * </ul>
@@ -132,6 +134,17 @@ public class ClientAccountRegisterComparator implements Comparator
                     iReturn = 1;
                 } else {
                     iReturn = b1.getDescription().compareTo(b2.getDescription());
+                }
+                break;
+            case ClientAccountRegisterManager.ID_EFFECTIVE_DATE:
+                if (b1.getEffectiveDate() == null && b2.getEffectiveDate() != null) {
+                    iReturn = -1;
+                } else if (b1.getEffectiveDate() == null && b2.getEffectiveDate() == null) {
+                    iReturn = 0;
+                } else if (b1.getEffectiveDate() != null && b2.getEffectiveDate() == null) {
+                    iReturn = 1;
+                } else {
+                    iReturn = b1.getEffectiveDate().compareTo(b2.getEffectiveDate());
                 }
                 break;
             case ClientAccountRegisterManager.ID_CLIENT_ID:

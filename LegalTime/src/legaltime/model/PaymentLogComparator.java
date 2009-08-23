@@ -34,12 +34,13 @@ public class PaymentLogComparator implements Comparator
      * <br>
      * Example:
      * <br>
-     * <code>Arrays.sort(pArray, new PaymentLogComparator(PaymentLogManager.ID_CLIENT_ID, bReverse));<code>
+     * <code>Arrays.sort(pArray, new PaymentLogComparator(PaymentLogManager.ID_CLIENT_ACCOUNT_REGISTER_ID, bReverse));<code>
      *
      * @param iType the field from which you want to sort
      * <br>
      * Possible values are:
      * <ul>
+     *   <li>PaymentLogManager.ID_CLIENT_ACCOUNT_REGISTER_ID
      *   <li>PaymentLogManager.ID_CLIENT_ID
      *   <li>PaymentLogManager.ID_INVOICE_ID
      *   <li>PaymentLogManager.ID_AMOUNT
@@ -58,12 +59,13 @@ public class PaymentLogComparator implements Comparator
      * <br>
      * Example:
      * <br>
-     * <code>Arrays.sort(pArray, new PaymentLogComparator(PaymentLogManager.ID_CLIENT_ID, bReverse));<code>
+     * <code>Arrays.sort(pArray, new PaymentLogComparator(PaymentLogManager.ID_CLIENT_ACCOUNT_REGISTER_ID, bReverse));<code>
      *
      * @param iType the field from which you want to sort.
      * <br>
      * Possible values are:
      * <ul>
+     *   <li>PaymentLogManager.ID_CLIENT_ACCOUNT_REGISTER_ID
      *   <li>PaymentLogManager.ID_CLIENT_ID
      *   <li>PaymentLogManager.ID_INVOICE_ID
      *   <li>PaymentLogManager.ID_AMOUNT
@@ -90,6 +92,17 @@ public class PaymentLogComparator implements Comparator
         int iReturn = 0;
         switch(iType)
         {
+            case PaymentLogManager.ID_CLIENT_ACCOUNT_REGISTER_ID:
+                if (b1.getClientAccountRegisterId() == null && b2.getClientAccountRegisterId() != null) {
+                    iReturn = -1;
+                } else if (b1.getClientAccountRegisterId() == null && b2.getClientAccountRegisterId() == null) {
+                    iReturn = 0;
+                } else if (b1.getClientAccountRegisterId() != null && b2.getClientAccountRegisterId() == null) {
+                    iReturn = 1;
+                } else {
+                    iReturn = b1.getClientAccountRegisterId().compareTo(b2.getClientAccountRegisterId());
+                }
+                break;
             case PaymentLogManager.ID_CLIENT_ID:
                 if (b1.getClientId() == null && b2.getClientId() != null) {
                     iReturn = -1;

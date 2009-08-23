@@ -23,11 +23,11 @@ import legaltime.modelsafe.EasyLog;
  */
 public class ClientAccountRegisterTableModel extends AbstractTableModel {
     
-    private String[] columnNames ={"Date", "Description", "Increase","Decrease","Total"};
+    private String[] columnNames ={"Date", "Description", "Increase","Decrease","Balance"};
 
     private Class[] columnTypes={java.util.Date.class, String.class, Double.class
             , Double.class, Double.class};
-    private boolean[] isEditable ={false,true, true,true,false};
+    private boolean[] isEditable ={true,true, true,true,false};
     //TODO makeDate editiable by adding effective Date to
 
 
@@ -47,7 +47,7 @@ public class ClientAccountRegisterTableModel extends AbstractTableModel {
        }
         switch (col){
             //TODDO add effective Date to ClientAccount Register
-            case 0: return clientAccountRegisterBeans[row].getLastUpdate();
+            case 0: return clientAccountRegisterBeans[row].getEffectiveDate();
             case 1: return clientAccountRegisterBeans[row].getDescription();
             case 2: if (clientAccountRegisterBeans[row].getTranAmt()>0){
                         return clientAccountRegisterBeans[row].getTranAmt();
@@ -115,6 +115,9 @@ public class ClientAccountRegisterTableModel extends AbstractTableModel {
     }
     @Override
     public boolean isCellEditable(int row, int col){
+        if(clientAccountRegisterBeans[row].getTranType().equals("PAY")){
+            return false;
+        }
         return isEditable[col];
     }
 
@@ -122,7 +125,7 @@ public class ClientAccountRegisterTableModel extends AbstractTableModel {
     public void setValueAt(Object value, int row, int col) {
       try{
         switch(col){
-            case 0: //clientAccountRegisterBeans[row].setLastUpdate((java.util.Date)value);
+            case 0: clientAccountRegisterBeans[row].setEffectiveDate((java.util.Date)value);
                     break;
             case 1: clientAccountRegisterBeans[row].setDescription((String) value);
                     break;
@@ -130,7 +133,7 @@ public class ClientAccountRegisterTableModel extends AbstractTableModel {
                     break;
             case 3: clientAccountRegisterBeans[row].setTranAmt(-1D*Double.parseDouble(value.toString()));
                     break;
-            default: System.err.println("Out of bounds");
+            default: System.err.println("Out of bounds" + getClass().getName());
         }
         try {
             clientAccountRegisterManager.save(clientAccountRegisterBeans[row]);
@@ -178,6 +181,16 @@ public class ClientAccountRegisterTableModel extends AbstractTableModel {
         fireTableChanged(new TableModelEvent(this));
 
 
+    }
+
+    public int getClientAccountRegisterId(int row_) {
+        try{
+            return clientAccountRegisterBeans[row_].getClientAccountRegisterId();
+        }catch(NullPointerException e){
+            return -1;
+        }
+
+        
     }
 
    
