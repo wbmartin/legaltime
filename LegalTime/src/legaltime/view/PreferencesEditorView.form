@@ -76,6 +76,15 @@
               <Component id="cmdChooseInvoiceOutputPath" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="79" max="32767" attributes="0"/>
+              <Component id="lblReportOutputPath" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="txtReportOutputPath" min="-2" pref="445" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cmdChooseReportOutputPath" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -113,7 +122,13 @@
                   <Component id="lblInvoiceOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdChooseInvoiceOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="62" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtReportOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblReportOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmdChooseReportOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="33" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cmdOk" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdCancel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -225,6 +240,26 @@
       <Properties>
         <Property name="text" type="java.lang.String" resourceKey="lblInvoiceOutputPath.text"/>
         <Property name="name" type="java.lang.String" value="lblInvoiceOutputPath" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cmdChooseReportOutputPath">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="legaltime.view.PreferencesEditorView" id="ChooseReportOutputPath" methodName="ChooseReportOutputPath"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="cmdChooseReportOutputPath.text"/>
+        <Property name="name" type="java.lang.String" value="cmdChooseReportOutputPath" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblReportOutputPath">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lblReportOutputPath.text"/>
+        <Property name="name" type="java.lang.String" value="lblReportOutputPath" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtReportOutputPath">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="txtReportOutputPath" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -81,7 +81,8 @@ public class InvoiceReport   {
                 + File.separatorChar
                 + Integer.toString(1900+now.getYear())
                 + TextUtils.frontZeroFill( Integer.toString(now.getMonth()+1),2)
-                + TextUtils.frontZeroFill( Integer.toString(now.getDate()),2);
+                + TextUtils.frontZeroFill( Integer.toString(now.getDate()),2)
+                + "INVOICE";
 
           File dir = new File(outputPath);
         success =dir.exists();

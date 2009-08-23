@@ -35,6 +35,7 @@ import legaltime.controller.PaymentLogController;
 import legaltime.modelsafe.EasyLog;
 
 import legaltime.modelsafe.PersistanceManager;
+import legaltime.reports.ClientAddressLabelReport;
 import legaltime.reports.InvoiceReport;
 
 /**
@@ -241,7 +242,8 @@ public class LegalTimeView extends FrameView {
         PaymentLogMenuItem = new javax.swing.JMenuItem();
         ExpenseManagerMenuItem = new javax.swing.JMenuItem();
         timeEditorMenuItem = new javax.swing.JMenuItem();
-        InvoiceMenu = new javax.swing.JMenu();
+        ReportsMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         viewSystemLogMenuItem = new javax.swing.JMenuItem();
@@ -341,22 +343,26 @@ public class LegalTimeView extends FrameView {
 
         ExpenseManagerMenuItem.setAction(actionMap.get("showExpenseManager")); // NOI18N
         ExpenseManagerMenuItem.setText(resourceMap.getString("ExpenseManagerMenuItem.text")); // NOI18N
-        ExpenseManagerMenuItem.setEnabled(false);
         ExpenseManagerMenuItem.setName("ExpenseManagerMenuItem"); // NOI18N
         BillingMenu.add(ExpenseManagerMenuItem);
 
         timeEditorMenuItem.setAction(actionMap.get("showTimeEditor")); // NOI18N
         timeEditorMenuItem.setText(resourceMap.getString("timeEditorMenuItem.text")); // NOI18N
-        timeEditorMenuItem.setEnabled(false);
         timeEditorMenuItem.setName("timeEditorMenuItem"); // NOI18N
         BillingMenu.add(timeEditorMenuItem);
 
         menuBar.add(BillingMenu);
 
-        InvoiceMenu.setAction(actionMap.get("showExpenseManager")); // NOI18N
-        InvoiceMenu.setText(resourceMap.getString("InvoiceMenu.text")); // NOI18N
-        InvoiceMenu.setName("InvoiceMenu"); // NOI18N
-        menuBar.add(InvoiceMenu);
+        ReportsMenu.setAction(actionMap.get("showExpenseManager")); // NOI18N
+        ReportsMenu.setText(resourceMap.getString("ReportsMenu.text")); // NOI18N
+        ReportsMenu.setName("ReportsMenu"); // NOI18N
+
+        jMenuItem1.setAction(actionMap.get("buildClientAddressLabelReport")); // NOI18N
+        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        ReportsMenu.add(jMenuItem1);
+
+        menuBar.add(ReportsMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
@@ -437,14 +443,15 @@ public class LegalTimeView extends FrameView {
     private javax.swing.JMenuItem DBAdminMenuItem;
     private javax.swing.JMenuItem ExpenseManagerMenuItem;
     private javax.swing.JMenuItem InvoiceManagerMenuItem;
-    private javax.swing.JMenu InvoiceMenu;
     private javax.swing.JMenuItem PaymentLogMenuItem;
+    private javax.swing.JMenu ReportsMenu;
     private javax.swing.JMenuItem clientAccountingMenuItem;
     private javax.swing.JMenuItem clientManagerMenuItem;
     private javax.swing.JMenu clientMenu;
     private javax.swing.JDesktopPane desktop;
     private javax.swing.JMenuItem followupManagerMenuItem;
     private javax.swing.JMenuItem invoiceAllOutstandingInvoicesMenuItem;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblLastAction;
     private javax.swing.JLabel lblVersion;
     private javax.swing.JPanel mainPanel;
@@ -587,10 +594,10 @@ public javax.swing.JDesktopPane getDesktop(){
 
     @Action
     public void showLogViewer(){
-        if (logView == null) {
+        
             logView = new LogView();
             
-        }
+        
         logView.setVisible(true);
         desktop.add(logView);
         try {
@@ -622,6 +629,12 @@ public javax.swing.JDesktopPane getDesktop(){
             progressBar.setVisible(true);
         }
         progressBar.setValue(value);
+    }
+
+    @Action
+    public void buildClientAddressLabelReport(){
+        ClientAddressLabelReport clientAddressLabelReport = new ClientAddressLabelReport();
+        clientAddressLabelReport.makeReport();
     }
 
 
