@@ -24,6 +24,8 @@ import legaltime.model.Manager;
 import legaltime.model.exception.DAOException;
 import legaltime.model.exception.DataAccessException;
 import legaltime.model.exception.ObjectRetrievalException;
+import legaltime.model.PaymentLogBean;
+import legaltime.model.PaymentLogManager;
 import legaltime.model.ClientBean;
 import legaltime.model.ClientManager;
 
@@ -64,14 +66,19 @@ public class ClientAccountRegisterManager
     public static final int ID_DESCRIPTION = 3;
 
     /**
+     * Identify the effective_date field.
+     */
+    public static final int ID_EFFECTIVE_DATE = 4;
+
+    /**
      * Identify the client_id field.
      */
-    public static final int ID_CLIENT_ID = 4;
+    public static final int ID_CLIENT_ID = 5;
 
     /**
      * Identify the client_account_register_id field.
      */
-    public static final int ID_CLIENT_ACCOUNT_REGISTER_ID = 5;
+    public static final int ID_CLIENT_ACCOUNT_REGISTER_ID = 6;
 
     /**
      * Contains all the full fields of the client_account_register table.
@@ -82,6 +89,7 @@ public class ClientAccountRegisterManager
         ,"client_account_register.tran_type"
         ,"client_account_register.tran_amt"
         ,"client_account_register.description"
+        ,"client_account_register.effective_date"
         ,"client_account_register.client_id"
         ,"client_account_register.client_account_register_id"
     };
@@ -95,6 +103,7 @@ public class ClientAccountRegisterManager
         ,"tran_type"
         ,"tran_amt"
         ,"description"
+        ,"effective_date"
         ,"client_id"
         ,"client_account_register_id"
     };
@@ -106,6 +115,7 @@ public class ClientAccountRegisterManager
                             + ",client_account_register.tran_type"
                             + ",client_account_register.tran_amt"
                             + ",client_account_register.description"
+                            + ",client_account_register.effective_date"
                             + ",client_account_register.client_id"
                             + ",client_account_register.client_account_register_id";
 
@@ -116,6 +126,7 @@ public class ClientAccountRegisterManager
                             + ",tran_type"
                             + ",tran_amt"
                             + ",description"
+                            + ",effective_date"
                             + ",client_id"
                             + ",client_account_register_id";
 
@@ -150,25 +161,23 @@ public class ClientAccountRegisterManager
      * Loads a ClientAccountRegisterBean from the client_account_register using its key fields.
      *
      * @param clientAccountRegisterId Integer - PK# 1
-     * @param clientId Integer - PK# 2
      * @return a unique ClientAccountRegisterBean
      * @throws DAOException
      */
     //1
-    public ClientAccountRegisterBean loadByPrimaryKey(Integer clientAccountRegisterId, Integer clientId) throws DAOException
+    public ClientAccountRegisterBean loadByPrimaryKey(Integer clientAccountRegisterId) throws DAOException
     {
         Connection c = null;
         PreparedStatement ps = null;
         try
         {
             c = this.getConnection();
-            StringBuffer sql = new StringBuffer("SELECT " + ALL_FIELDS + " FROM client_account_register WHERE client_account_register_id=? and client_id=?");
+            StringBuffer sql = new StringBuffer("SELECT " + ALL_FIELDS + " FROM client_account_register WHERE client_account_register_id=?");
             // System.out.println("loadByPrimaryKey: " + sql);
             ps = c.prepareStatement(sql.toString(),
                                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                                     ResultSet.CONCUR_READ_ONLY);
             if (clientAccountRegisterId == null) { ps.setNull(1, Types.INTEGER); } else { Manager.setInteger(ps, 1, clientAccountRegisterId); }
-            if (clientId == null) { ps.setNull(2, Types.INTEGER); } else { Manager.setInteger(ps, 2, clientId); }
             ClientAccountRegisterBean pReturn[] = this.loadByPreparedStatement(ps);
             if (pReturn.length < 1) {
                 throw new ObjectRetrievalException();
@@ -191,25 +200,23 @@ public class ClientAccountRegisterManager
      * Deletes rows according to its keys.
      *
      * @param clientAccountRegisterId Integer - PK# 1
-     * @param clientId Integer - PK# 2
      * @return the number of deleted rows
      * @throws DAOException
      */
     //2
-    public int deleteByPrimaryKey(Integer clientAccountRegisterId, Integer clientId) throws DAOException
+    public int deleteByPrimaryKey(Integer clientAccountRegisterId) throws DAOException
     {
         Connection c = null;
         PreparedStatement ps = null;
         try
         {
             c = this.getConnection();
-            StringBuffer sql = new StringBuffer("DELETE FROM client_account_register WHERE client_account_register_id=? and client_id=?");
+            StringBuffer sql = new StringBuffer("DELETE FROM client_account_register WHERE client_account_register_id=?");
             // System.out.println("deleteByPrimaryKey: " + sql);
             ps = c.prepareStatement(sql.toString(),
                                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                                     ResultSet.CONCUR_READ_ONLY);
             if (clientAccountRegisterId == null) { ps.setNull(1, Types.INTEGER); } else { Manager.setInteger(ps, 1, clientAccountRegisterId); }
-            if (clientId == null) { ps.setNull(2, Types.INTEGER); } else { Manager.setInteger(ps, 2, clientId); }
             return ps.executeUpdate();
         }
         catch(SQLException e)
@@ -222,6 +229,39 @@ public class ClientAccountRegisterManager
             this.freeConnection(c);
         }
     }
+
+    //////////////////////////////////////
+    // GET/SET IMPORTED KEY BEAN METHOD
+    //////////////////////////////////////
+    /**
+     * Retrieves the PaymentLogBean object from the client_account_register.client_account_register_id field.
+     *
+     * @param bean the ClientAccountRegisterBean
+     * @return the associated PaymentLogBean bean
+     * @throws DAOException
+     */
+    //3.1 GET IMPORTED
+    public PaymentLogBean[] getPaymentLogBeans(ClientAccountRegisterBean bean) throws DAOException
+    {
+        PaymentLogBean other = PaymentLogManager.getInstance().createPaymentLogBean();
+        other.setClientAccountRegisterId(bean.getClientAccountRegisterId());
+        return PaymentLogManager.getInstance().loadUsingTemplate(other);
+    }
+
+    /**
+     * Associates the ClientAccountRegisterBean object to the PaymentLogBean object.
+     *
+     * @param bean the ClientAccountRegisterBean object to use
+     * @param beanToSet the PaymentLogBean object to associate to the ClientAccountRegisterBean
+     * @return the associated PaymentLogBean bean
+     */
+    //4.1 SET IMPORTED
+    public ClientAccountRegisterBean setPaymentLogBean(ClientAccountRegisterBean bean,PaymentLogBean beanToSet)
+    {
+        bean.setClientAccountRegisterId(beanToSet.getClientAccountRegisterId());
+        return bean;
+    }
+
 
 
     //////////////////////////////////////
@@ -534,6 +574,14 @@ public class ClientAccountRegisterManager
                 _dirtyCount++;
             }
 
+            if (bean.isEffectiveDateModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("effective_date");
+                _dirtyCount++;
+            }
+
             if (bean.isClientIdModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
@@ -567,6 +615,23 @@ public class ClientAccountRegisterManager
             this.fillPreparedStatement(ps, bean, SEARCH_EXACT);
 
             ps.executeUpdate();
+
+            if (!bean.isClientAccountRegisterIdModified())
+            {
+                PreparedStatement ps2 = null;
+                ResultSet rs = null;
+                try {
+                    ps2 = c.prepareStatement("SELECT last_insert_id()");
+                    rs = ps2.executeQuery();
+                    if(rs.next()) {
+                        bean.setClientAccountRegisterId(Manager.getInteger(rs, 1));
+                    } else {
+                        this.getManager().log("ATTENTION: Could not retrieve generated key!");
+                    }
+                } finally {
+                    this.getManager().close(ps2, rs);
+                }
+            }
 
             bean.isNew(false);
             bean.resetIsModified();
@@ -651,6 +716,15 @@ public class ClientAccountRegisterManager
                 sql.append("description=?");
             }
 
+            if (bean.isEffectiveDateModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("effective_date=?");
+            }
+
             if (bean.isClientIdModified()) {
                 if (useComma) {
                     sql.append(", ");
@@ -669,7 +743,7 @@ public class ClientAccountRegisterManager
                 sql.append("client_account_register_id=?");
             }
             sql.append(" WHERE ");
-            sql.append("client_account_register_id=? AND client_id=?");
+            sql.append("client_account_register_id=?");
             // System.out.println("update : " + sql.toString());
             ps = c.prepareStatement(sql.toString(),
                                     ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -683,7 +757,6 @@ public class ClientAccountRegisterManager
             }
 
             if (bean.getClientAccountRegisterId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getClientAccountRegisterId()); }
-            if (bean.getClientId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getClientId()); }
             ps.executeUpdate();
             bean.resetIsModified();
             this.afterUpdate(bean); // listener callback
@@ -914,6 +987,9 @@ public class ClientAccountRegisterManager
     //21
     public int deleteUsingTemplate(ClientAccountRegisterBean bean) throws DAOException
     {
+        if (bean.isClientAccountRegisterIdInitialized()) {
+            return this.deleteByPrimaryKey(bean.getClientAccountRegisterId());
+        }
         Connection c = null;
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer("DELETE FROM client_account_register ");
@@ -952,6 +1028,40 @@ public class ClientAccountRegisterManager
         }
     }
 
+
+    //_____________________________________________________________________
+    //
+    // USING INDICES
+    //_____________________________________________________________________
+
+    /**
+     * Retrieves an array of ClientAccountRegisterBean using the Relation_1 index.
+     *
+     * @param clientId the client_id column's value filter.
+     * @return an array of ClientAccountRegisterBean
+     * @throws DAOException
+     */
+    public ClientAccountRegisterBean[] loadByRelation_1(Integer clientId) throws DAOException
+    {
+        ClientAccountRegisterBean bean = this.createClientAccountRegisterBean();
+        bean.setClientId(clientId);
+        return loadUsingTemplate(bean);
+    }
+    
+    /**
+     * Deletes rows using the Relation_1 index.
+     *
+     * @param clientId the client_id column's value filter.
+     * @return the number of deleted objects
+     * @throws DAOException
+     */
+    public int deleteByRelation_1(Integer clientId) throws DAOException
+    {
+        ClientAccountRegisterBean bean = this.createClientAccountRegisterBean();
+        bean.setClientId(clientId);
+        return deleteUsingTemplate(bean);
+    }
+    
 
 
     //_____________________________________________________________________
@@ -1177,6 +1287,14 @@ public class ClientAccountRegisterManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("description ").append(sqlEqualsOperation).append("?");
                 }
             }
+            if (bean.isEffectiveDateModified()) {
+                _dirtyCount ++;
+                if (bean.getEffectiveDate() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("effective_date IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("effective_date = ?");
+                }
+            }
             if (bean.isClientIdModified()) {
                 _dirtyCount ++;
                 if (bean.getClientId() == null) {
@@ -1269,6 +1387,10 @@ public class ClientAccountRegisterManager
                         throw new DAOException("Unknown search type " + searchType);
                 }
             }
+            if (bean.isEffectiveDateModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getEffectiveDate() + "]");
+                if (bean.getEffectiveDate() == null) { ps.setNull(++_dirtyCount, Types.DATE); } else { ps.setDate(++_dirtyCount, new java.sql.Date(bean.getEffectiveDate().getTime())); }
+            }
             if (bean.isClientIdModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getClientId() + "]");
                 if (bean.getClientId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getClientId()); }
@@ -1354,8 +1476,9 @@ public class ClientAccountRegisterManager
             bean.setTranType(rs.getString(2));
             bean.setTranAmt(Manager.getDouble(rs, 3));
             bean.setDescription(rs.getString(4));
-            bean.setClientId(Manager.getInteger(rs, 5));
-            bean.setClientAccountRegisterId(Manager.getInteger(rs, 6));
+            bean.setEffectiveDate(rs.getDate(5));
+            bean.setClientId(Manager.getInteger(rs, 6));
+            bean.setClientAccountRegisterId(Manager.getInteger(rs, 7));
         }
         catch(SQLException e)
         {
@@ -1402,6 +1525,10 @@ public class ClientAccountRegisterManager
                         ++pos;
                         bean.setDescription(rs.getString(pos));
                         break;
+                    case ID_EFFECTIVE_DATE:
+                        ++pos;
+                        bean.setEffectiveDate(rs.getDate(pos));
+                        break;
                     case ID_CLIENT_ID:
                         ++pos;
                         bean.setClientId(Manager.getInteger(rs, pos));
@@ -1442,6 +1569,7 @@ public class ClientAccountRegisterManager
             bean.setTranType(rs.getString("tran_type"));
             bean.setTranAmt(Manager.getDouble(rs, "tran_amt"));
             bean.setDescription(rs.getString("description"));
+            bean.setEffectiveDate(rs.getDate("effective_date"));
             bean.setClientId(Manager.getInteger(rs, "client_id"));
             bean.setClientAccountRegisterId(Manager.getInteger(rs, "client_account_register_id"));
         }

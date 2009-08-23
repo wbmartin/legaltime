@@ -126,7 +126,7 @@ public class LaborRegisterTableModel extends AbstractTableModel {
             case 4: laborRegisterBeans[row].setUserKey(((UserInfoBean)((JComboBox)value).getSelectedItem()).getUserKey());
                     break;
             case 5: laborRegisterBeans[row].setBillRate(Double.parseDouble(value.toString()));
-            default: System.err.println("Out of bounds");
+            default: System.err.println("Out of bounds" + getClass().getName());
         }
         try {
             laborRegisterManager.save(laborRegisterBeans[row]);

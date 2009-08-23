@@ -11,11 +11,13 @@
 
 package legaltime.view;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 import legaltime.LegalTimeApp;
 import legaltime.controller.ClientAccountRegisterController;
 import legaltime.view.renderer.CurrencyTableCellRenderer;
-import legaltime.view.renderer.DateTableCellEditor;
 import legaltime.view.renderer.DateTableCellRenderer;
 
 /**
@@ -23,13 +25,21 @@ import legaltime.view.renderer.DateTableCellRenderer;
  * @author bmartin
  */
 public class ClientAccountRegisterView extends javax.swing.JInternalFrame {
-LegalTimeApp mainController;
-ClientAccountRegisterController clientAccountRegisterController;
+    LegalTimeApp mainController;
+    ClientAccountRegisterController clientAccountRegisterController;
+    javax.swing.JMenuItem reverseTranMenuItem;
     private final ClientAccountRegisterController clientAccountingController;
+    private javax.swing.JPopupMenu tableMenu;
     /** Creates new form ClientAccounting */
     public ClientAccountRegisterView(ClientAccountRegisterController clientAccountRegisterController_) {
         clientAccountingController = clientAccountRegisterController_;
         initComponents();
+        tableMenu = new javax.swing.JPopupMenu("Right Click");
+        reverseTranMenuItem = new javax.swing.JMenuItem("Reverse Transaction");
+        reverseTranMenuItem.setActionCommand("REVERSE_SELECTED_TRAN");
+        tableMenu.add(reverseTranMenuItem);
+        reverseTranMenuItem.addActionListener(clientAccountingController);
+        
     }
 
      public void setMainController(LegalTimeApp mainController_){
@@ -143,9 +153,17 @@ ClientAccountRegisterController clientAccountRegisterController;
     public javax.swing.JTable getTblAccountRegister(){
         return tblAccountRegister;
     }
+  
     public javax.swing.JComboBox getCboClient(){
         return cboClient;
     }
+     /**
+     * @return the tableMenu
+     */
+    public javax.swing.JPopupMenu getTableMenu() {
+        return tableMenu;
+    }
+
     public void formatTblAccountRegister(){
          TableColumn tc;
          //Date
@@ -181,6 +199,17 @@ ClientAccountRegisterController clientAccountRegisterController;
 
 
     }
+     public void scrollRowTblPaymentLog(int row) {
+       SwingUtils.scrollTableToVisible(tblAccountRegister, row, 1);
+    }
+
+    public void showPopupMsg(String msg_) {
+        JOptionPane.showMessageDialog(this, msg_);
+    }
+
+   
+
+    
 
 
 }

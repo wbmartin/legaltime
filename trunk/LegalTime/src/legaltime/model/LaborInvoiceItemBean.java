@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class LaborInvoiceItemBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -4569749701823419282L;
+	private static final long serialVersionUID = -1387783270967571943L;
 	
     private java.util.Date lastUpdate;
 

@@ -107,7 +107,7 @@ public class ExpenseRegisterTableModel extends AbstractTableModel {
                     break;
             case 3: expenseRegisterBeans[row].setAmount(Double.parseDouble(value.toString()));
                     break;
-            default: System.err.println("Out of bounds");
+            default: System.err.println("Out of bounds"+ getClass().getName());
         }
         try {
             expenseRegisterManager.save(expenseRegisterBeans[row]);

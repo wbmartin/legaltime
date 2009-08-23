@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import legaltime.model.GeneratedBean;
+import legaltime.model.PaymentLogBean;
 import legaltime.model.ClientBean;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -31,7 +32,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class ClientAccountRegisterBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -4500345372362947537L;
+	private static final long serialVersionUID = -1384478304534203687L;
 	
     private java.util.Date lastUpdate;
 
@@ -52,6 +53,11 @@ public class ClientAccountRegisterBean
 
     private boolean descriptionIsModified = false;
     private boolean descriptionIsInitialized = false;
+
+    private java.util.Date effectiveDate;
+
+    private boolean effectiveDateIsModified = false;
+    private boolean effectiveDateIsInitialized = false;
 
     private Integer clientId;
 
@@ -334,9 +340,79 @@ public class ClientAccountRegisterBean
     }
 
     /**
+     * Getter method for effectiveDate.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: client_account_register.effective_date</li>
+     * <li>column size: 10</li>
+     * <li>jdbc type returned by the driver: Types.DATE</li>
+     * </ul>
+     *
+     * @return the value of effectiveDate
+     */
+    public java.util.Date getEffectiveDate()
+    {
+        return effectiveDate;
+    }
+
+    /**
+     * Setter method for effectiveDate.
+     * <br>
+     * The new value is set only if compareTo() says it is different,
+     * or if one of either the new value or the current value is null.
+     * In case the new value is different, it is set and the field is marked as 'modified'.
+     *
+     * @param newVal the new value to be assigned to effectiveDate
+     */
+    public void setEffectiveDate(java.util.Date newVal)
+    {
+        if ((newVal != null && effectiveDate != null && (newVal.compareTo(effectiveDate) == 0)) ||
+            (newVal == null && effectiveDate == null && effectiveDateIsInitialized)) {
+            return;
+        }
+        effectiveDate = newVal;
+        effectiveDateIsModified = true;
+        effectiveDateIsInitialized = true;
+    }
+
+    /**
+     * Setter method for effectiveDate.
+     * <br>
+     * Convenient for those who do not want to deal with Objects for primary types.
+     *
+     * @param newVal the new value to be assigned to effectiveDate
+     */
+    public void setEffectiveDate(long newVal)
+    {
+        setEffectiveDate(new java.util.Date(newVal));
+    }
+
+    /**
+     * Determines if the effectiveDate has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isEffectiveDateModified()
+    {
+        return effectiveDateIsModified;
+    }
+
+    /**
+     * Determines if the effectiveDate has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isEffectiveDateInitialized()
+    {
+        return effectiveDateIsInitialized;
+    }
+
+    /**
      * Getter method for clientId.
      * <br>
-     * PRIMARY KEY.<br>
      * Meta Data Information (in progress):
      * <ul>
      * <li>full name: client_account_register.client_id</li>
@@ -413,6 +489,7 @@ public class ClientAccountRegisterBean
      * Meta Data Information (in progress):
      * <ul>
      * <li>full name: client_account_register.client_account_register_id</li>
+     * <li> imported key: payment_log.client_account_register_id</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.INTEGER</li>
      * </ul>
@@ -518,7 +595,7 @@ public class ClientAccountRegisterBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| tranTypeIsModified  		|| tranAmtIsModified  		|| descriptionIsModified  		|| clientIdIsModified  		|| clientAccountRegisterIdIsModified  ;
+        return lastUpdateIsModified 		|| tranTypeIsModified  		|| tranAmtIsModified  		|| descriptionIsModified  		|| effectiveDateIsModified  		|| clientIdIsModified  		|| clientAccountRegisterIdIsModified  ;
     }
 
     /**
@@ -530,6 +607,7 @@ public class ClientAccountRegisterBean
         tranTypeIsModified = false;
         tranAmtIsModified = false;
         descriptionIsModified = false;
+        effectiveDateIsModified = false;
         clientIdIsModified = false;
         clientAccountRegisterIdIsModified = false;
     }
@@ -545,6 +623,7 @@ public class ClientAccountRegisterBean
         setTranType(bean.getTranType());
         setTranAmt(bean.getTranAmt());
         setDescription(bean.getDescription());
+        setEffectiveDate(bean.getEffectiveDate());
         setClientId(bean.getClientId());
         setClientAccountRegisterId(bean.getClientAccountRegisterId());
     }
@@ -559,6 +638,7 @@ public class ClientAccountRegisterBean
         dictionnary.put("tran_type", getTranType() == null ? "" : getTranType().toString());
         dictionnary.put("tran_amt", getTranAmt() == null ? "" : getTranAmt().toString());
         dictionnary.put("description", getDescription() == null ? "" : getDescription().toString());
+        dictionnary.put("effective_date", getEffectiveDate() == null ? "" : getEffectiveDate().toString());
         dictionnary.put("client_id", getClientId() == null ? "" : getClientId().toString());
         dictionnary.put("client_account_register_id", getClientAccountRegisterId() == null ? "" : getClientAccountRegisterId().toString());
         return dictionnary;
@@ -571,7 +651,6 @@ public class ClientAccountRegisterBean
     {
         Map dictionnary = new HashMap();
         dictionnary.put("client_account_register_id", getClientAccountRegisterId() == null ? "" : getClientAccountRegisterId().toString());
-        dictionnary.put("client_id", getClientId() == null ? "" : getClientId().toString());
         return dictionnary;
     }
 
@@ -590,6 +669,8 @@ public class ClientAccountRegisterBean
             return getTranAmt() == null ? "" : getTranAmt().toString();
         } else if ("description".equalsIgnoreCase(column) || "description".equalsIgnoreCase(column)) {
             return getDescription() == null ? "" : getDescription().toString();
+        } else if ("effective_date".equalsIgnoreCase(column) || "effectiveDate".equalsIgnoreCase(column)) {
+            return getEffectiveDate() == null ? "" : getEffectiveDate().toString();
         } else if ("client_id".equalsIgnoreCase(column) || "clientId".equalsIgnoreCase(column)) {
             return getClientId() == null ? "" : getClientId().toString();
         } else if ("client_account_register_id".equalsIgnoreCase(column) || "clientAccountRegisterId".equalsIgnoreCase(column)) {
@@ -613,6 +694,7 @@ public class ClientAccountRegisterBean
             .append(getTranType(), obj.getTranType())
             .append(getTranAmt(), obj.getTranAmt())
             .append(getDescription(), obj.getDescription())
+            .append(getEffectiveDate(), obj.getEffectiveDate())
             .append(getClientId(), obj.getClientId())
             .append(getClientAccountRegisterId(), obj.getClientAccountRegisterId())
             .isEquals();
@@ -628,6 +710,7 @@ public class ClientAccountRegisterBean
             .append(getTranType())
             .append(getTranAmt())
             .append(getDescription())
+            .append(getEffectiveDate())
             .append(getClientId())
             .append(getClientAccountRegisterId())
             .toHashCode();
@@ -655,6 +738,7 @@ public class ClientAccountRegisterBean
             .append("tran_type", getTranType())
             .append("tran_amt", getTranAmt())
             .append("description", getDescription())
+            .append("effective_date", getEffectiveDate())
             .append("client_id", getClientId())
             .append("client_account_register_id", getClientAccountRegisterId())
             .toString();
@@ -669,6 +753,7 @@ public class ClientAccountRegisterBean
             .append(getTranType(), obj.getTranType())
             .append(getTranAmt(), obj.getTranAmt())
             .append(getDescription(), obj.getDescription())
+            .append(getEffectiveDate(), obj.getEffectiveDate())
             .append(getClientId(), obj.getClientId())
             .append(getClientAccountRegisterId(), obj.getClientAccountRegisterId())
             .toComparison();

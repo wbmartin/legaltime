@@ -24,6 +24,8 @@ import legaltime.model.Manager;
 import legaltime.model.exception.DAOException;
 import legaltime.model.exception.DataAccessException;
 import legaltime.model.exception.ObjectRetrievalException;
+import legaltime.model.ClientAccountRegisterBean;
+import legaltime.model.ClientAccountRegisterManager;
 import legaltime.model.ClientBean;
 import legaltime.model.ClientManager;
 import legaltime.model.InvoiceBean;
@@ -46,41 +48,47 @@ public class PaymentLogManager
     public static final int SEARCH_ENDING_LIKE = 3;
 
     /**
+     * Identify the client_account_register_id field.
+     */
+    public static final int ID_CLIENT_ACCOUNT_REGISTER_ID = 0;
+
+    /**
      * Identify the client_id field.
      */
-    public static final int ID_CLIENT_ID = 0;
+    public static final int ID_CLIENT_ID = 1;
 
     /**
      * Identify the invoice_id field.
      */
-    public static final int ID_INVOICE_ID = 1;
+    public static final int ID_INVOICE_ID = 2;
 
     /**
      * Identify the amount field.
      */
-    public static final int ID_AMOUNT = 2;
+    public static final int ID_AMOUNT = 3;
 
     /**
      * Identify the description field.
      */
-    public static final int ID_DESCRIPTION = 3;
+    public static final int ID_DESCRIPTION = 4;
 
     /**
      * Identify the effective_date field.
      */
-    public static final int ID_EFFECTIVE_DATE = 4;
+    public static final int ID_EFFECTIVE_DATE = 5;
 
     /**
      * Identify the payment_log_id field.
      */
-    public static final int ID_PAYMENT_LOG_ID = 5;
+    public static final int ID_PAYMENT_LOG_ID = 6;
 
     /**
      * Contains all the full fields of the payment_log table.
      */
     private static final String[] FULL_FIELD_NAMES =
     {
-        "payment_log.client_id"
+        "payment_log.client_account_register_id"
+        ,"payment_log.client_id"
         ,"payment_log.invoice_id"
         ,"payment_log.amount"
         ,"payment_log.description"
@@ -93,7 +101,8 @@ public class PaymentLogManager
      */
     public static final String[] FIELD_NAMES =
     {
-        "client_id"
+        "client_account_register_id"
+        ,"client_id"
         ,"invoice_id"
         ,"amount"
         ,"description"
@@ -104,7 +113,8 @@ public class PaymentLogManager
     /**
      * Field that contains the comma separated fields of the payment_log table.
      */
-    public static final String ALL_FULL_FIELDS = "payment_log.client_id"
+    public static final String ALL_FULL_FIELDS = "payment_log.client_account_register_id"
+                            + ",payment_log.client_id"
                             + ",payment_log.invoice_id"
                             + ",payment_log.amount"
                             + ",payment_log.description"
@@ -114,7 +124,8 @@ public class PaymentLogManager
     /**
      * Field that contains the comma separated fields of the payment_log table.
      */
-    public static final String ALL_FIELDS = "client_id"
+    public static final String ALL_FIELDS = "client_account_register_id"
+                            + ",client_id"
                             + ",invoice_id"
                             + ",amount"
                             + ",description"
@@ -225,6 +236,52 @@ public class PaymentLogManager
     //////////////////////////////////////
     // GET/SET FOREIGN KEY BEAN METHOD
     //////////////////////////////////////
+    /**
+     * Retrieves the ClientAccountRegisterBean object from the payment_log.client_account_register_id field.
+     *
+     * @param bean the PaymentLogBean
+     * @return the associated ClientAccountRegisterBean bean
+     * @throws DAOException
+     */
+    //3.2 GET IMPORTED VALUES
+    public ClientAccountRegisterBean getClientAccountRegisterBean(PaymentLogBean bean) throws DAOException
+    {
+        ClientAccountRegisterBean other = ClientAccountRegisterManager.getInstance().createClientAccountRegisterBean();
+        other.setClientAccountRegisterId(bean.getClientAccountRegisterId()); 
+        bean.setClientAccountRegisterBean(ClientAccountRegisterManager.getInstance().loadUniqueUsingTemplate(other)); 
+        return bean.getClientAccountRegisterBean();
+    }
+
+    /**
+     * Associates the PaymentLogBean object to the ClientAccountRegisterBean object.
+     *
+     * @param bean the PaymentLogBean object to use
+     * @param beanToSet the ClientAccountRegisterBean object to associate to the PaymentLogBean
+     * @return the associated ClientAccountRegisterBean bean
+     * @throws Exception
+     */
+    //4.2 ADD IMPORTED VALUE
+    public ClientAccountRegisterBean addClientAccountRegisterBean(ClientAccountRegisterBean beanToSet, PaymentLogBean bean) throws Exception
+    {
+        beanToSet.setClientAccountRegisterId(bean.getClientAccountRegisterId());
+        return ClientAccountRegisterManager.getInstance().save(beanToSet);
+    }
+
+    /**
+     * Associates the PaymentLogBean object to the ClientAccountRegisterBean object.
+     *
+     * @param bean the PaymentLogBean object to use
+     * @param beanToSet the ClientAccountRegisterBean object to associate to the PaymentLogBean
+     * @return the associated ClientAccountRegisterBean bean
+     * @throws Exception
+     */
+    //5.2 SET IMPORTED
+    public ClientAccountRegisterBean setClientAccountRegisterBean(PaymentLogBean bean, ClientAccountRegisterBean beanToSet) throws Exception
+    {
+        bean.setClientAccountRegisterId(beanToSet.getClientAccountRegisterId());
+        return ClientAccountRegisterManager.getInstance().save(beanToSet);
+    }
+
     /**
      * Retrieves the ClientBean object from the payment_log.client_id field.
      *
@@ -546,6 +603,14 @@ public class PaymentLogManager
             int _dirtyCount = 0;
             sql = new StringBuffer("INSERT into payment_log (");
 
+            if (bean.isClientAccountRegisterIdModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("client_account_register_id");
+                _dirtyCount++;
+            }
+
             if (bean.isClientIdModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
@@ -675,6 +740,15 @@ public class PaymentLogManager
             this.beforeUpdate(bean); // listener callback
             sql = new StringBuffer("UPDATE payment_log SET ");
             boolean useComma=false;
+
+            if (bean.isClientAccountRegisterIdModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("client_account_register_id=?");
+            }
 
             if (bean.isClientIdModified()) {
                 if (useComma) {
@@ -1077,6 +1151,34 @@ public class PaymentLogManager
         return deleteUsingTemplate(bean);
     }
     
+    /**
+     * Retrieves an array of PaymentLogBean using the fk_clientaccountregister_paymentlog index.
+     *
+     * @param clientAccountRegisterId the client_account_register_id column's value filter.
+     * @return an array of PaymentLogBean
+     * @throws DAOException
+     */
+    public PaymentLogBean[] loadByfk_clientaccountregister_paymentlog(Integer clientAccountRegisterId) throws DAOException
+    {
+        PaymentLogBean bean = this.createPaymentLogBean();
+        bean.setClientAccountRegisterId(clientAccountRegisterId);
+        return loadUsingTemplate(bean);
+    }
+    
+    /**
+     * Deletes rows using the fk_clientaccountregister_paymentlog index.
+     *
+     * @param clientAccountRegisterId the client_account_register_id column's value filter.
+     * @return the number of deleted objects
+     * @throws DAOException
+     */
+    public int deleteByfk_clientaccountregister_paymentlog(Integer clientAccountRegisterId) throws DAOException
+    {
+        PaymentLogBean bean = this.createPaymentLogBean();
+        bean.setClientAccountRegisterId(clientAccountRegisterId);
+        return deleteUsingTemplate(bean);
+    }
+    
 
 
     //_____________________________________________________________________
@@ -1270,6 +1372,14 @@ public class PaymentLogManager
         }
         try
         {
+            if (bean.isClientAccountRegisterIdModified()) {
+                _dirtyCount ++;
+                if (bean.getClientAccountRegisterId() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("client_account_register_id IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("client_account_register_id = ?");
+                }
+            }
             if (bean.isClientIdModified()) {
                 _dirtyCount ++;
                 if (bean.getClientId() == null) {
@@ -1342,6 +1452,10 @@ public class PaymentLogManager
         int _dirtyCount = 0;
         try
         {
+            if (bean.isClientAccountRegisterIdModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getClientAccountRegisterId() + "]");
+                if (bean.getClientAccountRegisterId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getClientAccountRegisterId()); }
+            }
             if (bean.isClientIdModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getClientId() + "]");
                 if (bean.getClientId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getClientId()); }
@@ -1457,12 +1571,13 @@ public class PaymentLogManager
         PaymentLogBean bean = this.createPaymentLogBean();
         try
         {
-            bean.setClientId(Manager.getInteger(rs, 1));
-            bean.setInvoiceId(Manager.getInteger(rs, 2));
-            bean.setAmount(Manager.getDouble(rs, 3));
-            bean.setDescription(rs.getString(4));
-            bean.setEffectiveDate(rs.getDate(5));
-            bean.setPaymentLogId(Manager.getInteger(rs, 6));
+            bean.setClientAccountRegisterId(Manager.getInteger(rs, 1));
+            bean.setClientId(Manager.getInteger(rs, 2));
+            bean.setInvoiceId(Manager.getInteger(rs, 3));
+            bean.setAmount(Manager.getDouble(rs, 4));
+            bean.setDescription(rs.getString(5));
+            bean.setEffectiveDate(rs.getDate(6));
+            bean.setPaymentLogId(Manager.getInteger(rs, 7));
         }
         catch(SQLException e)
         {
@@ -1493,6 +1608,10 @@ public class PaymentLogManager
             {
                 switch(fieldList[i])
                 {
+                    case ID_CLIENT_ACCOUNT_REGISTER_ID:
+                        ++pos;
+                        bean.setClientAccountRegisterId(Manager.getInteger(rs, pos));
+                        break;
                     case ID_CLIENT_ID:
                         ++pos;
                         bean.setClientId(Manager.getInteger(rs, pos));
@@ -1545,6 +1664,7 @@ public class PaymentLogManager
         PaymentLogBean bean = this.createPaymentLogBean();
         try
         {
+            bean.setClientAccountRegisterId(Manager.getInteger(rs, "client_account_register_id"));
             bean.setClientId(Manager.getInteger(rs, "client_id"));
             bean.setInvoiceId(Manager.getInteger(rs, "invoice_id"));
             bean.setAmount(Manager.getDouble(rs, "amount"));

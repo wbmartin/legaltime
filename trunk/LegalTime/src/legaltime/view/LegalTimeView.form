@@ -131,12 +131,46 @@
                 <Property name="name" type="java.lang.String" value="timeKeeperMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="InvoiceManagerMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="legaltime.view.LegalTimeView" id="showInvoiceManager" methodName="showInvoiceManager"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="InvoiceManagerMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="InvoiceManagerMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="monthlyBillingCycleMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="legaltime.view.LegalTimeView" id="showMonthlyBillingCycle" methodName="showMonthlyBillingCycle"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="monthlyBillingCycleMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="monthlyBillingCycleMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="invoiceAllOutstandingInvoicesMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="invoiceAllOutstandingInvoicesMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="invoiceAllOutstandingInvoicesMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="PaymentLogMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="legaltime.view.LegalTimeView" id="showPaymentLog" methodName="showPaymentLog"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="PaymentLogMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="PaymentLogMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ExpenseManagerMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="legaltime.view.LegalTimeView" id="showExpenseManager" methodName="showExpenseManager"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="ExpenseManagerMenuItem.text"/>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="ExpenseManagerMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
@@ -146,6 +180,7 @@
                   <action class="legaltime.view.LegalTimeView" id="showTimeEditor" methodName="showTimeEditor"/>
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="timeEditorMenuItem.text"/>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="timeEditorMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
@@ -159,32 +194,6 @@
             <Property name="text" type="java.lang.String" resourceKey="InvoiceMenu.text"/>
             <Property name="name" type="java.lang.String" value="InvoiceMenu" noResource="true"/>
           </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="monthlyBillingCycleMenuItem">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="legaltime.view.LegalTimeView" id="showMonthlyBillingCycle" methodName="showMonthlyBillingCycle"/>
-                </Property>
-                <Property name="text" type="java.lang.String" resourceKey="monthlyBillingCycleMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="monthlyBillingCycleMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="InvoiceManagerMenuItem">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="legaltime.view.LegalTimeView" id="showInvoiceManager" methodName="showInvoiceManager"/>
-                </Property>
-                <Property name="text" type="java.lang.String" resourceKey="InvoiceManagerMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="InvoiceManagerMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="invoiceAllOutstandingInvoicesMenuItem">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="invoiceAllOutstandingInvoicesMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="invoiceAllOutstandingInvoicesMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">
           <Properties>
