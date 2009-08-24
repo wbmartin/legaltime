@@ -15,6 +15,7 @@ import javax.swing.event.TableModelListener;
 import legaltime.AppPrefs;
 import legaltime.LegalTimeApp;
 import legaltime.cache.ClientCache;
+import legaltime.cache.UserInfoCache;
 import legaltime.model.ClientBean;
 import legaltime.model.ExpenseRegisterBean;
 import legaltime.model.ExpenseRegisterManager;
@@ -30,6 +31,7 @@ import legaltime.view.InvoiceEditorView;
 import legaltime.view.model.ClientComboBoxModel;
 import legaltime.view.model.ExpenseRegisterTableModel;
 import legaltime.view.model.LaborRegisterTableModel;
+import legaltime.view.model.UserInfoComboBoxModel;
 import legaltime.view.renderer.ClientComboBoxRenderer;
 
 /**
@@ -53,6 +55,9 @@ public class InvoiceController implements TableModelListener, ActionListener{
 
     private ExpenseRegisterManager expenseRegisterManager;
     private ExpenseRegisterTableModel  expenseRegisterTableModel;
+    
+     private UserInfoCache userInfoCache;
+    private UserInfoComboBoxModel userInfoComboBoxModel;
 
     private LegalTimeApp mainController;
     private static InvoiceController instance;
@@ -71,7 +76,11 @@ public class InvoiceController implements TableModelListener, ActionListener{
         invoiceEditorView.getTblLaborRegister().setModel(laborRegisterTableModel);
         invoiceEditorView.getTblLaborRegister().getRowSorter().toggleSortOrder(1);
         laborRegisterTableModel.addTableModelListener(this);
+        userInfoComboBoxModel = new UserInfoComboBoxModel();
+         userInfoCache=UserInfoCache.getInstance();
+         userInfoComboBoxModel.setList(userInfoCache.getCache());
         invoiceEditorView.formatTableLaborRegister();
+        
 
 
         expenseRegisterManager =ExpenseRegisterManager.getInstance();
@@ -91,6 +100,12 @@ public class InvoiceController implements TableModelListener, ActionListener{
         invoiceEditorView.getCboClient().setRenderer(clientComboBoxRenderer );
         invoiceEditorView.getCboClient().addActionListener(this);
         invoiceEditorView.getCboClient().setMaximumRowCount(30);
+
+         
+         
+         
+ 
+
 
     }
 
@@ -222,5 +237,14 @@ public class InvoiceController implements TableModelListener, ActionListener{
         expenseRegisterTableModel.addRow(clientId,0D,"Administrative Expense",true,new java.util.Date());
         refreshExpenseRegisterTable(clientId);
     }
+
+    /**
+     * @return the userInfoComboBoxModel
+     */
+    public UserInfoComboBoxModel getUserInfoComboBoxModel() {
+        return userInfoComboBoxModel;
+    }
+
+
 
 }

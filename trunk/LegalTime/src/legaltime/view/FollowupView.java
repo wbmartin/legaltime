@@ -11,7 +11,13 @@
 
 package legaltime.view;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.table.TableColumn;
 import legaltime.LegalTimeApp;
+import legaltime.controller.FollowupController;
+import legaltime.view.renderer.ClientComboBoxRenderer;
+import legaltime.view.renderer.DateTableCellEditor;
+import legaltime.view.renderer.DateTableCellRenderer;
 import org.jdesktop.application.Action;
 
 
@@ -20,11 +26,14 @@ import org.jdesktop.application.Action;
  *
  * @author bmartin
  */
-public class FollowupManager extends javax.swing.JInternalFrame {
+public class FollowupView extends javax.swing.JInternalFrame {
 LegalTimeApp mainController;
+FollowupController followupController;
     /** Creates new form FollowUpTracker */
-    public FollowupManager() {
+    public FollowupView(FollowupController followupController_) {
+        followupController = followupController_;
         initComponents();
+        
     }
  public void setMainController(LegalTimeApp mainController_){
         mainController = mainController_;
@@ -38,6 +47,9 @@ LegalTimeApp mainController;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFollowUp = new javax.swing.JTable();
         tglCmdFilter = new javax.swing.JToggleButton();
@@ -47,17 +59,20 @@ LegalTimeApp mainController;
         lblOpenedDate = new javax.swing.JLabel();
         lblClosedDate = new javax.swing.JLabel();
         dtClosedDate = new com.toedter.calendar.JDateChooser();
-        cboClient = new javax.swing.JComboBox();
-        lblClient = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDescription = new javax.swing.JTextArea();
         cmdAddNew = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        lblClient = new javax.swing.JLabel();
+        cboClient = new javax.swing.JComboBox();
+        lblFilterPanel = new javax.swing.JLabel();
 
         setClosable(true);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(FollowupManager.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(FollowupView.class);
         setForeground(resourceMap.getColor("Form.foreground")); // NOI18N
         setIconifiable(true);
         setMaximizable(true);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -93,7 +108,7 @@ LegalTimeApp mainController;
         tblFollowUp.getColumnModel().getColumn(4).setMaxWidth(75);
         tblFollowUp.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("tblFollowUp.columnModel.title4")); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getActionMap(FollowupManager.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getActionMap(FollowupView.class, this);
         tglCmdFilter.setAction(actionMap.get("changeFollowUpFilter")); // NOI18N
         tglCmdFilter.setText(resourceMap.getString("tglCmdFilter.text")); // NOI18N
         tglCmdFilter.setName("tglCmdFilter"); // NOI18N
@@ -113,14 +128,6 @@ LegalTimeApp mainController;
 
         dtClosedDate.setName("dtClosedDate"); // NOI18N
 
-        cboClient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cboClient.setName("cboClient"); // NOI18N
-
-        lblClient.setForeground(resourceMap.getColor("lblClient.foreground")); // NOI18N
-        lblClient.setLabelFor(cboClient);
-        lblClient.setText(resourceMap.getString("lblClient.text")); // NOI18N
-        lblClient.setName("lblClient"); // NOI18N
-
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
         txtDescription.setColumns(20);
@@ -128,22 +135,57 @@ LegalTimeApp mainController;
         txtDescription.setName("txtDescription"); // NOI18N
         jScrollPane2.setViewportView(txtDescription);
 
+        cmdAddNew.setAction(actionMap.get("addnew")); // NOI18N
         cmdAddNew.setText(resourceMap.getString("cmdAddNew.text")); // NOI18N
         cmdAddNew.setName("cmdAddNew"); // NOI18N
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setName("pnlFilter"); // NOI18N
+
+        lblClient.setForeground(resourceMap.getColor("lblClient.foreground")); // NOI18N
+        lblClient.setLabelFor(cboClient);
+        lblClient.setText(resourceMap.getString("lblClient.text")); // NOI18N
+        lblClient.setName("lblClient"); // NOI18N
+
+        cboClient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboClient.setName("cboClient"); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblClient, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cboClient, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(124, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClient, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboClient))
+                .addContainerGap())
+        );
+
+        lblFilterPanel.setText(resourceMap.getString("lblFilterPanel.text")); // NOI18N
+        lblFilterPanel.setName("lblFilterPanel"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(cmdAddNew)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 434, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 491, Short.MAX_VALUE)
                         .addComponent(tglCmdFilter))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDueDate)
                             .addComponent(lblClosedDate)
@@ -154,46 +196,43 @@ LegalTimeApp mainController;
                             .addComponent(dtOpenedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dtDueDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblClient, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(cboClient, 0, 508, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFilterPanel)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblFilterPanel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(201, 201, 201)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tglCmdFilter)
                     .addComponent(cmdAddNew))
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClient, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboClient))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(dtDueDate, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+                                .addComponent(dtDueDate, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(dtOpenedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(dtClosedDate, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))
+                                .addComponent(dtClosedDate, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblDueDate)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                                .addComponent(lblOpenedDate, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                                .addComponent(lblOpenedDate, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblClosedDate)))
-                        .addGap(37, 37, 37))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addGap(26, 26, 26))
+                    .addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -201,22 +240,33 @@ LegalTimeApp mainController;
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JComboBox cboClient;
     private javax.swing.JButton cmdAddNew;
     private com.toedter.calendar.JDateChooser dtClosedDate;
     private com.toedter.calendar.JDateChooser dtDueDate;
     private com.toedter.calendar.JDateChooser dtOpenedDate;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblClient;
     private javax.swing.JLabel lblClosedDate;
     private javax.swing.JLabel lblDueDate;
+    private javax.swing.JLabel lblFilterPanel;
     private javax.swing.JLabel lblOpenedDate;
     private javax.swing.JTable tblFollowUp;
     private javax.swing.JToggleButton tglCmdFilter;
     private javax.swing.JTextArea txtDescription;
     // End of variables declaration//GEN-END:variables
 
+    public javax.swing.JTable getTblFollowup(){
+        return  tblFollowUp;
+    }
+    public javax.swing.JComboBox getCboClient(){
+        return cboClient;
+    }
     @Action
     public void changeFollowUpFilter(){
         if(tglCmdFilter.isSelected()){
@@ -225,5 +275,55 @@ LegalTimeApp mainController;
             tglCmdFilter.setText("Show Open");
         }
     }
+
+        public void formatTableFollowup() {
+
+
+        TableColumn tc;
+        //Due Date
+         tc = tblFollowUp.getColumnModel().getColumn(0);
+         tc.setPreferredWidth(75);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(100);
+         tc.setCellRenderer(DateTableCellRenderer.getInstance());
+         tc.setCellEditor(new DateTableCellEditor());
+         //Client
+         tc = tblFollowUp.getColumnModel().getColumn(1);
+         tc.setPreferredWidth(150);
+         tc.setMinWidth(50);
+         tc.setMaxWidth(200);
+         javax.swing.JComboBox cboClientTable = new javax.swing.JComboBox();
+         cboClientTable.setModel(followupController.getClientTableComboBoxModel());
+         cboClientTable.setRenderer(new ClientComboBoxRenderer());
+         tc.setCellEditor(new DefaultCellEditor(cboClientTable));
+         tc.setCellRenderer();
+         //Description
+         tc = tblFollowUp.getColumnModel().getColumn(2);
+         tc.setPreferredWidth(200);
+         tc.setMinWidth(50);
+         tc.setMaxWidth(300);
+         //Opened Date
+         tc = tblFollowUp.getColumnModel().getColumn(3);
+         tc.setPreferredWidth(75);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(100);
+         tc.setCellRenderer(DateTableCellRenderer.getInstance());
+         tc.setCellEditor(new DateTableCellEditor());
+         //Closed Date
+         tc = tblFollowUp.getColumnModel().getColumn(4);
+         tc.setPreferredWidth(75);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(100);
+         tc.setCellRenderer(DateTableCellRenderer.getInstance());
+         tc.setCellEditor(new DateTableCellEditor());
+
+
+    }
+
+    @Action
+    public void addnew(){
+        followupController.addFollowupItem();
+    }
+
 
 }
