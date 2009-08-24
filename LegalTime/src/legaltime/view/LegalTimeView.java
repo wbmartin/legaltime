@@ -29,6 +29,7 @@ import javax.swing.WindowConstants;
 import legaltime.DBManager.VersionManager;
 import legaltime.controller.ClientAccountRegisterController;
 import legaltime.controller.ClientEditorController;
+import legaltime.controller.FollowupController;
 import legaltime.controller.InvoiceController;
 import legaltime.controller.MonthlyCycleManager;
 import legaltime.controller.PaymentLogController;
@@ -51,7 +52,7 @@ public class LegalTimeView extends FrameView {
     private JDialog aboutBox;
     private TimeRecorder timeRecorder;
     private ClientEditorView clientManager;
-    private FollowupManager followupManager;
+    private FollowupView followupManager;
     private ClientAccountRegisterView clientAccounting;
     private InvoiceEditorView invoiceManager;
     private ExpenseManager expenseManager;
@@ -502,17 +503,8 @@ public javax.swing.JDesktopPane getDesktop(){
     }
     @Action
     public void showFollowupManager(){
-        if (followupManager == null) {
-            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-            followupManager = new FollowupManager();
-            followupManager.setMainController(LegalTimeApp.getApplication());
+        FollowupController.getInstance(LegalTimeApp.getApplication()).showFollowupViewer();
 
-        }
-        followupManager.setVisible(true);
-        desktop.add(followupManager);
-        try {
-            followupManager.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {}
     }
 
     @Action
