@@ -78,9 +78,15 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace pref="79" max="32767" attributes="0"/>
-              <Component id="lblReportOutputPath" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="lblConnectionString" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblReportOutputPath" alignment="1" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="txtReportOutputPath" min="-2" pref="445" max="-2" attributes="1"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="lblConnectionStringValue" max="32767" attributes="1"/>
+                  <Component id="txtReportOutputPath" alignment="0" pref="445" max="32767" attributes="1"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="cmdChooseReportOutputPath" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -128,7 +134,12 @@
                   <Component id="lblReportOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdChooseReportOutputPath" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="33" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblConnectionString" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblConnectionStringValue" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="13" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cmdOk" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmdCancel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -260,6 +271,18 @@
     <Component class="javax.swing.JTextField" name="txtReportOutputPath">
       <Properties>
         <Property name="name" type="java.lang.String" value="txtReportOutputPath" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblConnectionString">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lblConnectionString.text"/>
+        <Property name="name" type="java.lang.String" value="lblConnectionString" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblConnectionStringValue">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lblConnectionStringValue.text"/>
+        <Property name="name" type="java.lang.String" value="lblConnectionStringValue" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

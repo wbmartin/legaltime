@@ -54,7 +54,7 @@ public class ProcessControllerAccounting {
             clientAccountRegisterBean.setClientId(paymentLogBean_.getClientId());
             clientAccountRegisterBean.setDescription(paymentLogBean_.getDescription());
             clientAccountRegisterBean.setEffectiveDate(paymentLogBean_.getEffectiveDate());
-            clientAccountRegisterBean.setTranAmt(paymentLogBean_.getAmount());
+            clientAccountRegisterBean.setTranAmt(-1D*paymentLogBean_.getAmount());
             clientAccountRegisterBean.setTranType("PAY");
 
             clientAccountRegisterManager.save(clientAccountRegisterBean);
@@ -77,7 +77,7 @@ public class ProcessControllerAccounting {
         clientAccountRegisterBean.setClientId(paymentLogBean_.getClientId());
         clientAccountRegisterBean.setDescription(paymentLogBean_.getDescription());
         clientAccountRegisterBean.setEffectiveDate(paymentLogBean_.getEffectiveDate());
-        clientAccountRegisterBean.setTranAmt(paymentLogBean_.getAmount());
+        clientAccountRegisterBean.setTranAmt(-1D*paymentLogBean_.getAmount());
         clientAccountRegisterBean.setTranType("PAY");
         try {
             clientAccountRegisterBean = clientAccountRegisterManager.save(clientAccountRegisterBean);
@@ -131,7 +131,7 @@ public class ProcessControllerAccounting {
                 return result;
             }
             reversal.copy(bean);
-            reversal.setTranAmt(-1D * bean.getTranAmt());
+            reversal.setTranAmt(-1D* bean.getTranAmt());
             reversal.setDescription(bean.getDescription() +" Reversal");
             reversal.setClientAccountRegisterId(null);
             clientAccountRegisterManager.save(reversal);

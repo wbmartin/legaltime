@@ -26,7 +26,7 @@ public class FollowupTableModel extends AbstractTableModel {
     
     private String[] columnNames ={"Due Date", "Client", "Description","Open Date","Close Date"};
 
-    private Class[] columnTypes={java.util.Date.class, String.class, String.class
+    private Class[] columnTypes={java.util.Date.class, Integer.class, String.class
             , java.util.Date.class, java.util.Date.class};
     private boolean[] isEditable ={true,true, true,true,true};
     //TODO makeDate editiable by adding effective Date to

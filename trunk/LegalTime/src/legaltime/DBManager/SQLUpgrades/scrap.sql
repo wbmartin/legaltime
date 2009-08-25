@@ -5,3 +5,6 @@ delete from  client_account_register ;
 delete from invoice ;
 delete from labor_invoice_item ;
 delete from labor_register where description ='Monthly Retainer Fee';
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '4vrf5btg';
+FLUSH PRIVILEGES;
