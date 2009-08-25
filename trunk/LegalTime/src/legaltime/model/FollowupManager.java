@@ -159,25 +159,23 @@ public class FollowupManager
      * Loads a FollowupBean from the followup using its key fields.
      *
      * @param followupId Integer - PK# 1
-     * @param clientId Integer - PK# 2
      * @return a unique FollowupBean
      * @throws DAOException
      */
     //1
-    public FollowupBean loadByPrimaryKey(Integer followupId, Integer clientId) throws DAOException
+    public FollowupBean loadByPrimaryKey(Integer followupId) throws DAOException
     {
         Connection c = null;
         PreparedStatement ps = null;
         try
         {
             c = this.getConnection();
-            StringBuffer sql = new StringBuffer("SELECT " + ALL_FIELDS + " FROM followup WHERE followup_id=? and client_id=?");
+            StringBuffer sql = new StringBuffer("SELECT " + ALL_FIELDS + " FROM followup WHERE followup_id=?");
             // System.out.println("loadByPrimaryKey: " + sql);
             ps = c.prepareStatement(sql.toString(),
                                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                                     ResultSet.CONCUR_READ_ONLY);
             if (followupId == null) { ps.setNull(1, Types.INTEGER); } else { Manager.setInteger(ps, 1, followupId); }
-            if (clientId == null) { ps.setNull(2, Types.INTEGER); } else { Manager.setInteger(ps, 2, clientId); }
             FollowupBean pReturn[] = this.loadByPreparedStatement(ps);
             if (pReturn.length < 1) {
                 throw new ObjectRetrievalException();
@@ -200,25 +198,23 @@ public class FollowupManager
      * Deletes rows according to its keys.
      *
      * @param followupId Integer - PK# 1
-     * @param clientId Integer - PK# 2
      * @return the number of deleted rows
      * @throws DAOException
      */
     //2
-    public int deleteByPrimaryKey(Integer followupId, Integer clientId) throws DAOException
+    public int deleteByPrimaryKey(Integer followupId) throws DAOException
     {
         Connection c = null;
         PreparedStatement ps = null;
         try
         {
             c = this.getConnection();
-            StringBuffer sql = new StringBuffer("DELETE FROM followup WHERE followup_id=? and client_id=?");
+            StringBuffer sql = new StringBuffer("DELETE FROM followup WHERE followup_id=?");
             // System.out.println("deleteByPrimaryKey: " + sql);
             ps = c.prepareStatement(sql.toString(),
                                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                                     ResultSet.CONCUR_READ_ONLY);
             if (followupId == null) { ps.setNull(1, Types.INTEGER); } else { Manager.setInteger(ps, 1, followupId); }
-            if (clientId == null) { ps.setNull(2, Types.INTEGER); } else { Manager.setInteger(ps, 2, clientId); }
             return ps.executeUpdate();
         }
         catch(SQLException e)
@@ -585,6 +581,23 @@ public class FollowupManager
 
             ps.executeUpdate();
 
+            if (!bean.isFollowupIdModified())
+            {
+                PreparedStatement ps2 = null;
+                ResultSet rs = null;
+                try {
+                    ps2 = c.prepareStatement("SELECT last_insert_id()");
+                    rs = ps2.executeQuery();
+                    if(rs.next()) {
+                        bean.setFollowupId(Manager.getInteger(rs, 1));
+                    } else {
+                        this.getManager().log("ATTENTION: Could not retrieve generated key!");
+                    }
+                } finally {
+                    this.getManager().close(ps2, rs);
+                }
+            }
+
             bean.isNew(false);
             bean.resetIsModified();
             this.afterInsert(bean); // listener callback
@@ -695,7 +708,7 @@ public class FollowupManager
                 sql.append("followup_id=?");
             }
             sql.append(" WHERE ");
-            sql.append("followup_id=? AND client_id=?");
+            sql.append("followup_id=?");
             // System.out.println("update : " + sql.toString());
             ps = c.prepareStatement(sql.toString(),
                                     ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -709,7 +722,6 @@ public class FollowupManager
             }
 
             if (bean.getFollowupId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getFollowupId()); }
-            if (bean.getClientId() == null) { ps.setNull(++_dirtyCount, Types.INTEGER); } else { Manager.setInteger(ps, ++_dirtyCount, bean.getClientId()); }
             ps.executeUpdate();
             bean.resetIsModified();
             this.afterUpdate(bean); // listener callback
@@ -940,6 +952,9 @@ public class FollowupManager
     //21
     public int deleteUsingTemplate(FollowupBean bean) throws DAOException
     {
+        if (bean.isFollowupIdInitialized()) {
+            return this.deleteByPrimaryKey(bean.getFollowupId());
+        }
         Connection c = null;
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer("DELETE FROM followup ");
@@ -978,6 +993,40 @@ public class FollowupManager
         }
     }
 
+
+    //_____________________________________________________________________
+    //
+    // USING INDICES
+    //_____________________________________________________________________
+
+    /**
+     * Retrieves an array of FollowupBean using the fk_client_followup index.
+     *
+     * @param clientId the client_id column's value filter.
+     * @return an array of FollowupBean
+     * @throws DAOException
+     */
+    public FollowupBean[] loadByfk_client_followup(Integer clientId) throws DAOException
+    {
+        FollowupBean bean = this.createFollowupBean();
+        bean.setClientId(clientId);
+        return loadUsingTemplate(bean);
+    }
+    
+    /**
+     * Deletes rows using the fk_client_followup index.
+     *
+     * @param clientId the client_id column's value filter.
+     * @return the number of deleted objects
+     * @throws DAOException
+     */
+    public int deleteByfk_client_followup(Integer clientId) throws DAOException
+    {
+        FollowupBean bean = this.createFollowupBean();
+        bean.setClientId(clientId);
+        return deleteUsingTemplate(bean);
+    }
+    
 
 
     //_____________________________________________________________________

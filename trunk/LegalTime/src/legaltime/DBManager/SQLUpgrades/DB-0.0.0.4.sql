@@ -12,6 +12,11 @@ ALTER TABLE payment_log ADD
 	CONSTRAINT fk_clientaccountregister_paymentlog FOREIGN KEY (client_account_register_id)
 		REFERENCES client_account_register (client_account_register_id);
 --
+alter table followup change column description description varchar(255) default null;
+--
+ALTER TABLE `followup` DROP PRIMARY KEY,
+ ADD PRIMARY KEY  USING BTREE(`followup_id`);
+--
 UPDATE sys_code
 SET description = 'DB-0.0.0.4', last_update = now()
 WHERE code_id = 'DBVer';

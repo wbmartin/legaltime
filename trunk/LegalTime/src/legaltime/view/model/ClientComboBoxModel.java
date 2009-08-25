@@ -40,6 +40,7 @@ public class ClientComboBoxModel implements ComboBoxModel {
     }
 
     public Object getElementAt(int index) {
+        
         if (array[index].getActiveYn().equals("Y")){
           return array[index];
         }

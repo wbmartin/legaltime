@@ -35,32 +35,16 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Component id="jScrollPane1" alignment="0" pref="725" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmdAddNew" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="491" max="32767" attributes="0"/>
-                      <Component id="tglCmdFilter" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblDueDate" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblClosedDate" min="-2" max="-2" attributes="1"/>
-                          <Component id="lblOpenedDate" min="-2" max="-2" attributes="1"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="dtClosedDate" min="-2" max="-2" attributes="0"/>
-                          <Component id="dtOpenedDate" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="dtDueDate" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" pref="456" max="32767" attributes="0"/>
-                  </Group>
-                  <Component id="jPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="lblFilterPanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" alignment="1" pref="641" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -69,39 +53,20 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <Component id="lblFilterPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="208" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="201" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="tglCmdFilter" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmdAddNew" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="dtDueDate" pref="28" max="32767" attributes="1"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="dtOpenedDate" min="-2" max="-2" attributes="1"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="dtClosedDate" pref="28" max="32767" attributes="1"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="lblDueDate" min="-2" max="-2" attributes="1"/>
-                              <EmptySpace pref="22" max="32767" attributes="0"/>
-                              <Component id="lblOpenedDate" pref="37" max="32767" attributes="1"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblClosedDate" min="-2" max="-2" attributes="1"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="lblFilterPanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane2" alignment="0" min="0" pref="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="1">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="cmdAddNew" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  </Group>
               </Group>
+              <Component id="jScrollPane1" pref="254" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -166,67 +131,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JToggleButton" name="tglCmdFilter">
-      <Properties>
-        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-          <action class="legaltime.view.FollowupManager" id="changeFollowUpFilter" methodName="changeFollowUpFilter"/>
-        </Property>
-        <Property name="text" type="java.lang.String" resourceKey="tglCmdFilter.text"/>
-        <Property name="name" type="java.lang.String" value="tglCmdFilter" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="dtDueDate">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="dtDueDate" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblDueDate">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="lblDueDate.text"/>
-        <Property name="name" type="java.lang.String" value="lblDueDate" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="dtOpenedDate">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="dtOpenedDate" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblOpenedDate">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="lblOpenedDate.text"/>
-        <Property name="name" type="java.lang.String" value="lblOpenedDate" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblClosedDate">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="lblClosedDate.text"/>
-        <Property name="name" type="java.lang.String" value="lblClosedDate" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="dtClosedDate">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="dtClosedDate" noResource="true"/>
-      </Properties>
-    </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane2">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="jScrollPane2" noResource="true"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JTextArea" name="txtDescription">
-          <Properties>
-            <Property name="columns" type="int" value="20"/>
-            <Property name="rows" type="int" value="5"/>
-            <Property name="name" type="java.lang.String" value="txtDescription" noResource="true"/>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
     <Component class="javax.swing.JButton" name="cmdAddNew">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
@@ -253,20 +157,39 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="lblClient" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="cboClient" min="-2" pref="426" max="-2" attributes="0"/>
-                  <EmptySpace pref="124" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="ckOpenEvents" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="274" max="-2" attributes="0"/>
+                          <Component id="cmdRunFilter" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="cmdClearFilter" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="cboClient" alignment="0" min="-2" pref="543" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblClient" alignment="3" min="-2" pref="12" max="-2" attributes="1"/>
                       <Component id="cboClient" alignment="3" max="32767" attributes="1"/>
+                      <Component id="lblClient" alignment="3" min="-2" pref="12" max="-2" attributes="1"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="ckOpenEvents" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="cmdClearFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmdRunFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -293,6 +216,32 @@
               </StringArray>
             </Property>
             <Property name="name" type="java.lang.String" value="cboClient" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="cmdRunFilter">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="legaltime.view.FollowupView" id="refreshFilter" methodName="refreshFilter"/>
+            </Property>
+            <Property name="text" type="java.lang.String" resourceKey="cmdRunFilter.text"/>
+            <Property name="name" type="java.lang.String" value="cmdRunFilter" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="cmdClearFilter">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="legaltime.view.FollowupView" id="clearFilter" methodName="clearFilter"/>
+            </Property>
+            <Property name="text" type="java.lang.String" resourceKey="cmdClearFilter.text"/>
+            <Property name="name" type="java.lang.String" value="cmdClearFilter" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="ckOpenEvents">
+          <Properties>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="ckOpenEvents.text"/>
+            <Property name="horizontalTextPosition" type="int" value="2"/>
+            <Property name="name" type="java.lang.String" value="ckOpenEvents" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>

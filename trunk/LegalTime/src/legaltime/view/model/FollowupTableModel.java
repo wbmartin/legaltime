@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import legaltime.LegalTimeApp;
+import legaltime.model.ClientBean;
 import legaltime.model.FollowupBean;
 import legaltime.model.FollowupManager;
 import legaltime.model.exception.DAOException;
@@ -109,7 +110,7 @@ public class FollowupTableModel extends AbstractTableModel {
         switch(col){
             case 0: followupBeans[row].setDueDt((java.util.Date)value);
                     break;
-            case 1: followupBeans[row].setClientId(Integer.getInteger( value.toString()));
+            case 1: followupBeans[row].setClientId(((ClientBean)value).getClientId());
                     break;
             case 2: followupBeans[row].setDescription(value.toString());
                     break;
@@ -121,7 +122,7 @@ public class FollowupTableModel extends AbstractTableModel {
         }
         try {
             followupManager.save(followupBeans[row]);
-            legalTimeApp.setLastActionText("Updated Client Account Register");
+            legalTimeApp.setLastActionText("Updated Followup Item Register");
 
         } catch (DAOException ex) {
             Logger.getLogger(FollowupTableModel.class.getName()).log(Level.SEVERE, null, ex);

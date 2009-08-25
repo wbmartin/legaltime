@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class ExpenseRegisterBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -1381173338100835430L;
+	private static final long serialVersionUID = -8935840806569638761L;
 	
     private java.util.Date lastUpdate;
 

@@ -16,6 +16,7 @@ import javax.swing.table.TableColumn;
 import legaltime.LegalTimeApp;
 import legaltime.controller.FollowupController;
 import legaltime.view.renderer.ClientComboBoxRenderer;
+import legaltime.view.renderer.ClientTableCellRenderer;
 import legaltime.view.renderer.DateTableCellEditor;
 import legaltime.view.renderer.DateTableCellRenderer;
 import org.jdesktop.application.Action;
@@ -52,19 +53,13 @@ FollowupController followupController;
         buttonGroup3 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFollowUp = new javax.swing.JTable();
-        tglCmdFilter = new javax.swing.JToggleButton();
-        dtDueDate = new com.toedter.calendar.JDateChooser();
-        lblDueDate = new javax.swing.JLabel();
-        dtOpenedDate = new com.toedter.calendar.JDateChooser();
-        lblOpenedDate = new javax.swing.JLabel();
-        lblClosedDate = new javax.swing.JLabel();
-        dtClosedDate = new com.toedter.calendar.JDateChooser();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtDescription = new javax.swing.JTextArea();
         cmdAddNew = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         lblClient = new javax.swing.JLabel();
         cboClient = new javax.swing.JComboBox();
+        cmdRunFilter = new javax.swing.JButton();
+        cmdClearFilter = new javax.swing.JButton();
+        ckOpenEvents = new javax.swing.JCheckBox();
         lblFilterPanel = new javax.swing.JLabel();
 
         setClosable(true);
@@ -109,32 +104,6 @@ FollowupController followupController;
         tblFollowUp.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("tblFollowUp.columnModel.title4")); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getActionMap(FollowupView.class, this);
-        tglCmdFilter.setAction(actionMap.get("changeFollowUpFilter")); // NOI18N
-        tglCmdFilter.setText(resourceMap.getString("tglCmdFilter.text")); // NOI18N
-        tglCmdFilter.setName("tglCmdFilter"); // NOI18N
-
-        dtDueDate.setName("dtDueDate"); // NOI18N
-
-        lblDueDate.setText(resourceMap.getString("lblDueDate.text")); // NOI18N
-        lblDueDate.setName("lblDueDate"); // NOI18N
-
-        dtOpenedDate.setName("dtOpenedDate"); // NOI18N
-
-        lblOpenedDate.setText(resourceMap.getString("lblOpenedDate.text")); // NOI18N
-        lblOpenedDate.setName("lblOpenedDate"); // NOI18N
-
-        lblClosedDate.setText(resourceMap.getString("lblClosedDate.text")); // NOI18N
-        lblClosedDate.setName("lblClosedDate"); // NOI18N
-
-        dtClosedDate.setName("dtClosedDate"); // NOI18N
-
-        jScrollPane2.setName("jScrollPane2"); // NOI18N
-
-        txtDescription.setColumns(20);
-        txtDescription.setRows(5);
-        txtDescription.setName("txtDescription"); // NOI18N
-        jScrollPane2.setViewportView(txtDescription);
-
         cmdAddNew.setAction(actionMap.get("addnew")); // NOI18N
         cmdAddNew.setText(resourceMap.getString("cmdAddNew.text")); // NOI18N
         cmdAddNew.setName("cmdAddNew"); // NOI18N
@@ -150,6 +119,19 @@ FollowupController followupController;
         cboClient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboClient.setName("cboClient"); // NOI18N
 
+        cmdRunFilter.setAction(actionMap.get("refreshFilter")); // NOI18N
+        cmdRunFilter.setText(resourceMap.getString("cmdRunFilter.text")); // NOI18N
+        cmdRunFilter.setName("cmdRunFilter"); // NOI18N
+
+        cmdClearFilter.setAction(actionMap.get("clearFilter")); // NOI18N
+        cmdClearFilter.setText(resourceMap.getString("cmdClearFilter.text")); // NOI18N
+        cmdClearFilter.setName("cmdClearFilter"); // NOI18N
+
+        ckOpenEvents.setSelected(true);
+        ckOpenEvents.setText(resourceMap.getString("ckOpenEvents.text")); // NOI18N
+        ckOpenEvents.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        ckOpenEvents.setName("ckOpenEvents"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -158,17 +140,32 @@ FollowupController followupController;
                 .addContainerGap()
                 .addComponent(lblClient, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cboClient, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(ckOpenEvents)
+                        .addGap(274, 274, 274)
+                        .addComponent(cmdRunFilter)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdClearFilter))
+                    .addComponent(cboClient, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClient, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboClient))
-                .addContainerGap())
+                    .addComponent(cboClient)
+                    .addComponent(lblClient, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ckOpenEvents)
+                .addGap(20, 20, 20))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdClearFilter)
+                    .addComponent(cmdRunFilter))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         lblFilterPanel.setText(resourceMap.getString("lblFilterPanel.text")); // NOI18N
@@ -181,57 +178,28 @@ FollowupController followupController;
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(cmdAddNew)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 491, Short.MAX_VALUE)
-                        .addComponent(tglCmdFilter))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblDueDate)
-                            .addComponent(lblClosedDate)
-                            .addComponent(lblOpenedDate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dtClosedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dtOpenedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dtDueDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFilterPanel)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 725, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdAddNew))
+                    .addComponent(lblFilterPanel))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(lblFilterPanel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(201, 201, 201)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tglCmdFilter)
-                    .addComponent(cmdAddNew))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(dtDueDate, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dtOpenedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(dtClosedDate, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblDueDate)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                                .addComponent(lblOpenedDate, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblClosedDate)))
-                        .addGap(26, 26, 26))
-                    .addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE))
+                        .addComponent(lblFilterPanel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmdAddNew)
+                        .addGap(18, 18, 18)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -244,21 +212,15 @@ FollowupController followupController;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JComboBox cboClient;
+    private javax.swing.JCheckBox ckOpenEvents;
     private javax.swing.JButton cmdAddNew;
-    private com.toedter.calendar.JDateChooser dtClosedDate;
-    private com.toedter.calendar.JDateChooser dtDueDate;
-    private com.toedter.calendar.JDateChooser dtOpenedDate;
+    private javax.swing.JButton cmdClearFilter;
+    private javax.swing.JButton cmdRunFilter;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblClient;
-    private javax.swing.JLabel lblClosedDate;
-    private javax.swing.JLabel lblDueDate;
     private javax.swing.JLabel lblFilterPanel;
-    private javax.swing.JLabel lblOpenedDate;
     private javax.swing.JTable tblFollowUp;
-    private javax.swing.JToggleButton tglCmdFilter;
-    private javax.swing.JTextArea txtDescription;
     // End of variables declaration//GEN-END:variables
 
     public javax.swing.JTable getTblFollowup(){
@@ -267,14 +229,7 @@ FollowupController followupController;
     public javax.swing.JComboBox getCboClient(){
         return cboClient;
     }
-    @Action
-    public void changeFollowUpFilter(){
-        if(tglCmdFilter.isSelected()){
-            tglCmdFilter.setText("Show All");
-        }else{
-            tglCmdFilter.setText("Show Open");
-        }
-    }
+   
 
         public void formatTableFollowup() {
 
@@ -295,13 +250,15 @@ FollowupController followupController;
          javax.swing.JComboBox cboClientTable = new javax.swing.JComboBox();
          cboClientTable.setModel(followupController.getClientTableComboBoxModel());
          cboClientTable.setRenderer(new ClientComboBoxRenderer());
+         cboClientTable.setMaximumRowCount(30);
          tc.setCellEditor(new DefaultCellEditor(cboClientTable));
-         tc.setCellRenderer();
+         tc.setCellRenderer(ClientTableCellRenderer.getInstance());
          //Description
          tc = tblFollowUp.getColumnModel().getColumn(2);
          tc.setPreferredWidth(200);
          tc.setMinWidth(50);
          tc.setMaxWidth(300);
+
          //Opened Date
          tc = tblFollowUp.getColumnModel().getColumn(3);
          tc.setPreferredWidth(75);
@@ -323,6 +280,24 @@ FollowupController followupController;
     @Action
     public void addnew(){
         followupController.addFollowupItem();
+    }
+
+    @Action
+    public void refreshFilter(){
+        followupController.applyFilter();
+    }
+
+    @Action
+    public void clearFilter(){
+         followupController.clearFilter();
+
+    }
+
+    /**
+     * @return the ckOpenEvents
+     */
+    public javax.swing.JCheckBox getCkOpenEvents() {
+        return ckOpenEvents;
     }
 
 
