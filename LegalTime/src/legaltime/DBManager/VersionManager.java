@@ -76,6 +76,8 @@ public class VersionManager {
         }catch(SQLException e){
             version = "DB-0.0.0.0";
             easyLog.addEntry(EasyLog.INFO, "Error: No system code table.", getClass().getName(), e);
+        }catch(Exception e){
+            version = "-1";
         }
 
         return version;

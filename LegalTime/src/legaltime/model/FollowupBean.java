@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class FollowupBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -1381173338100835430L;
+	private static final long serialVersionUID = -8935840806569638761L;
 	
     private java.util.Date lastUpdate;
 
@@ -155,7 +155,7 @@ public class FollowupBean
      * Meta Data Information (in progress):
      * <ul>
      * <li>full name: followup.description</li>
-     * <li>column size: 20</li>
+     * <li>column size: 255</li>
      * <li>jdbc type returned by the driver: Types.VARCHAR</li>
      * </ul>
      *
@@ -424,7 +424,6 @@ public class FollowupBean
     /**
      * Getter method for clientId.
      * <br>
-     * PRIMARY KEY.<br>
      * Meta Data Information (in progress):
      * <ul>
      * <li>full name: followup.client_id</li>
@@ -662,7 +661,6 @@ public class FollowupBean
     {
         Map dictionnary = new HashMap();
         dictionnary.put("followup_id", getFollowupId() == null ? "" : getFollowupId().toString());
-        dictionnary.put("client_id", getClientId() == null ? "" : getClientId().toString());
         return dictionnary;
     }
 

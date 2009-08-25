@@ -48,6 +48,7 @@ public class FollowupController implements TableModelListener, ActionListener{
     private AppPrefs appPrefs;
     private ClientComboBoxModel clientTableComboBoxModel;
     private ClientCache clientCache;
+    String filterWhereClause;
 
     protected FollowupController(LegalTimeApp mainController_){
         mainController = mainController_;
@@ -55,6 +56,7 @@ public class FollowupController implements TableModelListener, ActionListener{
         appPrefs = AppPrefs.getInstance();
         followupView = new FollowupView(this);
         clientCache = ClientCache.getInstance();
+        filterWhereClause="";
 
         followupManager =FollowupManager.getInstance();
         followupTableModel = new FollowupTableModel();
@@ -76,8 +78,9 @@ public class FollowupController implements TableModelListener, ActionListener{
         followupView.getCboClient().setModel(clientComboBoxModel);
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
         followupView.getCboClient().setRenderer(clientComboBoxRenderer );
-        followupView.getCboClient().addActionListener(this);
+        
         followupView.getCboClient().setMaximumRowCount(30);
+        refreshFollowupTable();
 
     }
 
@@ -112,20 +115,13 @@ public class FollowupController implements TableModelListener, ActionListener{
     }
 
     public void actionPerformed(ActionEvent e) {
-       refreshFollowupTable();
+       
     }
 
     public void refreshFollowupTable(){
-         int clientId;
-        try{
-            clientId= ((ClientBean) followupView.getCboClient().getSelectedItem()).getClientId();
-        }catch(NullPointerException  ex){
-            clientId=0;
-            easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
-                    , getClass().getName(), ex);
-        }
+        filterWhereClause = buildWhereClause();
         try {
-            followupItems = followupManager.loadAll();
+            followupItems = followupManager.loadByWhere(filterWhereClause);
         } catch (DAOException ex) {
             Logger.getLogger(FollowupController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -139,25 +135,6 @@ public class FollowupController implements TableModelListener, ActionListener{
     
 
     
-
-//    public void addAdminExpense() {
-//        //followupView.getTblExpenseRegister().getT
-//        int clientId=0;
-//        try{
-//            clientId = ((ClientBean)followupView.getCboClient().getSelectedItem()).getClientId();
-//        }catch(NullPointerException ex){
-//           JOptionPane.showMessageDialog(followupView, "Please select a client to add an Expense to.");
-//           easyLog.addEntry(EasyLog.INFO, "User Attempted Adding Expense Before Selecting Client", getClass().getName(), ex);
-//           return;
-//
-//        }
-//        expenseRegisterTableModel.addRow(clientId,0D,"Administrative Expense",true,new java.util.Date());
-//        refreshFollowupTable(clientId);
-//    }
-
-
-
-
     public void addFollowupItem(){
         followupBean = followupManager.createFollowupBean();
 
@@ -169,7 +146,7 @@ public class FollowupController implements TableModelListener, ActionListener{
         //todo followupBean.setEffectiveDateDate(effectiveDate_);
         try {
              followupManager.save(followupBean);
-            mainController.setLastActionText("Added Client Account Register Entry");
+            mainController.setLastActionText("Added Followup Item Entry");
 
         } catch (DAOException ex) {
             Logger.getLogger(FollowupTableModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -186,6 +163,43 @@ public class FollowupController implements TableModelListener, ActionListener{
      */
     public ClientComboBoxModel getClientTableComboBoxModel() {
         return clientTableComboBoxModel;
+    }
+
+    public void applyFilter() {
+        
+        refreshFollowupTable();
+    }
+
+    public void clearFilter() {
+        clientComboBoxModel.setSelectedItem(null);
+        followupView.getCkOpenEvents().setSelected(true);
+        filterWhereClause = buildWhereClause();
+        refreshFollowupTable();
+    }
+
+    private String buildWhereClause(){
+        StringBuffer whereClause = new StringBuffer();
+        whereClause.setLength(0);
+        whereClause.append("where 1=1 ");
+
+
+         int clientId;
+        try{
+            clientId= ((ClientBean) followupView.getCboClient().getSelectedItem()).getClientId();
+        }catch(NullPointerException  ex){
+            clientId=0;
+            easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
+                    , getClass().getName(), ex);
+        }
+         if (clientId>0){
+             whereClause.append(" and client_id = " +clientId +" ");
+         }
+
+         if(followupView.getCkOpenEvents().isSelected()){
+             whereClause.append(" and closed_dt is null ");
+         }
+
+         return whereClause.toString();
     }
 
 }
