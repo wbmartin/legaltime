@@ -137,11 +137,18 @@ public class FollowupController implements TableModelListener, ActionListener{
     
     public void addFollowupItem(){
         followupBean = followupManager.createFollowupBean();
-
-        followupBean.setClientId(68);
-        followupBean.setDescription("TestFollowup");
+ int clientId;
+        try{
+            clientId= ((ClientBean) followupView.getCboClient().getSelectedItem()).getClientId();
+        }catch(NullPointerException  ex){
+            clientId=0;
+            easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
+                    , getClass().getName(), ex);
+        }
+        followupBean.setClientId(clientId);
+        followupBean.setDescription("New Follow Up Item");
         followupBean.setOpenedDate(new java.util.Date());
-        followupBean.setClosedDt(new java.util.Date());
+        followupBean.setClosedDt(null);
         followupBean.setDueDt(new java.util.Date());
         //todo followupBean.setEffectiveDateDate(effectiveDate_);
         try {

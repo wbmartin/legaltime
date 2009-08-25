@@ -37,7 +37,7 @@ import legaltime.modelsafe.EasyLog;
 
 import legaltime.modelsafe.PersistanceManager;
 import legaltime.reports.ClientAddressLabelReport;
-import legaltime.reports.InvoiceReport;
+
 
 /**
  * The application's main frame.
@@ -71,7 +71,7 @@ public class LegalTimeView extends FrameView {
             legalTimeApp = (LegalTimeApp) app;
         
             AppPrefs appPrefs = AppPrefs.getInstance();
-            
+            persistanceManager = PersistanceManager.getInstance();
             easyLog =EasyLog.getInstance();
             vm = new VersionManager();
             initComponents();
@@ -140,7 +140,7 @@ public class LegalTimeView extends FrameView {
 
             
         
-            persistanceManager = PersistanceManager.getInstance();
+            
             lblVersion.setText( "Version: " + LegalTimeApp.APP_VERSION
                     +"|"+ VersionManager.INSTALLED_VERSION);
     }

@@ -5,6 +5,7 @@
 
 package legaltime.modelsafe;
 
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import legaltime.AppPrefs;
@@ -39,6 +40,13 @@ import legaltime.model.exception.DAOException;
         manager.setJdbcUrl(appPrefs.getJDBC_URL());
         manager.setJdbcUsername(appPrefs.getValue(AppPrefs.JDBC_USER));
         manager.setJdbcPassword(appPrefs.getValue(AppPrefs.JDBC_PASSWD));
+        try {
+            if (!manager.getConnection().isClosed()) {
+                manager.getConnection().close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PersistanceManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
         clientCache = ClientCache.getInstance();
         clientManager = ClientManager.getInstance();
        

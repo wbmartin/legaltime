@@ -13,8 +13,12 @@ package legaltime.view;
 
 
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import legaltime.AppPrefs;
 import legaltime.LegalTimeApp;
+import legaltime.model.Manager;
 import org.jdesktop.application.Action;
 
 /**
@@ -24,9 +28,11 @@ import org.jdesktop.application.Action;
 public class PreferencesEditorView extends javax.swing.JInternalFrame {
     AppPrefs appPrefs;
     LegalTimeApp mainController;
+    Manager manager;
     /** Creates new form PreferencesManager */
     public PreferencesEditorView() {
         initComponents();
+        manager = Manager.getInstance();
         appPrefs = AppPrefs.getInstance();
         loadCurrentPreferences();
         txtEbackupPath.setEditable(false);
@@ -65,6 +71,8 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         cmdChooseReportOutputPath = new javax.swing.JButton();
         lblReportOutputPath = new javax.swing.JLabel();
         txtReportOutputPath = new javax.swing.JTextField();
+        lblConnectionString = new javax.swing.JLabel();
+        lblConnectionStringValue = new javax.swing.JLabel();
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(PreferencesEditorView.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
@@ -127,6 +135,12 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
 
         txtReportOutputPath.setName("txtReportOutputPath"); // NOI18N
 
+        lblConnectionString.setText(resourceMap.getString("lblConnectionString.text")); // NOI18N
+        lblConnectionString.setName("lblConnectionString"); // NOI18N
+
+        lblConnectionStringValue.setText(resourceMap.getString("lblConnectionStringValue.text")); // NOI18N
+        lblConnectionStringValue.setName("lblConnectionStringValue"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,9 +187,13 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(79, Short.MAX_VALUE)
-                .addComponent(lblReportOutputPath)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblConnectionString)
+                    .addComponent(lblReportOutputPath))
                 .addGap(18, 18, 18)
-                .addComponent(txtReportOutputPath, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblConnectionStringValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtReportOutputPath, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmdChooseReportOutputPath)
                 .addContainerGap())
@@ -214,7 +232,11 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
                     .addComponent(txtReportOutputPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblReportOutputPath)
                     .addComponent(cmdChooseReportOutputPath))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblConnectionString)
+                    .addComponent(lblConnectionStringValue))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdOk)
                     .addComponent(cmdCancel))
@@ -231,6 +253,8 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
     private javax.swing.JButton cmdChooseInvoiceOutputPath;
     private javax.swing.JButton cmdChooseReportOutputPath;
     private javax.swing.JButton cmdOk;
+    private javax.swing.JLabel lblConnectionString;
+    private javax.swing.JLabel lblConnectionStringValue;
     private javax.swing.JLabel lblDBUserName;
     private javax.swing.JLabel lblEBackupPath;
     private javax.swing.JLabel lblInvoiceOutputPath;
@@ -265,6 +289,9 @@ public class PreferencesEditorView extends javax.swing.JInternalFrame {
         txtEbackupPath.setText(appPrefs.getPrefs().get(AppPrefs.EBACKUP_PATH,AppPrefs.NOT_SET ));
         txtInvoiceOutputPath.setText(appPrefs.getPrefs().get(AppPrefs.INVOICE_OUTPUT_PATH,AppPrefs.NOT_SET ));
         txtReportOutputPath.setText(appPrefs.getPrefs().get(AppPrefs.REPORT_OUTPUT_PATH,AppPrefs.NOT_SET ));
+        
+            lblConnectionStringValue.setText(manager.getJdbcUrl(title));
+        
     }
 
     @Action
