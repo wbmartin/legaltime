@@ -316,7 +316,11 @@ public class ClientBillRateManager
     //7
     public ClientBillRateBean[] loadByWhere(String where) throws DAOException
     {
-        return this.loadByWhere(where, null);
+        return this.loadByWhere(where, "", null);
+    }
+    public ClientBillRateBean[] loadByWhere(String where, String orderBy) throws DAOException
+    {
+        return this.loadByWhere(where, orderBy, null);
     }
 
     /**
@@ -329,9 +333,9 @@ public class ClientBillRateManager
      * @throws DAOException
      */
     //8
-    public ClientBillRateBean[] loadByWhere(String where, int[] fieldList) throws DAOException
+    public ClientBillRateBean[] loadByWhere(String where, String orderBy, int[] fieldList) throws DAOException
     {
-        return this.loadByWhere(where, fieldList, 1, -1);
+        return this.loadByWhere(where, orderBy, fieldList, 1, -1);
     }
 
     /**
@@ -346,7 +350,7 @@ public class ClientBillRateManager
      * @throws DAOException
      */
     //9
-    public ClientBillRateBean[] loadByWhere(String where, int[] fieldList, int startRow, int numRows) throws DAOException
+    public ClientBillRateBean[] loadByWhere(String where, String orderBy, int[] fieldList, int startRow, int numRows) throws DAOException
     {
         StringBuffer sql = new StringBuffer(128);
         if(fieldList == null) {
@@ -363,6 +367,7 @@ public class ClientBillRateManager
             }
             sql.append(" FROM client_bill_rate ");
             sql.append(where);
+	    sql.append(" " + orderBy);
         }
         Connection c = null;
         Statement st = null;
