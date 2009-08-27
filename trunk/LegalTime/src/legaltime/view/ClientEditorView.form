@@ -52,6 +52,9 @@
                       <Component id="cmdDeleteClient" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmdClearChanges" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
@@ -210,13 +213,18 @@
                   <Component id="scrlChooser" alignment="0" min="-2" pref="467" max="-2" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cmdAddClient" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmdDeleteClient" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmdClearChanges" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="cmdAddClient" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdDeleteClient" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdClearChanges" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblFollowUpItems" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jButton1" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblFollowUpItems" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="scrlFollowUp" min="-2" pref="93" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -601,6 +609,15 @@
       <Properties>
         <Property name="text" type="java.lang.String" resourceKey="txtMonthlyRate.text"/>
         <Property name="name" type="java.lang.String" value="txtMonthlyRate" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="legaltime.view.ClientEditorView" id="editFollowupItem" methodName="editFollowupItem"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
+        <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

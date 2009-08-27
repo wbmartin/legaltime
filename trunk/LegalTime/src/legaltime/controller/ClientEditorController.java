@@ -427,6 +427,10 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
                     , getClass().getName(), ex);
         }
     }
+
+    public void editSelectedFollowUpItem() {
+        mainController.getPrimaryView().showFollowupItemEditor();
+    }
    
 
 }

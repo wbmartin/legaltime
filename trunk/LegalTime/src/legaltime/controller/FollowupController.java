@@ -19,6 +19,7 @@ import legaltime.model.FollowupBean;
 import legaltime.model.FollowupManager;
 import legaltime.model.exception.DAOException;
 import legaltime.modelsafe.EasyLog;
+import legaltime.view.FollowupItemEditorView;
 import legaltime.view.FollowupView;
 import legaltime.view.model.ClientComboBoxModel;
 import legaltime.view.model.FollowupTableModel;
@@ -40,6 +41,7 @@ public class FollowupController implements TableModelListener, ActionListener{
     private ClientComboBoxRenderer clientComboBoxRenderer;
     private FollowupBean followupBean;
     private FollowupManager followupManager;
+    private FollowupItemEditorView followupItemEditorView;
     
     private ClientComboBoxModel clientComboBoxModel;
 
@@ -55,6 +57,7 @@ public class FollowupController implements TableModelListener, ActionListener{
         easyLog = EasyLog.getInstance();
         appPrefs = AppPrefs.getInstance();
         followupView = new FollowupView(this);
+        followupItemEditorView = new FollowupItemEditorView(this);
         clientCache = ClientCache.getInstance();
         filterWhereClause="";
 
@@ -81,7 +84,9 @@ public class FollowupController implements TableModelListener, ActionListener{
         
         followupView.getCboClient().setMaximumRowCount(30);
         refreshFollowupTable();
-
+        followupItemEditorView.getCboClient().setModel(clientComboBoxModel);
+        followupItemEditorView.getCboClient().setRenderer(clientComboBoxRenderer );
+        followupItemEditorView.getCboClient().setMaximumRowCount(30);
     }
 
     public static FollowupController getInstance(LegalTimeApp mainController_){
@@ -103,6 +108,20 @@ public class FollowupController implements TableModelListener, ActionListener{
         mainController.getDesktop().add(followupView);
         try {
             followupView.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {}
+    }
+
+       public void showFollowupItemEditorView() {
+         if (followupItemEditorView == null) {
+            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
+            followupItemEditorView  = new FollowupItemEditorView (this);
+        }
+        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+        followupItemEditorView .getCboClient().revalidate();
+        followupItemEditorView .setVisible(true);
+        mainController.getDesktop().add(followupItemEditorView);
+        try {
+            followupItemEditorView.setSelected(true);
         } catch (java.beans.PropertyVetoException e) {}
     }
 
@@ -208,5 +227,7 @@ public class FollowupController implements TableModelListener, ActionListener{
 
          return whereClause.toString();
     }
+
+    
 
 }

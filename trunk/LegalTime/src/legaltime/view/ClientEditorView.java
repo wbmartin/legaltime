@@ -93,6 +93,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         cmdClearChanges = new javax.swing.JButton();
         lblMonthlyRate = new javax.swing.JLabel();
         txtMonthlyRate = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -276,6 +277,10 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         txtMonthlyRate.setText(resourceMap.getString("txtMonthlyRate.text")); // NOI18N
         txtMonthlyRate.setName("txtMonthlyRate"); // NOI18N
 
+        jButton1.setAction(actionMap.get("editFollowupItem")); // NOI18N
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -297,7 +302,10 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdDeleteClient)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmdClearChanges))
+                        .addComponent(cmdClearChanges)
+                        .addGap(82, 82, 82)
+                        .addComponent(jButton1)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -424,12 +432,15 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                         .addComponent(scrlBillRates, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(scrlChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdAddClient)
-                    .addComponent(cmdDeleteClient)
-                    .addComponent(cmdClearChanges))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblFollowUpItems)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmdAddClient)
+                            .addComponent(cmdDeleteClient)
+                            .addComponent(cmdClearChanges))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblFollowUpItems))
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrlFollowUp, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -459,6 +470,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     private javax.swing.JButton cmdDeleteClient;
     private javax.swing.JButton cmdViewInvoiceable;
     private com.toedter.calendar.JDateChooser dtClientSince;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblBillingInformation;
     private javax.swing.JLabel lblBillingPlan;
@@ -622,6 +634,10 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
      @Action
      public void deactivateClient(){
         clientEditorController.deactivateClient();
+     }
+     @Action
+     public void editFollowupItem(){
+        clientEditorController.editSelectedFollowUpItem();
      }
 
 

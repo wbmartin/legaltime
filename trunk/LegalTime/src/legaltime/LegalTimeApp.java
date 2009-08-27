@@ -40,6 +40,9 @@ public static final String APP_VERSION = "0.0.2.0";
     public void showMainWindow(){
         legalTimeView.getFrame().setVisible(true);
     }
+    public LegalTimeView getPrimaryView(){
+        return legalTimeView;
+    }
 
 
     /**

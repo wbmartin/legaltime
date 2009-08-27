@@ -11,14 +11,17 @@
 
 package legaltime.view;
 
+import legaltime.controller.FollowupController;
+
 /**
  *
  * @author bmartin
  */
 public class FollowupItemEditorView extends javax.swing.JInternalFrame {
-
+    FollowupController followupController;
     /** Creates new form FollowupItemEditorView */
-    public FollowupItemEditorView() {
+    public FollowupItemEditorView(FollowupController followupController_) {
+        followupController = followupController_;
         initComponents();
     }
 
@@ -146,5 +149,12 @@ public class FollowupItemEditorView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblOpenedDate;
     private javax.swing.JTextArea txtDescription;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the cboClient
+     */
+    public javax.swing.JComboBox getCboClient() {
+        return cboClient;
+    }
 
 }
