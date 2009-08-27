@@ -159,10 +159,12 @@ public final class Manager
     {
         this.jdbcUrl = jdbcUrl;
     }
+
     public String getJdbcUrl(String jdbcUrl)
     {
         return this.jdbcUrl ;
     }
+
 
     /**
      * Sets the username used to access the database.

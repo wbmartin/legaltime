@@ -304,7 +304,11 @@ public class UserInfoManager
     //7
     public UserInfoBean[] loadByWhere(String where) throws DAOException
     {
-        return this.loadByWhere(where, null);
+        return this.loadByWhere(where, "", null);
+    }
+    public UserInfoBean[] loadByWhere(String where, String orderBy) throws DAOException
+    {
+        return this.loadByWhere(where, orderBy, null);
     }
 
     /**
@@ -317,9 +321,9 @@ public class UserInfoManager
      * @throws DAOException
      */
     //8
-    public UserInfoBean[] loadByWhere(String where, int[] fieldList) throws DAOException
+    public UserInfoBean[] loadByWhere(String where, String orderBy, int[] fieldList) throws DAOException
     {
-        return this.loadByWhere(where, fieldList, 1, -1);
+        return this.loadByWhere(where, orderBy, fieldList, 1, -1);
     }
 
     /**
@@ -334,7 +338,7 @@ public class UserInfoManager
      * @throws DAOException
      */
     //9
-    public UserInfoBean[] loadByWhere(String where, int[] fieldList, int startRow, int numRows) throws DAOException
+    public UserInfoBean[] loadByWhere(String where, String orderBy, int[] fieldList, int startRow, int numRows) throws DAOException
     {
         StringBuffer sql = new StringBuffer(128);
         if(fieldList == null) {
@@ -351,6 +355,7 @@ public class UserInfoManager
             }
             sql.append(" FROM user_info ");
             sql.append(where);
+	    sql.append(" " + orderBy);
         }
         Connection c = null;
         Statement st = null;

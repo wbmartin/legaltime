@@ -339,7 +339,11 @@ public class FollowupManager
     //7
     public FollowupBean[] loadByWhere(String where) throws DAOException
     {
-        return this.loadByWhere(where, null);
+        return this.loadByWhere(where, "", null);
+    }
+    public FollowupBean[] loadByWhere(String where, String orderBy) throws DAOException
+    {
+        return this.loadByWhere(where, orderBy, null);
     }
 
     /**
@@ -352,9 +356,9 @@ public class FollowupManager
      * @throws DAOException
      */
     //8
-    public FollowupBean[] loadByWhere(String where, int[] fieldList) throws DAOException
+    public FollowupBean[] loadByWhere(String where, String orderBy, int[] fieldList) throws DAOException
     {
-        return this.loadByWhere(where, fieldList, 1, -1);
+        return this.loadByWhere(where, orderBy, fieldList, 1, -1);
     }
 
     /**
@@ -369,7 +373,7 @@ public class FollowupManager
      * @throws DAOException
      */
     //9
-    public FollowupBean[] loadByWhere(String where, int[] fieldList, int startRow, int numRows) throws DAOException
+    public FollowupBean[] loadByWhere(String where, String orderBy, int[] fieldList, int startRow, int numRows) throws DAOException
     {
         StringBuffer sql = new StringBuffer(128);
         if(fieldList == null) {
@@ -386,6 +390,7 @@ public class FollowupManager
             }
             sql.append(" FROM followup ");
             sql.append(where);
+	    sql.append(" " + orderBy);
         }
         Connection c = null;
         Statement st = null;

@@ -436,7 +436,11 @@ public class InvoiceManager
     //7
     public InvoiceBean[] loadByWhere(String where) throws DAOException
     {
-        return this.loadByWhere(where, null);
+        return this.loadByWhere(where, "", null);
+    }
+    public InvoiceBean[] loadByWhere(String where, String orderBy) throws DAOException
+    {
+        return this.loadByWhere(where, orderBy, null);
     }
 
     /**
@@ -449,9 +453,9 @@ public class InvoiceManager
      * @throws DAOException
      */
     //8
-    public InvoiceBean[] loadByWhere(String where, int[] fieldList) throws DAOException
+    public InvoiceBean[] loadByWhere(String where, String orderBy, int[] fieldList) throws DAOException
     {
-        return this.loadByWhere(where, fieldList, 1, -1);
+        return this.loadByWhere(where, orderBy, fieldList, 1, -1);
     }
 
     /**
@@ -466,7 +470,7 @@ public class InvoiceManager
      * @throws DAOException
      */
     //9
-    public InvoiceBean[] loadByWhere(String where, int[] fieldList, int startRow, int numRows) throws DAOException
+    public InvoiceBean[] loadByWhere(String where, String orderBy, int[] fieldList, int startRow, int numRows) throws DAOException
     {
         StringBuffer sql = new StringBuffer(128);
         if(fieldList == null) {
@@ -483,6 +487,7 @@ public class InvoiceManager
             }
             sql.append(" FROM invoice ");
             sql.append(where);
+	    sql.append(" " + orderBy);
         }
         Connection c = null;
         Statement st = null;

@@ -34,7 +34,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class InvoiceBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -8940798260514658441L;
+	private static final long serialVersionUID = -4147071623055236002L;
 	
     private java.util.Date lastUpdate;
 

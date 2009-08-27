@@ -435,7 +435,11 @@ public class PaymentLogManager
     //7
     public PaymentLogBean[] loadByWhere(String where) throws DAOException
     {
-        return this.loadByWhere(where, null);
+        return this.loadByWhere(where, "", null);
+    }
+    public PaymentLogBean[] loadByWhere(String where, String orderBy) throws DAOException
+    {
+        return this.loadByWhere(where, orderBy, null);
     }
 
     /**
@@ -448,9 +452,9 @@ public class PaymentLogManager
      * @throws DAOException
      */
     //8
-    public PaymentLogBean[] loadByWhere(String where, int[] fieldList) throws DAOException
+    public PaymentLogBean[] loadByWhere(String where, String orderBy, int[] fieldList) throws DAOException
     {
-        return this.loadByWhere(where, fieldList, 1, -1);
+        return this.loadByWhere(where, orderBy, fieldList, 1, -1);
     }
 
     /**
@@ -465,7 +469,7 @@ public class PaymentLogManager
      * @throws DAOException
      */
     //9
-    public PaymentLogBean[] loadByWhere(String where, int[] fieldList, int startRow, int numRows) throws DAOException
+    public PaymentLogBean[] loadByWhere(String where, String orderBy, int[] fieldList, int startRow, int numRows) throws DAOException
     {
         StringBuffer sql = new StringBuffer(128);
         if(fieldList == null) {
@@ -482,6 +486,7 @@ public class PaymentLogManager
             }
             sql.append(" FROM payment_log ");
             sql.append(where);
+	    sql.append(" " + orderBy);
         }
         Connection c = null;
         Statement st = null;

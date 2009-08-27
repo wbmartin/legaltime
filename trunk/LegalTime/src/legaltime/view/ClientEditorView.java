@@ -77,7 +77,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         scrlBillRates = new javax.swing.JScrollPane();
         tblBillRates = new javax.swing.JTable();
         scrlFollowUp = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblClientFollowup = new javax.swing.JTable();
         lblFollowUpItems = new javax.swing.JLabel();
         lblFaxNum1 = new javax.swing.JLabel();
         dtClientSince = new com.toedter.calendar.JDateChooser();
@@ -210,7 +210,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
 
         scrlFollowUp.setName("scrlFollowUp"); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblClientFollowup.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -221,14 +221,14 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                 "Due Date", "Description"
             }
         ));
-        jTable2.setEnabled(false);
-        jTable2.setName("jTable2"); // NOI18N
-        scrlFollowUp.setViewportView(jTable2);
-        jTable2.getColumnModel().getColumn(0).setMinWidth(75);
-        jTable2.getColumnModel().getColumn(0).setPreferredWidth(75);
-        jTable2.getColumnModel().getColumn(0).setMaxWidth(75);
-        jTable2.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable2.columnModel.title0")); // NOI18N
-        jTable2.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable2.columnModel.title1")); // NOI18N
+        tblClientFollowup.setEnabled(false);
+        tblClientFollowup.setName("tblClientFollowup"); // NOI18N
+        scrlFollowUp.setViewportView(tblClientFollowup);
+        tblClientFollowup.getColumnModel().getColumn(0).setMinWidth(75);
+        tblClientFollowup.getColumnModel().getColumn(0).setPreferredWidth(75);
+        tblClientFollowup.getColumnModel().getColumn(0).setMaxWidth(75);
+        tblClientFollowup.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("tblClientFollowup.columnModel.title0")); // NOI18N
+        tblClientFollowup.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("tblClientFollowup.columnModel.title1")); // NOI18N
 
         lblFollowUpItems.setText(resourceMap.getString("lblFollowUpItems.text")); // NOI18N
         lblFollowUpItems.setName("lblFollowUpItems"); // NOI18N
@@ -459,7 +459,6 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     private javax.swing.JButton cmdDeleteClient;
     private javax.swing.JButton cmdViewInvoiceable;
     private com.toedter.calendar.JDateChooser dtClientSince;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblBillingInformation;
     private javax.swing.JLabel lblBillingPlan;
@@ -482,6 +481,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     private javax.swing.JScrollPane scrlFollowUp;
     private javax.swing.JScrollPane scrlNotes;
     private javax.swing.JTable tblBillRates;
+    private javax.swing.JTable tblClientFollowup;
     private javax.swing.JTable tblClientSelect;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtCellPhone;
@@ -500,6 +500,9 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
 
     public javax.swing.JTable getTblClientSelect(){
         return tblClientSelect;
+    }
+    public javax.swing.JTable getTblClientFollowup(){
+        return tblClientFollowup;
     }
     public javax.swing.JTextField getTxtAddress(){
         return txtAddress;
@@ -589,6 +592,20 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
          tc.setMinWidth(25);
          tc.setMaxWidth(100);
          tc.setCellRenderer(CurrencyTableCellRenderer.getInstance());
+    }
+    public void buildClientFollowupTableDisplay() {
+
+
+        TableColumn tc;
+        //Name
+         tc = tblClientFollowup.getColumnModel().getColumn(0);
+         tc.setPreferredWidth(100);
+         tc.setMinWidth(25);
+         tc.setMaxWidth(150);
+         tc = tblClientFollowup.getColumnModel().getColumn(1);
+         tc.setPreferredWidth(300);
+         tc.setMinWidth(100);
+         tc.setMaxWidth(600);
     }
  
 

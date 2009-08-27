@@ -278,7 +278,11 @@ public class ExpenseInvoiceItemManager
     //7
     public ExpenseInvoiceItemBean[] loadByWhere(String where) throws DAOException
     {
-        return this.loadByWhere(where, null);
+        return this.loadByWhere(where, "", null);
+    }
+    public ExpenseInvoiceItemBean[] loadByWhere(String where, String orderBy) throws DAOException
+    {
+        return this.loadByWhere(where, orderBy, null);
     }
 
     /**
@@ -291,9 +295,9 @@ public class ExpenseInvoiceItemManager
      * @throws DAOException
      */
     //8
-    public ExpenseInvoiceItemBean[] loadByWhere(String where, int[] fieldList) throws DAOException
+    public ExpenseInvoiceItemBean[] loadByWhere(String where, String orderBy, int[] fieldList) throws DAOException
     {
-        return this.loadByWhere(where, fieldList, 1, -1);
+        return this.loadByWhere(where, orderBy, fieldList, 1, -1);
     }
 
     /**
@@ -308,7 +312,7 @@ public class ExpenseInvoiceItemManager
      * @throws DAOException
      */
     //9
-    public ExpenseInvoiceItemBean[] loadByWhere(String where, int[] fieldList, int startRow, int numRows) throws DAOException
+    public ExpenseInvoiceItemBean[] loadByWhere(String where, String orderBy, int[] fieldList, int startRow, int numRows) throws DAOException
     {
         StringBuffer sql = new StringBuffer(128);
         if(fieldList == null) {
@@ -325,6 +329,7 @@ public class ExpenseInvoiceItemManager
             }
             sql.append(" FROM expense_invoice_item ");
             sql.append(where);
+	    sql.append(" " + orderBy);
         }
         Connection c = null;
         Statement st = null;
