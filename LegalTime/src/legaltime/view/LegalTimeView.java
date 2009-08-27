@@ -597,6 +597,11 @@ public javax.swing.JDesktopPane getDesktop(){
         } catch (java.beans.PropertyVetoException e) {}
     }
 
+    @Action
+    public void showFollowupItemEditor(){
+         FollowupController.getInstance(LegalTimeApp.getApplication()).showFollowupItemEditorView();
+    }
+
     public void setStatusText(String newText){
         statusMessageLabel.setText("Status: "+ newText);
     }
