@@ -38,13 +38,13 @@ public class FollowupController implements TableModelListener, ActionListener{
     
     private FollowupBean[] followupItems;
 
-    private ClientComboBoxRenderer clientComboBoxRenderer;
+    
     private FollowupBean followupBean;
     private FollowupManager followupManager;
     private FollowupItemEditorView followupItemEditorView;
     
     private ClientComboBoxModel clientComboBoxModel;
-
+    private ClientComboBoxRenderer clientComboBoxRenderer;
     
     private static FollowupController instance;
     private AppPrefs appPrefs;
@@ -52,12 +52,14 @@ public class FollowupController implements TableModelListener, ActionListener{
     private ClientCache clientCache;
     String filterWhereClause;
 
+    
+
     protected FollowupController(LegalTimeApp mainController_){
         mainController = mainController_;
         easyLog = EasyLog.getInstance();
         appPrefs = AppPrefs.getInstance();
         followupView = new FollowupView(this);
-        followupItemEditorView = new FollowupItemEditorView(this);
+        //followupItemEditorView = new FollowupItemEditorView();
         clientCache = ClientCache.getInstance();
         filterWhereClause="";
 
@@ -77,16 +79,16 @@ public class FollowupController implements TableModelListener, ActionListener{
 
         clientComboBoxModel = new ClientComboBoxModel();
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
-
         followupView.getCboClient().setModel(clientComboBoxModel);
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
         followupView.getCboClient().setRenderer(clientComboBoxRenderer );
-        
+
         followupView.getCboClient().setMaximumRowCount(30);
         refreshFollowupTable();
-        followupItemEditorView.getCboClient().setModel(clientComboBoxModel);
-        followupItemEditorView.getCboClient().setRenderer(clientComboBoxRenderer );
-        followupItemEditorView.getCboClient().setMaximumRowCount(30);
+//        followupItemEditorView.getCboClient().setModel(clientComboBoxModel);
+//        followupItemEditorView.getCboClient().setRenderer(clientComboBoxRenderer );
+//        followupItemEditorView.getCboClient().setMaximumRowCount(30);
+        
     }
 
     public static FollowupController getInstance(LegalTimeApp mainController_){
@@ -111,19 +113,20 @@ public class FollowupController implements TableModelListener, ActionListener{
         } catch (java.beans.PropertyVetoException e) {}
     }
 
-       public void showFollowupItemEditorView() {
-         if (followupItemEditorView == null) {
-            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-            followupItemEditorView  = new FollowupItemEditorView (this);
-        }
-        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
-        followupItemEditorView .getCboClient().revalidate();
-        followupItemEditorView .setVisible(true);
-        mainController.getDesktop().add(followupItemEditorView);
-        try {
-            followupItemEditorView.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {}
-    }
+//       public void showFollowupItemEditorView() {
+//         if (followupItemEditorView == null) {
+//            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
+//            followupItemEditorView  = new FollowupItemEditorView (this);
+//        }
+//
+//        followupItemEditorView .getCboClient().revalidate();
+//        followupItemEditorView .setSelectionConfirmed(false);
+//        followupItemEditorView .setVisible(true);
+//        mainController.getDesktop().add(followupItemEditorView);
+//        try {
+//            followupItemEditorView.setSelected(true);
+//        } catch (java.beans.PropertyVetoException e) {}
+//    }
 
 
      public void setMainController(LegalTimeApp mainController_){

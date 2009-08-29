@@ -31,6 +31,14 @@ public class ClientComboBoxModel implements ComboBoxModel {
         selItem=(ClientBean)anItem;
     }
 
+    public void setSelectedItemById(int id_){
+        int ndx;
+        for(ndx=0; ndx< array.length; ndx++){
+            if (array[ndx].getClientId() == id_){break;}
+        }
+        setSelectedItem(array[ndx]);
+    }
+
     public ClientBean getSelectedItem() {
         return selItem;
     }

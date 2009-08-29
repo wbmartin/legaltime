@@ -27,6 +27,8 @@ import org.jdesktop.application.Action;
  */
 public class ClientEditorView extends javax.swing.JInternalFrame  {
     ClientEditorController clientEditorController;
+    private javax.swing.JPopupMenu followupTableMenu;
+    javax.swing.JMenuItem editFollowupMenuItem;
     /** Creates new form ClientManager */
 
     public ClientEditorView(ClientEditorController clientEditorController_) {
@@ -34,6 +36,11 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         clientEditorController = clientEditorController_;
         cboBillingPlan.addActionListener(clientEditorController);
        // buildClientManagerTableColumnModel();
+        followupTableMenu = new javax.swing.JPopupMenu("Right Click - Followup Table");
+        editFollowupMenuItem = new javax.swing.JMenuItem("Edit");
+        editFollowupMenuItem.setActionCommand("EDIT_FOLLOWUP_ITEM");
+        followupTableMenu.add(editFollowupMenuItem);
+        editFollowupMenuItem.addActionListener(clientEditorController);
     }
 
      
@@ -93,7 +100,6 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         cmdClearChanges = new javax.swing.JButton();
         lblMonthlyRate = new javax.swing.JLabel();
         txtMonthlyRate = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -222,7 +228,6 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                 "Due Date", "Description"
             }
         ));
-        tblClientFollowup.setEnabled(false);
         tblClientFollowup.setName("tblClientFollowup"); // NOI18N
         scrlFollowUp.setViewportView(tblClientFollowup);
         tblClientFollowup.getColumnModel().getColumn(0).setMinWidth(75);
@@ -277,10 +282,6 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         txtMonthlyRate.setText(resourceMap.getString("txtMonthlyRate.text")); // NOI18N
         txtMonthlyRate.setName("txtMonthlyRate"); // NOI18N
 
-        jButton1.setAction(actionMap.get("editFollowupItem")); // NOI18N
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -302,10 +303,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdDeleteClient)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmdClearChanges)
-                        .addGap(82, 82, 82)
-                        .addComponent(jButton1)
-                        .addContainerGap())
+                        .addComponent(cmdClearChanges))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -432,15 +430,12 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                         .addComponent(scrlBillRates, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(scrlChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmdAddClient)
-                            .addComponent(cmdDeleteClient)
-                            .addComponent(cmdClearChanges))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblFollowUpItems))
-                    .addComponent(jButton1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdAddClient)
+                    .addComponent(cmdDeleteClient)
+                    .addComponent(cmdClearChanges))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblFollowUpItems)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrlFollowUp, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -470,7 +465,6 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     private javax.swing.JButton cmdDeleteClient;
     private javax.swing.JButton cmdViewInvoiceable;
     private com.toedter.calendar.JDateChooser dtClientSince;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblBillingInformation;
     private javax.swing.JLabel lblBillingPlan;
@@ -639,6 +633,13 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
      public void editFollowupItem(){
         clientEditorController.editSelectedFollowUpItem();
      }
+
+    /**
+     * @return the followupTableMenu
+     */
+    public javax.swing.JPopupMenu getFollowupTableMenu() {
+        return followupTableMenu;
+    }
 
 
 

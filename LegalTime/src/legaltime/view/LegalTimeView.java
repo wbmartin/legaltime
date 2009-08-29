@@ -5,14 +5,8 @@
 package legaltime.view;
 
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import legaltime.*;
-
-
-
 import java.awt.Dimension;
-import legaltime.model.exception.DAOException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -482,7 +476,7 @@ public javax.swing.JDesktopPane getDesktop(){
             timeRecorder.setMainController(LegalTimeApp.getApplication());
             
         }
-        timeRecorder.getCboClient().revalidate();
+        
         LegalTimeApp.getApplication().show(timeRecorder);
         LegalTimeApp.getApplication().hideMainWindow();
     }
@@ -597,10 +591,10 @@ public javax.swing.JDesktopPane getDesktop(){
         } catch (java.beans.PropertyVetoException e) {}
     }
 
-    @Action
-    public void showFollowupItemEditor(){
-         FollowupController.getInstance(LegalTimeApp.getApplication()).showFollowupItemEditorView();
-    }
+//    @Action
+//    public void showFollowupItemEditor(){
+//         FollowupController.getInstance(LegalTimeApp.getApplication()).showFollowupItemEditorView();
+//    }
 
     public void setStatusText(String newText){
         statusMessageLabel.setText("Status: "+ newText);

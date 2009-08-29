@@ -19,7 +19,7 @@
 		<band height="1" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="84" splitType="Stretch">
+		<band height="66" splitType="Stretch">
 			<textField>
 				<reportElement x="10" y="10" width="160" height="20"/>
 				<textElement/>
