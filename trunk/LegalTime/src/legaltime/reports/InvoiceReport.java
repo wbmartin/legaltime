@@ -112,7 +112,7 @@ public class InvoiceReport   {
                 +TextUtils.frontZeroFill( Integer.toString(now.getMinutes()),2)
                 +TextUtils.frontZeroFill( Integer.toString(now.getSeconds()),2)
                 +".pdf";
-         
+         fileName = TextUtils.prepareFileName(fileName);
         JRDataSource laborItems = createDataSource(invoiceId_);
         jasperPrint = JasperFillManager.fillReport(
           jasperFile, getParams(invoiceId_),laborItems );

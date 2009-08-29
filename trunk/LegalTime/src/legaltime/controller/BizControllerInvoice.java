@@ -180,6 +180,7 @@ public class BizControllerInvoice {
             clientAccountRegisterBean.setClientId(clientId_);
             clientAccountRegisterBean.setTranType("INVCE");
             clientAccountRegisterBean.setTranAmt(totalInvoiceAmount);
+            clientAccountRegisterBean.setEffectiveDate(invoiceBean.getInvoiceDt());
             clientAccountRegisterBean.setDescription("Invoice #"+ invoiceBean.getInvoiceId());
             clientAccountRegisterManager.save(clientAccountRegisterBean);
 

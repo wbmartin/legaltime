@@ -32,5 +32,18 @@ public class TextUtils {
         return result.toString();
     }
 
+     public static String prepareFileName(String fileName_){
+         fileName_ = fileName_.replaceAll("\\\\","" );
+         fileName_ = fileName_.replaceAll("<","" );
+         fileName_ = fileName_.replaceAll(">","" );
+         fileName_ = fileName_.replaceAll(":","" );
+         fileName_ = fileName_.replaceAll("\"","" );
+         fileName_ = fileName_.replaceAll("/","" );
+         fileName_ = fileName_.replaceAll("|","" );
+
+         return fileName_;
+         
+     }
+
 
 }

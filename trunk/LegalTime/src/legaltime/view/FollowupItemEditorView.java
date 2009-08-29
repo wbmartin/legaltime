@@ -11,18 +11,38 @@
 
 package legaltime.view;
 
+import java.awt.event.ActionEvent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import legaltime.cache.ClientCache;
 import legaltime.controller.FollowupController;
+import legaltime.model.FollowupBean;
+import legaltime.view.model.ClientComboBoxModel;
+import legaltime.view.renderer.ClientComboBoxRenderer;
 
 /**
  *
  * @author bmartin
  */
-public class FollowupItemEditorView extends javax.swing.JInternalFrame {
+public class FollowupItemEditorView extends JDialog implements java.awt.event.ActionListener {
+    private boolean selectionConfirmed;
     FollowupController followupController;
+    FollowupBean followupBean;
+    private ClientComboBoxRenderer clientComboBoxRenderer;
+    private ClientComboBoxModel clientComboBoxModel;
     /** Creates new form FollowupItemEditorView */
-    public FollowupItemEditorView(FollowupController followupController_) {
-        followupController = followupController_;
+    
+    public FollowupItemEditorView(JFrame owner) {
+        super(owner, true);
         initComponents();
+        clientComboBoxModel = new ClientComboBoxModel();
+        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+        cboClient.setModel(clientComboBoxModel);
+        clientComboBoxRenderer = new ClientComboBoxRenderer ();
+        cboClient.setRenderer(clientComboBoxRenderer );
+        cboClient.setMaximumRowCount(30);
+        cmdOk.addActionListener(this);
+        cmdCancel.addActionListener(this);
     }
 
     /** This method is called from within the constructor to
@@ -44,9 +64,9 @@ public class FollowupItemEditorView extends javax.swing.JInternalFrame {
         lblDueDate = new javax.swing.JLabel();
         lblClosedDate = new javax.swing.JLabel();
         lblOpenedDate = new javax.swing.JLabel();
+        cmdOk = new javax.swing.JButton();
+        cmdCancel = new javax.swing.JButton();
 
-        setClosable(true);
-        setIconifiable(true);
         setResizable(true);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(FollowupItemEditorView.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
@@ -80,6 +100,19 @@ public class FollowupItemEditorView extends javax.swing.JInternalFrame {
         lblOpenedDate.setText(resourceMap.getString("lblOpenedDate.text")); // NOI18N
         lblOpenedDate.setName("lblOpenedDate"); // NOI18N
 
+        cmdOk.setText(resourceMap.getString("cmdOk.text")); // NOI18N
+        cmdOk.setActionCommand(resourceMap.getString("cmdOk.actionCommand")); // NOI18N
+        cmdOk.setName("cmdOk"); // NOI18N
+        cmdOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdOkActionPerformed(evt);
+            }
+        });
+
+        cmdCancel.setText(resourceMap.getString("cmdCancel.text")); // NOI18N
+        cmdCancel.setActionCommand(resourceMap.getString("cmdCancel.actionCommand")); // NOI18N
+        cmdCancel.setName("cmdCancel"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,22 +120,28 @@ public class FollowupItemEditorView extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDueDate)
                             .addComponent(lblClosedDate)
                             .addComponent(lblOpenedDate))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dtClosedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dtOpenedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dtDueDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmdOk, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(dtClosedDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dtOpenedDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dtDueDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cmdCancel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblClient, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
-                        .addComponent(cboClient, 0, 300, Short.MAX_VALUE)))
+                        .addComponent(cboClient, 0, 402, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -114,31 +153,38 @@ public class FollowupItemEditorView extends javax.swing.JInternalFrame {
                     .addComponent(cboClient))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(dtDueDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dtOpenedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(dtClosedDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblDueDate)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                                .addComponent(lblOpenedDate, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblClosedDate)))
-                        .addGap(26, 26, 26))
-                    .addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(dtDueDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dtOpenedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dtClosedDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblDueDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addComponent(lblOpenedDate, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblClosedDate)))
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdOk)
+                    .addComponent(cmdCancel))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cmdOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdOkActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmdOkActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboClient;
+    private javax.swing.JButton cmdCancel;
+    private javax.swing.JButton cmdOk;
     private com.toedter.calendar.JDateChooser dtClosedDate;
     private com.toedter.calendar.JDateChooser dtDueDate;
     private com.toedter.calendar.JDateChooser dtOpenedDate;
@@ -156,5 +202,59 @@ public class FollowupItemEditorView extends javax.swing.JInternalFrame {
     public javax.swing.JComboBox getCboClient() {
         return cboClient;
     }
+
+    public void actionPerformed(ActionEvent e) {
+        if("ApproveSelection".equals(e.getActionCommand())){
+            this.setVisible(false);
+            selectionConfirmed = true;
+
+        }else if("CancelSelection".equals(e.getActionCommand())){
+             this.setVisible(false);
+            selectionConfirmed = false;
+        }
+
+
+    }
+
+    public void setFollowupItem(FollowupBean followupBean_){
+        followupBean = followupBean_;
+        synchDisplayToBean(followupBean);
+    }
+    public FollowupBean getFollowupItem(){
+
+        synchBeanToDisplay(followupBean);
+        return followupBean;
+    }
+
+    public void synchDisplayToBean(FollowupBean followupBean_) {
+        clientComboBoxModel.setSelectedItemById(followupBean_.getClientId());
+        dtClosedDate.setDate(followupBean_.getClosedDt());
+        dtDueDate.setDate(followupBean_.getDueDt());
+        dtOpenedDate.setDate(followupBean_.getOpenedDate());
+        txtDescription.setText(followupBean_.getDescription());
+
+    }
+    public void synchBeanToDisplay(FollowupBean followupBean_){
+        followupBean_.setClientId(clientComboBoxModel.getSelectedItem().getClientId());
+        followupBean_.setClosedDt(dtClosedDate.getDate());
+        followupBean_.setDueDt(dtDueDate.getDate());
+        followupBean_.setOpenedDate(dtOpenedDate.getDate());
+        followupBean_.setDescription(txtDescription.getText());
+    }
+
+    /**
+     * @return the selectionConfirmed
+     */
+    public boolean isSelectionConfirmed() {
+        return selectionConfirmed;
+    }
+
+    /**
+     * @param selectionConfirmed the selectionConfirmed to set
+     */
+    public void setSelectionConfirmed(boolean selectionConfirmed_) {
+        this.selectionConfirmed = selectionConfirmed_;
+    }
+
 
 }

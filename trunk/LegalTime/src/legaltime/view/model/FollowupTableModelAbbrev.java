@@ -147,6 +147,9 @@ public class FollowupTableModelAbbrev extends AbstractTableModel {
 
         
     }
+     public FollowupBean getBeanByRow(int row){
+        return followupBeans[row];
+    }
 
    
     /**

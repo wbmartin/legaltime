@@ -11,6 +11,8 @@
 
 package legaltime.view;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.event.ListSelectionEvent;
 import legaltime.view.renderer.UserInfoComboBoxRenderer;
 import legaltime.view.model.UserInfoComboBoxModel;
@@ -36,7 +38,8 @@ import org.jdesktop.application.Action;
  *
  * @author bmartin
  */
-public class TimeRecorder extends javax.swing.JFrame implements ListSelectionListener{
+public class TimeRecorder extends javax.swing.JFrame 
+        implements ListSelectionListener, WindowListener{
     LegalTimeApp mainController;
     LaborRegisterBean laborRegisterBean;
     LaborRegisterManager laborRegisterManager;
@@ -79,7 +82,7 @@ public class TimeRecorder extends javax.swing.JFrame implements ListSelectionLis
 
         dtRecordDate.setDate(new java.util.Date());
 
-
+        this.addWindowListener(this);
 
 
     }
@@ -416,6 +419,39 @@ public class TimeRecorder extends javax.swing.JFrame implements ListSelectionLis
 
         return valid;
     }
+
+    public void windowOpened(WindowEvent e) {
+       
+    }
+
+    public void windowClosing(WindowEvent e) {
+
+    }
+
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    public void windowActivated(WindowEvent e) {
+         clientComboBoxModel.setList(clientCache.getCache());
+         cboClient.revalidate();
+         cboClient.repaint();
+    }
+
+    public void windowDeactivated(WindowEvent e) {
+
+    }
+    //cboClient.revalidate();
+
+   
 
   
 

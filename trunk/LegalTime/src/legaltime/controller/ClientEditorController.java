@@ -8,6 +8,8 @@ package legaltime.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,12 +25,14 @@ import legaltime.model.ClientBean;
 import legaltime.model.ClientBillRateBean;
 import legaltime.model.ClientBillRateManager;
 import legaltime.model.ClientManager;
+import legaltime.model.FollowupBean;
 import legaltime.model.FollowupManager;
 import legaltime.model.Manager;
 import legaltime.model.exception.DAOException;
 import legaltime.modelsafe.EasyLog;
 import legaltime.modelsafe.PersistanceManager;
 import legaltime.view.ClientEditorView;
+import legaltime.view.FollowupItemEditorView;
 import legaltime.view.model.ClientBillRateTableModel;
 import legaltime.view.model.ClientManagerTableModel;
 import legaltime.view.model.FollowupTableModelAbbrev;
@@ -103,6 +107,8 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          clientEditorView.buildClientManagerTableDisplay();
    
          clientEditorView.buildClientFollowupTableDisplay();
+
+          clientEditorView.getTblClientFollowup().addMouseListener(new PopupListener());
 
     }
     public static ClientEditorController getInstance(LegalTimeApp mainController_){
@@ -252,7 +258,8 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
      public void populateClientFollowupTable(int clientId_){
          try {
             clientFollowupTableModelAbbrev.setList(followupManager.loadByWhere(
-                    "where client_id=" +clientId_, "order by due_dt" ));
+                    "where client_id=" +clientId_ + " and closed_dt is null order by due_dt" ));
+            System.out.println("running");
         } catch (DAOException ex) {
             Logger.getLogger(ClientEditorController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -411,7 +418,10 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
     public void actionPerformed(ActionEvent e) {
         try{
             //if (e.getActionCommand().equals("cboBillPlanChanged")){
-            
+            if(e.getActionCommand().equals("EDIT_FOLLOWUP_ITEM")){
+                editSelectedFollowUpItem();
+            }
+            else if (e.getActionCommand().equals("cboBillPlanChanged")){
                 if (clientEditorView.getCboBillingPlan().getSelectedItem().equals("HOURLY")){
                     clientEditorView.getTxtMonthlyRate().setEnabled(false);
                     clientEditorView.getTblBillRates().setVisible(true);
@@ -419,6 +429,9 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
                     clientEditorView.getTxtMonthlyRate().setEnabled(true);
                     clientEditorView.getTblBillRates().setVisible(false);
                 }
+            }else{
+                System.err.println("Unexpected Action: " + e.getActionCommand());
+            }
             
 
            //}
@@ -429,8 +442,43 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
     }
 
     public void editSelectedFollowUpItem() {
-        mainController.getPrimaryView().showFollowupItemEditor();
+        FollowupItemEditorView followupItemEditorView =
+                    new FollowupItemEditorView(mainController.getMainFrame());
+        FollowupBean followupBean;
+        int currentSelectedFollowupRow=0;
+        currentSelectedFollowupRow=clientEditorView.getTblClientFollowup().getRowSorter()
+                .convertRowIndexToModel(clientEditorView.getTblClientFollowup().getSelectedRow());
+        followupItemEditorView.setFollowupItem(clientFollowupTableModelAbbrev
+                .getBeanByRow(currentSelectedFollowupRow));
+        followupItemEditorView.setVisible(true);
+        if(followupItemEditorView.isSelectionConfirmed()){
+            followupBean = followupItemEditorView.getFollowupItem();
+            try {
+                followupManager.save(followupBean);
+                populateClientFollowupTable(followupBean.getClientId());
+            } catch (DAOException ex) {
+                Logger.getLogger(ClientEditorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        followupItemEditorView.dispose();
     }
    
+class PopupListener extends MouseAdapter {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            maybeShowPopup(e);
+        }
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            maybeShowPopup(e);
+        }
 
+        private void maybeShowPopup(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                clientEditorView.getFollowupTableMenu().show(e.getComponent(),
+                           e.getX(), e.getY());
+
+            }
+        }
+    }
 }
