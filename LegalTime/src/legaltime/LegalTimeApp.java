@@ -5,6 +5,7 @@
 package legaltime;
 
 import javax.swing.JDesktopPane;
+import legaltime.controller.LegalTimeController;
 import legaltime.view.LegalTimeView;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
@@ -13,9 +14,9 @@ import org.jdesktop.application.SingleFrameApplication;
  * The main class of the application.
  */
 public class LegalTimeApp extends SingleFrameApplication {
-LegalTimeView legalTimeView;
-public static final String APP_VERSION = "0.0.2.2";
 
+public static final String APP_VERSION = "0.0.2.2";
+static LegalTimeController legalTimeController;
     /**
      * At startup create and show the main frame of the application.
      */
@@ -23,25 +24,27 @@ public static final String APP_VERSION = "0.0.2.2";
      * Main method launching the application.
      */
     public static void main(String[] args) {
-        
+
+
         launch(LegalTimeApp.class, args);
         
     }
 
     @Override protected void startup() {
-        legalTimeView =  new LegalTimeView(this);
-        show(legalTimeView);
-        legalTimeView.manageUpdates();
-        legalTimeView.loadCache();
+        
+        legalTimeController = LegalTimeController.getInstance(this);
+        show(legalTimeController.getLegalTimeView());
+        legalTimeController.manageUpdates();
+        legalTimeController.loadCache();
     }
     public void hideMainWindow(){
-        legalTimeView.getFrame().setVisible(false);
+        legalTimeController.getLegalTimeView().getFrame().setVisible(false);
     }
     public void showMainWindow(){
-        legalTimeView.getFrame().setVisible(true);
+        legalTimeController.getLegalTimeView().getFrame().setVisible(true);
     }
     public LegalTimeView getPrimaryView(){
-        return legalTimeView;
+        return legalTimeController.getLegalTimeView();
     }
 
 
@@ -62,18 +65,18 @@ public static final String APP_VERSION = "0.0.2.2";
     }
 
      public void setStatusText(String newText){
-        legalTimeView.setStatusText(newText);
+        legalTimeController.getLegalTimeView().setStatusText(newText);
 
     }
     public void setLastActionText(String newText){
-        legalTimeView.setLastActionText( newText);
+        legalTimeController.getLegalTimeView().setLastActionText( newText);
     }
     public void setProgressBarValue(int value){
-        legalTimeView.setProgressBarProgressValue(value);
+        legalTimeController.getLegalTimeView().setProgressBarProgressValue(value);
     }
 
     public JDesktopPane getDesktop(){
-        return legalTimeView.getDesktop();
+        return legalTimeController.getLegalTimeView().getDesktop();
     }
 
    

@@ -19,8 +19,8 @@ import legaltime.model.exception.DAOException;
  *
  * @author bmartin
  */
-public class MonthlyCycleManager {
-    public MonthlyCycleManager(){
+public class ProcessControllerMonthlyCharges {
+    public ProcessControllerMonthlyCharges(){
 
     }
 
@@ -33,9 +33,10 @@ public class MonthlyCycleManager {
         laborRegisterManager = LaborRegisterManager.getInstance();
 
         try {
-             clients = clientManager.loadByWhere("where bill_type ='MONTHLY' and monthly_bill_rate >0");
+             clients = clientManager.loadByWhere("where bill_type ='MONTHLY' " +
+                     " and monthly_bill_rate >0 and active_yn ='Y'");
         } catch (DAOException ex) {
-            Logger.getLogger(MonthlyCycleManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcessControllerMonthlyCharges.class.getName()).log(Level.SEVERE, null, ex);
         }
         Manager manager = Manager.getInstance();
         try {
@@ -53,7 +54,7 @@ public class MonthlyCycleManager {
             }
             manager.endTransaction(true);
             } catch (SQLException ex) {
-            Logger.getLogger(MonthlyCycleManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcessControllerMonthlyCharges.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

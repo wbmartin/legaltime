@@ -7,8 +7,8 @@ package legaltime.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -23,9 +23,6 @@ import legaltime.model.LaborInvoiceItemBean;
 import legaltime.model.LaborInvoiceItemManager;
 import legaltime.model.LaborRegisterBean;
 import legaltime.model.LaborRegisterManager;
-import legaltime.model.PaymentLogBean;
-import legaltime.model.PaymentLogManager;
-import legaltime.model.exception.DAOException;
 import legaltime.modelsafe.EasyLog;
 import legaltime.view.InvoiceEditorView;
 import legaltime.view.model.ClientComboBoxModel;
@@ -33,6 +30,7 @@ import legaltime.view.model.ExpenseRegisterTableModel;
 import legaltime.view.model.LaborRegisterTableModel;
 import legaltime.view.model.UserInfoComboBoxModel;
 import legaltime.view.renderer.ClientComboBoxRenderer;
+import org.jdesktop.application.Task;
 
 /**
  *
@@ -40,7 +38,7 @@ import legaltime.view.renderer.ClientComboBoxRenderer;
  */
 public class InvoiceController implements TableModelListener, ActionListener{
     private InvoiceEditorView invoiceEditorView;
-    private BizControllerInvoice bizInvoiceController;
+    private ProcessControllerInvoice processControllerInvoice;
     private EasyLog easyLog;
     private LaborRegisterTableModel laborRegisterTableModel;
 
@@ -65,7 +63,7 @@ public class InvoiceController implements TableModelListener, ActionListener{
 
     protected InvoiceController(LegalTimeApp mainController_){
         mainController = mainController_;
-        bizInvoiceController = new BizControllerInvoice();
+        processControllerInvoice = new ProcessControllerInvoice();
         easyLog = EasyLog.getInstance();
         appPrefs = AppPrefs.getInstance();
         invoiceEditorView = new InvoiceEditorView(this);
@@ -137,7 +135,7 @@ public class InvoiceController implements TableModelListener, ActionListener{
     }
      public void tableChanged(TableModelEvent e) {
         invoiceEditorView.setAccountBalance(
-             bizInvoiceController.getInvoiceTotal(
+             processControllerInvoice.getInvoiceTotal(
                laborRegisterTableModel.getLaborRegisterBeans()
                , expenseRegisterTableModel.getExpenseRegisterBeans()));
     }
@@ -160,19 +158,19 @@ public class InvoiceController implements TableModelListener, ActionListener{
         refreshExpenseRegisterTable(clientId);
 
         invoiceEditorView.setAccountBalance(
-                bizInvoiceController.getInvoiceTotal(invoiceableItems
+                processControllerInvoice.getInvoiceTotal(invoiceableItems
                     , expensableItems));
 
     }
     public void refreshLaborRegisterTable(int clientId_){
-        invoiceableItems = bizInvoiceController.getInvoiceableLaborItems(clientId_);
+        invoiceableItems = processControllerInvoice.getInvoiceableLaborItems(clientId_);
         laborRegisterTableModel.setList(invoiceableItems);
         invoiceEditorView.getTblLaborRegister().revalidate();
         invoiceEditorView.getTblLaborRegister().getRowSorter().allRowsChanged();
     }
 
     public void  refreshExpenseRegisterTable(int clientId_){
-        expensableItems = bizInvoiceController.getInvoiceableExpenseItems(clientId_);
+        expensableItems = processControllerInvoice.getInvoiceableExpenseItems(clientId_);
         expenseRegisterTableModel.setList(expensableItems);
         invoiceEditorView.getTblExpenseRegister().revalidate();
         invoiceEditorView.getTblExpenseRegister().getRowSorter().allRowsChanged();
@@ -182,6 +180,7 @@ public class InvoiceController implements TableModelListener, ActionListener{
     public void generateInvoice(){
 
         int clientId=0;
+        boolean invoiceResult = false;
         try{
             clientId = ((ClientBean)invoiceEditorView.getCboClient().getSelectedItem()).getClientId();
         }catch(NullPointerException ex){
@@ -190,23 +189,11 @@ public class InvoiceController implements TableModelListener, ActionListener{
            return;
 
         }
-        PaymentLogManager paymentLogManager = PaymentLogManager.getInstance();
-        PaymentLogBean[] paymentsLogBeans = null;
-        try {
-            paymentsLogBeans = paymentLogManager.loadByWhere("where invoice_id is null and "
-                    + "client_id = " + clientId);
-        } catch (DAOException ex) {
-            Logger.getLogger(InvoiceController.class.getName()).log(Level.SEVERE, null, ex);
-             easyLog.addEntry(EasyLog.INFO, "Error Loaing Payments", getClass().getName(), ex);
 
-        }
+        invoiceResult=processControllerInvoice.generateInvoice(clientId);
+        
 
-        if(bizInvoiceController.buildAndSaveInvoice(
-                clientId
-                ,laborRegisterTableModel.getLaborRegisterBeans()
-                ,expenseRegisterTableModel.getExpenseRegisterBeans()
-                ,paymentsLogBeans)
-                ){
+        if(invoiceResult){
                     JOptionPane.showMessageDialog(invoiceEditorView, "The PDF " +
                             "has been saved to the output " +
                             "location specified in your File > Preferences Screen: "
@@ -243,6 +230,53 @@ public class InvoiceController implements TableModelListener, ActionListener{
      */
     public UserInfoComboBoxModel getUserInfoComboBoxModel() {
         return userInfoComboBoxModel;
+    }
+
+    public void generateAllInvoices(){
+
+        int dialogResult =JOptionPane.showConfirmDialog(
+                invoiceEditorView
+                , "You are about to generate invoices, do you want to continue"
+                , "User Confirmation Required"
+                , JOptionPane.YES_NO_OPTION);
+        if(dialogResult != JOptionPane.YES_OPTION){return;}
+          Task task = new Task(LegalTimeApp.getApplication()) {
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                return processControllerInvoice.generateAllOutstandingInvoices();
+            }
+
+        };
+        task.addPropertyChangeListener(new PropertyChangeListener() {
+
+            public void propertyChange(PropertyChangeEvent evt) {
+                String propertyName = evt.getPropertyName();
+               
+                if("done".equals(propertyName)){
+                        boolean result = true;//processControllerInvoice.generateAllOutstandingInvoices();
+
+                        if(result){
+
+                             JOptionPane.showMessageDialog(invoiceEditorView, "The Invoice PDFs " +
+                                            "have been saved to the output " +
+                                            "location specified in your File > Preferences Screen: "
+                                            + appPrefs.getValue(AppPrefs.INVOICE_OUTPUT_PATH) );
+                        }else{
+                             JOptionPane.showMessageDialog(invoiceEditorView
+                                            , "Not all invoices generated successfully." +
+                                            "Please check the system logs and send error" +
+                                            "messages to the developer."
+                                            ,"Error Generating Invoices"
+                                            ,JOptionPane.ERROR_MESSAGE );
+                        }
+                }
+              }
+        });
+        LegalTimeApp.getApplication().getPrimaryView().getTaskMonitor().setForegroundTask(task);
+        task.execute();
+        
+
     }
 
 

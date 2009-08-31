@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import legaltime.AppPrefs;
 import legaltime.ResourceAnchor;
+import legaltime.modelsafe.SQLGarage;
 import legaltime.TextUtils;
 import legaltime.model.Manager;
 import legaltime.modelsafe.EasyLog;
@@ -57,12 +58,12 @@ public class VersionManager {
     }
 
     public String getDBVersion() {
-        String verSQL = "select description from sys_code where code_id ='DBVer';";
+        
         version = null;
         PreparedStatement ps =null;
         ResultSet rs =null;
         try{
-            ps = con.prepareStatement(verSQL);
+            ps = con.prepareStatement(SQLGarage.DBVERSION_SQL);
             rs = ps.executeQuery();
 
             if (rs.next()){

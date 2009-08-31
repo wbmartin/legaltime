@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import legaltime.AppPrefs;
@@ -59,7 +60,7 @@ public class FollowupController implements TableModelListener, ActionListener{
         easyLog = EasyLog.getInstance();
         appPrefs = AppPrefs.getInstance();
         followupView = new FollowupView(this);
-        //followupItemEditorView = new FollowupItemEditorView();
+        
         clientCache = ClientCache.getInstance();
         filterWhereClause="";
 
@@ -85,10 +86,7 @@ public class FollowupController implements TableModelListener, ActionListener{
 
         followupView.getCboClient().setMaximumRowCount(30);
         refreshFollowupTable();
-//        followupItemEditorView.getCboClient().setModel(clientComboBoxModel);
-//        followupItemEditorView.getCboClient().setRenderer(clientComboBoxRenderer );
-//        followupItemEditorView.getCboClient().setMaximumRowCount(30);
-        
+      
     }
 
     public static FollowupController getInstance(LegalTimeApp mainController_){
@@ -113,20 +111,7 @@ public class FollowupController implements TableModelListener, ActionListener{
         } catch (java.beans.PropertyVetoException e) {}
     }
 
-//       public void showFollowupItemEditorView() {
-//         if (followupItemEditorView == null) {
-//            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-//            followupItemEditorView  = new FollowupItemEditorView (this);
-//        }
-//
-//        followupItemEditorView .getCboClient().revalidate();
-//        followupItemEditorView .setSelectionConfirmed(false);
-//        followupItemEditorView .setVisible(true);
-//        mainController.getDesktop().add(followupItemEditorView);
-//        try {
-//            followupItemEditorView.setSelected(true);
-//        } catch (java.beans.PropertyVetoException e) {}
-//    }
+
 
 
      public void setMainController(LegalTimeApp mainController_){
@@ -159,13 +144,17 @@ public class FollowupController implements TableModelListener, ActionListener{
     
     public void addFollowupItem(){
         followupBean = followupManager.createFollowupBean();
- int clientId;
+        int clientId;
         try{
             clientId= ((ClientBean) followupView.getCboClient().getSelectedItem()).getClientId();
         }catch(NullPointerException  ex){
             clientId=0;
             easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
                     , getClass().getName(), ex);
+        }
+        if(clientId ==0){
+            JOptionPane.showConfirmDialog(followupView, "Please select the followup client", "Selecta client", JOptionPane.WARNING_MESSAGE);
+            return;
         }
         followupBean.setClientId(clientId);
         followupBean.setDescription("New Follow Up Item");

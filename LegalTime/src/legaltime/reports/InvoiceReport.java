@@ -101,7 +101,6 @@ public class InvoiceReport   {
         InputStream jasperFile = cl.getResourceAsStream("legaltime/reports/BogerInvoice.jasper");
         reportPath =cl.getResource("legaltime/reports/").toString();
         String temp = cl.getResource("legaltime/reports/").toString();
-        easyLog.addEntry(9,"FilePath", temp,"");
          loadInvoice(invoiceId_);
          String fileName = "Invoice"+ TextUtils.frontZeroFill(invoiceBean.getInvoiceId(), 5)
                  +"_" +clientBean.getLastName() + clientBean.getFirstName() + "_"

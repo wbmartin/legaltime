@@ -8,9 +8,11 @@ package legaltime.controller;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import legaltime.LegalTimeApp;
+import legaltime.modelsafe.SQLGarage;
 import legaltime.cache.ClientBillRateCache;
 import legaltime.model.ClientAccountRegisterBean;
 import legaltime.model.ClientAccountRegisterManager;
@@ -37,7 +39,7 @@ import legaltime.view.InvoiceEditorView;
  *
  * @author bmartin
  */
-public class BizControllerInvoice {
+public class ProcessControllerInvoice {
     private ClientBillRateCache clientBillRateCache;
     private Manager manager;
     private LaborInvoiceItemBean laborInvoiceItemBean;
@@ -52,17 +54,19 @@ public class BizControllerInvoice {
     private ClientAccountRegisterBean clientAccountRegisterBean;
     LegalTimeApp app;
 
-    public BizControllerInvoice(){
+    public ProcessControllerInvoice(){
         easyLog = EasyLog.getInstance();
         clientBillRateCache = ClientBillRateCache.getInstance();
         manager = Manager.getInstance();
         laborRegisterManager =LaborRegisterManager.getInstance();
-        expenseRegisterManager = ExpenseRegisterManager.getInstance();
+        
         clientAccountRegisterManager = ClientAccountRegisterManager.getInstance();
         paymentLogManager= PaymentLogManager.getInstance();
         app = LegalTimeApp.getApplication();
         laborInvoiceItemManager = LaborInvoiceItemManager.getInstance();
         expenseInvoiceItemManager = ExpenseInvoiceItemManager.getInstance();
+        expenseRegisterManager = ExpenseRegisterManager.getInstance();
+        
     }
     public double getInvoiceTotal(LaborRegisterBean[] laborRegisterBeans_
             ,ExpenseRegisterBean[] expenseRegisterBeans_){
@@ -231,6 +235,7 @@ public class BizControllerInvoice {
         }
         return invoiceableItems;
     }
+
     public ExpenseRegisterBean[] getInvoiceableExpenseItems(int clientId_ ){
         ExpenseRegisterBean[] invoiceableItems;
         try {
@@ -247,15 +252,29 @@ public class BizControllerInvoice {
         return invoiceableItems;
     }
 
-     public Double getPreviousBalance(int clientId_){
+    public PaymentLogBean[] getInvoicePaymentLog(int clientId_ ){
+        PaymentLogBean[] invoiceableItems;
+        try {
+            invoiceableItems = paymentLogManager.loadByWhere(
+                    "where client_id = " + clientId_+
+                    " and invoice_id is null ");
+        } catch (DAOException ex) {
+             invoiceableItems = null;
+            Logger.getLogger(InvoiceEditorView.class.getName()).log(Level.SEVERE, null, ex);
+            easyLog.addEntry(EasyLog.SEVERE,"Error Loading PaymentLog",
+                    getClass().getName(),ex);
+            invoiceableItems = new PaymentLogBean[] {};
+        }
+        return invoiceableItems;
+    }
+
+    public Double getPreviousBalance(int clientId_){
        Double previousBalance=0D;
        ResultSet rs = null;
        PreparedStatement ps;
         try {
             ps = manager.getConnection().prepareStatement(
-                    "select sum(tran_amt) from "
-                    + "client_account_register "
-                    + "where client_id = " + clientId_);
+                    SQLGarage.getPrevBalanceSQL(clientId_));
             rs = ps.executeQuery();
             if(rs.next()){
                 previousBalance= rs.getDouble(1);
@@ -264,10 +283,47 @@ public class BizControllerInvoice {
                 previousBalance=0D;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(BizControllerInvoice.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcessControllerInvoice.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
        return previousBalance;
    }
+
+     public boolean generateInvoice(int clientId_){
+        boolean result = false;
+     
+        result  = buildAndSaveInvoice(
+                clientId_
+                ,getInvoiceableLaborItems( clientId_)
+                ,getInvoiceableExpenseItems( clientId_)
+                ,getInvoicePaymentLog( clientId_));
+
+        return result;
+    }
+
+     public boolean generateAllOutstandingInvoices(){
+         boolean result = true;
+         boolean singleResult = true;
+         
+        try {
+            Statement s = manager.getConnection().createStatement(
+                    ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = s.executeQuery(SQLGarage.INVOICE_LIST_SQL);
+            //LegalTimeApp.getApplication().getPrimaryView().setProgressBarProgressValue(progress);
+            while (rs.next()){
+
+                singleResult = generateInvoice(rs.getInt(1));
+                if (!singleResult){result = false;}
+                
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProcessControllerInvoice.class.getName()).log(Level.SEVERE, null, ex);
+            easyLog.addEntry(EasyLog.SEVERE, "Error Building All Invoices", getClass().getName(), ex);
+        }
+
+
+         return result;
+     }
 }
