@@ -151,6 +151,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="invoiceAllOutstandingInvoicesMenuItem">
               <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="legaltime.view.LegalTimeView" id="invoiceAllOutstanding" methodName="invoiceAllOutstanding"/>
+                </Property>
                 <Property name="text" type="java.lang.String" resourceKey="invoiceAllOutstandingInvoicesMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="invoiceAllOutstandingInvoicesMenuItem" noResource="true"/>
               </Properties>

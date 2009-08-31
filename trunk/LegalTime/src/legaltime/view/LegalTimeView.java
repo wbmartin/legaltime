@@ -9,7 +9,6 @@ import legaltime.*;
 import java.awt.Dimension;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
-import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
@@ -18,19 +17,16 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
-import legaltime.DBManager.VersionManager;
 import legaltime.controller.ClientAccountRegisterController;
 import legaltime.controller.ClientEditorController;
 import legaltime.controller.FollowupController;
 import legaltime.controller.InvoiceController;
-import legaltime.controller.MonthlyCycleManager;
+import legaltime.controller.LegalTimeController;
+import legaltime.controller.ProcessControllerMonthlyCharges;
 import legaltime.controller.PaymentLogController;
 import legaltime.modelsafe.EasyLog;
 
-import legaltime.modelsafe.PersistanceManager;
-import legaltime.reports.ClientAddressLabelReport;
 
 
 /**
@@ -51,23 +47,28 @@ public class LegalTimeView extends FrameView {
     private InvoiceEditorView invoiceManager;
     private ExpenseManager expenseManager;
     private TimeEditor timeEditor;
-    private PersistanceManager persistanceManager;
+    
     private PreferencesEditorView preferencesManager;
     private DBAdminView dBAdminView;
     private LogView logView;
     private final EasyLog easyLog;
-    private LegalTimeApp legalTimeApp;
-    private VersionManager vm ;
+    
+    
+    private TaskMonitor taskMonitor;
+    private LegalTimeController legalTimeController;
 
 
-    public LegalTimeView(SingleFrameApplication app) {
-        super(app);
-            legalTimeApp = (LegalTimeApp) app;
+    public LegalTimeView(LegalTimeController legalTimeController_) {
+
+        super(legalTimeController_.getApp());
+        legalTimeController = legalTimeController_;
+            
         
             AppPrefs appPrefs = AppPrefs.getInstance();
-            persistanceManager = PersistanceManager.getInstance();
+
+            
             easyLog =EasyLog.getInstance();
-            vm = new VersionManager();
+            
             initComponents();
             LegalTimeApp.getApplication().getMainFrame().setPreferredSize(new Dimension(800, 600));
              
@@ -96,7 +97,8 @@ public class LegalTimeView extends FrameView {
             //statusAnimationLabel.setIcon(idleIcon);
             progressBar.setVisible(false);
             // connecting action tasks to status bar via TaskMonitor
-            TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
+            taskMonitor = new TaskMonitor(getApplication().getContext());
+
             taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
 
                 public void propertyChange(java.beans.PropertyChangeEvent evt) {
@@ -135,65 +137,10 @@ public class LegalTimeView extends FrameView {
             
         
             
-            lblVersion.setText( "Version: " + LegalTimeApp.APP_VERSION
-                    +"|"+ VersionManager.INSTALLED_VERSION);
+            
     }
 
-    public void manageUpdates(){
-        
-            String dbUpgradeResult = vm.installAllDbPatches();
-            if(dbUpgradeResult.equals(VersionManager.NEW_VERSION_FAILED)){
-                setLastActionText("ERROR: DB upgrade failed.  Please review " +
-                        "Logs and email developer the error detail.");
-                JOptionPane.showInternalConfirmDialog(getDesktop(), 
-                        "The application Failed a database upgrade and may " +
-                        "not be stable.  Contact the developer."
-                        ,"Warning",JOptionPane.WARNING_MESSAGE);
-
-            }else if (dbUpgradeResult.equals(VersionManager.NEW_VERSION_INSTALLED)){
-
-                setLastActionText("New Database version successfully installed." +
-                        "  Application Restart Required");
-                JOptionPane.showInternalMessageDialog(getDesktop(),
-                        "Upgrades have completed.  The application will close." +
-                        "  Please re-open the application."
-                        ,"Notice",JOptionPane.WARNING_MESSAGE);
-                legalTimeApp.exit();
-            }
-
-            try {
-                if (VersionManager.INSTALLED_VERSION.equals("NOT SET")){
-                    setLastActionText("Critical Error Loading DB Version " +
-                            "- Likely database connectivity issue.  " +
-                            "Check Preferences Tab.");
-                }
-                else if(!VersionManager.INSTALLED_VERSION.equals(VersionManager.REQUIRED_DB_VERSION) ){
-                    JOptionPane.showInternalMessageDialog(getDesktop(),
-                        "There is a Database Version conflict.  Expecting: "
-                        + VersionManager.REQUIRED_DB_VERSION+" but found: "
-                        + VersionManager.INSTALLED_VERSION
-                        +".  The application may not be stable.  Please restart " +
-                        "the application and contact the developer"
-                        ,"Warning",JOptionPane.WARNING_MESSAGE);
-
-
-                }
-            }catch(java.lang.ArrayIndexOutOfBoundsException e){
-                 JOptionPane.showInternalMessageDialog(getDesktop(),
-                        "There application couldn't determine the Database Version.  " +
-                        "The application is not stable.  " +
-                        "Please contact the developer"
-                        ,"Warning",JOptionPane.WARNING_MESSAGE);
-                 easyLog.addEntry(EasyLog.INFO, "Error Determining Database Version"
-                    , getClass().getName(), e);
-            }
-                      
-
-    }
-
-    public void loadCache(){
-        persistanceManager.loadCache();
-    }
+    
 
     @Action
     public void showAboutBox() {
@@ -327,6 +274,7 @@ public class LegalTimeView extends FrameView {
         monthlyBillingCycleMenuItem.setName("monthlyBillingCycleMenuItem"); // NOI18N
         BillingMenu.add(monthlyBillingCycleMenuItem);
 
+        invoiceAllOutstandingInvoicesMenuItem.setAction(actionMap.get("invoiceAllOutstanding")); // NOI18N
         invoiceAllOutstandingInvoicesMenuItem.setText(resourceMap.getString("invoiceAllOutstandingInvoicesMenuItem.text")); // NOI18N
         invoiceAllOutstandingInvoicesMenuItem.setName("invoiceAllOutstandingInvoicesMenuItem"); // NOI18N
         BillingMenu.add(invoiceAllOutstandingInvoicesMenuItem);
@@ -492,8 +440,20 @@ public javax.swing.JDesktopPane getDesktop(){
 
     @Action
     public void showMonthlyBillingCycle() {
-        MonthlyCycleManager monthlyCycleManager = new MonthlyCycleManager();
-        monthlyCycleManager.assessMonthlyRetainers(new java.util.Date());
+        ProcessControllerMonthlyCharges monthlyCycleManager = new ProcessControllerMonthlyCharges();
+        MonthlyRetainerConfirmationView monthlyRetainerConfirmationView;
+        monthlyRetainerConfirmationView = new
+                MonthlyRetainerConfirmationView(
+                    LegalTimeApp.getApplication().getMainFrame());
+        java.util.Date effectiveDate= null;
+
+        monthlyRetainerConfirmationView.setVisible(true);
+        if(monthlyRetainerConfirmationView.isSelectionConfirmed()){
+            effectiveDate = monthlyRetainerConfirmationView.getDate();
+            monthlyCycleManager.assessMonthlyRetainers(effectiveDate);
+        }
+        monthlyRetainerConfirmationView.dispose();
+        
     }
     @Action
     public void showFollowupManager(){
@@ -509,17 +469,7 @@ public javax.swing.JDesktopPane getDesktop(){
     @Action
     public void showInvoiceManager(){
         InvoiceController.getInstance(LegalTimeApp.getApplication()).showInvoiceEditorViewer();
-//        if (invoiceManager == null) {
-//            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-//            invoiceManager = new InvoiceEditorView();
-//            invoiceManager.setMainController(LegalTimeApp.getApplication());
-//
-//        }
-//        invoiceManager.setVisible(true);
-//        desktop.add(invoiceManager);
-//        try {
-//            invoiceManager.setSelected(true);
-//        } catch (java.beans.PropertyVetoException e) {}
+
     }
 
     @Action
@@ -591,11 +541,6 @@ public javax.swing.JDesktopPane getDesktop(){
         } catch (java.beans.PropertyVetoException e) {}
     }
 
-//    @Action
-//    public void showFollowupItemEditor(){
-//         FollowupController.getInstance(LegalTimeApp.getApplication()).showFollowupItemEditorView();
-//    }
-
     public void setStatusText(String newText){
         statusMessageLabel.setText("Status: "+ newText);
     }
@@ -624,9 +569,29 @@ public javax.swing.JDesktopPane getDesktop(){
 
     @Action
     public void buildClientAddressLabelReport(){
-        ClientAddressLabelReport clientAddressLabelReport = new ClientAddressLabelReport();
-        clientAddressLabelReport.makeReport();
+        legalTimeController.ClientAddressLabelReport();
+
     }
+
+    @Action
+    public void invoiceAllOutstanding(){
+        InvoiceController.getInstance(LegalTimeApp.getApplication())
+                .generateAllInvoices();
+
+
+    }
+
+    /**
+     * @return the taskMonitor
+     */
+    public TaskMonitor getTaskMonitor() {
+        return taskMonitor;
+    }
+    public javax.swing.JLabel getLblVersion(){
+        return lblVersion;
+    }
+
+   
 
 
 }
