@@ -46,6 +46,7 @@ public class PaymentLogController implements TableModelListener, ActionListener{
         mainController = mainController_;
         processControllerAccounting = ProcessControllerAccounting.getInstance();
         paymentLogView = new PaymentLogView(this);
+        mainController.getDesktop().add(paymentLogView);
         easyLog = EasyLog.getInstance();
         appPrefs = AppPrefs.getInstance();
         //paymentLogBeans = new paymentLogBean[];
@@ -115,13 +116,10 @@ public class PaymentLogController implements TableModelListener, ActionListener{
         
     }
     public void showPaymentLogView() {
-        if (paymentLogView == null) {
-            paymentLogView = new PaymentLogView(this);
-        }
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         paymentLogView.getCboClient().revalidate();
         paymentLogView.setVisible(true);
-        mainController.getDesktop().add(paymentLogView);
+        
         try {
             paymentLogView.setSelected(true);
         } catch (java.beans.PropertyVetoException e) {

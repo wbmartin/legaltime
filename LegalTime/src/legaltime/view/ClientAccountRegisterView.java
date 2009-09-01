@@ -18,6 +18,7 @@ import legaltime.LegalTimeApp;
 import legaltime.controller.ClientAccountRegisterController;
 import legaltime.view.renderer.CurrencyTableCellRenderer;
 import legaltime.view.renderer.DateTableCellRenderer;
+import org.jdesktop.application.Action;
 
 /**
  *
@@ -60,6 +61,7 @@ public class ClientAccountRegisterView extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(ClientAccountRegisterView.class);
@@ -105,6 +107,8 @@ public class ClientAccountRegisterView extends javax.swing.JInternalFrame {
         lblClient.setText(resourceMap.getString("lblClient.text")); // NOI18N
         lblClient.setName("lblClient"); // NOI18N
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getActionMap(ClientAccountRegisterView.class, this);
+        jButton1.setAction(actionMap.get("showClientEditorView")); // NOI18N
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
 
@@ -204,6 +208,10 @@ public class ClientAccountRegisterView extends javax.swing.JInternalFrame {
 
     public void showPopupMsg(String msg_) {
         JOptionPane.showMessageDialog(this, msg_);
+    }
+    @Action
+    public void showClientEditorView(){
+        clientAccountingController.showClientEditorView();
     }
 
    

@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -52,17 +53,18 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
     private ClientBillRateTableModel clientBillRateTableModel;
     private PersistanceManager persistanceManager;
     private ClientManager clientManager;
-    private LegalTimeApp mainController;
+    private LegalTimeController mainController;
     private int currentSelectedRow=0;
     private ClientBillRateManager clientBillRateManager;
     private ClientBillRateBean[] clientBillRatebeans;
     private FollowupTableModelAbbrev clientFollowupTableModelAbbrev;
     private FollowupManager followupManager;
 
-    protected ClientEditorController(LegalTimeApp mainController_) {
+    protected ClientEditorController(LegalTimeController mainController_) {
 
         mainController = mainController_;
         clientEditorView = new ClientEditorView(this);
+        mainController.getDesktop().add(clientEditorView);
         clientEditorView.addInternalFrameListener(this);
         persistanceManager = PersistanceManager.getInstance();
         clientBillRateManager = ClientBillRateManager.getInstance();
@@ -73,6 +75,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
         clientManagerTableModel = new ClientManagerTableModel();
         clientEditorView.getTblClientSelect().setModel(clientManagerTableModel);
         clientEditorView.getTblClientSelect().setAutoCreateRowSorter(true);
+        clientEditorView.getTblClientSelect().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         clientBillRateManager = ClientBillRateManager.getInstance();
         clientBillRateTableModel = new ClientBillRateTableModel();
@@ -111,25 +114,25 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
           clientEditorView.getTblClientFollowup().addMouseListener(new PopupListener());
 
     }
-    public static ClientEditorController getInstance(LegalTimeApp mainController_){
+    public static ClientEditorController getInstance(LegalTimeController mainController_){
         if (instance == null){
             instance = new ClientEditorController( mainController_);
         }
         return instance;
     }
 
-    public LegalTimeApp getMainController(){
+    public LegalTimeController getMainController(){
         return mainController;
+    }
+    public void showClientEditorViewer(int clientId_) {
+        showClientEditorViewer();
+        int row = findRowForClientId(clientId_);
+
+        clientEditorView.getTblClientSelect().setRowSelectionInterval(row, row);
     }
 
     public void showClientEditorViewer() {
-        if (clientEditorView == null) {
-            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-            clientEditorView = new ClientEditorView(this);
-        }
-
         clientEditorView.setVisible(true);
-        mainController.getDesktop().add(clientEditorView);
         try {
             clientEditorView.setSelected(true);
         } catch (java.beans.PropertyVetoException e) {}
@@ -387,7 +390,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
         saveChanges();
         
         persistanceManager.loadClientCache();
-        clientEditorView.dispose();
+        clientEditorView.setVisible(false);
 
      }
 
@@ -420,8 +423,9 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
             //if (e.getActionCommand().equals("cboBillPlanChanged")){
             if(e.getActionCommand().equals("EDIT_FOLLOWUP_ITEM")){
                 editSelectedFollowUpItem();
-            }
-            else if (e.getActionCommand().equals("cboBillPlanChanged")){
+            }else if(e.getActionCommand().equals("CLOSE_FOLLOWUP_ITEM")){
+                closeSelectedFollowUpItem();
+            }else if (e.getActionCommand().equals("cboBillPlanChanged")){
                 if (clientEditorView.getCboBillingPlan().getSelectedItem().equals("HOURLY")){
                     clientEditorView.getTxtMonthlyRate().setEnabled(false);
                     clientEditorView.getTblBillRates().setVisible(true);
@@ -450,6 +454,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
                 .convertRowIndexToModel(clientEditorView.getTblClientFollowup().getSelectedRow());
         followupItemEditorView.setFollowupItem(clientFollowupTableModelAbbrev
                 .getBeanByRow(currentSelectedFollowupRow));
+        followupItemEditorView.setLocationRelativeTo(null);
         followupItemEditorView.setVisible(true);
         if(followupItemEditorView.isSelectionConfirmed()){
             followupBean = followupItemEditorView.getFollowupItem();
@@ -461,6 +466,45 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
             }
         }
         followupItemEditorView.dispose();
+    }
+
+
+    public void closeSelectedFollowUpItem() {
+
+        FollowupBean followupBean;
+        int currentSelectedFollowupRow=0;
+        currentSelectedFollowupRow=clientEditorView.getTblClientFollowup().getRowSorter()
+                .convertRowIndexToModel(clientEditorView.getTblClientFollowup().getSelectedRow());
+        followupBean = clientFollowupTableModelAbbrev
+                .getBeanByRow(currentSelectedFollowupRow);
+        followupBean.setClosedDt(new java.util.Date());
+
+            try {
+                followupManager.save(followupBean);
+                populateClientFollowupTable(followupBean.getClientId());
+            } catch (DAOException ex) {
+                Logger.getLogger(ClientEditorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+    }
+
+    public void showClientAccountRegisterView() {
+        int clientId = clientManagerTableModel.getBeanByRow(currentSelectedRow ).getClientId();
+        ClientAccountRegisterController.getInstance(mainController).showClientAccountRegisterView(clientId);
+    }
+    public void showFollowupView(){
+        int clientId = clientManagerTableModel.getBeanByRow(currentSelectedRow ).getClientId();
+        FollowupController.getInstance(mainController).showClientAccountRegisterView(clientId);
+
+    }
+
+    private int findRowForClientId(int clientId_) {
+        int result =0;
+        result = clientManagerTableModel.getRowByClientId(clientId_);
+        result =clientEditorView.getTblClientSelect().getRowSorter()
+                .convertRowIndexToView(result);
+        return result;
     }
    
 class PopupListener extends MouseAdapter {
@@ -478,6 +522,8 @@ class PopupListener extends MouseAdapter {
                 clientEditorView.getFollowupTableMenu().show(e.getComponent(),
                            e.getX(), e.getY());
 
+            }else if(e.getClickCount() == 2){
+                editSelectedFollowUpItem();
             }
         }
     }

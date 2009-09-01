@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import legaltime.AppPrefs;
-import legaltime.LegalTimeApp;
 import legaltime.cache.ClientCache;
 import legaltime.model.ClientAccountRegisterBean;
 import legaltime.model.ClientAccountRegisterManager;
@@ -34,7 +33,7 @@ import legaltime.view.renderer.ClientComboBoxRenderer;
 public class ClientAccountRegisterController implements TableModelListener, ActionListener{
     private static ClientAccountRegisterController instance;
     private ClientAccountRegisterView clientAccountRegisterView;
-    private LegalTimeApp mainController;
+    private LegalTimeController mainController;
     private EasyLog easyLog;
     private AppPrefs appPrefs;
     private ClientAccountRegisterTableModel clientAccountRegisterTableModel;
@@ -43,9 +42,10 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
     private ClientAccountRegisterManager clientAccountRegisterManager;
     private ClientComboBoxRenderer clientComboBoxRenderer;
     private ProcessControllerAccounting processControllerAccounting;
-    protected ClientAccountRegisterController(LegalTimeApp mainController_){
+    protected ClientAccountRegisterController(LegalTimeController mainController_){
         mainController = mainController_;
         clientAccountRegisterView = new ClientAccountRegisterView(this);
+        mainController.getDesktop().add(clientAccountRegisterView);
         easyLog = EasyLog.getInstance();
         appPrefs = AppPrefs.getInstance();
         processControllerAccounting = ProcessControllerAccounting.getInstance();
@@ -66,7 +66,7 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
         clientAccountRegisterView.getTblAccountRegister().addMouseListener(new PopupListener());
 
     }
-    public static ClientAccountRegisterController getInstance(LegalTimeApp mainController_){
+    public static ClientAccountRegisterController getInstance(LegalTimeController mainController_){
         if (instance == null){
             instance = new ClientAccountRegisterController(mainController_);
         }
@@ -92,7 +92,13 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
         clientAccountRegisterView.scrollRowTblPaymentLog(clientAccountRegisterTableModel.getRowCount()-1);
     }
     public void refreshTblAccountRegister(){
-     int clientId;
+        int clientId;
+        clientId = getSelectedClientId();
+        refreshTblAccountRegister(clientId);
+    }
+
+    public int getSelectedClientId(){
+        int clientId;
         try{
             clientId= ((ClientBean) clientAccountRegisterView.getCboClient().getSelectedItem()).getClientId();
         }catch(NullPointerException  ex){
@@ -100,7 +106,7 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
             easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
                     , getClass().getName(), ex);
         }
-     refreshTblAccountRegister(clientId);
+        return clientId;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -111,15 +117,17 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
         }
         
     }
+    public void showClientAccountRegisterView(int clientId_) {
+        showClientAccountRegisterView();
+        clientComboBoxModel.setSelectedItemById(clientId_);
+        refreshTblAccountRegister(clientId_);
+    }
     public void showClientAccountRegisterView() {
-        if (clientAccountRegisterView == null) {
-            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-            clientAccountRegisterView = new ClientAccountRegisterView(this);
-        }
+
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         clientAccountRegisterView.getCboClient().revalidate();
         clientAccountRegisterView.setVisible(true);
-        mainController.getDesktop().add(clientAccountRegisterView);
+        
         try {
             clientAccountRegisterView.setSelected(true);
         } catch (java.beans.PropertyVetoException e) {
@@ -141,6 +149,9 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
 
         refreshTblAccountRegister();
 
+    }
+    public void showClientEditorView(){
+        ClientEditorController.getInstance(mainController).showClientEditorViewer(getSelectedClientId());
     }
     
 

@@ -34,7 +34,7 @@ public class FollowupController implements TableModelListener, ActionListener{
     private FollowupView followupView;
     private EasyLog easyLog;
     private FollowupTableModel followupTableModel;
-    private LegalTimeApp mainController;
+    private LegalTimeController mainController;
 
     
     private FollowupBean[] followupItems;
@@ -55,11 +55,12 @@ public class FollowupController implements TableModelListener, ActionListener{
 
     
 
-    protected FollowupController(LegalTimeApp mainController_){
+    protected FollowupController(LegalTimeController mainController_){
         mainController = mainController_;
         easyLog = EasyLog.getInstance();
         appPrefs = AppPrefs.getInstance();
         followupView = new FollowupView(this);
+        mainController.getDesktop().add(followupView);
         
         clientCache = ClientCache.getInstance();
         filterWhereClause="";
@@ -89,23 +90,33 @@ public class FollowupController implements TableModelListener, ActionListener{
       
     }
 
-    public static FollowupController getInstance(LegalTimeApp mainController_){
+    public static FollowupController getInstance(LegalTimeController mainController_){
         if (instance == null){
             instance = new FollowupController( mainController_);
         }
         return instance;
     }
 
-
+    public void showClientAccountRegisterView(int clientId_) {
+        showFollowupViewer();
+        clientComboBoxModel.setSelectedItemById(clientId_);
+        refreshFollowupTable();
+    }
        public void showFollowupViewer() {
+           boolean firstShow = false;
         if (followupView == null) {
             //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
             followupView = new FollowupView(this);
+            firstShow = true;
+            
         }
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         followupView.getCboClient().revalidate();
         followupView.setVisible(true);
-        mainController.getDesktop().add(followupView);
+       
+        //if (firstShow){
+            
+        //}
         try {
             followupView.setSelected(true);
         } catch (java.beans.PropertyVetoException e) {}
@@ -114,7 +125,7 @@ public class FollowupController implements TableModelListener, ActionListener{
 
 
 
-     public void setMainController(LegalTimeApp mainController_){
+     public void setMainController(LegalTimeController mainController_){
         mainController = mainController_;
     }
      public void tableChanged(TableModelEvent e) {
@@ -219,6 +230,8 @@ public class FollowupController implements TableModelListener, ActionListener{
 
          return whereClause.toString();
     }
+
+
 
     
 

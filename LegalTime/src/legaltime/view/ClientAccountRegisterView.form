@@ -3,6 +3,7 @@
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
+    <Property name="defaultCloseOperation" type="int" value="1"/>
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="maximizable" type="boolean" value="true"/>
     <Property name="title" type="java.lang.String" resourceKey="Form.title"/>
@@ -163,6 +164,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="legaltime.view.ClientAccountRegisterView" id="showClientEditorView" methodName="showClientEditorView"/>
+        </Property>
         <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
         <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
       </Properties>

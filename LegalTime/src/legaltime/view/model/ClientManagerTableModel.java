@@ -65,6 +65,17 @@ public class ClientManagerTableModel extends AbstractTableModel {
         return clientCache.getCache()[row];
     }
 
+    public int getRowByClientId(int clientId_) {
+        int ndx;
+        for(ndx =0; ndx<clientCache.getLength() ; ndx++){
+            if(clientId_ == clientCache.getCache()[ndx].getClientId()){
+                break;
+            }
+
+        }
+        return ndx;
+    }
+
 
     
 

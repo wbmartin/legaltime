@@ -67,6 +67,7 @@ public class InvoiceController implements TableModelListener, ActionListener{
         easyLog = EasyLog.getInstance();
         appPrefs = AppPrefs.getInstance();
         invoiceEditorView = new InvoiceEditorView(this);
+        mainController.getDesktop().add(invoiceEditorView);
 
         laborRegisterManager =LaborRegisterManager.getInstance();
         laborRegisterTableModel = new LaborRegisterTableModel();
@@ -116,14 +117,11 @@ public class InvoiceController implements TableModelListener, ActionListener{
 
 
        public void showInvoiceEditorViewer() {
-        if (invoiceEditorView == null) {
-            //JFrame mainFrame = LegalTimeApp.getApplication().getMainFrame();
-            invoiceEditorView = new InvoiceEditorView(this);
-        }
+
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         invoiceEditorView.getCboClient().revalidate();
         invoiceEditorView.setVisible(true);
-        mainController.getDesktop().add(invoiceEditorView);
+        
         try {
             invoiceEditorView.setSelected(true);
         } catch (java.beans.PropertyVetoException e) {}

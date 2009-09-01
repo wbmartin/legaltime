@@ -16,6 +16,7 @@ package legaltime.view;
 
 import javax.swing.table.TableColumn;
 
+import legaltime.LegalTimeApp;
 import legaltime.controller.ClientEditorController;
 import legaltime.view.renderer.CurrencyTableCellRenderer;
 import org.jdesktop.application.Action;
@@ -37,8 +38,14 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         cboBillingPlan.addActionListener(clientEditorController);
        // buildClientManagerTableColumnModel();
         followupTableMenu = new javax.swing.JPopupMenu("Right Click - Followup Table");
+
         editFollowupMenuItem = new javax.swing.JMenuItem("Edit");
         editFollowupMenuItem.setActionCommand("EDIT_FOLLOWUP_ITEM");
+        followupTableMenu.add(editFollowupMenuItem);
+        editFollowupMenuItem.addActionListener(clientEditorController);
+
+        editFollowupMenuItem = new javax.swing.JMenuItem("Close");
+        editFollowupMenuItem.setActionCommand("CLOSE_FOLLOWUP_ITEM");
         followupTableMenu.add(editFollowupMenuItem);
         editFollowupMenuItem.addActionListener(clientEditorController);
     }
@@ -102,6 +109,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         txtMonthlyRate = new javax.swing.JTextField();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(ClientEditorView.class);
@@ -253,9 +261,11 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         cmdDeleteClient.setText(resourceMap.getString("cmdDeleteClient.text")); // NOI18N
         cmdDeleteClient.setName("cmdDeleteClient"); // NOI18N
 
+        cmdClientAccount.setAction(actionMap.get("showClientAccount")); // NOI18N
         cmdClientAccount.setText(resourceMap.getString("cmdClientAccount.text")); // NOI18N
         cmdClientAccount.setName("cmdClientAccount"); // NOI18N
 
+        cmdViewInvoiceable.setAction(actionMap.get("showFollowupView")); // NOI18N
         cmdViewInvoiceable.setText(resourceMap.getString("cmdViewInvoiceable.text")); // NOI18N
         cmdViewInvoiceable.setName("cmdViewInvoiceable"); // NOI18N
 
@@ -296,7 +306,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                         .addComponent(cmdClientAccount)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdViewInvoiceable)
-                        .addContainerGap(491, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(487, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(cmdAddClient)
@@ -632,6 +642,16 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
      @Action
      public void editFollowupItem(){
         clientEditorController.editSelectedFollowUpItem();
+     }
+     @Action
+     public void showClientAccount(){
+
+          clientEditorController.showClientAccountRegisterView();
+     }
+     @Action
+     public void showFollowupView(){
+
+          clientEditorController.showFollowupView();
      }
 
     /**
