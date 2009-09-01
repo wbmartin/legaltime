@@ -4,6 +4,7 @@
 
 package legaltime.view;
 
+import legaltime.view.recycle.ExpenseManager;
 import java.awt.Color;
 import legaltime.*;
 import java.awt.Dimension;
@@ -431,7 +432,8 @@ public javax.swing.JDesktopPane getDesktop(){
 
     @Action
     public void showClientManager() {
-        ClientEditorController.getInstance(LegalTimeApp.getApplication()).showClientEditorViewer();
+
+        legalTimeController.showClientEditorViewer();
     }
     @Action
     public void showPaymentLog() {
@@ -457,13 +459,14 @@ public javax.swing.JDesktopPane getDesktop(){
     }
     @Action
     public void showFollowupManager(){
-        FollowupController.getInstance(LegalTimeApp.getApplication()).showFollowupViewer();
-
+        
+        legalTimeController.showFollowupViewer();
     }
 
     @Action
     public void showClientAccounting(){
-        ClientAccountRegisterController.getInstance(LegalTimeApp.getApplication()).showClientAccountRegisterView();
+
+        legalTimeController.showClientAccountRegisterView();
     }
 
     @Action

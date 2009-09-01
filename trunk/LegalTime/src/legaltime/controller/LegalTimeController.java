@@ -5,6 +5,7 @@
 
 package legaltime.controller;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import legaltime.AppPrefs;
 import legaltime.DBManager.VersionManager;
@@ -52,6 +53,9 @@ public class LegalTimeController {
      */
     public LegalTimeView getLegalTimeView() {
         return legalTimeView;
+    }
+    public JDesktopPane getDesktop(){
+        return legalTimeView.getDesktop();
     }
 
     /**
@@ -122,7 +126,34 @@ public class LegalTimeController {
         ClientAddressLabelReport clientAddressLabelReport = new ClientAddressLabelReport();
         clientAddressLabelReport.makeReport();
         JOptionPane.showInternalConfirmDialog(legalTimeView.getDesktop(), "The Report has been saved to the report" +
-                " output location specified in your preferences: " + AppPrefs.REPORT_OUTPUT_PATH);
+                " output location specified in your preferences: " + appPrefs.getValue(AppPrefs.REPORT_OUTPUT_PATH));
     }
+
+    public void showClientAccountRegisterView() {
+        ClientAccountRegisterController.getInstance(this).showClientAccountRegisterView();
+    }
+
+    public void setStatusText(String newText){
+        legalTimeView.setStatusText(newText);
+
+    }
+    public void setLastActionText(String newText){
+        legalTimeView.setLastActionText( newText);
+    }
+    public void setProgressBarValue(int value){
+        legalTimeView.setProgressBarProgressValue(value);
+    }
+
+    public void showClientEditorViewer() {
+        ClientEditorController.getInstance(this).showClientEditorViewer();
+    }
+    public javax.swing.JFrame getMainFrame(){
+        return app.getMainFrame();
+    }
+
+    public void showFollowupViewer() {
+        FollowupController.getInstance(this).showFollowupViewer();
+    }
+
 
 }

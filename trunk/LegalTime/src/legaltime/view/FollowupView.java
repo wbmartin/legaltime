@@ -67,6 +67,7 @@ FollowupController followupController;
         lblFilterPanel = new javax.swing.JLabel();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(FollowupView.class);
         setForeground(resourceMap.getColor("Form.foreground")); // NOI18N
         setIconifiable(true);

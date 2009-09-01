@@ -15,7 +15,7 @@ import org.jdesktop.application.SingleFrameApplication;
  */
 public class LegalTimeApp extends SingleFrameApplication {
 
-public static final String APP_VERSION = "0.0.2.2";
+public static final String APP_VERSION = "0.0.2.4";
 static LegalTimeController legalTimeController;
     /**
      * At startup create and show the main frame of the application.
@@ -64,7 +64,7 @@ static LegalTimeController legalTimeController;
         return Application.getInstance(LegalTimeApp.class);
     }
 
-     public void setStatusText(String newText){
+    public void setStatusText(String newText){
         legalTimeController.getLegalTimeView().setStatusText(newText);
 
     }
