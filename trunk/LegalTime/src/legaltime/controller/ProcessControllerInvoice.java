@@ -191,7 +191,7 @@ public class ProcessControllerInvoice {
 
             manager.endTransaction(true);
             InvoiceReport test = new InvoiceReport();
-            if(test.makeReport(invoiceBean.getInvoiceId())){
+            if(test.makeOriginalInvoice(invoiceBean.getInvoiceId())){
                  app.setLastActionText("Invoice Successfully Created.");
                  result = true;
             }else{
