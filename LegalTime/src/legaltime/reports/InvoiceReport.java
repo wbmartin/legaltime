@@ -71,38 +71,16 @@ public class InvoiceReport   {
        return new JRBeanCollectionDataSource(getPaymentBeans(invoiceId_));
    }
 
-   public  boolean makeReport(int invoiceId_){
-       boolean success = false;
-    JasperPrint jasperPrint;
-    java.util.Date now = new java.util.Date();
-    try
-    {
-        String outputPath = appPrefs.getValue(AppPrefs.INVOICE_OUTPUT_PATH)
+   public boolean makeOriginalInvoice(int invoiceId_){
+       java.util.Date now = new java.util.Date();
+       loadInvoice(invoiceId_);
+       String outputPath = appPrefs.getValue(AppPrefs.INVOICE_OUTPUT_PATH)
                 + File.separatorChar
                 + Integer.toString(1900+now.getYear())
                 + TextUtils.frontZeroFill( Integer.toString(now.getMonth()+1),2)
                 + TextUtils.frontZeroFill( Integer.toString(now.getDate()),2)
                 + "INVOICE";
-
-          File dir = new File(outputPath);
-        success =dir.exists();
-        if(!success){
-            success =(dir).mkdir();
-        }
-        if(!success){
-            easyLog.addEntry(EasyLog.INFO, "Error Creating Report Directory " +
-                    "Not Present and Could Not Create"
-                    , "Invoice Report",outputPath );
-            return false;
-        }
-
-
-        ClassLoader cl = ResourceAnchor.class.getClassLoader();
-        InputStream jasperFile = cl.getResourceAsStream("legaltime/reports/BogerInvoice.jasper");
-        reportPath =cl.getResource("legaltime/reports/").toString();
-        String temp = cl.getResource("legaltime/reports/").toString();
-         loadInvoice(invoiceId_);
-         String fileName = "Invoice"+ TextUtils.frontZeroFill(invoiceBean.getInvoiceId(), 5)
+       String fileName = "Invoice"+ TextUtils.frontZeroFill(invoiceBean.getInvoiceId(), 5)
                  +"_" +clientBean.getLastName() + clientBean.getFirstName() + "_"
                  + Integer.toString(1900+now.getYear())
                 +TextUtils.frontZeroFill( Integer.toString(now.getMonth()+1),2)
@@ -111,16 +89,46 @@ public class InvoiceReport   {
                 +TextUtils.frontZeroFill( Integer.toString(now.getMinutes()),2)
                 +TextUtils.frontZeroFill( Integer.toString(now.getSeconds()),2)
                 +".pdf";
-         fileName = TextUtils.prepareFileName(fileName);
+       return makeReport(invoiceId_, outputPath, fileName);
+   }
+
+   public  boolean makeReport(int invoiceId_, String outputPath_, String fileName_){
+       boolean success = false;
+       JasperPrint jasperPrint;
+    
+        try
+        {
+        
+
+          File dir = new File(outputPath_);
+        success =dir.exists();
+        if(!success){
+            success =(dir).mkdir();
+        }
+        if(!success){
+            easyLog.addEntry(EasyLog.INFO, "Error Creating Report Directory " +
+                    "Not Present and Could Not Create"
+                    , "Invoice Report",outputPath_ );
+            return false;
+        }
+
+
+        ClassLoader cl = ResourceAnchor.class.getClassLoader();
+        InputStream jasperFile = cl.getResourceAsStream("legaltime/reports/BogerInvoice.jasper");
+        reportPath =cl.getResource("legaltime/reports/").toString();
+        String temp = cl.getResource("legaltime/reports/").toString();
+         
+         
+        fileName_ = TextUtils.prepareFileName(fileName_);
         JRDataSource laborItems = createDataSource(invoiceId_);
         jasperPrint = JasperFillManager.fillReport(
-          jasperFile, getParams(invoiceId_),laborItems );
+            jasperFile, getParams(invoiceId_),laborItems );
 
         JasperExportManager.exportReportToPdfFile(
-          jasperPrint, outputPath+"/" + fileName);
+          jasperPrint, outputPath_+File.separatorChar + fileName_);
         success = true;
         easyLog.addEntry(EasyLog.INFO, "Invoice Created Successfully"
-                    , "Invoice Report",outputPath );
+                    , "Invoice Report",outputPath_ );
     }
     catch (JRException e)    {
         easyLog.addEntry(EasyLog.INFO, "Error Building Report", getClass().getName(), e);

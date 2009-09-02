@@ -13,6 +13,7 @@ import legaltime.LegalTimeApp;
 import legaltime.modelsafe.EasyLog;
 import legaltime.modelsafe.PersistanceManager;
 import legaltime.reports.ClientAddressLabelReport;
+import legaltime.view.InvoicedClientAddressLabelDateConfirmation;
 import legaltime.view.LegalTimeView;
 
 /**
@@ -124,9 +125,11 @@ public class LegalTimeController {
 
     public void ClientAddressLabelReport() {
         ClientAddressLabelReport clientAddressLabelReport = new ClientAddressLabelReport();
-        clientAddressLabelReport.makeReport();
+        clientAddressLabelReport.makeAllAddressLabelReport();
         JOptionPane.showInternalConfirmDialog(legalTimeView.getDesktop(), "The Report has been saved to the report" +
-                " output location specified in your preferences: " + appPrefs.getValue(AppPrefs.REPORT_OUTPUT_PATH));
+                " output location specified in your preferences: "  
+                + appPrefs.getValue(AppPrefs.REPORT_OUTPUT_PATH)
+                ,"Report Saved",JOptionPane.DEFAULT_OPTION);
     }
 
     public void showClientAccountRegisterView() {
@@ -153,6 +156,29 @@ public class LegalTimeController {
 
     public void showFollowupViewer() {
         FollowupController.getInstance(this).showFollowupViewer();
+    }
+
+    public void invoicedClientAddressLabelReport() {
+        ClientAddressLabelReport clientAddressLabelReport = new ClientAddressLabelReport();
+        InvoicedClientAddressLabelDateConfirmation InvoicedClientAddressLabelDateConfirmation;
+        InvoicedClientAddressLabelDateConfirmation = new
+                InvoicedClientAddressLabelDateConfirmation(getMainFrame());
+        java.util.Date effectiveDate= null;
+
+        InvoicedClientAddressLabelDateConfirmation.setVisible(true);
+        if(InvoicedClientAddressLabelDateConfirmation.isSelectionConfirmed()){
+            effectiveDate = InvoicedClientAddressLabelDateConfirmation.getDate();
+             clientAddressLabelReport.makeInvoicedAddressLabelReport(effectiveDate);
+        JOptionPane.showInternalConfirmDialog(legalTimeView.getDesktop(), "The Report has been saved to the report" +
+                " output location specified in your preferences: " + 
+                appPrefs.getValue(AppPrefs.REPORT_OUTPUT_PATH)
+                ,"Report Saved",JOptionPane.DEFAULT_OPTION);
+
+        }
+        InvoicedClientAddressLabelDateConfirmation.dispose();
+
+
+
     }
 
 

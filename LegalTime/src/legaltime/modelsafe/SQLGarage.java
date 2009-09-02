@@ -5,6 +5,8 @@
 
 package legaltime.modelsafe;
 
+import legaltime.model.ClientManager;
+
 /**
  *
  * @author bmartin
@@ -21,8 +23,24 @@ public class SQLGarage {
 
     public static String getPrevBalanceSQL(int clientId_){
         return "select sum(tran_amt) from "
-                    + "client_account_register "
-                    + "where client_id = " + clientId_ ;
+                    + " client_account_register "
+                    + " where client_id = " + clientId_ ;
+    }
+
+    public static String getInvoicedClientsSQL(java.util.Date effectiveDate){
+        return "select distinct " + ClientManager.ALL_FULL_FIELDS + " from "
+                    + " client left join invoice "
+                    + " on client.client_id =invoice.client_id "
+                    + " where invoice.invoice_dt = '" + javaDateToSQLDate(effectiveDate) +"'" ;
+    }
+
+   // select distinct client.* from  client left join invoice on client.client_id =invoice.client_id  where invoice.invoice_dt = '2009-09-02'
+
+    public static String javaDateToSQLDate(java.util.Date dt_){
+        String result="";
+        result = (dt_.getYear()+1900) +"-"+ (dt_.getMonth()+1) +"-"+ dt_.getDate();
+        return result;
+
     }
 
 }

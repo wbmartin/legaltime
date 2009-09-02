@@ -73,6 +73,7 @@ public class InvoiceEditorView extends javax.swing.JInternalFrame  {
         cmdAddExpense = new javax.swing.JButton();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(legaltime.LegalTimeApp.class).getContext().getResourceMap(InvoiceEditorView.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
