@@ -22,6 +22,7 @@ import legaltime.model.PaymentLogManager;
 import legaltime.model.exception.DAOException;
 import legaltime.modelsafe.EasyLog;
 import legaltime.view.PaymentLogView;
+import legaltime.view.PostPaymentHelper;
 import legaltime.view.model.ClientComboBoxModel;
 import legaltime.view.model.PaymentLogTableModel;
 import legaltime.view.renderer.ClientComboBoxRenderer;
@@ -33,6 +34,7 @@ import legaltime.view.renderer.ClientComboBoxRenderer;
 public class PaymentLogController implements TableModelListener, ActionListener{
     private static PaymentLogController instance;
     private PaymentLogView paymentLogView;
+    private PostPaymentHelper postPaymentHelper;
     private LegalTimeApp mainController;
     private EasyLog easyLog;
     private AppPrefs appPrefs;
@@ -46,6 +48,7 @@ public class PaymentLogController implements TableModelListener, ActionListener{
         mainController = mainController_;
         processControllerAccounting = ProcessControllerAccounting.getInstance();
         paymentLogView = new PaymentLogView(this);
+        postPaymentHelper = new PostPaymentHelper(mainController.getMainFrame());
         mainController.getDesktop().add(paymentLogView);
         easyLog = EasyLog.getInstance();
         appPrefs = AppPrefs.getInstance();
@@ -66,6 +69,8 @@ public class PaymentLogController implements TableModelListener, ActionListener{
         paymentLogView.getTblPaymentLog().addMouseListener(new PopupListener());
         paymentLogView.getCmdAddPayment().addActionListener(this);
         paymentLogView.getCmdAddPayment().setActionCommand("POST_PAYMENT");
+        //==================
+
 
     }
     public static PaymentLogController getInstance(LegalTimeApp mainController_){
@@ -93,8 +98,9 @@ public class PaymentLogController implements TableModelListener, ActionListener{
         paymentLogView.scrollRowTblPaymentLog(paymentLogTableModel.getRowCount()-1);
 
     }
-    public void refreshTblPaymentLog(){
-     int clientId;
+
+    public int getPaymentLogCboClientId(){
+        int clientId;
         try{
             clientId= ((ClientBean) paymentLogView.getCboClient().getSelectedItem()).getClientId();
         }catch(NullPointerException  ex){
@@ -102,14 +108,26 @@ public class PaymentLogController implements TableModelListener, ActionListener{
             easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
                     , getClass().getName(), ex);
         }
-     refreshTblPaymentLog(clientId);
+        return clientId;
+    }
+    
+    
+
+    public void refreshTblPaymentLog(){
+     refreshTblPaymentLog(getPaymentLogCboClientId());
     }
 
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("REVERSE_SELECTED_TRAN")){
             reverseSelectedTran();
         }else if(e.getActionCommand().equals("POST_PAYMENT")){
-            addPayment();
+            postPaymentHelper.showDialog((ClientBean)paymentLogView.getCboClient().getSelectedItem());
+            if (postPaymentHelper.isSelectionConfirmed()){
+              addPayment(postPaymentHelper.getCboClientId()
+                    ,postPaymentHelper.getDtcEffectiveDate().getDate()
+                    ,postPaymentHelper.getPaymentAmount()
+                    );
+            }
         }else if(e.getActionCommand().equals("CLIENT_CHANGED")){
             refreshTblPaymentLog();
         }
@@ -137,22 +155,15 @@ public class PaymentLogController implements TableModelListener, ActionListener{
     }
    
 
-    private void addPayment() {
-        int clientId;
-        try{
-            clientId= ((ClientBean) paymentLogView.getCboClient().getSelectedItem()).getClientId();
-        }catch(NullPointerException  ex){
-            clientId=0;
-            easyLog.addEntry(EasyLog.INFO, "Client Line indeterminate"
-                    , getClass().getName(), ex);
-        }
+    private void addPayment(int clientId_, java.util.Date effectiveDate_, Double amount_) {
+        
         //paymentLogTableModel.addRow(clientId, "Payment Received", 0D, new java.util.Date());
         PaymentLogBean paymentLogBean;
         paymentLogBean = paymentLogManager.createPaymentLogBean();
-        paymentLogBean.setClientId(clientId);
-        paymentLogBean.setAmount(0D);
+        paymentLogBean.setClientId(clientId_);
+        paymentLogBean.setAmount(amount_);
         paymentLogBean.setDescription("Payment Received");
-        paymentLogBean.setEffectiveDate( new java.util.Date());
+        paymentLogBean.setEffectiveDate( effectiveDate_);
         processControllerAccounting.addPaymentLogBean(paymentLogBean);
 
         refreshTblPaymentLog();
