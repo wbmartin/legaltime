@@ -41,7 +41,7 @@ public class VersionManager {
     public static final String  NEW_VERSION_INSTALLED ="NEW_VERSION_INSTALLED";
     public static final String  NEW_VERSION_FAILED ="NEW_VERSION_FAILED";
     public static final String  NO_NEW_VERSION ="NO_NEW_VERSION";
-    public static final String REQUIRED_DB_VERSION ="DB-0.0.0.4";
+    public static final String REQUIRED_DB_VERSION ="DB-0.0.0.5";
     public static String INSTALLED_VERSION="NOT SET";
     public VersionManager(){
         appPrefs = AppPrefs.getInstance();
@@ -98,6 +98,9 @@ public class VersionManager {
         }
         if (version.equals("DB-0.0.0.3") && !patchInstalled.equals(NEW_VERSION_FAILED)){
            applyPatch("DB-0.0.0.4");
+        }
+        if (version.equals("DB-0.0.0.4") && !patchInstalled.equals(NEW_VERSION_FAILED)){
+           applyPatch("DB-0.0.0.5");
         }
 
         return patchInstalled;

@@ -205,6 +205,15 @@
                 <Property name="name" type="java.lang.String" value="invoicedClientAddressLabelsMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="FollowupReportMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="legaltime.view.LegalTimeView" id="buildFollowupReport" methodName="buildFollowupReport"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="FollowupReportMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="FollowupReportMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="helpMenu">

@@ -20,6 +20,10 @@ public class SQLGarage {
 
     public static final String DBVERSION_SQL =
             "select description from sys_code where code_id ='DBVer';";
+     public static final String OPEN_FOLLOWUP_WHERE_SQL =
+            "where closed_dt is null";
+     public static final String OPEN_FOLLOWUP_ORDER_SQL =
+            "order by due_dt";
 
     public static String getPrevBalanceSQL(int clientId_){
         return "select sum(tran_amt) from "

@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 import legaltime.model.GeneratedBean;
-import legaltime.model.ClientBean;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -25,18 +24,23 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
- * FollowupBean is a mapping of followup Table.
+ * VwClientFollowupBean is a mapping of vw_client_followup Table.
  * @author sql2java
 */
-public class FollowupBean
+public class VwClientFollowupBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -4269566715718640261L;
+	private static final long serialVersionUID = -3927502543836137692L;
 	
-    private java.util.Date lastUpdate;
+    private String lastName;
 
-    private boolean lastUpdateIsModified = false;
-    private boolean lastUpdateIsInitialized = false;
+    private boolean lastNameIsModified = false;
+    private boolean lastNameIsInitialized = false;
+
+    private String firstName;
+
+    private boolean firstNameIsModified = false;
+    private boolean firstNameIsInitialized = false;
 
     private String description;
 
@@ -58,11 +62,6 @@ public class FollowupBean
     private boolean dueDtIsModified = false;
     private boolean dueDtIsInitialized = false;
 
-    private Integer clientId;
-
-    private boolean clientIdIsModified = false;
-    private boolean clientIdIsInitialized = false;
-
     private Integer followupId;
 
     private boolean followupIdIsModified = false;
@@ -71,82 +70,129 @@ public class FollowupBean
     private boolean _isNew = true;
 
     /**
-     * Prefered methods to create a FollowupBean is via the createFollowupBean method in FollowupManager or
-     * via the factory class FollowupFactory create method
+     * Prefered methods to create a VwClientFollowupBean is via the createVwClientFollowupBean method in VwClientFollowupManager or
+     * via the factory class VwClientFollowupFactory create method
      */
-    protected FollowupBean()
+    protected VwClientFollowupBean()
     {
     }
 
     /**
-     * Getter method for lastUpdate.
+     * Getter method for lastName.
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: followup.last_update</li>
-     * <li>column size: 19</li>
-     * <li>jdbc type returned by the driver: Types.TIMESTAMP</li>
+     * <li>full name: vw_client_followup.last_name</li>
+     * <li>column size: 50</li>
+     * <li>jdbc type returned by the driver: Types.VARCHAR</li>
      * </ul>
      *
-     * @return the value of lastUpdate
+     * @return the value of lastName
      */
-    public java.util.Date getLastUpdate()
+    public String getLastName()
     {
-        return lastUpdate;
+        return lastName;
     }
 
     /**
-     * Setter method for lastUpdate.
+     * Setter method for lastName.
      * <br>
      * The new value is set only if compareTo() says it is different,
      * or if one of either the new value or the current value is null.
      * In case the new value is different, it is set and the field is marked as 'modified'.
      *
-     * @param newVal the new value to be assigned to lastUpdate
+     * @param newVal the new value to be assigned to lastName
      */
-    public void setLastUpdate(java.util.Date newVal)
+    public void setLastName(String newVal)
     {
-        if ((newVal != null && lastUpdate != null && (newVal.compareTo(lastUpdate) == 0)) ||
-            (newVal == null && lastUpdate == null && lastUpdateIsInitialized)) {
+        if ((newVal != null && lastName != null && (newVal.compareTo(lastName) == 0)) ||
+            (newVal == null && lastName == null && lastNameIsInitialized)) {
             return;
         }
-        lastUpdate = newVal;
-        lastUpdateIsModified = true;
-        lastUpdateIsInitialized = true;
+        lastName = newVal;
+        lastNameIsModified = true;
+        lastNameIsInitialized = true;
     }
 
     /**
-     * Setter method for lastUpdate.
-     * <br>
-     * Convenient for those who do not want to deal with Objects for primary types.
-     *
-     * @param newVal the new value to be assigned to lastUpdate
-     */
-    public void setLastUpdate(long newVal)
-    {
-        setLastUpdate(new java.util.Date(newVal));
-    }
-
-    /**
-     * Determines if the lastUpdate has been modified.
+     * Determines if the lastName has been modified.
      *
      * @return true if the field has been modified, false if the field has not been modified
      */
-    public boolean isLastUpdateModified()
+    public boolean isLastNameModified()
     {
-        return lastUpdateIsModified;
+        return lastNameIsModified;
     }
 
     /**
-     * Determines if the lastUpdate has been initialized.
+     * Determines if the lastName has been initialized.
      * <br>
      * It is useful to determine if a field is null on purpose or just because it has not been initialized.
      *
      * @return true if the field has been initialized, false otherwise
      */
-    public boolean isLastUpdateInitialized()
+    public boolean isLastNameInitialized()
     {
-        return lastUpdateIsInitialized;
+        return lastNameIsInitialized;
+    }
+
+    /**
+     * Getter method for firstName.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: vw_client_followup.first_name</li>
+     * <li>column size: 50</li>
+     * <li>jdbc type returned by the driver: Types.VARCHAR</li>
+     * </ul>
+     *
+     * @return the value of firstName
+     */
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    /**
+     * Setter method for firstName.
+     * <br>
+     * The new value is set only if compareTo() says it is different,
+     * or if one of either the new value or the current value is null.
+     * In case the new value is different, it is set and the field is marked as 'modified'.
+     *
+     * @param newVal the new value to be assigned to firstName
+     */
+    public void setFirstName(String newVal)
+    {
+        if ((newVal != null && firstName != null && (newVal.compareTo(firstName) == 0)) ||
+            (newVal == null && firstName == null && firstNameIsInitialized)) {
+            return;
+        }
+        firstName = newVal;
+        firstNameIsModified = true;
+        firstNameIsInitialized = true;
+    }
+
+    /**
+     * Determines if the firstName has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isFirstNameModified()
+    {
+        return firstNameIsModified;
+    }
+
+    /**
+     * Determines if the firstName has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isFirstNameInitialized()
+    {
+        return firstNameIsInitialized;
     }
 
     /**
@@ -154,7 +200,7 @@ public class FollowupBean
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: followup.description</li>
+     * <li>full name: vw_client_followup.description</li>
      * <li>column size: 255</li>
      * <li>jdbc type returned by the driver: Types.VARCHAR</li>
      * </ul>
@@ -213,7 +259,7 @@ public class FollowupBean
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: followup.closed_dt</li>
+     * <li>full name: vw_client_followup.closed_dt</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.DATE</li>
      * </ul>
@@ -284,7 +330,7 @@ public class FollowupBean
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: followup.opened_date</li>
+     * <li>full name: vw_client_followup.opened_date</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.DATE</li>
      * </ul>
@@ -355,7 +401,7 @@ public class FollowupBean
      * <br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: followup.due_dt</li>
+     * <li>full name: vw_client_followup.due_dt</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.DATE</li>
      * </ul>
@@ -422,84 +468,11 @@ public class FollowupBean
     }
 
     /**
-     * Getter method for clientId.
-     * <br>
-     * Meta Data Information (in progress):
-     * <ul>
-     * <li>full name: followup.client_id</li>
-     * <li> foreign key: client.client_id</li>
-     * <li>column size: 10</li>
-     * <li>jdbc type returned by the driver: Types.INTEGER</li>
-     * </ul>
-     *
-     * @return the value of clientId
-     */
-    public Integer getClientId()
-    {
-        return clientId;
-    }
-
-    /**
-     * Setter method for clientId.
-     * <br>
-     * The new value is set only if compareTo() says it is different,
-     * or if one of either the new value or the current value is null.
-     * In case the new value is different, it is set and the field is marked as 'modified'.
-     *
-     * @param newVal the new value to be assigned to clientId
-     */
-    public void setClientId(Integer newVal)
-    {
-        if ((newVal != null && clientId != null && (newVal.compareTo(clientId) == 0)) ||
-            (newVal == null && clientId == null && clientIdIsInitialized)) {
-            return;
-        }
-        clientId = newVal;
-        clientIdIsModified = true;
-        clientIdIsInitialized = true;
-    }
-
-    /**
-     * Setter method for clientId.
-     * <br>
-     * Convenient for those who do not want to deal with Objects for primary types.
-     *
-     * @param newVal the new value to be assigned to clientId
-     */
-    public void setClientId(int newVal)
-    {
-        setClientId(new Integer(newVal));
-    }
-
-    /**
-     * Determines if the clientId has been modified.
-     *
-     * @return true if the field has been modified, false if the field has not been modified
-     */
-    public boolean isClientIdModified()
-    {
-        return clientIdIsModified;
-    }
-
-    /**
-     * Determines if the clientId has been initialized.
-     * <br>
-     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
-     *
-     * @return true if the field has been initialized, false otherwise
-     */
-    public boolean isClientIdInitialized()
-    {
-        return clientIdIsInitialized;
-    }
-
-    /**
      * Getter method for followupId.
      * <br>
-     * PRIMARY KEY.<br>
      * Meta Data Information (in progress):
      * <ul>
-     * <li>full name: followup.followup_id</li>
+     * <li>full name: vw_client_followup.followup_id</li>
      * <li>column size: 10</li>
      * <li>jdbc type returned by the driver: Types.INTEGER</li>
      * </ul>
@@ -565,17 +538,6 @@ public class FollowupBean
         return followupIdIsInitialized;
     }
 
-    /** The Client referenced by this bean. */
-    private ClientBean referencedClient;
-    /** Getter method for ClientBean. */
-    public ClientBean getClientBean() {
-        return this.referencedClient;
-    }
-    /** Setter method for ClientBean. */
-    public void setClientBean(ClientBean reference) {
-        this.referencedClient = reference;
-    }
-    
     /**
      * Determines if the current object is new.
      *
@@ -605,7 +567,7 @@ public class FollowupBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| descriptionIsModified  		|| closedDtIsModified  		|| openedDateIsModified  		|| dueDtIsModified  		|| clientIdIsModified  		|| followupIdIsModified  ;
+        return lastNameIsModified 		|| firstNameIsModified  		|| descriptionIsModified  		|| closedDtIsModified  		|| openedDateIsModified  		|| dueDtIsModified  		|| followupIdIsModified  ;
     }
 
     /**
@@ -613,12 +575,12 @@ public class FollowupBean
      */
     public void resetIsModified()
     {
-        lastUpdateIsModified = false;
+        lastNameIsModified = false;
+        firstNameIsModified = false;
         descriptionIsModified = false;
         closedDtIsModified = false;
         openedDateIsModified = false;
         dueDtIsModified = false;
-        clientIdIsModified = false;
         followupIdIsModified = false;
     }
 
@@ -627,14 +589,14 @@ public class FollowupBean
      *
      * @param bean the bean to copy into the current bean
      */
-    public void copy(FollowupBean bean)
+    public void copy(VwClientFollowupBean bean)
     {
-        setLastUpdate(bean.getLastUpdate());
+        setLastName(bean.getLastName());
+        setFirstName(bean.getFirstName());
         setDescription(bean.getDescription());
         setClosedDt(bean.getClosedDt());
         setOpenedDate(bean.getOpenedDate());
         setDueDt(bean.getDueDt());
-        setClientId(bean.getClientId());
         setFollowupId(bean.getFollowupId());
     }
 
@@ -644,24 +606,23 @@ public class FollowupBean
     public Map getDictionnary()
     {
         Map dictionnary = new HashMap();
-        dictionnary.put("last_update", getLastUpdate() == null ? "" : getLastUpdate().toString());
+        dictionnary.put("last_name", getLastName() == null ? "" : getLastName().toString());
+        dictionnary.put("first_name", getFirstName() == null ? "" : getFirstName().toString());
         dictionnary.put("description", getDescription() == null ? "" : getDescription().toString());
         dictionnary.put("closed_dt", getClosedDt() == null ? "" : getClosedDt().toString());
         dictionnary.put("opened_date", getOpenedDate() == null ? "" : getOpenedDate().toString());
         dictionnary.put("due_dt", getDueDt() == null ? "" : getDueDt().toString());
-        dictionnary.put("client_id", getClientId() == null ? "" : getClientId().toString());
         dictionnary.put("followup_id", getFollowupId() == null ? "" : getFollowupId().toString());
         return dictionnary;
     }
 
     /**
      * return a dictionnary of the pk columns
+     * no primary key, the regular dictionnary is returned
      */
     public Map getPkDictionnary()
     {
-        Map dictionnary = new HashMap();
-        dictionnary.put("followup_id", getFollowupId() == null ? "" : getFollowupId().toString());
-        return dictionnary;
+        return getDictionnary();
     }
 
     /**
@@ -671,8 +632,10 @@ public class FollowupBean
     {
         if (null == column || "".equals(column)) {
             return "";
-        } else if ("last_update".equalsIgnoreCase(column) || "lastUpdate".equalsIgnoreCase(column)) {
-            return getLastUpdate() == null ? "" : getLastUpdate().toString();
+        } else if ("last_name".equalsIgnoreCase(column) || "lastName".equalsIgnoreCase(column)) {
+            return getLastName() == null ? "" : getLastName().toString();
+        } else if ("first_name".equalsIgnoreCase(column) || "firstName".equalsIgnoreCase(column)) {
+            return getFirstName() == null ? "" : getFirstName().toString();
         } else if ("description".equalsIgnoreCase(column) || "description".equalsIgnoreCase(column)) {
             return getDescription() == null ? "" : getDescription().toString();
         } else if ("closed_dt".equalsIgnoreCase(column) || "closedDt".equalsIgnoreCase(column)) {
@@ -681,8 +644,6 @@ public class FollowupBean
             return getOpenedDate() == null ? "" : getOpenedDate().toString();
         } else if ("due_dt".equalsIgnoreCase(column) || "dueDt".equalsIgnoreCase(column)) {
             return getDueDt() == null ? "" : getDueDt().toString();
-        } else if ("client_id".equalsIgnoreCase(column) || "clientId".equalsIgnoreCase(column)) {
-            return getClientId() == null ? "" : getClientId().toString();
         } else if ("followup_id".equalsIgnoreCase(column) || "followupId".equalsIgnoreCase(column)) {
             return getFollowupId() == null ? "" : getFollowupId().toString();
         }
@@ -694,18 +655,18 @@ public class FollowupBean
      */
     public boolean equals(Object object)
     {
-        if (!(object instanceof FollowupBean)) {
+        if (!(object instanceof VwClientFollowupBean)) {
             return false;
         }
 
-		FollowupBean obj = (FollowupBean) object;
+		VwClientFollowupBean obj = (VwClientFollowupBean) object;
 		return new EqualsBuilder()
-            .append(getLastUpdate(), obj.getLastUpdate())
+            .append(getLastName(), obj.getLastName())
+            .append(getFirstName(), obj.getFirstName())
             .append(getDescription(), obj.getDescription())
             .append(getClosedDt(), obj.getClosedDt())
             .append(getOpenedDate(), obj.getOpenedDate())
             .append(getDueDt(), obj.getDueDt())
-            .append(getClientId(), obj.getClientId())
             .append(getFollowupId(), obj.getFollowupId())
             .isEquals();
 	}
@@ -716,12 +677,12 @@ public class FollowupBean
 	public int hashCode()
 	{
 		return new HashCodeBuilder(-82280557, -700257973)
-            .append(getLastUpdate())
+            .append(getLastName())
+            .append(getFirstName())
             .append(getDescription())
             .append(getClosedDt())
             .append(getOpenedDate())
             .append(getDueDt())
-            .append(getClientId())
             .append(getFollowupId())
             .toHashCode();
 	}
@@ -744,12 +705,12 @@ public class FollowupBean
 	 */
 	public String toString(ToStringStyle style) {
 		return new ToStringBuilder(this, style)
-            .append("last_update", getLastUpdate())
+            .append("last_name", getLastName())
+            .append("first_name", getFirstName())
             .append("description", getDescription())
             .append("closed_dt", getClosedDt())
             .append("opened_date", getOpenedDate())
             .append("due_dt", getDueDt())
-            .append("client_id", getClientId())
             .append("followup_id", getFollowupId())
             .toString();
 	}
@@ -757,14 +718,14 @@ public class FollowupBean
 
     public int compareTo(Object object)
     {
-        FollowupBean obj = (FollowupBean) object;
+        VwClientFollowupBean obj = (VwClientFollowupBean) object;
         return new CompareToBuilder()
-            .append(getLastUpdate(), obj.getLastUpdate())
+            .append(getLastName(), obj.getLastName())
+            .append(getFirstName(), obj.getFirstName())
             .append(getDescription(), obj.getDescription())
             .append(getClosedDt(), obj.getClosedDt())
             .append(getOpenedDate(), obj.getOpenedDate())
             .append(getDueDt(), obj.getDueDt())
-            .append(getClientId(), obj.getClientId())
             .append(getFollowupId(), obj.getFollowupId())
             .toComparison();
    }

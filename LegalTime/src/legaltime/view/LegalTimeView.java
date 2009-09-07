@@ -188,6 +188,7 @@ public class LegalTimeView extends FrameView {
         ReportsMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         invoicedClientAddressLabelsMenuItem = new javax.swing.JMenuItem();
+        FollowupReportMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         viewSystemLogMenuItem = new javax.swing.JMenuItem();
@@ -307,6 +308,11 @@ public class LegalTimeView extends FrameView {
         invoicedClientAddressLabelsMenuItem.setName("invoicedClientAddressLabelsMenuItem"); // NOI18N
         ReportsMenu.add(invoicedClientAddressLabelsMenuItem);
 
+        FollowupReportMenuItem.setAction(actionMap.get("buildFollowupReport")); // NOI18N
+        FollowupReportMenuItem.setText(resourceMap.getString("FollowupReportMenuItem.text")); // NOI18N
+        FollowupReportMenuItem.setName("FollowupReportMenuItem"); // NOI18N
+        ReportsMenu.add(FollowupReportMenuItem);
+
         menuBar.add(ReportsMenu);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
@@ -387,6 +393,7 @@ public class LegalTimeView extends FrameView {
     private javax.swing.JMenu BillingMenu;
     private javax.swing.JMenuItem DBAdminMenuItem;
     private javax.swing.JMenuItem ExpenseManagerMenuItem;
+    private javax.swing.JMenuItem FollowupReportMenuItem;
     private javax.swing.JMenuItem InvoiceManagerMenuItem;
     private javax.swing.JMenuItem PaymentLogMenuItem;
     private javax.swing.JMenu ReportsMenu;
@@ -576,6 +583,13 @@ public javax.swing.JDesktopPane getDesktop(){
         legalTimeController.ClientAddressLabelReport();
 
     }
+    @Action
+    public void buildFollowupReport(){
+        legalTimeController.FollowupReport();
+
+    }
+
+
     @Action
     public void buildInvoicedClientAddressLabelReport(){
         
