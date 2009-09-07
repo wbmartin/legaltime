@@ -32,7 +32,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class LaborRegisterBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -4143766652326900450L;
+	private static final long serialVersionUID = -4274524169663659941L;
 	
     private java.util.Date lastUpdate;
 
