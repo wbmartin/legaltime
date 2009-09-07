@@ -9,7 +9,7 @@
  * Created on Jul 26, 2009, 10:08:49 PM
  */
 
-package legaltime.view;
+package legaltime.view.recycle;
 
 import legaltime.LegalTimeApp;
 

@@ -4,6 +4,7 @@
 
 package legaltime.view;
 
+import legaltime.view.recycle.TimeEditor;
 import legaltime.view.recycle.ExpenseManager;
 import java.awt.Color;
 import legaltime.*;
@@ -184,7 +185,6 @@ public class LegalTimeView extends FrameView {
         invoiceAllOutstandingInvoicesMenuItem = new javax.swing.JMenuItem();
         PaymentLogMenuItem = new javax.swing.JMenuItem();
         ExpenseManagerMenuItem = new javax.swing.JMenuItem();
-        timeEditorMenuItem = new javax.swing.JMenuItem();
         ReportsMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         invoicedClientAddressLabelsMenuItem = new javax.swing.JMenuItem();
@@ -290,11 +290,6 @@ public class LegalTimeView extends FrameView {
         ExpenseManagerMenuItem.setText(resourceMap.getString("ExpenseManagerMenuItem.text")); // NOI18N
         ExpenseManagerMenuItem.setName("ExpenseManagerMenuItem"); // NOI18N
         BillingMenu.add(ExpenseManagerMenuItem);
-
-        timeEditorMenuItem.setAction(actionMap.get("showTimeEditor")); // NOI18N
-        timeEditorMenuItem.setText(resourceMap.getString("timeEditorMenuItem.text")); // NOI18N
-        timeEditorMenuItem.setName("timeEditorMenuItem"); // NOI18N
-        BillingMenu.add(timeEditorMenuItem);
 
         menuBar.add(BillingMenu);
 
@@ -413,7 +408,6 @@ public class LegalTimeView extends FrameView {
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JSeparator statusbarSeparator;
-    private javax.swing.JMenuItem timeEditorMenuItem;
     private javax.swing.JMenuItem timeKeeperMenuItem;
     private javax.swing.JMenuItem viewSystemLogMenuItem;
     // End of variables declaration//GEN-END:variables
