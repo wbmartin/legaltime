@@ -92,13 +92,13 @@ public class InvoiceController implements TableModelListener, ActionListener{
 
 
         clientComboBoxModel = new ClientComboBoxModel();
-        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+        //clientComboBoxModel.setList(ClientCache.getInstance().getCache());
 
         invoiceEditorView.getCboClient().setModel(clientComboBoxModel);
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
         invoiceEditorView.getCboClient().setRenderer(clientComboBoxRenderer );
         invoiceEditorView.getCboClient().addActionListener(this);
-        invoiceEditorView.getCboClient().setMaximumRowCount(30);
+        invoiceEditorView.getCboClient().setMaximumRowCount(appPrefs.CLIENTCBO_DISPLAY_ROWS);
 
          
          
@@ -119,7 +119,7 @@ public class InvoiceController implements TableModelListener, ActionListener{
        public void showInvoiceEditorViewer() {
 
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
-        invoiceEditorView.getCboClient().revalidate();
+        invoiceEditorView.getCboClient().updateUI();
         invoiceEditorView.setVisible(true);
         
         try {

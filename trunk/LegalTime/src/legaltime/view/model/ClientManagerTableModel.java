@@ -8,6 +8,7 @@ package legaltime.view.model;
 import javax.swing.table.AbstractTableModel;
 import legaltime.cache.ClientCache;
 import legaltime.model.ClientBean;
+import legaltime.modelsafe.EasyLog;
 
 /**
  *
@@ -16,9 +17,11 @@ import legaltime.model.ClientBean;
 public class ClientManagerTableModel extends AbstractTableModel {
     ClientCache clientCache ;
     String[] columnNames ={"Name", "City"};
+    EasyLog easyLog;
 
     public ClientManagerTableModel(){
         clientCache = ClientCache.getInstance();
+        easyLog = EasyLog.getInstance();
     }
 
 
@@ -39,6 +42,7 @@ public class ClientManagerTableModel extends AbstractTableModel {
         if(row < clientCache.getLength()
                 && clientCache.getCache()[row].getActiveYn().equals("N")){
                 return null;
+                
         }
         switch (col){  
             case 0: return clientCache.getCache()[row].getLastName()
