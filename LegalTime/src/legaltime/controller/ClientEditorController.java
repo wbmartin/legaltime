@@ -160,6 +160,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
             mainController.setLastActionText("No changes to previous client.");
         }
         mainController.setStatusText("Ready");
+       // clientEditorView.getTblClientSelect().getRowSorter().allRowsChanged();
      }
 
 
@@ -306,7 +307,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
         //System.out.println("clients:" + ClientCache.getInstance().getLength());
         clientEditorView.getTblClientSelect().revalidate();
         clientEditorView.getTblClientSelect().repaint();
-        clientEditorView.getTblClientSelect().getRowSorter().allRowsChanged();
+       
         setSelectedRow(0);
 
 
@@ -335,25 +336,27 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
                     , getClass().getName(), ex);
         }
 
-
+        
 
      }
 
 
 
     public void deactivateClient(){
+        ClientBean clientBean;
          mainController.setLastActionText("Client deactivation in process. ");
-         clientManagerTableModel.getBeanByRow(currentSelectedRow).setActiveYn("N");
+         clientBean = clientManagerTableModel.getBeanByRow(currentSelectedRow);
+         clientBean.setActiveYn("N");
         try {
-            clientManager.save(clientManagerTableModel.getBeanByRow(currentSelectedRow));
-            mainController.setLastActionText("Client deactivated. ");
+            clientManager.save(clientBean);
+            mainController.setLastActionText("Client deactivated." );
         } catch (DAOException ex) {
             Logger.getLogger(ClientEditorView.class.getName()).log(Level.SEVERE, null, ex);
             mainController.setLastActionText("Error saving client " + ex.getMessage());
         }
         clientEditorView.getTblClientSelect().revalidate();
         clientEditorView.getTblClientSelect().repaint();
-        mainController.setLastActionText("Client deactivation completed. ");
+        mainController.setLastActionText("Client deactivation completed:" + clientBean.getLastName() );
         clientEditorView.getTblClientSelect().getRowSorter().allRowsChanged();
         clearDisplay();
      }

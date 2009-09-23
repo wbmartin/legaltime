@@ -60,12 +60,12 @@ public class PaymentLogController implements TableModelListener, ActionListener{
         paymentLogView.formatTblPaymentLog();
         clientComboBoxModel = new ClientComboBoxModel();
         clientComboBoxRenderer = new ClientComboBoxRenderer();
-        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+        //clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         paymentLogView.getCboClient().setModel(clientComboBoxModel);
         paymentLogView.getCboClient().setRenderer(clientComboBoxRenderer );
         paymentLogView.getCboClient().setActionCommand("CLIENT_CHANGED");
         paymentLogView.getCboClient().addActionListener(this);
-        paymentLogView.getCboClient().setMaximumRowCount(30);
+        paymentLogView.getCboClient().setMaximumRowCount(appPrefs.CLIENTCBO_DISPLAY_ROWS);
         paymentLogView.getTblPaymentLog().addMouseListener(new PopupListener());
         paymentLogView.getCmdAddPayment().addActionListener(this);
         paymentLogView.getCmdAddPayment().setActionCommand("POST_PAYMENT");
@@ -86,6 +86,7 @@ public class PaymentLogController implements TableModelListener, ActionListener{
     }
 
     public void refreshTblPaymentLog(int clientId_){
+        paymentLogBeans = new PaymentLogBean[0];
         try {
             paymentLogBeans = paymentLogManager.loadByWhere("where client_id = " + clientId_);
         } catch (DAOException ex) {
@@ -135,7 +136,7 @@ public class PaymentLogController implements TableModelListener, ActionListener{
     }
     public void showPaymentLogView() {
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
-        paymentLogView.getCboClient().revalidate();
+        paymentLogView.getCboClient().updateUI();
         paymentLogView.setVisible(true);
         
         try {

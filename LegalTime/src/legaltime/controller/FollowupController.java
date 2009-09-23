@@ -80,12 +80,12 @@ public class FollowupController implements TableModelListener, ActionListener{
 
 
         clientComboBoxModel = new ClientComboBoxModel();
-        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+        //clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         followupView.getCboClient().setModel(clientComboBoxModel);
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
         followupView.getCboClient().setRenderer(clientComboBoxRenderer );
 
-        followupView.getCboClient().setMaximumRowCount(30);
+        followupView.getCboClient().setMaximumRowCount(appPrefs.CLIENTCBO_DISPLAY_ROWS);
         refreshFollowupTable();
       
     }
@@ -111,7 +111,7 @@ public class FollowupController implements TableModelListener, ActionListener{
             
         }
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
-        followupView.getCboClient().revalidate();
+        followupView.getCboClient().updateUI();
         followupView.setVisible(true);
        
         //if (firstShow){

@@ -26,6 +26,7 @@ public class AppPrefs {
     public static final String  EBACKUP_PATH ="EBACKUP_PATH";
     public static final String  INVOICE_OUTPUT_PATH ="INVOICE_OUTPUT_PATH";
     public static final String  REPORT_OUTPUT_PATH ="REPORT_OUTPUT_PATH";
+    public static final int CLIENTCBO_DISPLAY_ROWS =45;
     
     protected AppPrefs(){
        

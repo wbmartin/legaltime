@@ -57,12 +57,12 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
         clientAccountRegisterView.formatTblAccountRegister();
         clientComboBoxModel = new ClientComboBoxModel();
         clientComboBoxRenderer = new ClientComboBoxRenderer();
-        clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+        //clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         clientAccountRegisterView.getCboClient().setModel(clientComboBoxModel);
         clientAccountRegisterView.getCboClient().setRenderer(clientComboBoxRenderer );
         clientAccountRegisterView.getCboClient().setActionCommand("CLIENT_CHANGED");
         clientAccountRegisterView.getCboClient().addActionListener(this);
-        clientAccountRegisterView.getCboClient().setMaximumRowCount(30);
+        clientAccountRegisterView.getCboClient().setMaximumRowCount(appPrefs.CLIENTCBO_DISPLAY_ROWS);
         clientAccountRegisterView.getTblAccountRegister().addMouseListener(new PopupListener());
 
     }
@@ -125,7 +125,7 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
     public void showClientAccountRegisterView() {
 
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
-        clientAccountRegisterView.getCboClient().revalidate();
+        clientAccountRegisterView.getCboClient().updateUI();
         clientAccountRegisterView.setVisible(true);
         
         try {

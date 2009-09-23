@@ -7,6 +7,10 @@
         <description kind="short">${APPLICATION.DESC.SHORT}</description>
 <!--${JNLP.ICONS}-->
 <!--${JNLP.OFFLINE.ALLOWED}-->
+        <shortcut online="true">
+            <desktop/>
+            <menu submenu="LegalTime"/>
+        </shortcut>
     </information>
 <!--${JNLP.SECURITY}-->
     <resources>
@@ -17,5 +21,6 @@
     </resources>
     <application-desc main-class="${jnlp.main.class}">
 <!--${JNLP.APPLICATION.ARGS}-->
+
     </application-desc>
 </jnlp>
