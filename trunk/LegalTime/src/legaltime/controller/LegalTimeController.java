@@ -13,6 +13,7 @@ import legaltime.LegalTimeApp;
 import legaltime.modelsafe.EasyLog;
 import legaltime.modelsafe.PersistanceManager;
 import legaltime.reports.ClientAddressLabelReport;
+import legaltime.reports.ClientHourlyBillingRateReport;
 import legaltime.reports.FollowupReport;
 import legaltime.view.InvoicedClientAddressLabelDateConfirmation;
 import legaltime.view.LegalTimeView;
@@ -186,6 +187,16 @@ public class LegalTimeController {
     public void FollowupReport() {
         FollowupReport followupReport = new FollowupReport();
         if(followupReport.makeFollowUpReport()){
+          JOptionPane.showInternalConfirmDialog(legalTimeView.getDesktop(), "The report has been saved to the report" +
+                " output location specified in your preferences: " +
+                appPrefs.getValue(AppPrefs.REPORT_OUTPUT_PATH)
+                ,"Report Saved",JOptionPane.DEFAULT_OPTION);
+        }
+    }
+
+    public void clientHourlyBillRatesReport() {
+      ClientHourlyBillingRateReport clientHourlyBillingRateReport = new ClientHourlyBillingRateReport();
+        if(clientHourlyBillingRateReport.makeClientHourlyBillRatesReport()){
           JOptionPane.showInternalConfirmDialog(legalTimeView.getDesktop(), "The report has been saved to the report" +
                 " output location specified in your preferences: " +
                 appPrefs.getValue(AppPrefs.REPORT_OUTPUT_PATH)
