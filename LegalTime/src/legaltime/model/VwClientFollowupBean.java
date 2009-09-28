@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class VwClientFollowupBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -3927502543836137692L;
+	private static final long serialVersionUID = -2395700911581825301L;
 	
     private String lastName;
 

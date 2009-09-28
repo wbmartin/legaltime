@@ -187,13 +187,13 @@
             <Property name="name" type="java.lang.String" value="ReportsMenu" noResource="true"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="ClientAddressLabelsMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="legaltime.view.LegalTimeView" id="buildClientAddressLabelReport" methodName="buildClientAddressLabelReport"/>
                 </Property>
-                <Property name="text" type="java.lang.String" resourceKey="jMenuItem1.text"/>
-                <Property name="name" type="java.lang.String" value="jMenuItem1" noResource="true"/>
+                <Property name="text" type="java.lang.String" resourceKey="ClientAddressLabelsMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="ClientAddressLabelsMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="invoicedClientAddressLabelsMenuItem">
@@ -212,6 +212,15 @@
                 </Property>
                 <Property name="text" type="java.lang.String" resourceKey="FollowupReportMenuItem.text"/>
                 <Property name="name" type="java.lang.String" value="FollowupReportMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="HourlyBillRatesMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="legaltime.view.LegalTimeView" id="buildClientHourlyBillRatesReport" methodName="buildClientHourlyBillRatesReport"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="HourlyBillRatesMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="HourlyBillRatesMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
           </SubComponents>

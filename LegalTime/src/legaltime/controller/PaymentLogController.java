@@ -95,7 +95,7 @@ public class PaymentLogController implements TableModelListener, ActionListener{
                     , getClass().getName(), ex);
         }
         paymentLogTableModel.setList(paymentLogBeans);
-        paymentLogView.getTblPaymentLog().revalidate();
+        paymentLogView.getTblPaymentLog().updateUI();
         paymentLogView.scrollRowTblPaymentLog(paymentLogTableModel.getRowCount()-1);
 
     }

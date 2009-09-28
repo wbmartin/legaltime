@@ -79,6 +79,7 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
     }
 
     public void refreshTblAccountRegister(int clientId_){
+        clientAccountRegisterBeans = new ClientAccountRegisterBean[0];
         try {
             clientAccountRegisterBeans = clientAccountRegisterManager.loadByWhere("where client_id = " + clientId_);
         } catch (DAOException ex) {
@@ -88,7 +89,7 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
 
         }
         clientAccountRegisterTableModel.setList(clientAccountRegisterBeans);
-        clientAccountRegisterView.getTblAccountRegister().revalidate();
+        clientAccountRegisterView.getTblAccountRegister().updateUI();
         clientAccountRegisterView.scrollRowTblPaymentLog(clientAccountRegisterTableModel.getRowCount()-1);
     }
     public void refreshTblAccountRegister(){

@@ -186,9 +186,10 @@ public class LegalTimeView extends FrameView {
         PaymentLogMenuItem = new javax.swing.JMenuItem();
         ExpenseManagerMenuItem = new javax.swing.JMenuItem();
         ReportsMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        ClientAddressLabelsMenuItem = new javax.swing.JMenuItem();
         invoicedClientAddressLabelsMenuItem = new javax.swing.JMenuItem();
         FollowupReportMenuItem = new javax.swing.JMenuItem();
+        HourlyBillRatesMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         viewSystemLogMenuItem = new javax.swing.JMenuItem();
@@ -298,10 +299,10 @@ public class LegalTimeView extends FrameView {
         ReportsMenu.setText(resourceMap.getString("ReportsMenu.text")); // NOI18N
         ReportsMenu.setName("ReportsMenu"); // NOI18N
 
-        jMenuItem1.setAction(actionMap.get("buildClientAddressLabelReport")); // NOI18N
-        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
-        jMenuItem1.setName("jMenuItem1"); // NOI18N
-        ReportsMenu.add(jMenuItem1);
+        ClientAddressLabelsMenuItem.setAction(actionMap.get("buildClientAddressLabelReport")); // NOI18N
+        ClientAddressLabelsMenuItem.setText(resourceMap.getString("ClientAddressLabelsMenuItem.text")); // NOI18N
+        ClientAddressLabelsMenuItem.setName("ClientAddressLabelsMenuItem"); // NOI18N
+        ReportsMenu.add(ClientAddressLabelsMenuItem);
 
         invoicedClientAddressLabelsMenuItem.setAction(actionMap.get("buildInvoicedClientAddressLabelReport")); // NOI18N
         invoicedClientAddressLabelsMenuItem.setText(resourceMap.getString("invoicedClientAddressLabelsMenuItem.text")); // NOI18N
@@ -312,6 +313,11 @@ public class LegalTimeView extends FrameView {
         FollowupReportMenuItem.setText(resourceMap.getString("FollowupReportMenuItem.text")); // NOI18N
         FollowupReportMenuItem.setName("FollowupReportMenuItem"); // NOI18N
         ReportsMenu.add(FollowupReportMenuItem);
+
+        HourlyBillRatesMenuItem.setAction(actionMap.get("buildClientHourlyBillRatesReport")); // NOI18N
+        HourlyBillRatesMenuItem.setText(resourceMap.getString("HourlyBillRatesMenuItem.text")); // NOI18N
+        HourlyBillRatesMenuItem.setName("HourlyBillRatesMenuItem"); // NOI18N
+        ReportsMenu.add(HourlyBillRatesMenuItem);
 
         menuBar.add(ReportsMenu);
 
@@ -391,9 +397,11 @@ public class LegalTimeView extends FrameView {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu BillingMenu;
+    private javax.swing.JMenuItem ClientAddressLabelsMenuItem;
     private javax.swing.JMenuItem DBAdminMenuItem;
     private javax.swing.JMenuItem ExpenseManagerMenuItem;
     private javax.swing.JMenuItem FollowupReportMenuItem;
+    private javax.swing.JMenuItem HourlyBillRatesMenuItem;
     private javax.swing.JMenuItem InvoiceManagerMenuItem;
     private javax.swing.JMenuItem PaymentLogMenuItem;
     private javax.swing.JMenu ReportsMenu;
@@ -404,7 +412,6 @@ public class LegalTimeView extends FrameView {
     private javax.swing.JMenuItem followupManagerMenuItem;
     private javax.swing.JMenuItem invoiceAllOutstandingInvoicesMenuItem;
     private javax.swing.JMenuItem invoicedClientAddressLabelsMenuItem;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblLastAction;
     private javax.swing.JLabel lblVersion;
     private javax.swing.JPanel mainPanel;
@@ -595,6 +602,14 @@ public javax.swing.JDesktopPane getDesktop(){
         
 
         legalTimeController.invoicedClientAddressLabelReport();
+
+    }
+
+    @Action
+    public void buildClientHourlyBillRatesReport(){
+
+
+        legalTimeController.clientHourlyBillRatesReport();
 
     }
 

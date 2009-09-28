@@ -163,6 +163,7 @@ public class InvoiceReport   {
 
    public java.util.HashMap getParams(int invoiceId_){
        java.util.HashMap params = new java.util.HashMap();
+       double pleaseRemit =0;
        try{
         params.put("SUBREPORT_DIR",reportPath);
         params.put("InvoiceDate", invoiceBean.getInvoiceDt());
@@ -174,7 +175,9 @@ public class InvoiceReport   {
         params.put("CurrentServicesRenderedAmount",currentServicesRendered);
         params.put("Expenses", createExpenses(invoiceId_));
         params.put("CurrentExpenseAmount",currentExpenses);
-        params.put("TotalToRemit",currentServicesRendered + currentExpenses + invoiceBean.getPrevBalanceDue());
+        pleaseRemit = currentServicesRendered + currentExpenses + invoiceBean.getPrevBalanceDue();
+        if(pleaseRemit <0){pleaseRemit = 0;}
+        params.put("TotalToRemit",pleaseRemit);
         params.put("UserInfoCache",UserInfoCache.getInstance());
         params.put("Payments",createPayments(invoiceId_));
         params.put("PreviousBalance",invoiceBean.getPrevBalanceDue()+ totalPaymentsReceived);
@@ -224,6 +227,14 @@ public class InvoiceReport   {
             currentServicesRendered =0D;
             for(int ndx =0; ndx<beanList.length;ndx++){
                 currentServicesRendered += beanList[ndx].getBillRate() * beanList[ndx].getHoursBilled();
+            }
+            if (beanList.length== 0){
+                beanList = new LaborInvoiceItemBean[1];
+                beanList[0] = laborInvoiceItemManager.createLaborInvoiceItemBean();
+                beanList[0].setBillRate(0D);
+                beanList[0].setHoursBilled(0D);
+                beanList[0].setActivityDate(new java.util.Date());
+                beanList[0].setActivityDescription("No Hours Recorded");
             }
             laborInvoiceItems = new ArrayList(java.util.Arrays.asList(beanList));
             //Removing this monthly logic because it should be added into the labor history.
