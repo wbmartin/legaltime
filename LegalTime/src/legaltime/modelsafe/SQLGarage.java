@@ -25,6 +25,7 @@ public class SQLGarage {
      public static final String OPEN_FOLLOWUP_ORDER_SQL =
             "order by due_dt";
 
+
     public static String getPrevBalanceSQL(int clientId_){
         return "select sum(tran_amt) from "
                     + " client_account_register "

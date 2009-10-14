@@ -221,6 +221,7 @@
                 <StringItem index="3" value="Item 4"/>
               </StringArray>
             </Property>
+            <Property name="actionCommand" type="java.lang.String" resourceKey="cboClient.actionCommand"/>
             <Property name="name" type="java.lang.String" value="cboClient" noResource="true"/>
           </Properties>
         </Component>

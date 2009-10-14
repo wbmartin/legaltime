@@ -5,11 +5,14 @@
 
 package legaltime.view.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;
 import legaltime.cache.ClientCache;
 import legaltime.model.ClientBean;
+import legaltime.model.ClientManager;
 
 /**
  *
@@ -64,6 +67,17 @@ public class ClientComboBoxModel implements ComboBoxModel {
     }
     public void setList(ClientBean[] array_){
         array = array_;
+    }
+
+    public void addAllClients() {
+       ArrayList<ClientBean> temp = new ArrayList<ClientBean>();
+       temp = new ArrayList(Arrays.asList(array));
+       ClientBean allClients = ClientManager.getInstance().createClientBean();
+       allClients.setLastName("All Clients");
+       allClients.setActiveYn("Y");
+       allClients.setClientId(-1);
+       temp.add(0, allClients);
+       array = (ClientBean[])temp.toArray(new ClientBean[temp.size()]);
     }
 
 
