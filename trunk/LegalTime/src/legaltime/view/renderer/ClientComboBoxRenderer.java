@@ -38,6 +38,8 @@ protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer(
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
        JLabel renderer = (JLabel) defaultRenderer
         .getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+       String result ="";
         //int selectedIndex = ((Integer)value).intValue();
 try{
         clientBean = (ClientBean)value;
@@ -54,7 +56,14 @@ try{
             renderer.setForeground(list.getForeground());
         }
         try{
-            renderer.setText(clientBean.getLastName() +", "+ clientBean.getFirstName());
+            
+            if (clientBean.getFirstName() == null){
+                result = clientBean.getLastName();
+            } else{
+                result = clientBean.getLastName() + ", " +clientBean.getFirstName() ;
+            }
+
+            renderer.setText(result );
         }catch(NullPointerException nex){
             renderer = new JLabel();
             renderer.setVisible(false);

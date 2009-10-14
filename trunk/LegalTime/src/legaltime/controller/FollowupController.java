@@ -73,6 +73,7 @@ public class FollowupController implements TableModelListener, ActionListener{
         followupTableModel.addTableModelListener(this);
         clientTableComboBoxModel = new ClientComboBoxModel();
         clientTableComboBoxModel.setList(clientCache.getCache());
+
         followupView.formatTableFollowup();
 
 
@@ -84,7 +85,7 @@ public class FollowupController implements TableModelListener, ActionListener{
         followupView.getCboClient().setModel(clientComboBoxModel);
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
         followupView.getCboClient().setRenderer(clientComboBoxRenderer );
-
+        followupView.getCboClient().addActionListener(this);
         followupView.getCboClient().setMaximumRowCount(appPrefs.CLIENTCBO_DISPLAY_ROWS);
         refreshFollowupTable();
       
@@ -111,6 +112,7 @@ public class FollowupController implements TableModelListener, ActionListener{
             
         }
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
+        clientComboBoxModel.addAllClients();
         followupView.getCboClient().updateUI();
         followupView.setVisible(true);
        
@@ -133,6 +135,12 @@ public class FollowupController implements TableModelListener, ActionListener{
     }
 
     public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand() == null){
+            //JOptionPane.showConfirmDialog(followupView, "");
+        }
+        else if (e.getActionCommand().equals("cboClientChanged")){
+            applyFilter();
+        }
        
     }
 

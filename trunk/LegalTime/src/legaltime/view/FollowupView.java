@@ -122,6 +122,7 @@ FollowupController followupController;
         lblClient.setName("lblClient"); // NOI18N
 
         cboClient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboClient.setActionCommand(resourceMap.getString("cboClient.actionCommand")); // NOI18N
         cboClient.setName("cboClient"); // NOI18N
 
         cmdRunFilter.setAction(actionMap.get("refreshFilter")); // NOI18N

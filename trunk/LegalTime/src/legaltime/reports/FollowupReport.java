@@ -23,6 +23,7 @@ import legaltime.model.ClientManager;
 import legaltime.model.VwClientFollowupBean;
 import legaltime.model.VwClientFollowupManager;
 import legaltime.modelsafe.EasyLog;
+import legaltime.modelsafe.SQLGarage;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -52,7 +53,7 @@ public class FollowupReport   {
        ArrayList<LaborInvoiceItemBean> clientsArrayList;
         VwClientFollowupBean[] beans = null;
         try {
-            beans = vwClientFollowupManager.loadAll();
+            beans = vwClientFollowupManager.loadAll(SQLGarage.OPEN_FOLLOWUP_ORDER_SQL);
         } catch (DAOException ex) {
             Logger.getLogger(FollowupReport.class.getName()).log(Level.SEVERE, null, ex);
             easyLog.addEntry(EasyLog.INFO, "DAO Exception getting Clients"
