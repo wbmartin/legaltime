@@ -33,7 +33,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class PaymentLogBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -2389090974420121493L;
+	private static final long serialVersionUID = 6025255222172568192L;
 	
     private Integer clientAccountRegisterId;
 

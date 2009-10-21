@@ -114,6 +114,11 @@
                                                   <Component id="txtCellPhone" alignment="0" pref="214" max="32767" attributes="1"/>
                                               </Group>
                                           </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="lblMortgageAmount" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="txtMortgagePmt" min="-2" pref="69" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                                   </Group>
@@ -211,13 +216,21 @@
                   <Component id="scrlChooser" alignment="0" min="-2" pref="467" max="-2" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cmdAddClient" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmdDeleteClient" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmdClearChanges" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="cmdAddClient" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdDeleteClient" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdClearChanges" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblFollowUpItems" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtMortgagePmt" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblMortgageAmount" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblFollowUpItems" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="scrlFollowUp" min="-2" pref="93" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -607,6 +620,18 @@
       <Properties>
         <Property name="text" type="java.lang.String" resourceKey="txtMonthlyRate.text"/>
         <Property name="name" type="java.lang.String" value="txtMonthlyRate" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMortgageAmount">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lblMortgageAmount.text"/>
+        <Property name="name" type="java.lang.String" value="lblMortgageAmount" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtMortgagePmt">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="txtMortgagePmt.text"/>
+        <Property name="name" type="java.lang.String" value="txtMortgagePmt" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

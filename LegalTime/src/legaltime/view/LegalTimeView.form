@@ -167,15 +167,6 @@
                 <Property name="name" type="java.lang.String" value="PaymentLogMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="ExpenseManagerMenuItem">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="legaltime.view.LegalTimeView" id="showExpenseManager" methodName="showExpenseManager"/>
-                </Property>
-                <Property name="text" type="java.lang.String" resourceKey="ExpenseManagerMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="ExpenseManagerMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="ReportsMenu">

@@ -16,6 +16,8 @@
 	<parameter name="UserInfoCache" class="java.lang.Object"/>
 	<parameter name="Payments" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="CurrentExpenseAmount" class="java.lang.Double"/>
+	<parameter name="StatementType" class="java.lang.String"/>
+	<parameter name="MortgagePayment" class="java.lang.Double"/>
 	<field name="billRate" class="java.lang.Double"/>
 	<field name="hoursBilled" class="java.lang.Double"/>
 	<field name="activityDate" class="java.util.Date"/>
@@ -301,7 +303,7 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="38" splitType="Stretch">
+		<band height="83" splitType="Stretch">
 			<staticText>
 				<reportElement x="151" y="12" width="167" height="20"/>
 				<textElement>
@@ -322,6 +324,22 @@
 			<line>
 				<reportElement x="489" y="35" width="66" height="1"/>
 			</line>
+			<staticText>
+				<reportElement x="11" y="53" width="321" height="20">
+					<printWhenExpression><![CDATA[new Boolean($P{StatementType}.equals("MONTHLY") 
+    && $P{MortgagePayment}.doubleValue() > (0D))]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Please remit your monthly mortgage payment in a separate check  ]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="438" y="53" width="114" height="20">
+					<printWhenExpression><![CDATA[new Boolean($P{StatementType}.equals("MONTHLY") 
+    && $P{MortgagePayment}.doubleValue() > (0D))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{MortgagePayment}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

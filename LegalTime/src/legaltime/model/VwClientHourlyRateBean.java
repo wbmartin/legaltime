@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class VwClientHourlyRateBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -2397353394798509429L;
+	private static final long serialVersionUID = 6064914836552856449L;
 	
     private Double billRate;
 

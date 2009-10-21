@@ -185,6 +185,8 @@ public class InvoiceReport   {
            easyLog.addEntry(EasyLog.INFO, "Error General Exception getParams"
                     , "Invoice Report", e);
        }
+       params.put("MortgagePayment", clientBean.getMortgagePmt());
+       params.put("StatementType", clientBean.getBillType());
         return params;
    }
 
@@ -196,7 +198,7 @@ public class InvoiceReport   {
                ExpenseInvoiceItemManager.getInstance();
        ExpenseInvoiceItemBean[] beans = new ExpenseInvoiceItemBean[] {};
         try {
-            beans = expenseInvoiceItemManagernvoice.loadByWhere("where invoice_id ="+ invoiceId_);
+            beans = expenseInvoiceItemManagernvoice.loadByWhere("where invoice_id ="+ invoiceId_, " order by expense_date");
              currentExpenses =0D;
             for(int ndx =0; ndx<beans.length;ndx++){
                 currentExpenses += beans[ndx].getAmount();
@@ -223,7 +225,7 @@ public class InvoiceReport   {
       LaborInvoiceItemBean[] beanList = null;
       laborInvoiceItems =null;
         try {
-            beanList = laborInvoiceItemManager.loadByWhere("where invoice_id=" + invoiceId_);
+            beanList = laborInvoiceItemManager.loadByWhere("where invoice_id=" + invoiceId_, " order by activity_date");
             currentServicesRendered =0D;
             for(int ndx =0; ndx<beanList.length;ndx++){
                 currentServicesRendered += beanList[ndx].getBillRate() * beanList[ndx].getHoursBilled();

@@ -51,10 +51,12 @@ public class TimeRecorder extends javax.swing.JFrame
     UserInfoComboBoxModel userInfoComboBoxModel;
     ClientBillRateCache clientBillRateCache;
     EasyLog easyLog;
+    AppPrefs appPrefs;
 
     /** Creates new form TimeRecorder */
     public TimeRecorder() {
         easyLog= EasyLog.getInstance();
+        appPrefs =  AppPrefs.getInstance();
         initComponents();
         laborRegisterManager = LaborRegisterManager.getInstance();
         clientBillRateCache = ClientBillRateCache.getInstance();
@@ -63,7 +65,7 @@ public class TimeRecorder extends javax.swing.JFrame
         clientComboBoxModel.setList(clientCache.getCache());
         cboClient.setModel(clientComboBoxModel);
         cboClient.setRenderer(new ClientComboBoxRenderer());
-        cboClient.setMaximumRowCount(30);
+        cboClient.setMaximumRowCount(Integer.parseInt(appPrefs.getValue(AppPrefs.CLIENTCBO_DISPLAY_ROWS)));
 
         userInfoComboBoxModel= new UserInfoComboBoxModel();
         userInfoCache = UserInfoCache.getInstance();

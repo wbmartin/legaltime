@@ -184,7 +184,6 @@ public class LegalTimeView extends FrameView {
         monthlyBillingCycleMenuItem = new javax.swing.JMenuItem();
         invoiceAllOutstandingInvoicesMenuItem = new javax.swing.JMenuItem();
         PaymentLogMenuItem = new javax.swing.JMenuItem();
-        ExpenseManagerMenuItem = new javax.swing.JMenuItem();
         ReportsMenu = new javax.swing.JMenu();
         ClientAddressLabelsMenuItem = new javax.swing.JMenuItem();
         invoicedClientAddressLabelsMenuItem = new javax.swing.JMenuItem();
@@ -287,11 +286,6 @@ public class LegalTimeView extends FrameView {
         PaymentLogMenuItem.setText(resourceMap.getString("PaymentLogMenuItem.text")); // NOI18N
         PaymentLogMenuItem.setName("PaymentLogMenuItem"); // NOI18N
         BillingMenu.add(PaymentLogMenuItem);
-
-        ExpenseManagerMenuItem.setAction(actionMap.get("showExpenseManager")); // NOI18N
-        ExpenseManagerMenuItem.setText(resourceMap.getString("ExpenseManagerMenuItem.text")); // NOI18N
-        ExpenseManagerMenuItem.setName("ExpenseManagerMenuItem"); // NOI18N
-        BillingMenu.add(ExpenseManagerMenuItem);
 
         menuBar.add(BillingMenu);
 
@@ -399,7 +393,6 @@ public class LegalTimeView extends FrameView {
     private javax.swing.JMenu BillingMenu;
     private javax.swing.JMenuItem ClientAddressLabelsMenuItem;
     private javax.swing.JMenuItem DBAdminMenuItem;
-    private javax.swing.JMenuItem ExpenseManagerMenuItem;
     private javax.swing.JMenuItem FollowupReportMenuItem;
     private javax.swing.JMenuItem HourlyBillRatesMenuItem;
     private javax.swing.JMenuItem InvoiceManagerMenuItem;

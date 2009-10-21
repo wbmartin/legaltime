@@ -65,7 +65,7 @@ public class PaymentLogController implements TableModelListener, ActionListener{
         paymentLogView.getCboClient().setRenderer(clientComboBoxRenderer );
         paymentLogView.getCboClient().setActionCommand("CLIENT_CHANGED");
         paymentLogView.getCboClient().addActionListener(this);
-        paymentLogView.getCboClient().setMaximumRowCount(appPrefs.CLIENTCBO_DISPLAY_ROWS);
+        paymentLogView.getCboClient().setMaximumRowCount(Integer.parseInt(appPrefs.getValue(AppPrefs.CLIENTCBO_DISPLAY_ROWS)));
         paymentLogView.getTblPaymentLog().addMouseListener(new PopupListener());
         paymentLogView.getCmdAddPayment().addActionListener(this);
         paymentLogView.getCmdAddPayment().setActionCommand("POST_PAYMENT");
