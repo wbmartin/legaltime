@@ -86,7 +86,7 @@ public class FollowupController implements TableModelListener, ActionListener{
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
         followupView.getCboClient().setRenderer(clientComboBoxRenderer );
         followupView.getCboClient().addActionListener(this);
-        followupView.getCboClient().setMaximumRowCount(appPrefs.CLIENTCBO_DISPLAY_ROWS);
+        followupView.getCboClient().setMaximumRowCount(Integer.parseInt(appPrefs.getValue(AppPrefs.CLIENTCBO_DISPLAY_ROWS)));
         refreshFollowupTable();
       
     }

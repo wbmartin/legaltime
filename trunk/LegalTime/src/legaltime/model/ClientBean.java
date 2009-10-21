@@ -35,7 +35,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class ClientBean
     implements Serializable, GeneratedBean
 {
-	private static final long serialVersionUID = -2313076712092913235L;
+	private static final long serialVersionUID = 6043432546146028193L;
 	
     private java.util.Date lastUpdate;
 
@@ -46,6 +46,11 @@ public class ClientBean
 
     private boolean activeYnIsModified = false;
     private boolean activeYnIsInitialized = false;
+
+    private Double mortgagePmt;
+
+    private boolean mortgagePmtIsModified = false;
+    private boolean mortgagePmtIsInitialized = false;
 
     private Double monthlyBillRate;
 
@@ -265,6 +270,77 @@ public class ClientBean
     public boolean isActiveYnInitialized()
     {
         return activeYnIsInitialized;
+    }
+
+    /**
+     * Getter method for mortgagePmt.
+     * <br>
+     * Meta Data Information (in progress):
+     * <ul>
+     * <li>full name: client.mortgage_pmt</li>
+     * <li>column size: 22</li>
+     * <li>jdbc type returned by the driver: Types.DOUBLE</li>
+     * </ul>
+     *
+     * @return the value of mortgagePmt
+     */
+    public Double getMortgagePmt()
+    {
+        return mortgagePmt;
+    }
+
+    /**
+     * Setter method for mortgagePmt.
+     * <br>
+     * The new value is set only if compareTo() says it is different,
+     * or if one of either the new value or the current value is null.
+     * In case the new value is different, it is set and the field is marked as 'modified'.
+     *
+     * @param newVal the new value to be assigned to mortgagePmt
+     */
+    public void setMortgagePmt(Double newVal)
+    {
+        if ((newVal != null && mortgagePmt != null && (newVal.compareTo(mortgagePmt) == 0)) ||
+            (newVal == null && mortgagePmt == null && mortgagePmtIsInitialized)) {
+            return;
+        }
+        mortgagePmt = newVal;
+        mortgagePmtIsModified = true;
+        mortgagePmtIsInitialized = true;
+    }
+
+    /**
+     * Setter method for mortgagePmt.
+     * <br>
+     * Convenient for those who do not want to deal with Objects for primary types.
+     *
+     * @param newVal the new value to be assigned to mortgagePmt
+     */
+    public void setMortgagePmt(double newVal)
+    {
+        setMortgagePmt(new Double(newVal));
+    }
+
+    /**
+     * Determines if the mortgagePmt has been modified.
+     *
+     * @return true if the field has been modified, false if the field has not been modified
+     */
+    public boolean isMortgagePmtModified()
+    {
+        return mortgagePmtIsModified;
+    }
+
+    /**
+     * Determines if the mortgagePmt has been initialized.
+     * <br>
+     * It is useful to determine if a field is null on purpose or just because it has not been initialized.
+     *
+     * @return true if the field has been initialized, false otherwise
+     */
+    public boolean isMortgagePmtInitialized()
+    {
+        return mortgagePmtIsInitialized;
     }
 
     /**
@@ -1282,7 +1358,7 @@ public class ClientBean
      */
     public boolean isModified()
     {
-        return lastUpdateIsModified 		|| activeYnIsModified  		|| monthlyBillRateIsModified  		|| billTypeIsModified  		|| noteIsModified  		|| clientSinceDtIsModified  		|| emailIsModified  		|| faxIsModified  		|| cellPhoneIsModified  		|| homePhoneIsModified  		|| workPhoneIsModified  		|| zipIsModified  		|| stateIsModified  		|| cityIsModified  		|| addressIsModified  		|| lastNameIsModified  		|| firstNameIsModified  		|| clientIdIsModified  ;
+        return lastUpdateIsModified 		|| activeYnIsModified  		|| mortgagePmtIsModified  		|| monthlyBillRateIsModified  		|| billTypeIsModified  		|| noteIsModified  		|| clientSinceDtIsModified  		|| emailIsModified  		|| faxIsModified  		|| cellPhoneIsModified  		|| homePhoneIsModified  		|| workPhoneIsModified  		|| zipIsModified  		|| stateIsModified  		|| cityIsModified  		|| addressIsModified  		|| lastNameIsModified  		|| firstNameIsModified  		|| clientIdIsModified  ;
     }
 
     /**
@@ -1292,6 +1368,7 @@ public class ClientBean
     {
         lastUpdateIsModified = false;
         activeYnIsModified = false;
+        mortgagePmtIsModified = false;
         monthlyBillRateIsModified = false;
         billTypeIsModified = false;
         noteIsModified = false;
@@ -1319,6 +1396,7 @@ public class ClientBean
     {
         setLastUpdate(bean.getLastUpdate());
         setActiveYn(bean.getActiveYn());
+        setMortgagePmt(bean.getMortgagePmt());
         setMonthlyBillRate(bean.getMonthlyBillRate());
         setBillType(bean.getBillType());
         setNote(bean.getNote());
@@ -1345,6 +1423,7 @@ public class ClientBean
         Map dictionnary = new HashMap();
         dictionnary.put("last_update", getLastUpdate() == null ? "" : getLastUpdate().toString());
         dictionnary.put("active_yn", getActiveYn() == null ? "" : getActiveYn().toString());
+        dictionnary.put("mortgage_pmt", getMortgagePmt() == null ? "" : getMortgagePmt().toString());
         dictionnary.put("monthly_bill_rate", getMonthlyBillRate() == null ? "" : getMonthlyBillRate().toString());
         dictionnary.put("bill_type", getBillType() == null ? "" : getBillType().toString());
         dictionnary.put("note", getNote() == null ? "" : getNote().toString());
@@ -1385,6 +1464,8 @@ public class ClientBean
             return getLastUpdate() == null ? "" : getLastUpdate().toString();
         } else if ("active_yn".equalsIgnoreCase(column) || "activeYn".equalsIgnoreCase(column)) {
             return getActiveYn() == null ? "" : getActiveYn().toString();
+        } else if ("mortgage_pmt".equalsIgnoreCase(column) || "mortgagePmt".equalsIgnoreCase(column)) {
+            return getMortgagePmt() == null ? "" : getMortgagePmt().toString();
         } else if ("monthly_bill_rate".equalsIgnoreCase(column) || "monthlyBillRate".equalsIgnoreCase(column)) {
             return getMonthlyBillRate() == null ? "" : getMonthlyBillRate().toString();
         } else if ("bill_type".equalsIgnoreCase(column) || "billType".equalsIgnoreCase(column)) {
@@ -1434,6 +1515,7 @@ public class ClientBean
 		return new EqualsBuilder()
             .append(getLastUpdate(), obj.getLastUpdate())
             .append(getActiveYn(), obj.getActiveYn())
+            .append(getMortgagePmt(), obj.getMortgagePmt())
             .append(getMonthlyBillRate(), obj.getMonthlyBillRate())
             .append(getBillType(), obj.getBillType())
             .append(getNote(), obj.getNote())
@@ -1461,6 +1543,7 @@ public class ClientBean
 		return new HashCodeBuilder(-82280557, -700257973)
             .append(getLastUpdate())
             .append(getActiveYn())
+            .append(getMortgagePmt())
             .append(getMonthlyBillRate())
             .append(getBillType())
             .append(getNote())
@@ -1500,6 +1583,7 @@ public class ClientBean
 		return new ToStringBuilder(this, style)
             .append("last_update", getLastUpdate())
             .append("active_yn", getActiveYn())
+            .append("mortgage_pmt", getMortgagePmt())
             .append("monthly_bill_rate", getMonthlyBillRate())
             .append("bill_type", getBillType())
             .append("note", getNote())
@@ -1526,6 +1610,7 @@ public class ClientBean
         return new CompareToBuilder()
             .append(getLastUpdate(), obj.getLastUpdate())
             .append(getActiveYn(), obj.getActiveYn())
+            .append(getMortgagePmt(), obj.getMortgagePmt())
             .append(getMonthlyBillRate(), obj.getMonthlyBillRate())
             .append(getBillType(), obj.getBillType())
             .append(getNote(), obj.getNote())

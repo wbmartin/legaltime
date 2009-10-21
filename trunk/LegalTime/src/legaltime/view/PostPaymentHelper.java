@@ -14,6 +14,7 @@ package legaltime.view;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import javax.swing.JOptionPane;
+import legaltime.AppPrefs;
 import legaltime.cache.ClientCache;
 import legaltime.controller.PaymentLogController;
 import legaltime.model.ClientBean;
@@ -32,9 +33,11 @@ public class PostPaymentHelper extends javax.swing.JDialog
  ClientComboBoxModel clientComboBoxModel;
  ClientComboBoxRenderer clientComboBoxRenderer;
  EasyLog easyLog;
+ AppPrefs appPrefs;
 
     public PostPaymentHelper(javax.swing.JFrame owner) {
         super(owner, true);
+        appPrefs = AppPrefs.getInstance();
         initComponents();
         easyLog = EasyLog.getInstance();
         
@@ -44,7 +47,7 @@ public class PostPaymentHelper extends javax.swing.JDialog
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         cboClient.setModel(clientComboBoxModel);
         cboClient.setRenderer(clientComboBoxRenderer );
-        cboClient.setMaximumRowCount(30);
+        cboClient.setMaximumRowCount(Integer.parseInt(appPrefs.getValue(AppPrefs.CLIENTCBO_DISPLAY_ROWS)));
         cmdAddPayment.addActionListener(this);
         cmdCancel.addActionListener(this);
     }

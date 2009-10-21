@@ -62,84 +62,89 @@ public class ClientManager
     public static final int ID_ACTIVE_YN = 1;
 
     /**
+     * Identify the mortgage_pmt field.
+     */
+    public static final int ID_MORTGAGE_PMT = 2;
+
+    /**
      * Identify the monthly_bill_rate field.
      */
-    public static final int ID_MONTHLY_BILL_RATE = 2;
+    public static final int ID_MONTHLY_BILL_RATE = 3;
 
     /**
      * Identify the bill_type field.
      */
-    public static final int ID_BILL_TYPE = 3;
+    public static final int ID_BILL_TYPE = 4;
 
     /**
      * Identify the note field.
      */
-    public static final int ID_NOTE = 4;
+    public static final int ID_NOTE = 5;
 
     /**
      * Identify the client_since_dt field.
      */
-    public static final int ID_CLIENT_SINCE_DT = 5;
+    public static final int ID_CLIENT_SINCE_DT = 6;
 
     /**
      * Identify the email field.
      */
-    public static final int ID_EMAIL = 6;
+    public static final int ID_EMAIL = 7;
 
     /**
      * Identify the fax field.
      */
-    public static final int ID_FAX = 7;
+    public static final int ID_FAX = 8;
 
     /**
      * Identify the cell_phone field.
      */
-    public static final int ID_CELL_PHONE = 8;
+    public static final int ID_CELL_PHONE = 9;
 
     /**
      * Identify the home_phone field.
      */
-    public static final int ID_HOME_PHONE = 9;
+    public static final int ID_HOME_PHONE = 10;
 
     /**
      * Identify the work_phone field.
      */
-    public static final int ID_WORK_PHONE = 10;
+    public static final int ID_WORK_PHONE = 11;
 
     /**
      * Identify the zip field.
      */
-    public static final int ID_ZIP = 11;
+    public static final int ID_ZIP = 12;
 
     /**
      * Identify the state field.
      */
-    public static final int ID_STATE = 12;
+    public static final int ID_STATE = 13;
 
     /**
      * Identify the city field.
      */
-    public static final int ID_CITY = 13;
+    public static final int ID_CITY = 14;
 
     /**
      * Identify the address field.
      */
-    public static final int ID_ADDRESS = 14;
+    public static final int ID_ADDRESS = 15;
 
     /**
      * Identify the last_name field.
      */
-    public static final int ID_LAST_NAME = 15;
+    public static final int ID_LAST_NAME = 16;
 
     /**
      * Identify the first_name field.
      */
-    public static final int ID_FIRST_NAME = 16;
+    public static final int ID_FIRST_NAME = 17;
 
     /**
      * Identify the client_id field.
      */
-    public static final int ID_CLIENT_ID = 17;
+    public static final int ID_CLIENT_ID = 18;
 
     /**
      * Contains all the full fields of the client table.
@@ -148,6 +153,7 @@ public class ClientManager
     {
         "client.last_update"
         ,"client.active_yn"
+        ,"client.mortgage_pmt"
         ,"client.monthly_bill_rate"
         ,"client.bill_type"
         ,"client.note"
@@ -173,6 +179,7 @@ public class ClientManager
     {
         "last_update"
         ,"active_yn"
+        ,"mortgage_pmt"
         ,"monthly_bill_rate"
         ,"bill_type"
         ,"note"
@@ -196,6 +203,7 @@ public class ClientManager
      */
     public static final String ALL_FULL_FIELDS = "client.last_update"
                             + ",client.active_yn"
+                            + ",client.mortgage_pmt"
                             + ",client.monthly_bill_rate"
                             + ",client.bill_type"
                             + ",client.note"
@@ -218,6 +226,7 @@ public class ClientManager
      */
     public static final String ALL_FIELDS = "last_update"
                             + ",active_yn"
+                            + ",mortgage_pmt"
                             + ",monthly_bill_rate"
                             + ",bill_type"
                             + ",note"
@@ -734,6 +743,14 @@ public class ClientManager
                 _dirtyCount++;
             }
 
+            if (bean.isMortgagePmtModified()) {
+                if (_dirtyCount>0) {
+                    sql.append(",");
+                }
+                sql.append("mortgage_pmt");
+                _dirtyCount++;
+            }
+
             if (bean.isMonthlyBillRateModified()) {
                 if (_dirtyCount>0) {
                     sql.append(",");
@@ -960,6 +977,15 @@ public class ClientManager
                     useComma=true;
                 }
                 sql.append("active_yn=?");
+            }
+
+            if (bean.isMortgagePmtModified()) {
+                if (useComma) {
+                    sql.append(", ");
+                } else {
+                    useComma=true;
+                }
+                sql.append("mortgage_pmt=?");
             }
 
             if (bean.isMonthlyBillRateModified()) {
@@ -1600,6 +1626,14 @@ public class ClientManager
                     sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("active_yn ").append(sqlEqualsOperation).append("?");
                 }
             }
+            if (bean.isMortgagePmtModified()) {
+                _dirtyCount ++;
+                if (bean.getMortgagePmt() == null) {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("mortgage_pmt IS NULL");
+                } else {
+                    sqlWhere.append((sqlWhere.length() == 0) ? " " : " AND ").append("mortgage_pmt = ?");
+                }
+            }
             if (bean.isMonthlyBillRateModified()) {
                 _dirtyCount ++;
                 if (bean.getMonthlyBillRate() == null) {
@@ -1777,6 +1811,10 @@ public class ClientManager
                     default:
                         throw new DAOException("Unknown search type " + searchType);
                 }
+            }
+            if (bean.isMortgagePmtModified()) {
+                // System.out.println("Setting for " + _dirtyCount + " [" + bean.getMortgagePmt() + "]");
+                if (bean.getMortgagePmt() == null) { ps.setNull(++_dirtyCount, Types.DOUBLE); } else { Manager.setDouble(ps, ++_dirtyCount, bean.getMortgagePmt()); }
             }
             if (bean.isMonthlyBillRateModified()) {
                 // System.out.println("Setting for " + _dirtyCount + " [" + bean.getMonthlyBillRate() + "]");
@@ -2151,22 +2189,23 @@ public class ClientManager
         {
             bean.setLastUpdate(rs.getTimestamp(1));
             bean.setActiveYn(rs.getString(2));
-            bean.setMonthlyBillRate(Manager.getDouble(rs, 3));
-            bean.setBillType(rs.getString(4));
-            bean.setNote(rs.getString(5));
-            bean.setClientSinceDt(rs.getDate(6));
-            bean.setEmail(rs.getString(7));
-            bean.setFax(rs.getString(8));
-            bean.setCellPhone(rs.getString(9));
-            bean.setHomePhone(rs.getString(10));
-            bean.setWorkPhone(rs.getString(11));
-            bean.setZip(rs.getString(12));
-            bean.setState(rs.getString(13));
-            bean.setCity(rs.getString(14));
-            bean.setAddress(rs.getString(15));
-            bean.setLastName(rs.getString(16));
-            bean.setFirstName(rs.getString(17));
-            bean.setClientId(Manager.getInteger(rs, 18));
+            bean.setMortgagePmt(Manager.getDouble(rs, 3));
+            bean.setMonthlyBillRate(Manager.getDouble(rs, 4));
+            bean.setBillType(rs.getString(5));
+            bean.setNote(rs.getString(6));
+            bean.setClientSinceDt(rs.getDate(7));
+            bean.setEmail(rs.getString(8));
+            bean.setFax(rs.getString(9));
+            bean.setCellPhone(rs.getString(10));
+            bean.setHomePhone(rs.getString(11));
+            bean.setWorkPhone(rs.getString(12));
+            bean.setZip(rs.getString(13));
+            bean.setState(rs.getString(14));
+            bean.setCity(rs.getString(15));
+            bean.setAddress(rs.getString(16));
+            bean.setLastName(rs.getString(17));
+            bean.setFirstName(rs.getString(18));
+            bean.setClientId(Manager.getInteger(rs, 19));
         }
         catch(SQLException e)
         {
@@ -2204,6 +2243,10 @@ public class ClientManager
                     case ID_ACTIVE_YN:
                         ++pos;
                         bean.setActiveYn(rs.getString(pos));
+                        break;
+                    case ID_MORTGAGE_PMT:
+                        ++pos;
+                        bean.setMortgagePmt(Manager.getDouble(rs, pos));
                         break;
                     case ID_MONTHLY_BILL_RATE:
                         ++pos;
@@ -2299,6 +2342,7 @@ public class ClientManager
         {
             bean.setLastUpdate(rs.getTimestamp("last_update"));
             bean.setActiveYn(rs.getString("active_yn"));
+            bean.setMortgagePmt(Manager.getDouble(rs, "mortgage_pmt"));
             bean.setMonthlyBillRate(Manager.getDouble(rs, "monthly_bill_rate"));
             bean.setBillType(rs.getString("bill_type"));
             bean.setNote(rs.getString("note"));

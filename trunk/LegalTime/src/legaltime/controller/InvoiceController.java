@@ -98,7 +98,7 @@ public class InvoiceController implements TableModelListener, ActionListener{
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
         invoiceEditorView.getCboClient().setRenderer(clientComboBoxRenderer );
         invoiceEditorView.getCboClient().addActionListener(this);
-        invoiceEditorView.getCboClient().setMaximumRowCount(appPrefs.CLIENTCBO_DISPLAY_ROWS);
+        invoiceEditorView.getCboClient().setMaximumRowCount(Integer.parseInt(appPrefs.getValue(AppPrefs.CLIENTCBO_DISPLAY_ROWS)));
 
          
          

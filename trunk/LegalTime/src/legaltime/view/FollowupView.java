@@ -14,6 +14,7 @@ package legaltime.view;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.table.TableColumn;
+import legaltime.AppPrefs;
 import legaltime.LegalTimeApp;
 import legaltime.controller.FollowupController;
 import legaltime.view.renderer.ClientComboBoxRenderer;
@@ -34,8 +35,10 @@ import org.jdesktop.application.Action;
 public class FollowupView extends javax.swing.JInternalFrame {
 LegalTimeApp mainController;
 FollowupController followupController;
+AppPrefs appPrefs;
     /** Creates new form FollowUpTracker */
     public FollowupView(FollowupController followupController_) {
+        appPrefs = appPrefs.getInstance();
         followupController = followupController_;
         initComponents();
         
@@ -258,7 +261,7 @@ FollowupController followupController;
          javax.swing.JComboBox cboClientTable = new javax.swing.JComboBox();
          cboClientTable.setModel(followupController.getClientTableComboBoxModel());
          cboClientTable.setRenderer(new ClientComboBoxRenderer());
-         cboClientTable.setMaximumRowCount(30);
+         cboClientTable.setMaximumRowCount(Integer.parseInt(appPrefs.getValue(AppPrefs.CLIENTCBO_DISPLAY_ROWS)));
          tc.setCellEditor(new DefaultCellEditor(cboClientTable));
          tc.setCellRenderer(ClientTableCellRenderer.getInstance());
          //Description

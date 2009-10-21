@@ -16,7 +16,6 @@ package legaltime.view;
 
 import javax.swing.table.TableColumn;
 
-import legaltime.LegalTimeApp;
 import legaltime.controller.ClientEditorController;
 import legaltime.view.renderer.CurrencyTableCellRenderer;
 import org.jdesktop.application.Action;
@@ -107,6 +106,8 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         cmdClearChanges = new javax.swing.JButton();
         lblMonthlyRate = new javax.swing.JLabel();
         txtMonthlyRate = new javax.swing.JTextField();
+        lblMortgageAmount = new javax.swing.JLabel();
+        txtMortgagePmt = new javax.swing.JTextField();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -292,6 +293,12 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
         txtMonthlyRate.setText(resourceMap.getString("txtMonthlyRate.text")); // NOI18N
         txtMonthlyRate.setName("txtMonthlyRate"); // NOI18N
 
+        lblMortgageAmount.setText(resourceMap.getString("lblMortgageAmount.text")); // NOI18N
+        lblMortgageAmount.setName("lblMortgageAmount"); // NOI18N
+
+        txtMortgagePmt.setText(resourceMap.getString("txtMortgagePmt.text")); // NOI18N
+        txtMortgagePmt.setName("txtMortgagePmt"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -367,7 +374,11 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                                                     .addComponent(txtWorkPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                                                     .addComponent(txtHomePhone, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                                                     .addComponent(scrlNotes, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                                                    .addComponent(txtCellPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))))
+                                                    .addComponent(txtCellPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lblMortgageAmount)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtMortgagePmt, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(40, 40, 40))))
                             .addComponent(scrlFollowUp, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32))))
@@ -440,12 +451,17 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
                         .addComponent(scrlBillRates, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(scrlChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdAddClient)
-                    .addComponent(cmdDeleteClient)
-                    .addComponent(cmdClearChanges))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblFollowUpItems)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmdAddClient)
+                            .addComponent(cmdDeleteClient)
+                            .addComponent(cmdClearChanges))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblFollowUpItems))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtMortgagePmt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblMortgageAmount)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrlFollowUp, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -488,6 +504,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel lblHomePhone;
     private javax.swing.JLabel lblLastName;
     private javax.swing.JLabel lblMonthlyRate;
+    private javax.swing.JLabel lblMortgageAmount;
     private javax.swing.JLabel lblNotes;
     private javax.swing.JLabel lblState;
     private javax.swing.JLabel lblWorkPhone;
@@ -508,6 +525,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
     private javax.swing.JTextField txtHomePhone;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtMonthlyRate;
+    private javax.swing.JTextField txtMortgagePmt;
     private javax.swing.JTextPane txtNote;
     private javax.swing.JTextField txtState;
     private javax.swing.JTextField txtWorkPhone;
@@ -632,6 +650,7 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
 
      @Action
      public void addNewClient(){
+       
        clientEditorController.addNewClient();
      }
      
@@ -659,6 +678,20 @@ public class ClientEditorView extends javax.swing.JInternalFrame  {
      */
     public javax.swing.JPopupMenu getFollowupTableMenu() {
         return followupTableMenu;
+    }
+
+    /**
+     * @return the txtMortgagePmt
+     */
+    public javax.swing.JTextField getTxtMortgagePmt() {
+        return txtMortgagePmt;
+    }
+
+    /**
+     * @return the cmdAddClient
+     */
+    public javax.swing.JButton getCmdAddClient() {
+        return cmdAddClient;
     }
 
 

@@ -62,7 +62,7 @@ public class ClientAccountRegisterController implements TableModelListener, Acti
         clientAccountRegisterView.getCboClient().setRenderer(clientComboBoxRenderer );
         clientAccountRegisterView.getCboClient().setActionCommand("CLIENT_CHANGED");
         clientAccountRegisterView.getCboClient().addActionListener(this);
-        clientAccountRegisterView.getCboClient().setMaximumRowCount(appPrefs.CLIENTCBO_DISPLAY_ROWS);
+        clientAccountRegisterView.getCboClient().setMaximumRowCount(Integer.parseInt(appPrefs.getValue(AppPrefs.CLIENTCBO_DISPLAY_ROWS)));
         clientAccountRegisterView.getTblAccountRegister().addMouseListener(new PopupListener());
 
     }

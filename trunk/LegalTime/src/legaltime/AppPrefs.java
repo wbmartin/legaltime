@@ -26,7 +26,7 @@ public class AppPrefs {
     public static final String  EBACKUP_PATH ="EBACKUP_PATH";
     public static final String  INVOICE_OUTPUT_PATH ="INVOICE_OUTPUT_PATH";
     public static final String  REPORT_OUTPUT_PATH ="REPORT_OUTPUT_PATH";
-    public static final int CLIENTCBO_DISPLAY_ROWS =45;
+    public static final String CLIENTCBO_DISPLAY_ROWS ="CLIENTCBO_DISPLAY_ROWS";
     
     protected AppPrefs(){
        
@@ -63,6 +63,12 @@ public class AppPrefs {
         if (temp.equals(NOT_SET)){
             
             prefs.put(REPORT_OUTPUT_PATH, "C:\\");
+            //prefs.put(EBACKUP_PATH, NOT_SET);
+        }
+        temp = prefs.get(CLIENTCBO_DISPLAY_ROWS, NOT_SET);
+        if (temp.equals(NOT_SET)){
+
+            prefs.put(CLIENTCBO_DISPLAY_ROWS, "72");
             //prefs.put(EBACKUP_PATH, NOT_SET);
         }
 

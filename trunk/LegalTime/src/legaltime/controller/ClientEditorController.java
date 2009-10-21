@@ -167,7 +167,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
 //Controller Function
      public void valueChanged(ListSelectionEvent event) {
          int newSelectedRow;
-
+         clientEditorView.getCmdAddClient().setEnabled(true);
             if (event.getValueIsAdjusting()) {
                saveChanges();
                 return;
@@ -199,6 +199,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          clientEditorView.getTxtZip().setText("");
          clientEditorView.getCboBillingPlan().setSelectedIndex(0);
          clientEditorView.getTxtMonthlyRate().setText("");
+         clientEditorView.getTxtMortgagePmt().setText("");
 
          clientBillRateTableModel.setDataArray(new ClientBillRateBean[]{});
          clientEditorView.getTblBillRates().revalidate();
@@ -223,11 +224,18 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          bean_.setWorkPhone(clientEditorView.getTxtWorkPhone().getText());
          bean_.setZip(clientEditorView.getTxtZip().getText());
          bean_.setBillType((String)clientEditorView.getCboBillingPlan().getSelectedItem());
+
          try{
             bean_.setMonthlyBillRate(Double.parseDouble(
                     clientEditorView.getTxtMonthlyRate().getText()));
          }catch (Exception e){
             bean_.setMonthlyBillRate(0);
+         }
+         try{
+            bean_.setMortgagePmt(Double.parseDouble(
+                    clientEditorView.getTxtMortgagePmt().getText()));
+         }catch (Exception e){
+            bean_.setMortgagePmt(0);
          }
 
 
@@ -249,9 +257,14 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
          clientEditorView.getTxtZip().setText(bean_.getZip());
          clientEditorView.getCboBillingPlan().setSelectedItem(bean_.getBillType());
          try{
-         clientEditorView.getTxtMonthlyRate().setText(bean_.getMonthlyBillRate().toString());
+            clientEditorView.getTxtMonthlyRate().setText(bean_.getMonthlyBillRate().toString());
          }catch(NullPointerException ex){
             clientEditorView.getTxtMonthlyRate().setText("");
+         }
+         try{
+            clientEditorView.getTxtMortgagePmt().setText(bean_.getMortgagePmt().toString());
+         }catch(NullPointerException ex){
+            clientEditorView.getTxtMortgagePmt().setText("");
          }
 
          populateClientBillRateTable(bean_.getClientId().intValue());
@@ -268,8 +281,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
             Logger.getLogger(ClientEditorController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        clientEditorView.getTblClientFollowup().revalidate();
-        clientEditorView.getTblClientFollowup().repaint();
+        clientEditorView.getTblClientFollowup().updateUI();
         clientEditorView.getTblClientFollowup().getRowSorter().allRowsChanged();
      }
 
@@ -283,6 +295,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
 
     public void addNewClient(){
         ClientBillRateBean clientBillRateBean;
+        
         
         if (clientEditorView.getTblClientSelect().getRowCount() > 0) {
             saveChanges();
@@ -304,10 +317,9 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
                     , getClass().getName(), ex);
         }
         persistanceManager.loadClientCache();
-        //System.out.println("clients:" + ClientCache.getInstance().getLength());
-        clientEditorView.getTblClientSelect().revalidate();
-        clientEditorView.getTblClientSelect().repaint();
-       
+
+        clientEditorView.getTblClientSelect().updateUI();
+       clientEditorView.getTblClientSelect().getRowSorter().allRowsChanged();
         setSelectedRow(0);
 
 
@@ -337,7 +349,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
         }
 
         
-
+clientEditorView.getCmdAddClient().setEnabled(false);
      }
 
 
@@ -354,8 +366,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
             Logger.getLogger(ClientEditorView.class.getName()).log(Level.SEVERE, null, ex);
             mainController.setLastActionText("Error saving client " + ex.getMessage());
         }
-        clientEditorView.getTblClientSelect().revalidate();
-        clientEditorView.getTblClientSelect().repaint();
+        clientEditorView.getTblClientSelect().updateUI();
         mainController.setLastActionText("Client deactivation completed:" + clientBean.getLastName() );
         clientEditorView.getTblClientSelect().getRowSorter().allRowsChanged();
         clearDisplay();
@@ -380,8 +391,7 @@ public class ClientEditorController implements  InternalFrameListener, ListSelec
             easyLog.addEntry(EasyLog.SEVERE, "Error Loading Client Bill Rates"
                     , getClass().getName(), ex);
         }
-        clientEditorView.getTblBillRates().revalidate();
-        clientEditorView.getTblBillRates().repaint();
+        clientEditorView.getTblBillRates().updateUI();
         clientEditorView.getTblBillRates().getRowSorter().allRowsChanged();
 
      }

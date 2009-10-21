@@ -14,6 +14,7 @@ package legaltime.view;
 import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import legaltime.AppPrefs;
 import legaltime.cache.ClientCache;
 import legaltime.controller.FollowupController;
 import legaltime.model.FollowupBean;
@@ -30,17 +31,19 @@ public class FollowupItemEditorView extends JDialog implements java.awt.event.Ac
     FollowupBean followupBean;
     private ClientComboBoxRenderer clientComboBoxRenderer;
     private ClientComboBoxModel clientComboBoxModel;
+    AppPrefs appPrefs;
     /** Creates new form FollowupItemEditorView */
     
     public FollowupItemEditorView(JFrame owner) {
         super(owner, true);
+        appPrefs = AppPrefs.getInstance();
         initComponents();
         clientComboBoxModel = new ClientComboBoxModel();
         clientComboBoxModel.setList(ClientCache.getInstance().getCache());
         cboClient.setModel(clientComboBoxModel);
         clientComboBoxRenderer = new ClientComboBoxRenderer ();
         cboClient.setRenderer(clientComboBoxRenderer );
-        cboClient.setMaximumRowCount(30);
+        cboClient.setMaximumRowCount(Integer.parseInt(appPrefs.getValue(AppPrefs.CLIENTCBO_DISPLAY_ROWS)));
         cmdOk.addActionListener(this);
         cmdCancel.addActionListener(this);
     }

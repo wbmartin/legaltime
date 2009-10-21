@@ -42,6 +42,7 @@ public class ClientComparator implements Comparator
      * <ul>
      *   <li>ClientManager.ID_LAST_UPDATE
      *   <li>ClientManager.ID_ACTIVE_YN
+     *   <li>ClientManager.ID_MORTGAGE_PMT
      *   <li>ClientManager.ID_MONTHLY_BILL_RATE
      *   <li>ClientManager.ID_BILL_TYPE
      *   <li>ClientManager.ID_NOTE
@@ -78,6 +79,7 @@ public class ClientComparator implements Comparator
      * <ul>
      *   <li>ClientManager.ID_LAST_UPDATE
      *   <li>ClientManager.ID_ACTIVE_YN
+     *   <li>ClientManager.ID_MORTGAGE_PMT
      *   <li>ClientManager.ID_MONTHLY_BILL_RATE
      *   <li>ClientManager.ID_BILL_TYPE
      *   <li>ClientManager.ID_NOTE
@@ -134,6 +136,17 @@ public class ClientComparator implements Comparator
                     iReturn = 1;
                 } else {
                     iReturn = b1.getActiveYn().compareTo(b2.getActiveYn());
+                }
+                break;
+            case ClientManager.ID_MORTGAGE_PMT:
+                if (b1.getMortgagePmt() == null && b2.getMortgagePmt() != null) {
+                    iReturn = -1;
+                } else if (b1.getMortgagePmt() == null && b2.getMortgagePmt() == null) {
+                    iReturn = 0;
+                } else if (b1.getMortgagePmt() != null && b2.getMortgagePmt() == null) {
+                    iReturn = 1;
+                } else {
+                    iReturn = b1.getMortgagePmt().compareTo(b2.getMortgagePmt());
                 }
                 break;
             case ClientManager.ID_MONTHLY_BILL_RATE:
