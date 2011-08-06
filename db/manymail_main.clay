@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clay-model clay-version="2.0.0">
+<database-model author="" begin-script="" end-script="" id="19dba2c:124e3bc1482:-7ffe" name="manmail_main" sql-dialect-id="jp.azzurri.clay.dialect.Postgre_7_3_Dialect" version="1.0">
+<schema-list>
+<schema id="19dba2c:124e3bc1482:-7ffb" name="public">
+<table-list>
+<table id="19dba2c:124e3bc1482:-7ffd" name="email_msg">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7ff6" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7ff5" mandatory="true" name="email_msg_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="now()" id="19dba2c:124e3bc1482:-7fdb" mandatory="false" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7ff3" mandatory="false" name="subject">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7ff2" mandatory="false" name="msg_html">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="1" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fef" mandatory="false" name="sent_yn">
+<data-type name="CHAR" selected-variant-pattern="CHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fee" mandatory="false" name="list_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="4225af:125355e7aa2:-7fee" mandatory="false" name="sender_user_id">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+</column-list>
+<primary-key id="19dba2c:124e3bc1482:-7ffc" name="PK_EMAIL_MSG">
+<primary-key-column name="client_id"/>
+<primary-key-column name="email_msg_id"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="19dba2c:124e3bc1482:-7d76" name="fk_emailmsg_emallist" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_EMAIL_LIST" referenced-table="email_list" referenced-table-schema="public" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="client_id" referenced-key-column-name="client_id"/>
+<foreign-key-column column-name="list_id" referenced-key-column-name="list_id"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="19dba2c:124e3bc1482:-7fed" name="email_list">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fe9" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fe8" mandatory="true" name="list_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="now()" id="19dba2c:124e3bc1482:-7fe6" mandatory="false" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fe7" mandatory="false" name="list_name">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="124add9:124f23bedb4:-7fec" mandatory="false" name="mail_host">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="124add9:124f23bedb4:-7feb" mandatory="false" name="mail_port">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="124add9:124f23bedb4:-7fea" mandatory="false" name="mail_protocol">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="124add9:124f23bedb4:-7fe9" mandatory="false" name="mail_username">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="124add9:124f23bedb4:-7fe8" mandatory="false" name="mail_password_enc">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="124add9:124f23bedb4:-7fe3" mandatory="false" name="mail_auth_required">
+<data-type name="BOOL" selected-variant-pattern="BOOL"/>
+</column>
+</column-list>
+<primary-key id="19dba2c:124e3bc1482:-7fec" name="PK_EMAIL_LIST">
+<primary-key-column name="client_id"/>
+<primary-key-column name="list_id"/>
+</primary-key>
+</table>
+<table id="19dba2c:124e3bc1482:-7fda" name="list_members_xref">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fd6" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fd5" mandatory="true" name="list_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fd4" mandatory="true" name="recipient_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="now()" id="19dba2c:124e3bc1482:-7fd3" mandatory="false" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP"/>
+</column>
+</column-list>
+<primary-key id="19dba2c:124e3bc1482:-7fd9" name="PK_LIST_MEMBERS_XREF">
+<primary-key-column name="client_id"/>
+<primary-key-column name="list_id"/>
+<primary-key-column name="recipient_id"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="19dba2c:124e3bc1482:-7fa8" name="fk_listmembersxref_recipient" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_RECIPIENT" referenced-table="recipient" referenced-table-schema="public" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="client_id" referenced-key-column-name="client_id"/>
+<foreign-key-column column-name="recipient_id" referenced-key-column-name="recipient_id"/>
+</foreign-key>
+<foreign-key id="19dba2c:124e3bc1482:-7f6f" name="fk_listmembersexref_emaillist" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_EMAIL_LIST" referenced-table="email_list" referenced-table-schema="public" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="client_id" referenced-key-column-name="client_id"/>
+<foreign-key-column column-name="list_id" referenced-key-column-name="list_id"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="19dba2c:124e3bc1482:-7fd0" name="recipient">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fcb" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fcc" mandatory="true" name="recipient_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="now()" id="19dba2c:124e3bc1482:-7fc7" mandatory="false" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fca" mandatory="false" name="last_name">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fc9" mandatory="false" name="first_name">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="19dba2c:124e3bc1482:-7fc8" mandatory="false" name="email_addr">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="88833c:1269f187160:-7fee" mandatory="false" name="edit_session_expire_dt">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="25" decimal-digits="0" default-value="" id="88833c:1269f187160:-7fed" mandatory="false" name="edit_session_id">
+<data-type name="CHARACTER VARYING" selected-variant-pattern="CHARACTER VARYING(%n)"/>
+</column>
+</column-list>
+<primary-key id="19dba2c:124e3bc1482:-7fcf" name="PK_RECIPIENT">
+<primary-key-column name="client_id"/>
+<primary-key-column name="recipient_id"/>
+</primary-key>
+</table>
+</table-list>
+</schema>
+</schema-list>
+</database-model>
+<diagram>
+<table-figure refid="19dba2c:124e3bc1482:-7ffd" x="37" y="30"/>
+<table-figure refid="19dba2c:124e3bc1482:-7fed" x="444" y="3"/>
+<table-figure refid="19dba2c:124e3bc1482:-7fda" x="477" y="230"/>
+<table-figure refid="19dba2c:124e3bc1482:-7fd0" x="103" y="219"/>
+</diagram>
+</clay-model>

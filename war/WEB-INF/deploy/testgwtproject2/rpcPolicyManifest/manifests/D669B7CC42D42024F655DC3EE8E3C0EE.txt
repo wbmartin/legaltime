@@ -1,0 +1,2 @@
+serviceClass: com.martinanalytics.testmodule.client.GreetingService
+path: 7F7350BCC083F1FEA27C80EC7F7348B9.gwt.rpc
