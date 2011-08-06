@@ -1,0 +1,2 @@
+serviceClass: com.martinanalytics.testmodule.client.model.SecurityPrivilegeService
+path: 28C597F4884F6F89C9F27B75844FE3E7.gwt.rpc

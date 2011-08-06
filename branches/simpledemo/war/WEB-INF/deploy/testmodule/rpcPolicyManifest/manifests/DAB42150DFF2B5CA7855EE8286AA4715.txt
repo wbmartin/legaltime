@@ -1,0 +1,2 @@
+serviceClass: com.martinanalytics.testmodule.client.model.VwProfileGrantService
+path: 5BE58C0F4D06BC30E2F0DF897A2491D8.gwt.rpc

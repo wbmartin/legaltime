@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+
+        <New id="DSApplication" class="org.mortbay.jetty.plus.naming.Resource">
+
+                <Arg>java:comp/env/jdbc/simpledemoDS</Arg>
+                <Arg>
+                        <!-- Need to review for production http://sourceforge.net/projects/c3p0/ -->
+                        <!-- org.postgresql.ds.PGPoolingDataSource -->
+                        <!-- org.postgresql.ds.PGConnectionPoolDataSource  -->
+                        <New class="org.postgresql.ds.PGSimpleDataSource"> 
+							                 <Set name="User">simpledemo</Set>
+							                 <Set name="Password">simpledemo</Set>
+							                 <Set name="DatabaseName">simpledemo</Set>
+							                 <Set name="ServerName">127.0.0.1</Set>
+							                 <Set name="PortNumber">5432</Set>
+			            </New>
+                </Arg>
+        </New>
+
+</Configure>
