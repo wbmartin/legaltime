@@ -76,7 +76,17 @@
         <url-pattern>/testmodule/securityPrivilege</url-pattern> 
     </servlet-mapping> 
 <!-- ============================= -->
-
+<!-- ============================= -->
+    <servlet> 
+        <servlet-name>securityUserServlet</servlet-name> 
+        <servlet-class>com.martinanalytics.testmodule.server.model.SecurityUserServiceImpl</servlet-class> 
+    </servlet> 
+ 
+    <servlet-mapping> 
+        <servlet-name>securityUserServlet</servlet-name> 
+        <url-pattern>/com.martinanalytics.testmodule.TestModule/securityUser</url-pattern> 
+    </servlet-mapping> 
+<!-- ============================= -->
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>TestModule.html</welcome-file>

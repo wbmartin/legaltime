@@ -271,14 +271,16 @@ public class SecurityProfileView extends Window  {
         setTitle("Groups");
 		resizeTo(900, 550);
 		setCanDragResize(true);
+		VLayout layout = new VLayout(15);
+		layout.setSize("850", "550px");
+		layout.setMargin(30);
 		
-		 VLayout layout = new VLayout(15);
+		 
 		 HLayout profileLayout = new HLayout(2);
 		 VLayout profilebuttonsLayout= new VLayout(3);
 		 HLayout grantsLayout = new HLayout(3);
 		 
-		 layout.setSize("850", "550px");
-		 layout.setMargin(30);
+		 
 	
 		profileListGrid.setHeight("110px");
 		profileListGrid.setWidth("400px");

@@ -109,5 +109,9 @@ public AppNotifyObject getNotifier() {
 	return notifier;
 }
 
+public void showSecurityUserView(){
+	securityUserView.show();
+}
+
 
 }

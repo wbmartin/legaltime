@@ -1,0 +1,2 @@
+serviceClass: com.martinanalytics.testmodule.client.model.SecurityUserService
+path: B00D75227C64498B2E7F85674549FF6C.gwt.rpc

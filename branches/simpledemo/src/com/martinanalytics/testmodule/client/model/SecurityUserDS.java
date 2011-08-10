@@ -50,12 +50,13 @@ public class SecurityUserDS extends GwtRpcDataSource{
     	}  
 	public static final String CLIENT_ID="clientId";
 	public static final String USER_ID="userId";
-	public static final String PASSWORD_ENC="passwordEnc";
+	//public static final String PASSWORD_ENC="passwordEnc";
 	public static final String SECURITY_PROFILE_ID="securityProfileId";
-	public static final String SESSION_ID="sessionId";
-	public static final String SESSION_EXPIRE_DT="sessionExpireDt";
+	//public static final String SESSION_ID="sessionId";
+	//public static final String SESSION_EXPIRE_DT="sessionExpireDt";
 	public static final String ACTIVE_YN="activeYn";
 	public static final String LAST_UPDATE="lastUpdate";
+	
 	public static final String EVT_CACHE_UPDATED ="EvtCacheUpdated";
 	public static final String EVT_RECORD_ADDED ="EvtRecordAdded";
 	public static final String EVT_RECORD_UPDATED ="EvtRecordUpdated";
@@ -78,17 +79,17 @@ public class SecurityUserDS extends GwtRpcDataSource{
 	  field.setPrimaryKey(true);
 	  addField(field);
 
-	  field = new DataSourceField(PASSWORD_ENC,FieldType.TEXT, "Password Enc",50);
-	  addField(field);
+//	  field = new DataSourceField(PASSWORD_ENC,FieldType.TEXT, "Password Enc",50);
+//	  addField(field);
 
 	  field = new DataSourceField(SECURITY_PROFILE_ID,FieldType.INTEGER, "Security Profile Id",50);
 	  addField(field);
 
-	  field = new DataSourceField(SESSION_ID,FieldType.TEXT, "Session Id",50);
-	  addField(field);
+//	  field = new DataSourceField(SESSION_ID,FieldType.TEXT, "Session Id",50);
+//	  addField(field);
 
-	  field = new DataSourceField(SESSION_EXPIRE_DT,FieldType.DATE, "Session Expire Dt",50);
-	  addField(field);
+//	  field = new DataSourceField(SESSION_EXPIRE_DT,FieldType.DATE, "Session Expire Dt",50);
+//	  addField(field);
 
 	  field = new DataSourceField(ACTIVE_YN,FieldType.TEXT, "Active Yn",50);
 	  addField(field);
@@ -370,10 +371,10 @@ public class SecurityUserDS extends GwtRpcDataSource{
 	    public static void copyValues (ListGridRecord from, SecurityUserBean to) {
 			to.setClientId(from.getAttributeAsInt(CLIENT_ID));
 			to.setUserId(from.getAttributeAsString(USER_ID));
-			to.setPasswordEnc(from.getAttributeAsString(PASSWORD_ENC));
+//			to.setPasswordEnc(from.getAttributeAsString(PASSWORD_ENC));
 			to.setSecurityProfileId(from.getAttributeAsInt(SECURITY_PROFILE_ID));
-			to.setSessionId(from.getAttributeAsString(SESSION_ID));
-			to.setSessionExpireDt(from.getAttributeAsDate(SESSION_EXPIRE_DT));
+//			to.setSessionId(from.getAttributeAsString(SESSION_ID));
+//			to.setSessionExpireDt(from.getAttributeAsDate(SESSION_EXPIRE_DT));
 			to.setActiveYn(from.getAttributeAsString(ACTIVE_YN));
 			to.setLastUpdate(from.getAttributeAsDate(LAST_UPDATE));
 	    }
@@ -385,10 +386,10 @@ public class SecurityUserDS extends GwtRpcDataSource{
 	    public static void copyValues (SecurityUserBean from, ListGridRecord to) {
 			to.setAttribute(CLIENT_ID, from.getClientId());
 			to.setAttribute(USER_ID, from.getUserId());
-			to.setAttribute(PASSWORD_ENC, from.getPasswordEnc());
+//			to.setAttribute(PASSWORD_ENC, from.getPasswordEnc());
 			to.setAttribute(SECURITY_PROFILE_ID, from.getSecurityProfileId());
-			to.setAttribute(SESSION_ID, from.getSessionId());
-			to.setAttribute(SESSION_EXPIRE_DT, from.getSessionExpireDt());
+//			to.setAttribute(SESSION_ID, from.getSessionId());
+//			to.setAttribute(SESSION_EXPIRE_DT, from.getSessionExpireDt());
 			to.setAttribute(ACTIVE_YN, from.getActiveYn());
 			to.setAttribute(LAST_UPDATE, from.getLastUpdate());
 	    }
