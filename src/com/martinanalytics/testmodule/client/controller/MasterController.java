@@ -31,13 +31,12 @@ public class MasterController implements AppEventListener, IApplicationControlle
          private LoginController loginController ;
          private UserProfile userProfile;
          private ArrayList<DatedMessage> sysLogMessages= new ArrayList<DatedMessage>();
-
-
-
          private AppContainer appContainer ;
-         private  SecurityProfileController securityProfileController;
          private LoggerConsole loggerConsole = new LoggerConsole();
-     	//ManageUsers manageUsers = new ManageUsers();
+         private SecurityProfileController securityProfileController;
+         private SecurityUserController securityUserController;
+         
+      	//ManageUsers manageUsers = new ManageUsers();
 //         private EmailMsgController emailMsgController;
 //         private EmailListController emailListController;
          
@@ -53,6 +52,8 @@ public class MasterController implements AppEventListener, IApplicationControlle
                  appContainer.getNotifier().addAppEventListener(this);
                  
                  securityProfileController = SecurityProfileController.getInstance(this);
+                 
+                 securityUserController = SecurityUserController.getInstance(this);
 
 //                 emailMsgController =  EmailMsgController.getInstance(this);
 //                        itemWidgets.put(AppPages.EMAIL_MSG_PAGE, emailMsgController.getEmailMsgView().getEmailMsgComposite());
@@ -108,10 +109,10 @@ public class MasterController implements AppEventListener, IApplicationControlle
                 }else if(AppMsg.SUCCESSFUL_LOGIN.equals(e_.getName())){ 
                 	loginController.getLoginView().hide();
                 	appContainer.show();
-                }else if(AppMsg.SHOW_MANAGE_GROUPS.equals(e_.getName())){ 
-                	
+                }else if(AppMsg.SHOW_MANAGE_GROUPS.equals(e_.getName())){                 	
                 	securityProfileController.showManageGroupsView();
                 }else if(AppMsg.SHOW_MANAGE_USERS.equals(e_.getName())){ 
+                	securityUserController.showSecurityUserView();
                 	
                 }else if(AppMsg.SHOW_LOGGER_CONSOLE.equals(e_.getName())){ 
                 	loggerConsole = new LoggerConsole();
