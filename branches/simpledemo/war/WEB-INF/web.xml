@@ -84,9 +84,21 @@
  
     <servlet-mapping> 
         <servlet-name>securityUserServlet</servlet-name> 
-        <url-pattern>/com.martinanalytics.testmodule.TestModule/securityUser</url-pattern> 
+        <url-pattern>/testmodule/securityUser</url-pattern> 
     </servlet-mapping> 
 <!-- ============================= -->
+<!-- ============================= -->
+    <servlet> 
+        <servlet-name>userPublicServlet</servlet-name> 
+        <servlet-class>com.martinanalytics.testmodule.server.model.UserPublicServiceImpl</servlet-class> 
+    </servlet> 
+ 
+    <servlet-mapping> 
+        <servlet-name>userPublicServlet</servlet-name> 
+        <url-pattern>/testmodule/userPublic</url-pattern> 
+    </servlet-mapping> 
+<!-- ============================= -->
+
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>TestModule.html</welcome-file>

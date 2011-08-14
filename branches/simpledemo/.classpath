@@ -8,6 +8,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jetty"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/smartgwt"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/pg"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT (1)"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

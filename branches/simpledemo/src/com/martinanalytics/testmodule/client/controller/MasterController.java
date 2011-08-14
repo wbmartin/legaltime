@@ -35,7 +35,7 @@ public class MasterController implements AppEventListener, IApplicationControlle
          private LoggerConsole loggerConsole = new LoggerConsole();
          private SecurityProfileController securityProfileController;
          private SecurityUserController securityUserController;
-         
+         private UserPublicController userPublicController;
       	//ManageUsers manageUsers = new ManageUsers();
 //         private EmailMsgController emailMsgController;
 //         private EmailListController emailListController;
@@ -43,18 +43,13 @@ public class MasterController implements AppEventListener, IApplicationControlle
          public MasterController(){
                  ServerExceptionHandler.getInstance().setMasterController(this);
                  userProfile = UserProfile.getInstance();
-                 //UserInfoCache.getNotifier().addAppEventListener(this);
                  loginController = LoginController.getInstance(this);
-                 //itemWidgets.put(AppPages.LOGIN_PAGE, loginController.getLoginView().getLoginViewComposite());
                  loginController.getNotifier().addAppEventListener(this);
-
                  appContainer = new AppContainer();
-                 appContainer.getNotifier().addAppEventListener(this);
-                 
-                 securityProfileController = SecurityProfileController.getInstance(this);
-                 
+                 appContainer.getNotifier().addAppEventListener(this);               
+                 securityProfileController = SecurityProfileController.getInstance(this);                
                  securityUserController = SecurityUserController.getInstance(this);
-
+                 userPublicController =  UserPublicController.getInstance(this);
 //                 emailMsgController =  EmailMsgController.getInstance(this);
 //                        itemWidgets.put(AppPages.EMAIL_MSG_PAGE, emailMsgController.getEmailMsgView().getEmailMsgComposite());
 //
@@ -86,7 +81,7 @@ public class MasterController implements AppEventListener, IApplicationControlle
                  Log.debug("Calling Set Message");              
            //      appContainer.displayPopupMsg(title_, msg_);
                         
-                }
+         }
 
         public void passValue(String sessionId_) {
                 //page1Controller.passValue(sessionId_);
@@ -101,7 +96,7 @@ public class MasterController implements AppEventListener, IApplicationControlle
                         userProfile.setClientId(0);
                         userProfile.expireSession();
                         
-                        History.newItem(AppPages.LOGIN_PAGE);
+                        //History.newItem(AppPages.LOGIN_PAGE);
                 }else if(e_.getName().equals(AppMsg.SEND_LOGIN_INFO)){
                 	Log.debug("username mc:" + (String)e_.getPayLoad() );
                 	Log.debug("password mc:" + (String)e_.getPayLoad2() );
@@ -118,7 +113,7 @@ public class MasterController implements AppEventListener, IApplicationControlle
                 	loggerConsole = new LoggerConsole();
                 	loggerConsole.show();
                 }else{
-                        Log.debug("Unexpected App Message: " + e_.getName());
+                        Log.debug("Warning: Unhandled App Message: " + e_.getName());
                 }
                 
         }
@@ -145,6 +140,11 @@ public LoginController getLoginController(){
     		appContainer.setTransactionResults(msg_);
     		sysLogMessages.add(new DatedMessage(msg_));
     	}
+        
+        public void clearNonUserCache(){
+        	userPublicController.getUserPublicDS().invalidateCache();
+        	
+        }
         
                 
 }

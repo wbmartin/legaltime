@@ -191,7 +191,12 @@ public abstract class GwtRpcDataSource
     }
     @Override
     public Record[] getCacheData(){
-    	return clientCache.toArray(new Record[0]);
+    	try{
+    		return clientCache.toArray(new Record[0]);
+    	}catch(Exception e){
+    		Log.info("Warning, cache was null");
+    		return new Record[0];
+    	}
 	
     }
     public ArrayList<Record> getCacheList(){
@@ -203,6 +208,7 @@ public abstract class GwtRpcDataSource
     public void setCachePreferred(boolean prefer_){
     	cachePreferred = prefer_;
     }
+    
 
 
 

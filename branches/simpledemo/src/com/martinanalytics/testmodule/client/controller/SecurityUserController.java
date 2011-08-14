@@ -15,13 +15,19 @@ import com.martinanalytics.testmodule.client.app.AppEventListener;
 import com.martinanalytics.testmodule.client.app.AppMsg;
 import com.martinanalytics.testmodule.client.app.AppNotifyObject;
 import com.martinanalytics.testmodule.client.model.bean.UserProfile;
+import com.martinanalytics.testmodule.client.model.bean.UserPublicBean;
 import com.martinanalytics.testmodule.client.model.SecurityUserDS;
 import com.martinanalytics.testmodule.client.model.SecurityUserService;
 import com.martinanalytics.testmodule.client.model.SecurityUserServiceAsync;
+import com.martinanalytics.testmodule.client.model.UserPublicDS;
 import com.martinanalytics.testmodule.client.model.bean.SecurityUserBean;
 import com.martinanalytics.testmodule.client.view.SecurityUserView;
 
 import com.martinanalytics.testmodule.client.ServerExceptionHandler;
+import com.smartgwt.client.data.Criteria;
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +49,7 @@ public class SecurityUserController implements AppEventListener{
   private MasterController masterController;		// Overarching Controller
   private AppNotifyObject notifier = new AppNotifyObject();
   private SecurityUserDS securityUserDS; 
+  private UserPublicDS userPublicDS;
   private java.util.Date sessionExpireDtHolder;
 
   private java.util.Date lastUpdateHolder;
@@ -55,8 +62,14 @@ public class SecurityUserController implements AppEventListener{
  */
   protected  SecurityUserController(MasterController masterController_){
 	masterController =masterController_;
-	securityUserDS =new SecurityUserDS(masterController);
-	securityUserView = new SecurityUserView(securityUserDS);	
+	securityUserDS =new SecurityUserDS(masterController);	
+	securityUserDS.setCacheMaxAge(100000);
+	securityUserDS.setCachePreferred(true);
+	
+	userPublicDS = new UserPublicDS(masterController);
+	userPublicDS.setCacheMaxAge(100000);
+	userPublicDS.setCachePreferred(true);
+	securityUserView = new SecurityUserView(securityUserDS, userPublicDS);	
 	securityUserView.getNotifier().addAppEventListener(this);
 	//SecurityUserView.getSecurityUserTable().getNotifier().addAppEventListener(this);
 	userProfile = UserProfile.getInstance();
@@ -88,11 +101,26 @@ public class SecurityUserController implements AppEventListener{
  */
 @Override
   public void onAppEventNotify(AppEvent e_) {
-         if (e_.getName().equals("SecurityUserViewOnAttach")){
+	if (e_.getName().equals(AppMsg.ADD_USER_PUBLIC)){
 		
-	}else if(e_.getName().equals("SecurityUserViewOnDetach")){
-	}else if(e_.getName().equals("SecurityUserTableOnAttach")){		
-	}else if(e_.getName().equals("SecurityUserTableOnDetach")){		
+		
+		if(e_.getPayLoad()!=null){
+			String newUserName = (String)e_.getPayLoad();
+			SecurityUserBean securityUserBean = new SecurityUserBean();
+			ListGridRecord securityUserRecord = new ListGridRecord();
+			securityUserBean.setUserId(newUserName);
+			
+			SecurityUserDS.copyValues(securityUserBean, securityUserRecord);
+			securityUserDS.addData(securityUserRecord);
+			
+			UserPublicBean userPublicBean = new UserPublicBean();
+			ListGridRecord userPublicRecord = new ListGridRecord();
+			userPublicBean.setLastName("User");
+			userPublicBean.setFirstName("Newly Created");
+			userPublicBean.setUserId(newUserName);
+			UserPublicDS.copyValues(userPublicBean, userPublicRecord);
+			securityUserView.getUserPublicListGrid().addData(userPublicRecord);
+		}
 	
 	}else{
 		Log.debug("Unexpected AppEvent named" +e_.getName() );
@@ -110,7 +138,10 @@ public AppNotifyObject getNotifier() {
 }
 
 public void showSecurityUserView(){
+	securityUserDS.fetchAllRowsToCache();
+	securityUserView.getUserPublicListGrid().fetchData();
 	securityUserView.show();
+	
 }
 
 
