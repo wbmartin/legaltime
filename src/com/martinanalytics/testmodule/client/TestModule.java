@@ -3,6 +3,8 @@ package com.martinanalytics.testmodule.client;
 import com.allen_sauer.gwt.log.client.DivLogger;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -20,7 +22,14 @@ public class TestModule implements EntryPoint {
 	AppNotifyObject notifier;
 	public void onModuleLoad()	{
 		notifier = new AppNotifyObject();
-		
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			
+			@Override
+			public void onUncaughtException(Throwable e) {
+				e.printStackTrace();
+				
+			}
+		});
 		Log.getLogger(DivLogger.class).getWidget().setVisible(false);
 		MasterController masterController = new MasterController();
 		notifier.addAppEventListener(masterController);
