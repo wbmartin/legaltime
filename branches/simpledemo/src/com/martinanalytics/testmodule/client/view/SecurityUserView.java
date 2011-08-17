@@ -13,6 +13,7 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.fields.DataSourceDateField;
 import com.smartgwt.client.types.FieldType;
 import com.smartgwt.client.types.FormItemType;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.util.ValueCallback;
@@ -21,6 +22,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.HeaderItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.CanvasItem;
@@ -119,7 +121,7 @@ public class SecurityUserView extends Window  {
 		resizeTo(1000, 650);
 		setCanDragResize(true);
 		VLayout layout = new VLayout(15);
-		layout.setSize("850", "600px");
+		layout.setSize("100px", "650px");
 		layout.setMargin(30);
 		setTop(50);
 		setLeft(50);
@@ -136,6 +138,9 @@ public class SecurityUserView extends Window  {
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("readOnly", "true");
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("displayFormat", "toUSSLongDate");
 		 
+		 ComboBoxItem securityProfileComboBoxItem = new ComboBoxItem();
+		 securityUserDS.getField("securityProfileId").setEditorType(securityProfileComboBoxItem);
+		 
 		 commentField.setCellStyle("richTextItemCellStyle");
 		 userPublicDS.getField(UserPublicDS.COMMENT).setEditorType(commentField);
 		 ListGridField useridLgf = new ListGridField(UserPublicDS.USER_ID,"User Id",100 );
@@ -147,8 +152,15 @@ public class SecurityUserView extends Window  {
 
 		gridFormSplitLayout.addMember(userPublicListGrid);
 		VLayout formAndButtons = new VLayout(2);
-		formAndButtons.addMember(userPublicForm);
+		formAndButtons.setWidth("700");
+		formAndButtons.setOverflow(Overflow.AUTO);
+		securityUserForm.setWidth("600");
+		securityUserForm.setTitleWidth("100");
 		formAndButtons.addMember(securityUserForm);
+		securityUserForm.setWidth("600");
+		userPublicForm.setTitleWidth("100");
+		formAndButtons.addMember(userPublicForm);
+		
 		formAndButtons.addMember(cmdAddNew);
 		userPublicForm.setWidth(300);
 		

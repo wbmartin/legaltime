@@ -92,7 +92,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 //	  addField(field);
 
 	  field = new DataSourceField(ACTIVE_YN,FieldType.TEXT, "Active Yn",50);
-	  field.setHidden(true); 
+	  //field.setHidden(true); 
 	  addField(field);
 
 	  field = new DataSourceField(LAST_UPDATE,FieldType.DATE, "Last Update",50); 

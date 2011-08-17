@@ -1,0 +1,2 @@
+serviceClass: com.martinanalytics.testmodule.client.model.UserPublicService
+path: 9AB00B3FFC2B280C8CCBDBCEC00EA7B2.gwt.rpc
