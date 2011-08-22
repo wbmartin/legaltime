@@ -107,11 +107,14 @@ public class MasterController implements AppEventListener, IApplicationControlle
                 }else if(AppMsg.SHOW_MANAGE_GROUPS.equals(e_.getName())){                 	
                 	securityProfileController.showManageGroupsView();
                 }else if(AppMsg.SHOW_MANAGE_USERS.equals(e_.getName())){ 
-                	securityUserController.showSecurityUserView();
-                	
+                	securityUserController.showSecurityUserView();                	
                 }else if(AppMsg.SHOW_LOGGER_CONSOLE.equals(e_.getName())){ 
                 	loggerConsole = new LoggerConsole();
                 	loggerConsole.show();
+                }else if(AppMsg.SET_MASTER_WINDOW_STATUS.equals(e_.getName())){
+                	setTransactionResults((String)e_.getPayLoad());
+                }else if(AppMsg.ALERT_USER_MSG.equals(e_.getName())){
+                	//setTransactionResults((String)e_.getPayLoad());
                 }else{
                         Log.debug("Warning: Unhandled App Message: " + e_.getName());
                 }
@@ -119,9 +122,9 @@ public class MasterController implements AppEventListener, IApplicationControlle
         }
 
 
-public LoginController getLoginController(){
-	return loginController;
-}
+		public LoginController getLoginController(){
+			return loginController;
+		}
         
 
         /**

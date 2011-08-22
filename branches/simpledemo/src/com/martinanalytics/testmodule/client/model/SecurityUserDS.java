@@ -7,6 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.martinanalytics.testmodule.client.ServerExceptionHandler;
 import com.martinanalytics.testmodule.client.app.AppEventProducer;
+import com.martinanalytics.testmodule.client.app.AppMsg;
 import com.martinanalytics.testmodule.client.app.AppPref;
 import com.martinanalytics.testmodule.client.app.IApplicationController;
 import com.martinanalytics.testmodule.client.model.bean.SecurityUserBean;
@@ -39,12 +40,11 @@ public class SecurityUserDS extends GwtRpcDataSource{
 	private final SecurityUserServiceAsync securityUserService = GWT.create(SecurityUserService.class);
 			 		
 	private UserProfile userProfile; 
-	private IApplicationController masterController;
 	private AppEventProducer notifier;
   
-    	public static SecurityUserDS getInstance(IApplicationController masterController_) {  
+    	public static SecurityUserDS getInstance() {  
           if (instance == null) {  
-            instance = new SecurityUserDS(masterController_);  //"securityUserDS"
+            instance = new SecurityUserDS();  //"securityUserDS"
           }  
           return instance;  
     	}  
@@ -56,16 +56,14 @@ public class SecurityUserDS extends GwtRpcDataSource{
 	//public static final String SESSION_EXPIRE_DT="sessionExpireDt";
 	public static final String ACTIVE_YN="activeYn";
 	public static final String LAST_UPDATE="lastUpdate";
-	
 	public static final String EVT_CACHE_UPDATED ="EvtCacheUpdated";
 	public static final String EVT_RECORD_ADDED ="EvtRecordAdded";
 	public static final String EVT_RECORD_UPDATED ="EvtRecordUpdated";
 	public static final String EVT_RECORD_REMOVED ="EvtRecordRemoved";
 	public static final String EVT_SELECT_RETURNED ="EvtSelectReturned";
 
-   	public SecurityUserDS(IApplicationController masterController_) { 
+   	protected SecurityUserDS() { 
 	  userProfile = UserProfile.getInstance();
-	  masterController = masterController_; 
 	  notifier = new AppEventProducer() ;
 	  DataSourceField field;
 		
@@ -146,7 +144,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 		   securityUserService.selectSecurityUser(userProfile, whereClause, orderByClause, rowLimit, startRow,
 			new AsyncCallback<ArrayList<SecurityUserBean>>(){
 				public void onFailure(Throwable caught) {
-					masterController.setTransactionResults(
+					notifier.notifyAppEvent(this, AppMsg.SET_MASTER_WINDOW_STATUS,
 					  "Retrieving SecurityUser Failed ("+ (new java.util.Date().getTime() -startTime.getTime()) + "ms)");
 					Log.debug("Where Attempted: " +whereClause + " | Orderby attempted " + orderByClause);
 					if(!ServerExceptionHandler.getInstance().handle(caught)){
@@ -156,7 +154,8 @@ public class SecurityUserDS extends GwtRpcDataSource{
 		
 				public void onSuccess(ArrayList<SecurityUserBean> securityUserResult) {
 				  Log.debug("Select SecurityUser received  Where Attempted: " + whereClause + " | Orderby attempted " + orderByClause );
-				  masterController.setTransactionResults("Successfully Retrieved SecurityUser listing"
+				  notifier.notifyAppEvent(this, AppMsg.SET_MASTER_WINDOW_STATUS,
+							"Successfully Retrieved SecurityUser listing"
 							+ (new java.util.Date().getTime() - startTime.getTime()));
  				  ListGridRecord[] list = new ListGridRecord[securityUserResult.size ()];
 				  for (int i = 0; i < list.length; i++) {
@@ -200,9 +199,9 @@ public class SecurityUserDS extends GwtRpcDataSource{
 		new AsyncCallback<SecurityUserBean>(){
 			public void onFailure(Throwable caught) {
 				Log.debug("securityUserService.insertSecurityUser Failed: " + caught);
-				masterController.setTransactionResults(
+				notifier.notifyAppEvent(this, AppMsg.SET_MASTER_WINDOW_STATUS,
 					"Adding SecurityUser Failed ("
-						+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
+					+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
 				Log.info("Insert Bean Attempted: " + securityUserBean);
                			response.setStatus (RPCResponse.STATUS_FAILURE);
                			processResponse (requestId, response);
@@ -214,7 +213,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				Log.debug("securityUserService.insertSecurityUser onSuccess: " + result);
 				if (result.getClientId() !=null && result.getUserId() !=null){
 					userProfile.incrementSessionTimeOut();
-					masterController.setTransactionResults(
+					notifier.notifyAppEvent(this, AppMsg.SET_MASTER_WINDOW_STATUS,
 						"Successfully inserted SecurityUser record"
 						+ (new java.util.Date().getTime() - startTime.getTime()));
 					Log.info("Bean Added" + result.toString());
@@ -230,9 +229,10 @@ public class SecurityUserDS extends GwtRpcDataSource{
 					}				
 					notifier.notifyAppEvent(this, EVT_RECORD_ADDED);
 				}else{
-					masterController.notifyUserOfSystemError("Server Error","There was an error while adding the "
-					+ "securityUser.  This is an unexpected error, please go to Help > View Log and send "
-					+ " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
+					notifier.notifyAppEvent(this, AppMsg.ALERT_USER_MSG,
+				  	  "Server Error","There was an error while adding the "
+					  + "securityUser.  This is an unexpected error, please go to Help > View Log and send "
+					  + " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
 				}
 			}
 	});
@@ -261,7 +261,8 @@ public class SecurityUserDS extends GwtRpcDataSource{
 		new AsyncCallback<SecurityUserBean>(){
 			public void onFailure(Throwable caught) {
 				Log.debug("securityUserService.updateSecurityUser Failed: " + caught);
-				masterController.setTransactionResults("Updating SecurityUser Failed ("
+				notifier.notifyAppEvent(this, AppMsg.SET_MASTER_WINDOW_STATUS,
+					"Updating SecurityUser Failed ("
 					+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
 				Log.info("Update Bean Attempted: " + securityUserBean);
                			response.setStatus (RPCResponse.STATUS_FAILURE);
@@ -273,7 +274,8 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				Log.debug("securityUserService.updateSecurityUser onSuccess: " + result);
 				if (result.getClientId() !=null && result.getUserId() !=null){
 				  userProfile.incrementSessionTimeOut();
-				  masterController.setTransactionResults("Successfully updated SecurityUser record"
+				  notifier.notifyAppEvent(this, AppMsg.SET_MASTER_WINDOW_STATUS,
+					"Successfully updated SecurityUser record"
 				  	+ (new java.util.Date().getTime() - startTime.getTime()));
 				  Log.info("Bean Updated" + result.toString());
 				  ListGridRecord[] listGridRecordArray = new ListGridRecord[1];
@@ -294,10 +296,11 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				  }				  
 				  notifier.notifyAppEvent(this, EVT_RECORD_UPDATED);
 				}else{
-					masterController.notifyUserOfSystemError("Server Error","There was an error while updating a "
-					+ "securityUser record.  This can be caused by someone else changing the record.  Please try"
-					+ " your transaction again.  If the error persists, please go to Help > View Log and send "
-					+ " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
+					notifier.notifyAppEvent(this, AppMsg.ALERT_USER_MSG,
+				  	  "Server Error","There was an error while updating a "
+					  + "securityUser record.  This can be caused by someone else changing the record.  Please try"
+					  + " your transaction again.  If the error persists, please go to Help > View Log and send "
+					  + " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
 				}
 			}
 	});
@@ -321,8 +324,9 @@ public class SecurityUserDS extends GwtRpcDataSource{
 	securityUserService.deleteSecurityUserBean(userProfile,securityUserBean,
 		new AsyncCallback<Boolean>(){
 			public void onFailure(Throwable caught) {
-				masterController.setTransactionResults(	"Deleting SecurityUser Failed ("
-						+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
+				notifier.notifyAppEvent(this, AppMsg.SET_MASTER_WINDOW_STATUS,
+					"Deleting SecurityUser Failed ("
+					+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
 				Log.info("Delete Bean Attempted: " + securityUserBean);
                 		response.setStatus (RPCResponse.STATUS_FAILURE);
                			processResponse (requestId, response);
@@ -334,8 +338,9 @@ public class SecurityUserDS extends GwtRpcDataSource{
 			  Log.debug("securityUserService.deleteSecurityUser onSuccess: " + result);
 			  if (result){
 				userProfile.incrementSessionTimeOut();
-				masterController.setTransactionResults("Successfully deleted SecurityUser record"
-				  + (new java.util.Date().getTime() - startTime.getTime()));
+				notifier.notifyAppEvent(this, AppMsg.SET_MASTER_WINDOW_STATUS,
+				 	"Successfully deleted SecurityUser record"
+				  	+ (new java.util.Date().getTime() - startTime.getTime()));
 				Log.info("Bean Deleted" +  securityUserBean.toString());
 				ListGridRecord[] list = new ListGridRecord[1];
 				// We do not receive removed record from server.
@@ -355,10 +360,11 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				processResponse (requestId, response);
 				notifier.notifyAppEvent(this, EVT_RECORD_REMOVED);
 			   }else{
-				masterController.notifyUserOfSystemError("Server Error","There was an error while deleting a "
-				+ "securityUser record.  This can be caused by someone else changing the record.  Please try"
-				+ " your transaction again.  If the error persists, please go to Help > View Log and send "
-				+ " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
+				notifier.notifyAppEvent(this, AppMsg.ALERT_USER_MSG,
+				  "Server Error","There was an error while deleting a "
+				  + "securityUser record.  This can be caused by someone else changing the record.  Please try"
+				  + " your transaction again.  If the error persists, please go to Help > View Log and send "
+				  + " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
 			    }
 			}
 	});
@@ -435,7 +441,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				}
 		});
 	
-}
+	}
 
   
 }

@@ -62,7 +62,8 @@ public class SecurityUserController implements AppEventListener{
  */
   protected  SecurityUserController(MasterController masterController_){
 	masterController =masterController_;
-	securityUserDS =new SecurityUserDS(masterController);	
+	securityUserDS =SecurityUserDS.getInstance();
+	securityUserDS.getNotifier().addAppEventListener(masterController);
 	securityUserDS.setCacheMaxAge(100000);
 	securityUserDS.setCachePreferred(true);
 	
@@ -109,6 +110,8 @@ public class SecurityUserController implements AppEventListener{
 			SecurityUserBean securityUserBean = new SecurityUserBean();
 			ListGridRecord securityUserRecord = new ListGridRecord();
 			securityUserBean.setUserId(newUserName);
+			securityUserBean.setSecurityProfileId(AppPref.DEFAULT_SECURITY_PROFILE_ID);
+			
 			
 			SecurityUserDS.copyValues(securityUserBean, securityUserRecord);
 			securityUserDS.addData(securityUserRecord);
