@@ -2,6 +2,8 @@ package com.martinanalytics.testmodule.client.view;
 
 
 
+import java.util.LinkedHashMap;
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.martinanalytics.testmodule.client.app.AppMsg;
@@ -22,6 +24,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.HeaderItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -139,7 +142,13 @@ public class SecurityUserView extends Window  {
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("displayFormat", "toUSSLongDate");
 		 
 		 ComboBoxItem securityProfileComboBoxItem = new ComboBoxItem();
+		 LinkedHashMap securityProfileValueMap = new LinkedHashMap();
+		 securityProfileComboBoxItem.setValueMap(securityProfileValueMap);
 		 securityUserDS.getField("securityProfileId").setEditorType(securityProfileComboBoxItem);
+		 
+		 CheckboxItem activeYnCkBxItem = new CheckboxItem();
+		 activeYnCkBxItem.setAttribute("value", "Y");
+		 securityUserDS.getField("activeYn").setEditorType(activeYnCkBxItem);
 		 
 		 commentField.setCellStyle("richTextItemCellStyle");
 		 userPublicDS.getField(UserPublicDS.COMMENT).setEditorType(commentField);
@@ -148,6 +157,7 @@ public class SecurityUserView extends Window  {
 		 ListGridField firstNameLgf = new ListGridField(UserPublicDS.FIRST_NAME,"First Name",100 );
 		 userPublicListGrid.setFields(useridLgf,lastNameLgf,firstNameLgf);
 		
+		 userPublicDS.getField("userId").setHidden(true);
 
 
 		gridFormSplitLayout.addMember(userPublicListGrid);

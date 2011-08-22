@@ -26,4 +26,6 @@ public class AppMsg {
 	public static final String REMOVE_SECURITY_PROFILE_GRANT = "RemoveSecurityProfileGrant";
 	public static final String ADD_USER_PUBLIC = "AddUserPublic";
 	public static final String DELETE_USER_PUBLIC = "DeleteUserPublic";
+	public static final String SET_MASTER_WINDOW_STATUS = "SetMasterWindowStatus";
+	public static final String ALERT_USER_MSG="AlertUserMsg";
 }
