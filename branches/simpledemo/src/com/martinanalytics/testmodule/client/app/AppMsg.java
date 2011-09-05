@@ -28,4 +28,9 @@ public class AppMsg {
 	public static final String DELETE_USER_PUBLIC = "DeleteUserPublic";
 	public static final String SET_MASTER_WINDOW_STATUS = "SetMasterWindowStatus";
 	public static final String ALERT_USER_MSG="AlertUserMsg";
+	public static final String EVT_CACHE_UPDATED ="EvtCacheUpdated";
+	public static final String EVT_RECORD_ADDED ="EvtRecordAdded";
+	public static final String EVT_RECORD_UPDATED ="EvtRecordUpdated";
+	public static final String EVT_RECORD_REMOVED ="EvtRecordRemoved";
+	public static final String EVT_SELECT_RETURNED ="EvtSelectReturned";
 }

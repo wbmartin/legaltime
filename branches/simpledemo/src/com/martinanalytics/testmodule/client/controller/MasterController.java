@@ -10,6 +10,7 @@ import com.martinanalytics.testmodule.client.app.AppEvent;
 import com.martinanalytics.testmodule.client.app.AppEventListener;
 import com.martinanalytics.testmodule.client.app.AppMsg;
 import com.martinanalytics.testmodule.client.app.AppPages;
+import com.martinanalytics.testmodule.client.app.AppSysCode;
 import com.martinanalytics.testmodule.client.app.DatedMessage;
 import com.martinanalytics.testmodule.client.app.IApplicationController;
 
@@ -36,6 +37,7 @@ public class MasterController implements AppEventListener, IApplicationControlle
          private SecurityProfileController securityProfileController;
          private SecurityUserController securityUserController;
          private UserPublicController userPublicController;
+         private AppSysCode appSysCode ;
       	//ManageUsers manageUsers = new ManageUsers();
 //         private EmailMsgController emailMsgController;
 //         private EmailListController emailListController;
@@ -98,10 +100,11 @@ public class MasterController implements AppEventListener, IApplicationControlle
                         
                         //History.newItem(AppPages.LOGIN_PAGE);
                 }else if(e_.getName().equals(AppMsg.SEND_LOGIN_INFO)){
-                	Log.debug("username mc:" + (String)e_.getPayLoad() );
-                	Log.debug("password mc:" + (String)e_.getPayLoad2() );
+                	//Log.debug("username mc:" + (String)e_.getPayLoad() );
+                	//Log.debug("password mc:" + (String)e_.getPayLoad2() );
                         loginController.attemptAuthorization((String)e_.getPayLoad(),(String)e_.getPayLoad2());
                 }else if(AppMsg.SUCCESSFUL_LOGIN.equals(e_.getName())){ 
+                	appSysCode = AppSysCode.getInstance();
                 	loginController.getLoginView().hide();
                 	appContainer.show();
                 }else if(AppMsg.SHOW_MANAGE_GROUPS.equals(e_.getName())){                 	
