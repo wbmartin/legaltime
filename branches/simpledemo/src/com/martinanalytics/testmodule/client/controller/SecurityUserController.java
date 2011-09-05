@@ -66,6 +66,7 @@ public class SecurityUserController implements AppEventListener{
 	securityUserDS.getNotifier().addAppEventListener(masterController);
 	securityUserDS.setCacheMaxAge(100000);
 	securityUserDS.setCachePreferred(true);
+	securityUserDS.fetchAllRowsToCache();
 	
 	userPublicDS = new UserPublicDS(masterController);
 	userPublicDS.setCacheMaxAge(100000);
