@@ -139,7 +139,7 @@ public class SecurityUserView extends Window  {
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setHidden(false);
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setEditorType(new TextItem());
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("readOnly", "true");
-		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("displayFormat", "toUSSLongDate");
+		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("displayFormat", "toUSShortDateTime");
 		 
 		 ComboBoxItem securityProfileComboBoxItem = new ComboBoxItem();
 		 LinkedHashMap securityProfileValueMap = new LinkedHashMap();
@@ -147,8 +147,10 @@ public class SecurityUserView extends Window  {
 		 securityUserDS.getField("securityProfileId").setEditorType(securityProfileComboBoxItem);
 		 
 		 CheckboxItem activeYnCkBxItem = new CheckboxItem();
-		 activeYnCkBxItem.setAttribute("value", "Y");
+		 activeYnCkBxItem.setLabelAsTitle(true);
+		 //activeYnCkBxItem.setAttribute("value", "Y");
 		 securityUserDS.getField("activeYn").setEditorType(activeYnCkBxItem);
+		 
 		 
 		 commentField.setCellStyle("richTextItemCellStyle");
 		 userPublicDS.getField(UserPublicDS.COMMENT).setEditorType(commentField);

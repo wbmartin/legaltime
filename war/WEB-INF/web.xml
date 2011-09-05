@@ -98,6 +98,17 @@
         <url-pattern>/testmodule/userPublic</url-pattern> 
     </servlet-mapping> 
 <!-- ============================= -->
+<!-- ============================= -->
+    <servlet> 
+        <servlet-name>sysCodeServlet</servlet-name> 
+        <servlet-class>com.martinanalytics.testmodule.server.model.SysCodeServiceImpl</servlet-class> 
+    </servlet> 
+ 
+    <servlet-mapping> 
+        <servlet-name>sysCodeServlet</servlet-name> 
+        <url-pattern>/testmodule/sysCode</url-pattern> 
+    </servlet-mapping> 
+<!-- ============================= -->
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
