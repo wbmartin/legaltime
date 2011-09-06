@@ -9,6 +9,9 @@
 <column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="17e9df2:1323a2fcf68:-7ffa" mandatory="true" name="sys_code_id">
 <data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
 </column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="17e9df2:1323a2fcf68:-7fbb" mandatory="false" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
 <column auto-increment="false" column-size="5" decimal-digits="0" default-value="" id="17e9df2:1323a2fcf68:-7fc2" mandatory="true" name="code_type">
 <data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
 </column>

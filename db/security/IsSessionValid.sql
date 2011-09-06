@@ -1,3 +1,4 @@
+\o ./log/IsSessionValid.log
 --
 -- CREATE FUNCTION: isSessionValid
 --

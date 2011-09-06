@@ -1,3 +1,4 @@
+\o ./log/IsUserAuthorized.log
 --
 -- CREATE FUNCTION: isUserAuthorized
 --
