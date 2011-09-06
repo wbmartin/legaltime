@@ -46,24 +46,9 @@ public class MasterController implements AppEventListener, IApplicationControlle
                  ServerExceptionHandler.getInstance().setMasterController(this);
                  userProfile = UserProfile.getInstance();
                  loginController = LoginController.getInstance(this);
-                 loginController.getNotifier().addAppEventListener(this);
-                 appContainer = new AppContainer();
-                 appContainer.getNotifier().addAppEventListener(this);               
-                 securityProfileController = SecurityProfileController.getInstance(this);                
-                 securityUserController = SecurityUserController.getInstance(this);
-                 userPublicController =  UserPublicController.getInstance(this);
-//                 emailMsgController =  EmailMsgController.getInstance(this);
-//                        itemWidgets.put(AppPages.EMAIL_MSG_PAGE, emailMsgController.getEmailMsgView().getEmailMsgComposite());
-//
-//                        emailListController =  EmailListController.getInstance(this);
-//                        itemWidgets.put(AppPages.EMAIL_LIST_PAGE, emailListController.getEmailListView().getEmailListComposite());
-//                        emailListController.getNotifier().addAppEventListener(this);
-//
-//               customerController =  CustomerController.getInstance(this);
-//               itemWidgets.put(AppPages.CUSTOMER_PAGE, customerController.getCustomerView().getCustomerComposite());
-//               customerController.getNotifier().addAppEventListener(this);
+                 loginController.getNotifier().addAppEventListener(this);       
 
-                         }
+         }
          
          public Composite getPage(String page_){
                  String finalPage =page_;
@@ -104,12 +89,14 @@ public class MasterController implements AppEventListener, IApplicationControlle
                 	//Log.debug("password mc:" + (String)e_.getPayLoad2() );
                         loginController.attemptAuthorization((String)e_.getPayLoad(),(String)e_.getPayLoad2());
                 }else if(AppMsg.SUCCESSFUL_LOGIN.equals(e_.getName())){ 
-                	appSysCode = AppSysCode.getInstance();
-                	loginController.getLoginView().hide();
-                	appContainer.show();
-                }else if(AppMsg.SHOW_MANAGE_GROUPS.equals(e_.getName())){                 	
+                	postLoginInit();
+                	
+                }else if(AppMsg.SHOW_MANAGE_GROUPS.equals(e_.getName())){ 
+                	securityProfileController = SecurityProfileController.getInstance(this);
                 	securityProfileController.showManageGroupsView();
                 }else if(AppMsg.SHOW_MANAGE_USERS.equals(e_.getName())){ 
+                	securityUserController = SecurityUserController.getInstance(this);
+                	//userPublicController =  UserPublicController.getInstance(this);
                 	securityUserController.showSecurityUserView();                	
                 }else if(AppMsg.SHOW_LOGGER_CONSOLE.equals(e_.getName())){ 
                 	loggerConsole = new LoggerConsole();
@@ -122,6 +109,28 @@ public class MasterController implements AppEventListener, IApplicationControlle
                         Log.debug("Warning: Unhandled App Message: " + e_.getName());
                 }
                 
+        }
+        private void postLoginInit(){
+        	appSysCode = AppSysCode.getInstance();
+                           
+                            
+            
+            
+            
+        	loginController.getLoginView().hide();
+        	appContainer = new AppContainer();
+            appContainer.getNotifier().addAppEventListener(this);
+        	appContainer.show();
+//            emailMsgController =  EmailMsgController.getInstance(this);
+//                   itemWidgets.put(AppPages.EMAIL_MSG_PAGE, emailMsgController.getEmailMsgView().getEmailMsgComposite());
+//
+//                   emailListController =  EmailListController.getInstance(this);
+//                   itemWidgets.put(AppPages.EMAIL_LIST_PAGE, emailListController.getEmailListView().getEmailListComposite());
+//                   emailListController.getNotifier().addAppEventListener(this);
+//
+//          customerController =  CustomerController.getInstance(this);
+//          itemWidgets.put(AppPages.CUSTOMER_PAGE, customerController.getCustomerView().getCustomerComposite());
+//          customerController.getNotifier().addAppEventListener(this);
         }
 
 

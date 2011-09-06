@@ -8,6 +8,7 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.martinanalytics.testmodule.client.app.AppMsg;
 import com.martinanalytics.testmodule.client.app.AppNotifyObject;
+import com.martinanalytics.testmodule.client.app.AppSysCode;
 import com.martinanalytics.testmodule.client.model.SecurityUserDS;
 import com.martinanalytics.testmodule.client.model.UserPublicDS;
 import com.smartgwt.client.data.DataSourceField;
@@ -30,6 +31,7 @@ import com.smartgwt.client.widgets.form.fields.HeaderItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.CanvasItem;
 import com.smartgwt.client.widgets.form.fields.RichTextItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -141,10 +143,11 @@ public class SecurityUserView extends Window  {
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("readOnly", "true");
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("displayFormat", "toUSShortDateTime");
 		 
-		 ComboBoxItem securityProfileComboBoxItem = new ComboBoxItem();
-		 LinkedHashMap securityProfileValueMap = new LinkedHashMap();
-		 securityProfileComboBoxItem.setValueMap(securityProfileValueMap);
-		 securityUserDS.getField("securityProfileId").setEditorType(securityProfileComboBoxItem);
+		 SelectItem securityProfileSelectItem = new SelectItem();
+		 //LinkedHashMap securityProfileValueMap = new LinkedHashMap();
+		 Log.debug("hashmap" + AppSysCode.getSecurityProfileLookupCache().get("1") );
+		 securityProfileSelectItem.setValueMap(AppSysCode.getSecurityProfileLookupCache());
+		 securityUserDS.getField("securityProfileId").setEditorType(securityProfileSelectItem);
 		 
 		 CheckboxItem activeYnCkBxItem = new CheckboxItem();
 		 activeYnCkBxItem.setLabelAsTitle(true);
