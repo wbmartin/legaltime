@@ -1,3 +1,4 @@
+\o ./log/InitSession.log
 -- Function: initsession(integer, text, text)
 
 -- DROP FUNCTION initsession(integer, text, text);

@@ -2,6 +2,7 @@ DROP TABLE Public.sys_code;
 
 CREATE TABLE Public.sys_code (
        sys_code_id SERIAL NOT NULL
+     , client_id INTEGER
      , code_type VARCHAR(5) NOT NULL
      , key VARCHAR(5)
      , value VARCHAR(25)

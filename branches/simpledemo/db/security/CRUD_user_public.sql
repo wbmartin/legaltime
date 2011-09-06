@@ -1,5 +1,6 @@
-﻿
-- Security Grants
+\o ./log/CRUD_user_public.log﻿
+/*
+-- Security Grants
 GRANT ALL ON TABLE user_public TO GROUP simpledemo;
 INSERT INTO security_privilege(client_id,  priv_name, last_update, description)    VALUES (1, 'SELECT_USER_PUBLIC', now(), 'Allows users to select user_public'); 
 INSERT INTO security_privilege(client_id,  priv_name, last_update, description)    VALUES (1, 'INSERT_USER_PUBLIC', now(), 'Allows users to add records to user_public');
@@ -10,7 +11,7 @@ INSERT INTO security_profile_grant(client_id, security_profile_id, security_priv
 INSERT INTO security_profile_grant(client_id, security_profile_id, security_privilege_id) VALUES (1, 1, 27);
 INSERT INTO security_profile_grant(client_id, security_profile_id, security_privilege_id) VALUES (1, 1, 28);
 INSERT INTO security_profile_grant(client_id, security_profile_id, security_privilege_id) VALUES (1, 1, 29);
-
+*/
 --=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 
 

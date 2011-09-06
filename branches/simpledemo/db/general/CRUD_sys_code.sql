@@ -13,49 +13,49 @@ INSERT INTO security_profile_grant(client_id, security_profile_id, security_priv
 */
 --=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 
-
--- Function: sys_code_sq(text, integer, text, text, text, text, integer, integer)
-
--- DROP FUNCTION sys_code_sq(text, integer, text, text, text, text, integer, integer);
-
 CREATE OR REPLACE FUNCTION sys_code_sq(alreadyAuth_ text, clientid_ integer, securityuserid_ text, sessionid_ text, whereClause_ text, orderByClause_ text, rowLimit_ integer, rowOffset_ integer)
   RETURNS SETOF sys_code AS
 $BODY$
   Declare
-    additionalWhereClause text;
-    orderByClause text;
-    offsetStatement text;
-    limitStatement text;
+      securityProfileSQL text;
+      masterSQL text;
+ --   additionalWhereClause text;
+ --   orderByClause text;
+ --   offsetStatement text;
+ --   limitStatement text;
   Begin
     if alreadyAuth_ <>'ALREADY_AUTH' then
     	perform isSessionValid(clientid_, securityuserId_,sessionId_) ;
-    	perform isUserAuthorized(clientid_, securityuserId_, 'SELECT_SYS_CODE' );
+    	--20110903 wbmartin, all users can get retrieve the cache
+    	--perform isUserAuthorized(clientid_, securityuserId_, 'SELECT_SYS_CODE' );
     end if;
---sys_code_id, code_type, key, value, last_update, notes
+--sys_code_id, client_id, code_type, key, value, last_update, notes
 
-    additionalWhereClause ='';
-    orderByClause='';
-    offsetStatement ='';
-    limitStatement ='';
-    if rowOffset_ >0 then
-	offsetStatement =' offset ' || rowOffset_ ;
-    end if;
-    if rowLimit_ >0 then
-	limitStatement =' limit '||rowLimit_;
-    end if;
-    if whereClause_ <>'' then
-	additionalWhereClause = trim(leading whereClause_);
-	additionalWhereClause = regexp_replace(additionalWhereClause, '^(where|WHERE)','');
-	additionalWhereClause = trim(leading additionalWhereClause);
-	additionalWhereClause = regexp_replace(additionalWhereClause, '^(and|AND)','');
-	additionalWhereClause = ' and( ' || additionalWhereClause || ')';
-    end if;
-    if orderByClause_ <> '' then
-	orderByClause = orderByClause_;
-    end if;
-
-    return query execute 'select * from sys_code where client_id =' || clientid_ || ' ' 
-	|| additionalWhereClause || orderByclause || offsetStatement || limitStatement;
+--    additionalWhereClause ='';
+--    orderByClause='';
+--    offsetStatement ='';
+--    limitStatement ='';
+--    if rowOffset_ >0 then
+--	offsetStatement =' offset ' || rowOffset_ ;
+--    end if;
+--    if rowLimit_ >0 then
+--	limitStatement =' limit '||rowLimit_;
+--    end if;
+--    if whereClause_ <>'' then
+--	additionalWhereClause = trim(leading whereClause_);
+--	additionalWhereClause = regexp_replace(additionalWhereClause, '^(where|WHERE)','');
+--	additionalWhereClause = trim(leading additionalWhereClause);
+--	additionalWhereClause = regexp_replace(additionalWhereClause, '^(and|AND)','');
+--	additionalWhereClause = ' and( ' || additionalWhereClause || ')';
+--    end if;
+--    if orderByClause_ <> '' then
+--	orderByClause = orderByClause_;
+--    end if;
+	securityProfileSQL ='';
+	masterSQL = '';
+    return query execute 'select sys_code_id, client_id, code_type, key, value, last_update, notes from sys_code where client_id =' || clientid_ || ' '
+    || ' union select 0, client_id, cast (''SCPRF'' as varchar(5)), cast (security_profile_id as varchar(5)), cast (profile_name as varchar(25)), last_update,cast('''' as varchar(255)) from security_profile where client_id =' || clientid_ || ' ';
+    -- 	|| additionalWhereClause || orderByclause || offsetStatement || limitStatement;
 
   End;
 $BODY$
@@ -85,7 +85,7 @@ $BODY$
     	perform isSessionValid(clientid_, securityuserId_,sessionId_) ;
     	perform isUserAuthorized(clientid_, securityuserId_, 'SELECT_SYS_CODE' );
     end if;
---sys_code_id, code_type, key, value, last_update, notes
+--sys_code_id, client_id, code_type, key, value, last_update, notes
    
 
 
@@ -153,7 +153,7 @@ $body$
     	perform issessionvalid(clientid_, securityuserid_,sessionid_) ;
     	perform isuserauthorized(clientid_, securityuserid_, 'UPDATE_SYS_CODE' );
     end if;
-	update sys_code set code_type= codeType_ ,  key= key_ ,  value= value_ ,  last_update = now() ,  notes= notes_ 	where sys_code_id=sysCodeId_   and   last_update = lastUpdate_
+	update sys_code set client_id= clientId_ ,  code_type= codeType_ ,  key= key_ ,  value= value_ ,  last_update = now() ,  notes= notes_ 	where sys_code_id=sysCodeId_   and   last_update = lastUpdate_
 	returning * into updatedrow;
 
 	if found then
@@ -186,7 +186,8 @@ $body$
   begin
     if alreadyauth_ <>'ALREADY_AUTH' then	
     	perform issessionvalid(clientid_, userid_,sessionid_) ;
-    	perform isuserauthorized(clientid_,userid_,'DELETE_SYS_CODE' );
+	
+    	--perform isuserauthorized(clientid_,userid_,'DELETE_SYS_CODE' );
     end if;
 	delete from sys_code where sys_code_id=sysCodeId_  and last_update = lastUpdate_;
 
