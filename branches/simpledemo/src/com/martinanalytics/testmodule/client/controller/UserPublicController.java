@@ -52,7 +52,7 @@ public class UserPublicController implements AppEventListener{
  */
   protected  UserPublicController(MasterController masterController_){
 	masterController =masterController_;
-	userPublicDS =new UserPublicDS(masterController);
+	userPublicDS =UserPublicDS.getInstance();
 	//userPublicView = new UserPublicView(userPublicDS);	
 	//userPublicView.getNotifier().addAppEventListener(this);
 	//UserPublicView.getUserPublicTable().getNotifier().addAppEventListener(this);

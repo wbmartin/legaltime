@@ -205,7 +205,7 @@ public abstract class GwtRpcDataSource
     public boolean getCachePreferred(){
     	return cachePreferred;
     }
-    public void setCachePreferred(boolean prefer_){
+    protected void setCachePreferred(boolean prefer_){
     	cachePreferred = prefer_;
     }
     

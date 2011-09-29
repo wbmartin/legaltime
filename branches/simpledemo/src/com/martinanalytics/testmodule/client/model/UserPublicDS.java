@@ -7,6 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.martinanalytics.testmodule.client.ServerExceptionHandler;
 import com.martinanalytics.testmodule.client.app.AppEventProducer;
+import com.martinanalytics.testmodule.client.app.AppMsg;
 import com.martinanalytics.testmodule.client.app.AppPref;
 import com.martinanalytics.testmodule.client.app.IApplicationController;
 import com.martinanalytics.testmodule.client.model.bean.UserPublicBean;
@@ -39,12 +40,11 @@ public class UserPublicDS extends GwtRpcDataSource{
 	private final UserPublicServiceAsync userPublicService = GWT.create(UserPublicService.class);
 			 		
 	private UserProfile userProfile; 
-	private IApplicationController masterController;
 	private AppEventProducer notifier;
   
-    	public static UserPublicDS getInstance(IApplicationController masterController_) {  
+    	public static UserPublicDS getInstance() {  
           if (instance == null) {  
-            instance = new UserPublicDS(masterController_);  //"userPublicDS"
+            instance = new UserPublicDS();  //"userPublicDS"
           }  
           return instance;  
     	}  
@@ -65,15 +65,10 @@ public class UserPublicDS extends GwtRpcDataSource{
 	public static final String FAX="fax";
 	public static final String OFFICE_CELL="officeCell";
 	public static final String COMMENT="comment";
-	public static final String EVT_CACHE_UPDATED ="EvtCacheUpdated";
-	public static final String EVT_RECORD_ADDED ="EvtRecordAdded";
-	public static final String EVT_RECORD_UPDATED ="EvtRecordUpdated";
-	public static final String EVT_RECORD_REMOVED ="EvtRecordRemoved";
-	public static final String EVT_SELECT_RETURNED ="EvtSelectReturned";
+	
 
-   	public UserPublicDS(IApplicationController masterController_) { 
-	  userProfile = UserProfile.getInstance();
-	  masterController = masterController_; 
+   	protected UserPublicDS() { 
+	  userProfile = UserProfile.getInstance();	   
 	  notifier = new AppEventProducer() ;
 	  DataSourceField field;
 		
@@ -179,8 +174,8 @@ public class UserPublicDS extends GwtRpcDataSource{
 		   userPublicService.selectUserPublic(userProfile, whereClause, orderByClause, rowLimit, startRow,
 			new AsyncCallback<ArrayList<UserPublicBean>>(){
 				public void onFailure(Throwable caught) {
-					masterController.setTransactionResults(
-					  "Retrieving UserPublic Failed ("+ (new java.util.Date().getTime() -startTime.getTime()) + "ms)");
+					notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
+					  "Retrieving UserPublic Failed ("+ (new java.util.Date().getTime() -startTime.getTime()) + " ms)");
 					Log.debug("Where Attempted: " +whereClause + " | Orderby attempted " + orderByClause);
 					if(!ServerExceptionHandler.getInstance().handle(caught)){
 
@@ -189,8 +184,9 @@ public class UserPublicDS extends GwtRpcDataSource{
 		
 				public void onSuccess(ArrayList<UserPublicBean> userPublicResult) {
 				  Log.debug("Select UserPublic received  Where Attempted: " + whereClause + " | Orderby attempted " + orderByClause );
-				  masterController.setTransactionResults("Successfully Retrieved UserPublic listing"
-							+ (new java.util.Date().getTime() - startTime.getTime()));
+				  notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
+					"Successfully Retrieved UserPublic listing"
+					+ (new java.util.Date().getTime() - startTime.getTime()));
  				  ListGridRecord[] list = new ListGridRecord[userPublicResult.size ()];
 				  for (int i = 0; i < list.length; i++) {
 				 	ListGridRecord record = new ListGridRecord ();
@@ -201,11 +197,11 @@ public class UserPublicDS extends GwtRpcDataSource{
 				   processResponse (requestId, response);
 				   if(getCachePreferred()){
 					setCacheData(list);
-					notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_SELECT_RETURNED);	
+					notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_SELECT_RETURNED);	
 				   }
 				   
 				   Log.debug("executeFetch passed - UserPublic");
- 				   notifier.notifyAppEvent(this, EVT_SELECT_RETURNED);
+ 				   notifier.notifyAppEvent(instance, AppMsg.EVT_SELECT_RETURNED);
 				}
 		});
 	}else{
@@ -233,9 +229,9 @@ public class UserPublicDS extends GwtRpcDataSource{
 		new AsyncCallback<UserPublicBean>(){
 			public void onFailure(Throwable caught) {
 				Log.debug("userPublicService.insertUserPublic Failed: " + caught);
-				masterController.setTransactionResults(
+				notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
 					"Adding UserPublic Failed ("
-						+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
+					+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
 				Log.info("Insert Bean Attempted: " + userPublicBean);
                			response.setStatus (RPCResponse.STATUS_FAILURE);
                			processResponse (requestId, response);
@@ -247,7 +243,7 @@ public class UserPublicDS extends GwtRpcDataSource{
 				Log.debug("userPublicService.insertUserPublic onSuccess: " + result);
 				if (result.getClientId() !=null && result.getUserId() !=null){
 					userProfile.incrementSessionTimeOut();
-					masterController.setTransactionResults(
+					notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
 						"Successfully inserted UserPublic record"
 						+ (new java.util.Date().getTime() - startTime.getTime()));
 					Log.info("Bean Added" + result.toString());
@@ -259,13 +255,14 @@ public class UserPublicDS extends GwtRpcDataSource{
 					processResponse (requestId, response);
 					if(getCachePreferred()){
 						getCacheList().add(listGridRecord);
-						notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_RECORD_ADDED);
+						notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_RECORD_ADDED);
 					}				
-					notifier.notifyAppEvent(this, EVT_RECORD_ADDED);
+					notifier.notifyAppEvent(instance, AppMsg.EVT_RECORD_ADDED);
 				}else{
-					masterController.notifyUserOfSystemError("Server Error","There was an error while adding the "
-					+ "userPublic.  This is an unexpected error, please go to Help > View Log and send "
-					+ " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
+					notifier.notifyAppEvent(instance, AppMsg.ALERT_USER_MSG,
+				  	  "Server Error","There was an error while adding the "
+					  + "userPublic.  This is an unexpected error, please go to Help > View Log and send "
+					  + " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
 				}
 			}
 	});
@@ -294,7 +291,8 @@ public class UserPublicDS extends GwtRpcDataSource{
 		new AsyncCallback<UserPublicBean>(){
 			public void onFailure(Throwable caught) {
 				Log.debug("userPublicService.updateUserPublic Failed: " + caught);
-				masterController.setTransactionResults("Updating UserPublic Failed ("
+				notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
+					"Updating UserPublic Failed ("
 					+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
 				Log.info("Update Bean Attempted: " + userPublicBean);
                			response.setStatus (RPCResponse.STATUS_FAILURE);
@@ -306,7 +304,8 @@ public class UserPublicDS extends GwtRpcDataSource{
 				Log.debug("userPublicService.updateUserPublic onSuccess: " + result);
 				if (result.getClientId() !=null && result.getUserId() !=null){
 				  userProfile.incrementSessionTimeOut();
-				  masterController.setTransactionResults("Successfully updated UserPublic record"
+				  notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
+					"Successfully updated UserPublic record"
 				  	+ (new java.util.Date().getTime() - startTime.getTime()));
 				  Log.info("Bean Updated" + result.toString());
 				  ListGridRecord[] listGridRecordArray = new ListGridRecord[1];
@@ -321,16 +320,17 @@ public class UserPublicDS extends GwtRpcDataSource{
 					if(getCacheList().get(ndx).getAttributeAsInt(CLIENT_ID).equals(result.getClientId())
 					&& getCacheList().get(ndx).getAttributeAsString(USER_ID).equals(result.getUserId())){
 						   getCacheList().remove(ndx);
-						   notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_RECORD_UPDATED);
+						   notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_RECORD_UPDATED);
 					}
 				    }
 				  }				  
-				  notifier.notifyAppEvent(this, EVT_RECORD_UPDATED);
+				  notifier.notifyAppEvent(instance, AppMsg.EVT_RECORD_UPDATED);
 				}else{
-					masterController.notifyUserOfSystemError("Server Error","There was an error while updating a "
-					+ "userPublic record.  This can be caused by someone else changing the record.  Please try"
-					+ " your transaction again.  If the error persists, please go to Help > View Log and send "
-					+ " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
+					notifier.notifyAppEvent(instance, AppMsg.ALERT_USER_MSG,
+				  	  "Server Error","There was an error while updating a "
+					  + "userPublic record.  This can be caused by someone else changing the record.  Please try"
+					  + " your transaction again.  If the error persists, please go to Help > View Log and send "
+					  + " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
 				}
 			}
 	});
@@ -354,8 +354,9 @@ public class UserPublicDS extends GwtRpcDataSource{
 	userPublicService.deleteUserPublicBean(userProfile,userPublicBean,
 		new AsyncCallback<Boolean>(){
 			public void onFailure(Throwable caught) {
-				masterController.setTransactionResults(	"Deleting UserPublic Failed ("
-						+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
+				notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
+					"Deleting UserPublic Failed ("
+					+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
 				Log.info("Delete Bean Attempted: " + userPublicBean);
                 		response.setStatus (RPCResponse.STATUS_FAILURE);
                			processResponse (requestId, response);
@@ -367,8 +368,9 @@ public class UserPublicDS extends GwtRpcDataSource{
 			  Log.debug("userPublicService.deleteUserPublic onSuccess: " + result);
 			  if (result){
 				userProfile.incrementSessionTimeOut();
-				masterController.setTransactionResults("Successfully deleted UserPublic record"
-				  + (new java.util.Date().getTime() - startTime.getTime()));
+				notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
+				 	"Successfully deleted UserPublic record"
+				  	+ (new java.util.Date().getTime() - startTime.getTime()));
 				Log.info("Bean Deleted" +  userPublicBean.toString());
 				ListGridRecord[] list = new ListGridRecord[1];
 				// We do not receive removed record from server.
@@ -380,18 +382,19 @@ public class UserPublicDS extends GwtRpcDataSource{
 				    if(getCacheList().get(ndx).getAttributeAsInt(CLIENT_ID).equals(rec.getAttributeAsInt(CLIENT_ID))
 					&& getCacheList().get(ndx).getAttributeAsString(USER_ID).equals(rec.getAttributeAsString(USER_ID))){
 					  getCacheList().remove(ndx);
-					  notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_RECORD_REMOVED);
+					  notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_RECORD_REMOVED);
 				      }
 				    }
 				}
 				response.setData (list);
 				processResponse (requestId, response);
-				notifier.notifyAppEvent(this, EVT_RECORD_REMOVED);
+				notifier.notifyAppEvent(instance, AppMsg.EVT_RECORD_REMOVED);
 			   }else{
-				masterController.notifyUserOfSystemError("Server Error","There was an error while deleting a "
-				+ "userPublic record.  This can be caused by someone else changing the record.  Please try"
-				+ " your transaction again.  If the error persists, please go to Help > View Log and send "
-				+ " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
+				notifier.notifyAppEvent(instance, AppMsg.ALERT_USER_MSG,
+				  "Server Error","There was an error while deleting a "
+				  + "userPublic record.  This can be caused by someone else changing the record.  Please try"
+				  + " your transaction again.  If the error persists, please go to Help > View Log and send "
+				  + " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
 			    }
 			}
 	});
@@ -450,5 +453,43 @@ public class UserPublicDS extends GwtRpcDataSource{
 	public AppEventProducer getNotifier() {
 			return notifier;
 	}
+//---------------------------
+	public void fetchAllRowsToCache () {
+
+		   Log.debug("RPC to fetch for Cache Called - UserPublic");
+		   final String whereClause ="";
+		   final String orderByClause ="";
+		   Integer rowLimit =-1;
+		   Integer startRow=1;
+		   final java.util.Date startTime = new java.util.Date();
+		   userPublicService.selectUserPublic(userProfile, whereClause, orderByClause, rowLimit, startRow,
+			new AsyncCallback<ArrayList<UserPublicBean>>(){
+				public void onFailure(Throwable caught) {
+					Log.debug("fetchAllRowsToCache failed for UserPublic");
+					if(!ServerExceptionHandler.getInstance().handle(caught)){
+
+					}
+				}
+		
+				public void onSuccess(ArrayList<UserPublicBean> userPublicResult) {
+				  Log.debug("fetchAllRowsToCache succeeded for UserPublic");
+				 
+ 				  ListGridRecord[] list = new ListGridRecord[userPublicResult.size ()];
+				  for (int i = 0; i < list.length; i++) {
+				 	ListGridRecord record = new ListGridRecord ();
+				        copyValues (userPublicResult.get (i), record);
+				        list[i] = record;
+				   }
+				   
+				   if(getCachePreferred()){
+					setCacheData(list);
+					notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_SELECT_RETURNED);	
+				   }
+				   notifier.notifyAppEvent(instance, AppMsg.EVT_SELECT_RETURNED);
+				}
+		});
+	
+	}
+
   
 }

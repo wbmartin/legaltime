@@ -10,7 +10,7 @@ import com.martinanalytics.testmodule.client.app.AppEventProducer;
 import com.martinanalytics.testmodule.client.app.AppMsg;
 import com.martinanalytics.testmodule.client.app.AppPref;
 import com.martinanalytics.testmodule.client.app.IApplicationController;
-import com.martinanalytics.testmodule.client.model.bean.SecurityUserBean;
+import com.martinanalytics.testmodule.client.model.bean.SysCodeBean;
 import com.martinanalytics.testmodule.client.model.bean.UserProfile;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -29,72 +29,64 @@ import java.util.Date;
 
 
 /**
- * SecurityUserDataSource owns the data description for security_user * @author bmartin
+ * SysCodeDataSource owns the data description for sys_code * @author bmartin
  *
  */
-public class SecurityUserDS extends GwtRpcDataSource{
+public class SysCodeDS extends GwtRpcDataSource{
 
 
-	private static SecurityUserDS instance = null; 
+	private static SysCodeDS instance = null; 
 	// primary GWT remote Service 
-	private final SecurityUserServiceAsync securityUserService = GWT.create(SecurityUserService.class);
+	private final SysCodeServiceAsync sysCodeService = GWT.create(SysCodeService.class);
 			 		
 	private UserProfile userProfile; 
 	private AppEventProducer notifier;
   
-    	public static SecurityUserDS getInstance() {  
+    	public static SysCodeDS getInstance() {  
           if (instance == null) {  
-            instance = new SecurityUserDS();  //"securityUserDS"
+            instance = new SysCodeDS();  //"sysCodeDS"
           }  
           return instance;  
     	}  
+	public static final String SYS_CODE_ID="sysCodeId";
 	public static final String CLIENT_ID="clientId";
-	public static final String USER_ID="userId";
-	//public static final String PASSWORD_ENC="passwordEnc";
-	public static final String SECURITY_PROFILE_ID="securityProfileId";
-	//public static final String SESSION_ID="sessionId";
-	//public static final String SESSION_EXPIRE_DT="sessionExpireDt";
-	public static final String ACTIVE_YN="activeYn";
+	public static final String CODE_TYPE="codeType";
+	public static final String KEY="key";
+	public static final String VALUE="value";
 	public static final String LAST_UPDATE="lastUpdate";
+	public static final String NOTES="notes";
+	
 
-
-   	protected SecurityUserDS() { 
-	  userProfile = UserProfile.getInstance();
+   	protected SysCodeDS() { 
+	  userProfile = UserProfile.getInstance();	   
 	  notifier = new AppEventProducer() ;
 	  DataSourceField field;
 		
-	  field = new DataSourceField(CLIENT_ID,FieldType.INTEGER, "Client Id",50); 
+	  field = new DataSourceField(SYS_CODE_ID,FieldType.INTEGER, "Sys Code Id",50); 
 	  field.setHidden(true); 
 	  field.setPrimaryKey(true);
 	  addField(field);
 
-	  field = new DataSourceField(USER_ID,FieldType.TEXT, "User Id",50); 
-	  //field.setHidden(true); 
-	  field.setPrimaryKey(true);
+	  field = new DataSourceField(CLIENT_ID,FieldType.INTEGER, "Client Id",50);
 	  addField(field);
 
-//	  field = new DataSourceField(PASSWORD_ENC,FieldType.TEXT, "Password Enc",50);
-//	  addField(field);
-
-	  field = new DataSourceField(SECURITY_PROFILE_ID,FieldType.INTEGER, "Security Profile Id",50);
+	  field = new DataSourceField(CODE_TYPE,FieldType.TEXT, "Code Type",50);
 	  addField(field);
 
-//	  field = new DataSourceField(SESSION_ID,FieldType.TEXT, "Session Id",50);
-//	  addField(field);
+	  field = new DataSourceField(KEY,FieldType.TEXT, "Key",50);
+	  addField(field);
 
-//	  field = new DataSourceField(SESSION_EXPIRE_DT,FieldType.DATE, "Session Expire Dt",50);
-//	  addField(field);
-
-	  field = new DataSourceField(ACTIVE_YN,FieldType.TEXT, "Active Yn",50);
-	  //field.setHidden(true); 
+	  field = new DataSourceField(VALUE,FieldType.TEXT, "Value",50);
 	  addField(field);
 
 	  field = new DataSourceField(LAST_UPDATE,FieldType.DATE, "Last Update",50); 
 	  field.setHidden(true); 
 	  addField(field);
 
+	  field = new DataSourceField(NOTES,FieldType.TEXT, "Notes",50);
+	  addField(field);
+
 }
-   	
 
 /**
  * Provides a standard template to retrieve beans from the server.  
@@ -109,7 +101,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 		 String tempWhereClause="";
 		 boolean retrieveFromCache=false;
 		 String tempOrderByClause ="";
-		 Log.debug("executeFetch Called - SecurityUser");
+		 Log.debug("executeFetch Called - SysCode");
 		 Integer startRow=-1;
 		 Integer rowLimit=-1;
 		 setClientFilterCriteria( request.getCriteria());
@@ -133,30 +125,30 @@ public class SecurityUserDS extends GwtRpcDataSource{
 			 
 		 }
 		 if(!retrieveFromCache){
-		   Log.debug("RPC Called - SecurityUser");
+		   Log.debug("RPC Called - SysCode");
 		   final String whereClause =tempWhereClause;
 		   final String orderByClause =tempOrderByClause;
 		   final java.util.Date startTime = new java.util.Date();
-		   securityUserService.selectSecurityUser(userProfile, whereClause, orderByClause, rowLimit, startRow,
-			new AsyncCallback<ArrayList<SecurityUserBean>>(){
+		   sysCodeService.selectSysCode(userProfile, whereClause, orderByClause, rowLimit, startRow,
+			new AsyncCallback<ArrayList<SysCodeBean>>(){
 				public void onFailure(Throwable caught) {
 					notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-					  "Retrieving SecurityUser Failed ("+ (new java.util.Date().getTime() -startTime.getTime()) + "ms)");
+					  "Retrieving SysCode Failed ("+ (new java.util.Date().getTime() -startTime.getTime()) + " ms)");
 					Log.debug("Where Attempted: " +whereClause + " | Orderby attempted " + orderByClause);
 					if(!ServerExceptionHandler.getInstance().handle(caught)){
 
 					}
 				}
 		
-				public void onSuccess(ArrayList<SecurityUserBean> securityUserResult) {
-				  Log.debug("Select SecurityUser received  Where Attempted: " + whereClause + " | Orderby attempted " + orderByClause );
+				public void onSuccess(ArrayList<SysCodeBean> sysCodeResult) {
+				  Log.debug("Select SysCode received  Where Attempted: " + whereClause + " | Orderby attempted " + orderByClause );
 				  notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-							"Successfully Retrieved SecurityUser listing"
-							+ (new java.util.Date().getTime() - startTime.getTime()));
- 				  ListGridRecord[] list = new ListGridRecord[securityUserResult.size ()];
+					"Successfully Retrieved SysCode listing"
+					+ (new java.util.Date().getTime() - startTime.getTime()));
+ 				  ListGridRecord[] list = new ListGridRecord[sysCodeResult.size ()];
 				  for (int i = 0; i < list.length; i++) {
 				 	ListGridRecord record = new ListGridRecord ();
-				        copyValues (securityUserResult.get (i), record);
+				        copyValues (sysCodeResult.get (i), record);
 				        list[i] = record;
 				   }
 				   response.setData (applyClientFilter(list));
@@ -166,14 +158,14 @@ public class SecurityUserDS extends GwtRpcDataSource{
 					notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_SELECT_RETURNED);	
 				   }
 				   
-				   Log.debug("executeFetch passed - SecurityUser");
+				   Log.debug("executeFetch passed - SysCode");
  				   notifier.notifyAppEvent(instance, AppMsg.EVT_SELECT_RETURNED);
 				}
 		});
 	}else{
 	     response.setData (applyClientFilter(getCacheData()));//applyClientFilter
              processResponse (requestId, response);
-             Log.debug("CacheFilter - SecurityUser: " + getCacheData().length+ " Records");
+             Log.debug("CacheFilter - SysCode: " + getCacheData().length+ " Records");
 	}
 
 }
@@ -185,32 +177,32 @@ public class SecurityUserDS extends GwtRpcDataSource{
   @Override
   protected void executeAdd (final String requestId, final DSRequest request, final DSResponse response) {
 
-	Log.debug("executeAdd Called - SecurityUser");
+	Log.debug("executeAdd Called - SysCode");
 	JavaScriptObject data = request.getData ();
       	ListGridRecord listGridRecord = new ListGridRecord(data);
-        final SecurityUserBean securityUserBean = new SecurityUserBean();
-        copyValues (listGridRecord, securityUserBean);
+        final SysCodeBean sysCodeBean = new SysCodeBean();
+        copyValues (listGridRecord, sysCodeBean);
 	final java.util.Date startTime = new java.util.Date();
-	securityUserService.insertSecurityUserBean(userProfile,securityUserBean,
-		new AsyncCallback<SecurityUserBean>(){
+	sysCodeService.insertSysCodeBean(userProfile,sysCodeBean,
+		new AsyncCallback<SysCodeBean>(){
 			public void onFailure(Throwable caught) {
-				Log.debug("securityUserService.insertSecurityUser Failed: " + caught);
+				Log.debug("sysCodeService.insertSysCode Failed: " + caught);
 				notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-					"Adding SecurityUser Failed ("
+					"Adding SysCode Failed ("
 					+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
-				Log.info("Insert Bean Attempted: " + securityUserBean);
+				Log.info("Insert Bean Attempted: " + sysCodeBean);
                			response.setStatus (RPCResponse.STATUS_FAILURE);
                			processResponse (requestId, response);
 				if(!ServerExceptionHandler.getInstance().handle(caught)){
 				}	
 			}
  	
-			public void onSuccess(SecurityUserBean result) {
-				Log.debug("securityUserService.insertSecurityUser onSuccess: " + result);
-				if (result.getClientId() !=null && result.getUserId() !=null){
+			public void onSuccess(SysCodeBean result) {
+				Log.debug("sysCodeService.insertSysCode onSuccess: " + result);
+				if (result.getSysCodeId() !=null){
 					userProfile.incrementSessionTimeOut();
 					notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-						"Successfully inserted SecurityUser record"
+						"Successfully inserted SysCode record"
 						+ (new java.util.Date().getTime() - startTime.getTime()));
 					Log.info("Bean Added" + result.toString());
 					ListGridRecord[] listGridRecordArray = new ListGridRecord[1];
@@ -227,7 +219,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				}else{
 					notifier.notifyAppEvent(instance, AppMsg.ALERT_USER_MSG,
 				  	  "Server Error","There was an error while adding the "
-					  + "securityUser.  This is an unexpected error, please go to Help > View Log and send "
+					  + "sysCode.  This is an unexpected error, please go to Help > View Log and send "
 					  + " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
 				}
 			}
@@ -240,7 +232,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 */
   @Override
   protected void executeUpdate (final String requestId, final DSRequest request, final DSResponse response) {
-	Log.debug("executeUpdate Called - SecurityUser");
+	Log.debug("executeUpdate Called - SysCode");
 
        	// Retrieve record which should be updated.
        	JavaScriptObject data = request.getData ();
@@ -250,28 +242,28 @@ public class SecurityUserDS extends GwtRpcDataSource{
        	// Get record with old and new values combined
        	int index = grid.getRecordIndex (rec);
        	rec = (ListGridRecord) grid.getEditedRecord (index);
-        final SecurityUserBean securityUserBean = new SecurityUserBean();
-        copyValues (rec, securityUserBean);
+        final SysCodeBean sysCodeBean = new SysCodeBean();
+        copyValues (rec, sysCodeBean);
 	final java.util.Date startTime = new java.util.Date();
-	securityUserService.updateSecurityUserBean(userProfile,securityUserBean,
-		new AsyncCallback<SecurityUserBean>(){
+	sysCodeService.updateSysCodeBean(userProfile,sysCodeBean,
+		new AsyncCallback<SysCodeBean>(){
 			public void onFailure(Throwable caught) {
-				Log.debug("securityUserService.updateSecurityUser Failed: " + caught);
+				Log.debug("sysCodeService.updateSysCode Failed: " + caught);
 				notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-					"Updating SecurityUser Failed ("
+					"Updating SysCode Failed ("
 					+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
-				Log.info("Update Bean Attempted: " + securityUserBean);
+				Log.info("Update Bean Attempted: " + sysCodeBean);
                			response.setStatus (RPCResponse.STATUS_FAILURE);
                			processResponse (requestId, response);
 				if(!ServerExceptionHandler.getInstance().handle(caught)){
 				}
 			}
-			public void onSuccess(SecurityUserBean result) {
-				Log.debug("securityUserService.updateSecurityUser onSuccess: " + result);
-				if (result.getClientId() !=null && result.getUserId() !=null){
+			public void onSuccess(SysCodeBean result) {
+				Log.debug("sysCodeService.updateSysCode onSuccess: " + result);
+				if (result.getSysCodeId() !=null){
 				  userProfile.incrementSessionTimeOut();
 				  notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-					"Successfully updated SecurityUser record"
+					"Successfully updated SysCode record"
 				  	+ (new java.util.Date().getTime() - startTime.getTime()));
 				  Log.info("Bean Updated" + result.toString());
 				  ListGridRecord[] listGridRecordArray = new ListGridRecord[1];
@@ -283,8 +275,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				  processResponse (requestId, response);
 				  if(getCachePreferred()){
 				    for(int ndx=0;ndx< getCacheList().size();ndx++){
-					if(getCacheList().get(ndx).getAttributeAsInt(CLIENT_ID).equals(result.getClientId())
-					&& getCacheList().get(ndx).getAttributeAsString(USER_ID).equals(result.getUserId())){
+					if(getCacheList().get(ndx).getAttributeAsInt(SYS_CODE_ID).equals(result.getSysCodeId())){
 						   getCacheList().remove(ndx);
 						   notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_RECORD_UPDATED);
 					}
@@ -294,7 +285,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				}else{
 					notifier.notifyAppEvent(instance, AppMsg.ALERT_USER_MSG,
 				  	  "Server Error","There was an error while updating a "
-					  + "securityUser record.  This can be caused by someone else changing the record.  Please try"
+					  + "sysCode record.  This can be caused by someone else changing the record.  Please try"
 					  + " your transaction again.  If the error persists, please go to Help > View Log and send "
 					  + " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
 				}
@@ -309,21 +300,21 @@ public class SecurityUserDS extends GwtRpcDataSource{
 */
 @Override
   protected void executeRemove (final String requestId, final DSRequest request, final DSResponse response) {
-	Log.debug("executeRemove Called - SecurityUser");
+	Log.debug("executeRemove Called - SysCode");
 
        	// Retrieve record which should be removed.
        	JavaScriptObject data = request.getData ();
        	final ListGridRecord rec = new ListGridRecord (data);
-       	final SecurityUserBean securityUserBean = new SecurityUserBean();
-       	copyValues (rec, securityUserBean);
+       	final SysCodeBean sysCodeBean = new SysCodeBean();
+       	copyValues (rec, sysCodeBean);
 	final java.util.Date startTime = new java.util.Date();
-	securityUserService.deleteSecurityUserBean(userProfile,securityUserBean,
+	sysCodeService.deleteSysCodeBean(userProfile,sysCodeBean,
 		new AsyncCallback<Boolean>(){
 			public void onFailure(Throwable caught) {
 				notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-					"Deleting SecurityUser Failed ("
+					"Deleting SysCode Failed ("
 					+ (new java.util.Date().getTime() -startTime.getTime())+ "ms)");
-				Log.info("Delete Bean Attempted: " + securityUserBean);
+				Log.info("Delete Bean Attempted: " + sysCodeBean);
                 		response.setStatus (RPCResponse.STATUS_FAILURE);
                			processResponse (requestId, response);
 				if(!ServerExceptionHandler.getInstance().handle(caught)){
@@ -331,13 +322,13 @@ public class SecurityUserDS extends GwtRpcDataSource{
 			}
 
 			public void onSuccess(Boolean result) {
-			  Log.debug("securityUserService.deleteSecurityUser onSuccess: " + result);
+			  Log.debug("sysCodeService.deleteSysCode onSuccess: " + result);
 			  if (result){
 				userProfile.incrementSessionTimeOut();
 				notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-				 	"Successfully deleted SecurityUser record"
+				 	"Successfully deleted SysCode record"
 				  	+ (new java.util.Date().getTime() - startTime.getTime()));
-				Log.info("Bean Deleted" +  securityUserBean.toString());
+				Log.info("Bean Deleted" +  sysCodeBean.toString());
 				ListGridRecord[] list = new ListGridRecord[1];
 				// We do not receive removed record from server.
 				// Return record from request.
@@ -345,8 +336,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				
 				if(getCachePreferred()){
 				  for(int ndx=0;ndx< getCacheList().size();ndx++){
-				    if(getCacheList().get(ndx).getAttributeAsInt(CLIENT_ID).equals(rec.getAttributeAsInt(CLIENT_ID))
-					&& getCacheList().get(ndx).getAttributeAsString(USER_ID).equals(rec.getAttributeAsString(USER_ID))){
+				    if(getCacheList().get(ndx).getAttributeAsInt(SYS_CODE_ID).equals(rec.getAttributeAsInt(SYS_CODE_ID))){
 					  getCacheList().remove(ndx);
 					  notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_RECORD_REMOVED);
 				      }
@@ -358,7 +348,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 			   }else{
 				notifier.notifyAppEvent(instance, AppMsg.ALERT_USER_MSG,
 				  "Server Error","There was an error while deleting a "
-				  + "securityUser record.  This can be caused by someone else changing the record.  Please try"
+				  + "sysCode record.  This can be caused by someone else changing the record.  Please try"
 				  + " your transaction again.  If the error persists, please go to Help > View Log and send "
 				  + " the entire contents to the system administrator: " + AppPref.SYS_ADMIN);
 			    }
@@ -372,60 +362,58 @@ public class SecurityUserDS extends GwtRpcDataSource{
 *
 */
 
-	    public static void copyValues (ListGridRecord from, SecurityUserBean to) {
+	    public static void copyValues (ListGridRecord from, SysCodeBean to) {
+			to.setSysCodeId(from.getAttributeAsInt(SYS_CODE_ID));
 			to.setClientId(from.getAttributeAsInt(CLIENT_ID));
-			to.setUserId(from.getAttributeAsString(USER_ID));
-//			to.setPasswordEnc(from.getAttributeAsString(PASSWORD_ENC));
-			to.setSecurityProfileId(from.getAttributeAsInt(SECURITY_PROFILE_ID));
-//			to.setSessionId(from.getAttributeAsString(SESSION_ID));
-//			to.setSessionExpireDt(from.getAttributeAsDate(SESSION_EXPIRE_DT));
-			to.setActiveYn(from.getAttributeAsString(ACTIVE_YN));
+			to.setCodeType(from.getAttributeAsString(CODE_TYPE));
+			to.setKey(from.getAttributeAsString(KEY));
+			to.setValue(from.getAttributeAsString(VALUE));
 			to.setLastUpdate(from.getAttributeAsDate(LAST_UPDATE));
+			to.setNotes(from.getAttributeAsString(NOTES));
 	    }
 
 /**
 *
 *
 */
-	    public static void copyValues (SecurityUserBean from, ListGridRecord to) {
+	    public static void copyValues (SysCodeBean from, ListGridRecord to) {
+			to.setAttribute(SYS_CODE_ID, from.getSysCodeId());
 			to.setAttribute(CLIENT_ID, from.getClientId());
-			to.setAttribute(USER_ID, from.getUserId());
-//			to.setAttribute(PASSWORD_ENC, from.getPasswordEnc());
-			to.setAttribute(SECURITY_PROFILE_ID, from.getSecurityProfileId());
-//			to.setAttribute(SESSION_ID, from.getSessionId());
-//			to.setAttribute(SESSION_EXPIRE_DT, from.getSessionExpireDt());
-			to.setAttribute(ACTIVE_YN, from.getActiveYn());
+			to.setAttribute(CODE_TYPE, from.getCodeType());
+			to.setAttribute(KEY, from.getKey());
+			to.setAttribute(VALUE, from.getValue());
 			to.setAttribute(LAST_UPDATE, from.getLastUpdate());
+			to.setAttribute(NOTES, from.getNotes());
 	    }
 
 	public AppEventProducer getNotifier() {
 			return notifier;
 	}
-	
+//---------------------------
 	public void fetchAllRowsToCache () {
 
-		   Log.debug("RPC to fetch for Cache Called - SecurityUser");
+		   Log.debug("RPC to fetch for Cache Called - SysCode");
 		   final String whereClause ="";
 		   final String orderByClause ="";
 		   Integer rowLimit =-1;
 		   Integer startRow=1;
 		   final java.util.Date startTime = new java.util.Date();
-		   securityUserService.selectSecurityUser(userProfile, whereClause, orderByClause, rowLimit, startRow,
-			new AsyncCallback<ArrayList<SecurityUserBean>>(){
+		   sysCodeService.selectSysCode(userProfile, whereClause, orderByClause, rowLimit, startRow,
+			new AsyncCallback<ArrayList<SysCodeBean>>(){
 				public void onFailure(Throwable caught) {
-					Log.debug("fetchAllRowsToCache failed for SecurityUser");
+					Log.debug("fetchAllRowsToCache failed for SysCode");
 					if(!ServerExceptionHandler.getInstance().handle(caught)){
 
 					}
 				}
 		
-				public void onSuccess(ArrayList<SecurityUserBean> securityUserResult) {
-				  Log.debug("fetchAllRowsToCache succeeded for SecurityUser");
+				public void onSuccess(ArrayList<SysCodeBean> sysCodeResult) {
+				  Log.debug("fetchAllRowsToCache succeeded for SysCode");
 				 
-				  ListGridRecord[] list = new ListGridRecord[securityUserResult.size ()];
+ 				  ListGridRecord[] list = new ListGridRecord[sysCodeResult.size ()];
 				  for (int i = 0; i < list.length; i++) {
 				 	ListGridRecord record = new ListGridRecord ();
-				        copyValues (securityUserResult.get (i), record);
+				        copyValues (sysCodeResult.get (i), record);
 				        list[i] = record;
 				   }
 				   
@@ -434,6 +422,8 @@ public class SecurityUserDS extends GwtRpcDataSource{
 					notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_SELECT_RETURNED);	
 				   }
 				   notifier.notifyAppEvent(instance, AppMsg.EVT_SELECT_RETURNED);
+				   
+				   
 				}
 		});
 	

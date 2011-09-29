@@ -12,14 +12,14 @@ import java.util.*;
 public class AppEvent extends EventObject {
 
         private static final long serialVersionUID = 1L;
-        private String name;
+        private AppMsg name;
         private Object payLoad;
         private Object payLoad2;
         private Object payLoad3;
         private String note;
 
 
-    public AppEvent(Object source, String name_, Object payLoad_, String note_ ){
+    public AppEvent(Object source, AppMsg name_, Object payLoad_, String note_ ){
         super(source);
         this.name = name_;
         this.payLoad = payLoad_;
@@ -27,7 +27,7 @@ public class AppEvent extends EventObject {
         this.payLoad3 = null;
         this.note = note_;
     }
-    public AppEvent(Object source, String name_, Object payLoad_,Object payLoad2_, Object payLoad3_, String note_ ){
+    public AppEvent(Object source, AppMsg name_, Object payLoad_,Object payLoad2_, Object payLoad3_, String note_ ){
         super(source);
         this.name = name_;
         this.payLoad = payLoad_;
@@ -36,11 +36,11 @@ public class AppEvent extends EventObject {
         this.note = note_;
     }
 
-    public String getName() {
+    public AppMsg getName() {
         return name;
     }
 
-    public void setName(String name_) {
+    public void setName(AppMsg name_) {
         this.name = name_;
     }
 

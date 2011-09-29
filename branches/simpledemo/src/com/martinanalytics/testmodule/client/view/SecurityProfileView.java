@@ -69,8 +69,7 @@ public class SecurityProfileView extends Window  {
 		notifier = new AppNotifyObject();
 		hide();
 		form = new DynamicForm(); 
-		vwProfileGrantDS_.setCacheMaxAge(100000);
-		vwProfileGrantDS_.setCachePreferred(true);
+		
 		
 //ListGrid	Config		
 		profileListGrid = new ListGrid();
@@ -149,7 +148,7 @@ public class SecurityProfileView extends Window  {
 		availableGrantsListGrid.setDataSource(securityPrivilegeDS_);
 		availableGrantsListGrid.setCanAcceptDroppedRecords(true);
 		availableGrantsListGrid.setCanDragRecordsOut(true);
-		securityPrivilegeDS_.setCachePreferred(true);
+		
 		//ListGridField grantName = new ListGridField("grantName", "Name");
 		availableGrantsListGrid.setFields(grantName);
 //		grantName.setCellFormatter(new CellFormatter(){

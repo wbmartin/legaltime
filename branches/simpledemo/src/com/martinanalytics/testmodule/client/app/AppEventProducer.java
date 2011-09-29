@@ -25,18 +25,18 @@ public  class AppEventProducer {
                  if (AppEventListeners.contains(ael))  return;
                  AppEventListeners.addElement(ael);
                 }
-                public  void notifyAppEvent(Object source_, String msgName_, Object payLoad_){
+                public  void notifyAppEvent(Object source_, AppMsg msgName_, Object payLoad_){
                     notifyAppEvent(source_, msgName_, payLoad_, null);
                 }
-                public  void notifyAppEvent(Object source_, String msgName_){
+                public  void notifyAppEvent(Object source_, AppMsg msgName_){
                 	AppEvent appEvent = new AppEvent(source_,msgName_,null, null);
                     notifyAppEvent(appEvent);
                 }
-                public  void notifyAppEvent(Object source_, String msgName_, Object payLoad_, String note_){
+                public  void notifyAppEvent(Object source_, AppMsg msgName_, Object payLoad_, String note_){
                 	AppEvent appEvent = new AppEvent (source_, msgName_, payLoad_, note_);
                           notifyAppEvent(appEvent);
                 }
-                public  void notifyAppEvent(Object source_, String msgName_, Object payLoad_, Object payLoad2_,Object payLoad3_,String note_){
+                public  void notifyAppEvent(Object source_, AppMsg msgName_, Object payLoad_, Object payLoad2_,Object payLoad3_,String note_){
                 	AppEvent appEvent = new AppEvent (source_, msgName_, payLoad_,payLoad2_,payLoad3_, note_);
                     //Log.debug("Trying to notify:" + payLoad2_ + " | "+ appEvent.getPayLoad2());
                     notifyAppEvent(appEvent);

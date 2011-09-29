@@ -9,8 +9,10 @@ import com.google.gwt.user.client.ui.RichTextArea;
 import com.martinanalytics.testmodule.client.app.AppMsg;
 import com.martinanalytics.testmodule.client.app.AppNotifyObject;
 import com.martinanalytics.testmodule.client.app.AppSysCode;
+import com.martinanalytics.testmodule.client.model.SecurityProfileDS;
 import com.martinanalytics.testmodule.client.model.SecurityUserDS;
 import com.martinanalytics.testmodule.client.model.UserPublicDS;
+import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.fields.DataSourceDateField;
@@ -53,6 +55,8 @@ public class SecurityUserView extends Window  {
 	private RichTextItem commentField;
 	final UserPublicDS userPublicDS;
 	final SecurityUserDS securityUserDS;
+	ComboBoxItem securityProfileSelectItem;
+	ComboBoxItem stateSelectItem;
 	
 	public SecurityUserView(SecurityUserDS securityUserDS_, UserPublicDS userPublicDS_) {
 		notifier = new AppNotifyObject();
@@ -63,10 +67,6 @@ public class SecurityUserView extends Window  {
 		
 		 userPublicForm = new DynamicForm(); 
 		 securityUserForm= new DynamicForm();		
-//		securityUserListGrid = new ListGrid();
-//		securityUserListGrid.setShowAllRecords(true);
-//		securityUserListGrid.setDataSource(securityUserDS_);
-//		securityUserListGrid.setCanEdit(true);
 		
 		 userPublicListGrid = new ListGrid();
 		 userPublicListGrid.setShowAllRecords(true);
@@ -118,11 +118,20 @@ public class SecurityUserView extends Window  {
 				
 			}		 
 		 });
+		 securityProfileSelectItem = new ComboBoxItem();
+		 securityProfileSelectItem.setOptionDataSource( SecurityProfileDS.getInstance());
+		 securityProfileSelectItem.setValueField(SecurityProfileDS.SECURITY_PROFILE_ID);
+		 securityProfileSelectItem.setDisplayField(SecurityProfileDS.PROFILE_NAME);
+		 
+		 stateSelectItem= new ComboBoxItem();
+		 stateSelectItem.setOptionDataSource( SecurityProfileDS.getInstance());
+		 stateSelectItem.setValueField(SecurityProfileDS.SECURITY_PROFILE_ID);
+		 stateSelectItem.setDisplayField(SecurityProfileDS.PROFILE_NAME);
 		buildLayout();
 	}
 
 	private void buildLayout(){
-		setTitle("Groups");
+		setTitle("Users");
 		resizeTo(1000, 650);
 		setCanDragResize(true);
 		VLayout layout = new VLayout(15);
@@ -143,10 +152,12 @@ public class SecurityUserView extends Window  {
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("readOnly", "true");
 		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("displayFormat", "toUSShortDateTime");
 		 
-		 SelectItem securityProfileSelectItem = new SelectItem();
+		
 		 //LinkedHashMap securityProfileValueMap = new LinkedHashMap();
-		 Log.debug("hashmap" + AppSysCode.getSecurityProfileLookupCache().get("1") );
-		 securityProfileSelectItem.setValueMap(AppSysCode.getSecurityProfileLookupCache());
+		 Log.debug("**************hashmap" + AppSysCode.getSecurityProfileLookupCache().get("1") );
+		
+
+		 
 		 securityUserDS.getField("securityProfileId").setEditorType(securityProfileSelectItem);
 		 
 		 CheckboxItem activeYnCkBxItem = new CheckboxItem();
