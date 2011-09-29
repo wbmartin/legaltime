@@ -71,8 +71,8 @@ public class SecurityProfileController implements AppEventListener{
 	 
 	 securityProfileDS =SecurityProfileDS.getInstance();
 	 securityProfileGrantDS =new SecurityProfileGrantDS(masterController);
-	 vwProfileGrantDS = new VwProfileGrantDS(masterController);
-	 securityPrivilegeDS = new SecurityPrivilegeDS(masterController);
+	 vwProfileGrantDS = VwProfileGrantDS.getInstance();
+	 securityPrivilegeDS = SecurityPrivilegeDS.getInstance();
 	 securityProfileView = new SecurityProfileView(securityProfileDS, securityProfileGrantDS, securityPrivilegeDS);
 	 securityProfileView.getNotifier().addAppEventListener(this);
 	 masterController_.getAppContainer().addChild(securityProfileView);
@@ -149,9 +149,9 @@ public class SecurityProfileController implements AppEventListener{
     	recordToDelete.setAttribute(SecurityProfileGrantDS.SECURITY_PROFILE_ID, Integer.parseInt(profileToRemoveFrom));
     	Log.debug("record to delete timestamp" + recordToDelete.getAttribute("lastUpdate") );
     	securityProfileView.getSecurityGrantsListGrid().removeData(recordToDelete);
-    }else if (SecurityProfileGrantDS.EVT_CACHE_UPDATED.equals(e_.getName())){
-    	String cacheUpdateType = (String)e_.getPayLoad();
-    	if(cacheUpdateType.equals(SecurityProfileGrantDS.EVT_RECORD_ADDED) ||cacheUpdateType.equals(SecurityProfileGrantDS.EVT_RECORD_REMOVED)){
+    }else if (AppMsg.EVT_CACHE_UPDATED.equals(e_.getName())){
+    	AppMsg cacheUpdateType = (AppMsg)e_.getPayLoad();
+    	if(cacheUpdateType.equals(AppMsg.EVT_RECORD_ADDED) ||cacheUpdateType.equals(AppMsg.EVT_RECORD_REMOVED)){
     		filterAvailableGrants();
     	}
     	

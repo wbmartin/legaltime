@@ -19,6 +19,8 @@ import com.martinanalytics.testmodule.client.app.IApplicationController;
 import com.martinanalytics.testmodule.client.ServerExceptionHandler;
 //import com.martinanalytics.testmodule.client.model.UserInfoCache;
 //import com.martinanalytics.testmodule.client.model.bean.EmailListBean;
+import com.martinanalytics.testmodule.client.model.MasterCacheManager;
+import com.martinanalytics.testmodule.client.model.SysCodeDS;
 import com.martinanalytics.testmodule.client.model.bean.UserProfile;
 
 import com.martinanalytics.testmodule.client.view.AppContainer;
@@ -38,6 +40,7 @@ public class MasterController implements AppEventListener, IApplicationControlle
          private SecurityUserController securityUserController;
          private UserPublicController userPublicController;
          private AppSysCode appSysCode ;
+         private MasterCacheManager masterCacheManager;
       	//ManageUsers manageUsers = new ManageUsers();
 //         private EmailMsgController emailMsgController;
 //         private EmailListController emailListController;
@@ -46,7 +49,9 @@ public class MasterController implements AppEventListener, IApplicationControlle
                  ServerExceptionHandler.getInstance().setMasterController(this);
                  userProfile = UserProfile.getInstance();
                  loginController = LoginController.getInstance(this);
-                 loginController.getNotifier().addAppEventListener(this);       
+                 loginController.getNotifier().addAppEventListener(this);
+                 masterCacheManager = new MasterCacheManager();
+                 SysCodeDS.getInstance().getNotifier().addAppEventListener(masterCacheManager);
 
          }
          
@@ -112,15 +117,12 @@ public class MasterController implements AppEventListener, IApplicationControlle
         }
         private void postLoginInit(){
         	appSysCode = AppSysCode.getInstance();
-                           
-                            
-            
-            
-            
-        	loginController.getLoginView().hide();
+         	loginController.getLoginView().hide();
         	appContainer = new AppContainer();
             appContainer.getNotifier().addAppEventListener(this);
         	appContainer.show();
+        	masterCacheManager.init();
+        	
 //            emailMsgController =  EmailMsgController.getInstance(this);
 //                   itemWidgets.put(AppPages.EMAIL_MSG_PAGE, emailMsgController.getEmailMsgView().getEmailMsgComposite());
 //

@@ -7,6 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.martinanalytics.testmodule.client.ServerExceptionHandler;
 import com.martinanalytics.testmodule.client.app.AppEventProducer;
+import com.martinanalytics.testmodule.client.app.AppMsg;
 import com.martinanalytics.testmodule.client.app.AppPref;
 import com.martinanalytics.testmodule.client.app.IApplicationController;
 import com.martinanalytics.testmodule.client.model.bean.SecurityProfileGrantBean;
@@ -52,11 +53,7 @@ public class SecurityProfileGrantDS extends GwtRpcDataSource{
 	public static final String SECURITY_PRIVILEGE_ID="securityPrivilegeId";
 	public static final String SECURITY_PROFILE_ID="securityProfileId";
 	public static final String LAST_UPDATE="lastUpdate";
-	public static final String EVT_CACHE_UPDATED ="EvtCacheUpdated";
-	public static final String EVT_RECORD_ADDED ="EvtRecordAdded";
-	public static final String EVT_RECORD_UPDATED ="EvtRecordUpdated";
-	public static final String EVT_RECORD_REMOVED ="EvtRecordRemoved";
-	public static final String EVT_SELECT_RETURNED ="EvtSelectReturned";
+
 
    	public SecurityProfileGrantDS(IApplicationController masterController_) { 
 	  userProfile = UserProfile.getInstance();
@@ -152,10 +149,10 @@ public class SecurityProfileGrantDS extends GwtRpcDataSource{
 				   processResponse (requestId, response);
 				   if(getCachePreferred()){
 						setCacheData(list);
-						notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_SELECT_RETURNED);	
+						notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED, AppMsg.EVT_SELECT_RETURNED);	
 				   }
 				   Log.debug("executeFetch passed - SecurityProfileGrant");
- 				   notifier.notifyAppEvent(this, EVT_SELECT_RETURNED);
+ 				   notifier.notifyAppEvent(instance, AppMsg.EVT_SELECT_RETURNED);
 				}
 		});
 	}else{
@@ -209,9 +206,9 @@ public class SecurityProfileGrantDS extends GwtRpcDataSource{
 					processResponse (requestId, response);
 					if(getCachePreferred()){
 						getCacheList().add(listGridRecord);
-						notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_RECORD_ADDED);
+						notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_RECORD_ADDED);
 					}
-					notifier.notifyAppEvent(this, EVT_RECORD_ADDED);
+					notifier.notifyAppEvent(instance, AppMsg.EVT_RECORD_ADDED);
 				}else{
 					masterController.notifyUserOfSystemError("Server Error","There was an error while adding the "
 					+ "securityProfileGrant.  This is an unexpected error, please go to Help > View Log and send "
@@ -272,12 +269,12 @@ public class SecurityProfileGrantDS extends GwtRpcDataSource{
 					&& getCacheList().get(ndx).getAttributeAsInt(SECURITY_PRIVILEGE_ID).equals(result.getSecurityPrivilegeId())
 					&& getCacheList().get(ndx).getAttributeAsInt(SECURITY_PROFILE_ID).equals(result.getSecurityProfileId())){
 						   getCacheList().remove(ndx);
-						   notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_RECORD_UPDATED);
+						   notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_RECORD_UPDATED);
 					}
 				    }
 				  }
 				  
-				  notifier.notifyAppEvent(this, EVT_RECORD_UPDATED);
+				  notifier.notifyAppEvent(instance, AppMsg.EVT_RECORD_UPDATED);
 				}else{
 					masterController.notifyUserOfSystemError("Server Error","There was an error while updating a "
 					+ "securityProfileGrant record.  This can be caused by someone else changing the record.  Please try"
@@ -334,12 +331,12 @@ public class SecurityProfileGrantDS extends GwtRpcDataSource{
 					&& getCacheList().get(ndx).getAttributeAsInt(SECURITY_PRIVILEGE_ID).equals(rec.getAttributeAsInt(SECURITY_PRIVILEGE_ID))
 					&& getCacheList().get(ndx).getAttributeAsInt(SECURITY_PROFILE_ID).equals(rec.getAttributeAsInt(SECURITY_PROFILE_ID))){
 					  getCacheList().remove(ndx);
-					  notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_RECORD_REMOVED);
+					  notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_RECORD_REMOVED);
 				      }
 				    }
 				}
 				
-				notifier.notifyAppEvent(this, EVT_RECORD_REMOVED);
+				notifier.notifyAppEvent(instance, AppMsg.EVT_RECORD_REMOVED);
 			   }else{
 				masterController.notifyUserOfSystemError("Server Error","There was an error while deleting a "
 				+ "securityProfileGrant record.  This can be caused by someone else changing the record.  Please try"
@@ -537,12 +534,12 @@ public class SecurityProfileGrantDS extends GwtRpcDataSource{
 //				                }
 //				                if(getCachePreferred()){
 //				                	setCacheData(list);	
-//				                	notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_SELECT_RETURNED);
+//				                	notifier.notifyAppEvent(instance, EVT_CACHE_UPDATED,EVT_SELECT_RETURNED);
 //				                }
 //					        response.setData (applyClientFilter(list));
 //				                processResponse (requestId, response);
 //				                Log.debug("executeFetch passed - SecurityProfileGrant");
-//				                notifier.notifyAppEvent(this, EVT_SELECT_RETURNED);
+//				                notifier.notifyAppEvent(instance, EVT_SELECT_RETURNED);
 //						
 //					}
 //		});
@@ -599,9 +596,9 @@ public class SecurityProfileGrantDS extends GwtRpcDataSource{
 //						processResponse (requestId, response);
 //						if(getCachePreferred()){
 //							getCacheList().add(listGridRecord);
-//							notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_RECORD_ADDED);
+//							notifier.notifyAppEvent(instance, EVT_CACHE_UPDATED,EVT_RECORD_ADDED);
 //						}
-//						notifier.notifyAppEvent(this, EVT_RECORD_ADDED);
+//						notifier.notifyAppEvent(instance, EVT_RECORD_ADDED);
 //			
 //					}else{
 //						masterController.notifyUserOfSystemError("Server Error","There was an error while adding the "
@@ -665,11 +662,11 @@ public class SecurityProfileGrantDS extends GwtRpcDataSource{
 //									&& getCacheList().get(ndx).getAttributeAsInt("clientId").equals(result.getClientId())
 //								){
 //									getCacheList().remove(ndx);
-//									notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_RECORD_UPDATED);
+//									notifier.notifyAppEvent(instance, EVT_CACHE_UPDATED,EVT_RECORD_UPDATED);
 //								}
 //							}
 //						}
-//						notifier.notifyAppEvent(this, EVT_RECORD_UPDATED);
+//						notifier.notifyAppEvent(instance, EVT_RECORD_UPDATED);
 //						response.setData (listGridRecordArray);
 //						processResponse (requestId, response);
 //					}else{
@@ -734,11 +731,11 @@ public class SecurityProfileGrantDS extends GwtRpcDataSource{
 //									&& getCacheList().get(ndx).getAttributeAsInt("clientId").equals(rec.getAttributeAsInt("clientId"))
 //								){
 //									getCacheList().remove(ndx);
-//									notifier.notifyAppEvent(this, EVT_CACHE_UPDATED,EVT_RECORD_REMOVED);
+//									notifier.notifyAppEvent(instance, EVT_CACHE_UPDATED,EVT_RECORD_REMOVED);
 //								}
 //							}
 //						}
-//						notifier.notifyAppEvent(this, EVT_RECORD_REMOVED);
+//						notifier.notifyAppEvent(instance, EVT_RECORD_REMOVED);
 //						response.setData (list);
 //						processResponse (requestId, response);
 //					}else{
