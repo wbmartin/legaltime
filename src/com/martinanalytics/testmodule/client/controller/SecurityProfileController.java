@@ -70,7 +70,8 @@ public class SecurityProfileController implements AppEventListener{
 	masterController =masterController_;
 	 
 	 securityProfileDS =SecurityProfileDS.getInstance();
-	 securityProfileGrantDS =new SecurityProfileGrantDS(masterController);
+	 securityProfileGrantDS =SecurityProfileGrantDS.getInstance();
+	 securityProfileGrantDS.getNotifier().addAppEventListener(this);
 	 vwProfileGrantDS = VwProfileGrantDS.getInstance();
 	 securityPrivilegeDS = SecurityPrivilegeDS.getInstance();
 	 securityProfileView = new SecurityProfileView(securityProfileDS, securityProfileGrantDS, securityPrivilegeDS);

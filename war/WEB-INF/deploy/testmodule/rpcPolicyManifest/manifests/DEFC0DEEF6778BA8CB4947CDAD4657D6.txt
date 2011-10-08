@@ -1,0 +1,2 @@
+serviceClass: com.martinanalytics.testmodule.client.model.SysCodeService
+path: F65A0A6626B7C19EA0E558B0625FE700.gwt.rpc

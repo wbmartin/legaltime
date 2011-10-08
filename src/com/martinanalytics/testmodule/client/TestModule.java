@@ -59,6 +59,14 @@ public class TestModule implements EntryPoint {
 		DOM.getElementById("loginMsg").setInnerHTML("");
 		//Log.getLogger(DivLogger.class).getWidget().setVisible(false);
 		//RootPanel.get().add(Log.getLogger(DivLogger.class).getWidget(),100,100);
+		//Testing only
+		String username = DOM.getElementProperty(DOM.getElementById("username"),"value");
+		String password = DOM.getElementProperty(DOM.getElementById("passwd"),"value");
+		Log.debug("username"+ username);
+		Log.debug("passwd"+ password);
+		
+		notifier.notifyAppEvent(this, AppMsg.SEND_LOGIN_INFO,username,password,null,"");
+
 		
 	}
 }
