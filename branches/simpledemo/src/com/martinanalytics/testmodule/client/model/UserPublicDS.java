@@ -15,6 +15,7 @@ import com.martinanalytics.testmodule.client.model.bean.UserProfile;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSourceField;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.rpc.RPCResponse;
 import com.smartgwt.client.types.FieldType;
 import com.smartgwt.client.widgets.Canvas;
@@ -127,6 +128,7 @@ public class UserPublicDS extends GwtRpcDataSource{
 
 	  field = new DataSourceField(COMMENT,FieldType.TEXT, "Comment",50);
 	  addField(field);
+	  useGridRecord=true;
 
 }
 
@@ -189,7 +191,7 @@ public class UserPublicDS extends GwtRpcDataSource{
 					+ (new java.util.Date().getTime() - startTime.getTime()));
  				  ListGridRecord[] list = new ListGridRecord[userPublicResult.size ()];
 				  for (int i = 0; i < list.length; i++) {
-				 	ListGridRecord record = new ListGridRecord ();
+					  	ListGridRecord record = new ListGridRecord ();
 				        copyValues (userPublicResult.get (i), record);
 				        list[i] = record;
 				   }
@@ -272,18 +274,29 @@ public class UserPublicDS extends GwtRpcDataSource{
 *
 *
 */
+  private boolean useGridRecord;
   @Override
   protected void executeUpdate (final String requestId, final DSRequest request, final DSResponse response) {
 	Log.debug("executeUpdate Called - UserPublic");
-
+	ListGrid grid;
        	// Retrieve record which should be updated.
        	JavaScriptObject data = request.getData ();
-       	ListGridRecord rec = new ListGridRecord (data);
-       	// Find grid
-       	ListGrid grid = (ListGrid) Canvas.getById (request.getComponentId ());
-       	// Get record with old and new values combined
-       	int index = grid.getRecordIndex (rec);
-       	rec = (ListGridRecord) grid.getEditedRecord (index);
+       	
+       	Record rec = new Record (data);
+       	for (String attrib : rec.getAttributes()){
+       		Log.debug("attrib " + attrib +" " + rec.getAttribute(attrib));
+       	}
+       	for (String attrib : request.getAttributes()){
+       		Log.debug("requst " + attrib +" " + request.getAttribute(attrib));
+       	}
+       	if(useGridRecord){// Find grid -Get record with old and new values combined
+	       	grid = (ListGrid) Canvas.getById (request.getComponentId ());
+	       	int index = grid.getRecordIndex (rec);
+	       	rec = (ListGridRecord) grid.getEditedRecord (index);
+	       	useGridRecord=false;
+       	}
+       	
+       	
         final UserPublicBean userPublicBean = new UserPublicBean();
         copyValues (rec, userPublicBean);
 	final java.util.Date startTime = new java.util.Date();
@@ -301,19 +314,17 @@ public class UserPublicDS extends GwtRpcDataSource{
 				}
 			}
 			public void onSuccess(UserPublicBean result) {
-				Log.debug("userPublicService.updateUserPublic onSuccess: " + result);
+				Log.debug("userPublicService.updateUserPublic onSuccess: ");
 				if (result.getClientId() !=null && result.getUserId() !=null){
 				  userProfile.incrementSessionTimeOut();
 				  notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
 					"Successfully updated UserPublic record"
 				  	+ (new java.util.Date().getTime() - startTime.getTime()));
-				  Log.info("Bean Updated" + result.toString());
-				  ListGridRecord[] listGridRecordArray = new ListGridRecord[1];
-				  ListGridRecord listGridRecord = new ListGridRecord ();
-				  copyValues (result, listGridRecord);
-				  listGridRecordArray[0] = listGridRecord;
-				  response.setData (listGridRecordArray);
-				  response.setData (listGridRecordArray);
+					  ListGridRecord[] listGridRecordArray = new ListGridRecord[1];
+					  ListGridRecord listGridRecord = new ListGridRecord ();
+					  copyValues (result, listGridRecord);
+					  listGridRecordArray[0] = listGridRecord;
+					  response.setData (listGridRecordArray);
 				  processResponse (requestId, response);
 				  if(getCachePreferred()){
 				    for(int ndx=0;ndx< getCacheList().size();ndx++){
@@ -406,7 +417,7 @@ public class UserPublicDS extends GwtRpcDataSource{
 *
 */
 
-	    public static void copyValues (ListGridRecord from, UserPublicBean to) {
+	    public static void copyValues (Record from, UserPublicBean to) {
 			to.setClientId(from.getAttributeAsInt(CLIENT_ID));
 			to.setUserId(from.getAttributeAsString(USER_ID));
 			to.setLastUpdate(from.getAttributeAsDate(LAST_UPDATE));
@@ -424,13 +435,14 @@ public class UserPublicDS extends GwtRpcDataSource{
 			to.setFax(from.getAttributeAsString(FAX));
 			to.setOfficeCell(from.getAttributeAsString(OFFICE_CELL));
 			to.setComment(from.getAttributeAsString(COMMENT));
+			Log.debug("LastUpdate" + to.getLastUpdate());
 	    }
 
 /**
 *
 *
 */
-	    public static void copyValues (UserPublicBean from, ListGridRecord to) {
+	    public static void copyValues (UserPublicBean from, Record to) {
 			to.setAttribute(CLIENT_ID, from.getClientId());
 			to.setAttribute(USER_ID, from.getUserId());
 			to.setAttribute(LAST_UPDATE, from.getLastUpdate());
@@ -489,6 +501,20 @@ public class UserPublicDS extends GwtRpcDataSource{
 				}
 		});
 	
+	}
+
+	/**
+	 * @param useRequestRecord the useRequestRecord to set
+	 */
+	public void setUseGridRecord(boolean useGridRecord) {
+		this.useGridRecord = useGridRecord;
+	}
+
+	/**
+	 * @return the useRequestRecord
+	 */
+	public boolean isUseGridRecord() {
+		return useGridRecord;
 	}
 
   

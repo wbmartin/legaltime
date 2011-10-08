@@ -39,7 +39,7 @@ public class MasterController implements AppEventListener, IApplicationControlle
          private SecurityProfileController securityProfileController;
          private SecurityUserController securityUserController;
          private UserPublicController userPublicController;
-         private AppSysCode appSysCode ;
+         //private AppSysCode appSysCode ;
          private MasterCacheManager masterCacheManager;
       	//ManageUsers manageUsers = new ManageUsers();
 //         private EmailMsgController emailMsgController;
@@ -50,7 +50,7 @@ public class MasterController implements AppEventListener, IApplicationControlle
                  userProfile = UserProfile.getInstance();
                  loginController = LoginController.getInstance(this);
                  loginController.getNotifier().addAppEventListener(this);
-                 masterCacheManager = new MasterCacheManager();
+                 masterCacheManager = MasterCacheManager.getInstance();
                  SysCodeDS.getInstance().getNotifier().addAppEventListener(masterCacheManager);
 
          }
@@ -116,7 +116,7 @@ public class MasterController implements AppEventListener, IApplicationControlle
                 
         }
         private void postLoginInit(){
-        	appSysCode = AppSysCode.getInstance();
+        	
          	loginController.getLoginView().hide();
         	appContainer = new AppContainer();
             appContainer.getNotifier().addAppEventListener(this);

@@ -99,21 +99,17 @@ public class SecurityUserController implements AppEventListener{
  */
 @Override
   public void onAppEventNotify(AppEvent e_) {
-	if (e_.getName().equals(AppMsg.ADD_USER_PUBLIC)){
-		
-		
+	switch(e_.getName()){
+	case ADD_USER_PUBLIC:
 		if(e_.getPayLoad()!=null){
 			String newUserName = (String)e_.getPayLoad();
 			SecurityUserBean securityUserBean = new SecurityUserBean();
 			ListGridRecord securityUserRecord = new ListGridRecord();
 			securityUserBean.setUserId(newUserName);
 			securityUserBean.setSecurityProfileId(AppPref.DEFAULT_SECURITY_PROFILE_ID);
-			
-			
 			SecurityUserDS.copyValues(securityUserBean, securityUserRecord);
 			securityUserDS.addData(securityUserRecord);
-			
-			UserPublicBean userPublicBean = new UserPublicBean();
+				UserPublicBean userPublicBean = new UserPublicBean();
 			ListGridRecord userPublicRecord = new ListGridRecord();
 			userPublicBean.setLastName("User");
 			userPublicBean.setFirstName("Newly Created");
@@ -122,7 +118,9 @@ public class SecurityUserController implements AppEventListener{
 			securityUserView.getUserPublicListGrid().addData(userPublicRecord);
 		}
 	
-	}else{
+	break;
+	case UPDATE_USER_PUBLIC:
+	default:
 		Log.debug("Unexpected AppEvent named" +e_.getName() );
 	}
 	

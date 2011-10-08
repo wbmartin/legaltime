@@ -53,8 +53,8 @@ $BODY$
 --    end if;
 	securityProfileSQL ='';
 	masterSQL = '';
-    return query execute 'select sys_code_id, client_id, code_type, key, value, last_update, notes from sys_code where client_id =' || clientid_ || ' '
-    || ' union select 0, client_id, cast (''SECPROFILE'' as varchar(10)), cast (security_profile_id as varchar(10)), cast (profile_name as varchar(25)), last_update,cast('''' as varchar(255)) from security_profile where client_id =' || clientid_ || ' ';
+    return query execute 'select sys_code_id, client_id, code_type, key, value, last_update, notes from sys_code where client_id =' || clientid_ || ' ';
+   
     -- 	|| additionalWhereClause || orderByclause || offsetStatement || limitStatement;
 
   End;

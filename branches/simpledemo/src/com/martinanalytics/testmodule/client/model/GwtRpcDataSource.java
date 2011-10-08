@@ -208,12 +208,7 @@ public abstract class GwtRpcDataSource
     protected void setCachePreferred(boolean prefer_){
     	cachePreferred = prefer_;
     }
-    
-
-
-
-
-
+  
     public Record[] applyClientFilter(Record[] startList_){
 
         int recordCount=0;
@@ -244,11 +239,7 @@ public abstract class GwtRpcDataSource
     						 match = false; break;
     					 }
     				 }
-    				
-    				
-    				
-    				
-    				if (!match){break;}
+    				 if (!match){break;}
     			}
     			if(match)trialList.add(startList_[recordNdx]);
     			
@@ -278,19 +269,13 @@ public abstract class GwtRpcDataSource
     		endRow =trialList.size();
     	}
     	java.util.Date applyClientFilterAfterRowCrops = new java.util.Date();
-    	
-    		
-        
-        finalList = (new ArrayList<Record>(trialList.subList(startRow, endRow))).toArray(new Record[0]);
-        
-        //Log.debug("finalList Size before Return" + finalList.length);
+    	finalList = (new ArrayList<Record>(trialList.subList(startRow, endRow))).toArray(new Record[0]);
         java.util.Date applyClientFilterEnd = new java.util.Date();
-        Log.debug("ApplyClientFilter took: " + (applyClientFilterEnd.getTime() - applyClientFilterStart.getTime()) 
-        		+ " to filter from "+startList_.length + " to " + finalList.length
-        		+" just start to filter: " + (applyClientFilterAfterFilter.getTime() -applyClientFilterStart.getTime())
-        		+" just start to rowCrops: " + (applyClientFilterAfterRowCrops.getTime() -applyClientFilterStart.getTime()));
-    	
-    	return finalList;
+//        Log.debug("ApplyClientFilter took: " + (applyClientFilterEnd.getTime() - applyClientFilterStart.getTime()) 
+//        		+ "ms to filter from "+startList_.length + "rec to " + finalList.length
+//        		+" rec | just start to filter: " + (applyClientFilterAfterFilter.getTime() -applyClientFilterStart.getTime())
+//        		+" | just start to rowCrops: " + (applyClientFilterAfterRowCrops.getTime() -applyClientFilterStart.getTime()));
+       	return finalList;
     }
 
 

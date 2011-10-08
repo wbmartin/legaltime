@@ -3,12 +3,16 @@ package com.martinanalytics.testmodule.client.view;
 
 
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.martinanalytics.testmodule.client.app.AppMsg;
 import com.martinanalytics.testmodule.client.app.AppNotifyObject;
 import com.martinanalytics.testmodule.client.app.AppSysCode;
+import com.martinanalytics.testmodule.client.model.MasterCacheManager;
 import com.martinanalytics.testmodule.client.model.SecurityProfileDS;
 import com.martinanalytics.testmodule.client.model.SecurityUserDS;
 import com.martinanalytics.testmodule.client.model.UserPublicDS;
@@ -19,6 +23,7 @@ import com.smartgwt.client.data.fields.DataSourceDateField;
 import com.smartgwt.client.types.FieldType;
 import com.smartgwt.client.types.FormItemType;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.Side;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.util.ValueCallback;
@@ -38,10 +43,16 @@ import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.DataArrivedEvent;
+import com.smartgwt.client.widgets.grid.events.DataArrivedHandler;
+import com.smartgwt.client.widgets.grid.events.EditCompleteEvent;
+import com.smartgwt.client.widgets.grid.events.EditCompleteHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.IButton;
 
 public class SecurityUserView extends Window  {
@@ -52,16 +63,20 @@ public class SecurityUserView extends Window  {
 	private final DynamicForm userPublicForm;
 	private final DynamicForm securityUserForm;
 	private IButton cmdAddNew;
+	private IButton cmdSave;
 	private RichTextItem commentField;
+	private VLayout formAndButtons ;
 	final UserPublicDS userPublicDS;
 	final SecurityUserDS securityUserDS;
 	ComboBoxItem securityProfileSelectItem;
 	ComboBoxItem stateSelectItem;
+	MasterCacheManager masterCacheManager;
 	
 	public SecurityUserView(SecurityUserDS securityUserDS_, UserPublicDS userPublicDS_) {
 		notifier = new AppNotifyObject();
 		userPublicDS = userPublicDS_;
 		securityUserDS = securityUserDS_;
+		masterCacheManager = MasterCacheManager.getInstance();
 		hide();
 
 		
@@ -70,37 +85,17 @@ public class SecurityUserView extends Window  {
 		
 		 userPublicListGrid = new ListGrid();
 		 userPublicListGrid.setShowAllRecords(true);
-		 userPublicListGrid.setDataSource(userPublicDS_);
-		 userPublicListGrid.setCanEdit(false);
-		 
-		
-		
-		 commentField = new RichTextItem();
-		 
-		 
-		 
-		 
-		 //userPublicDS_.getField(UserPublicDS.COMMENT).setType
+		 userPublicListGrid.setDataSource(userPublicDS);
+		 userPublicListGrid.setCanEdit(true);
 
+		 commentField = new RichTextItem();
 		 userPublicListGrid.addRecordClickHandler(new RecordClickHandler() {  
 	            public void onRecordClick(RecordClickEvent event) {  
-	                userPublicForm.reset();  
-	                userPublicForm.editSelectedData(userPublicListGrid);  
-	                userPublicDS.getField(UserPublicDS.USER_ID).setAttribute("readOnly", "true");
-	                Record securityUserRecord;
-	                for(int ndx =0;ndx< securityUserDS.getCacheData().length;ndx++){
-	                	Log.debug("Comparing: "+securityUserDS.getCacheData()[ndx].getAttribute(SecurityUserDS.USER_ID)+ "-" + userPublicListGrid.getSelectedRecord().getAttribute(UserPublicDS.USER_ID)) ;
-	                	if(securityUserDS.getCacheData()[ndx].getAttribute(SecurityUserDS.USER_ID).equals(userPublicListGrid.getSelectedRecord().getAttribute(UserPublicDS.USER_ID))){
-	                		securityUserRecord = securityUserDS.getCacheData()[ndx];
-	                		securityUserForm.editRecord(securityUserRecord);
-	                		break;
-	                	}
-	                }
-	                
+	                synchFormToSelection();
 	            }  
 	        });  
-		 userPublicForm.setDataSource(userPublicDS_);
-		 securityUserForm.setDataSource(securityUserDS_);
+		 userPublicForm.setDataSource(userPublicDS);
+		 securityUserForm.setDataSource(securityUserDS);
 		 cmdAddNew = new IButton("Add New");
 		 cmdAddNew.addClickHandler(new ClickHandler(){
 			@Override
@@ -109,7 +104,8 @@ public class SecurityUserView extends Window  {
                     @Override
 					public void execute(String value) {  
                         if (value != null ) {  
-                        	notifier.notifyAppEvent(this, AppMsg.ADD_USER_PUBLIC,value); 
+                        	notifier.notifyAppEvent(this, AppMsg.ADD_USER_PUBLIC,value);
+                        	setAllFieldsReadOnly(false);
                         } else { }  
                     }
   
@@ -118,16 +114,53 @@ public class SecurityUserView extends Window  {
 				
 			}		 
 		 });
+		 cmdSave = new IButton("Save");
+		 cmdSave.addClickHandler(new ClickHandler(){
+				@Override
+				public void onClick(ClickEvent event) {
+					userPublicDS.setUseGridRecord(false);
+					userPublicForm.saveData();
+					
+				}		 
+			 });
+//		 userPublicListGrid.addDataArrivedHandler(new DataArrivedHandler() {			
+//			@Override
+//			public void onDataArrived(DataArrivedEvent event) {
+//				Log.debug("UserPublicListGrid Received New data");
+//				
+//				Log.debug("Cache data at this point" +userPublicDS.getCacheData()[0].getAttribute(UserPublicDS.FIRST_NAME));
+//				//userPublicForm.add
+//			}
+//		 });
+
 		 securityProfileSelectItem = new ComboBoxItem();
 		 securityProfileSelectItem.setOptionDataSource( SecurityProfileDS.getInstance());
 		 securityProfileSelectItem.setValueField(SecurityProfileDS.SECURITY_PROFILE_ID);
 		 securityProfileSelectItem.setDisplayField(SecurityProfileDS.PROFILE_NAME);
 		 
 		 stateSelectItem= new ComboBoxItem();
-		 stateSelectItem.setOptionDataSource( SecurityProfileDS.getInstance());
-		 stateSelectItem.setValueField(SecurityProfileDS.SECURITY_PROFILE_ID);
-		 stateSelectItem.setDisplayField(SecurityProfileDS.PROFILE_NAME);
+		 stateSelectItem.setOptionDataSource(masterCacheManager.getStatesDS());
+		 stateSelectItem.setValueField(MasterCacheManager.KEY);
+		 stateSelectItem.setDisplayField(MasterCacheManager.VALUE);
 		buildLayout();
+	}
+	
+	private void synchFormToSelection(){
+		userPublicForm.reset();  
+		if(userPublicListGrid.getSelectedRecord() !=null){
+	        userPublicForm.editRecord(userPublicListGrid.getSelectedRecord());  
+	        //userPublicDS.getField(UserPublicDS.USER_ID).setAttribute("readOnly", "true");
+	        Record securityUserRecord;
+	        for(int ndx =0;ndx< securityUserDS.getCacheData().length;ndx++){
+	        	Log.debug("Comparing: "+securityUserDS.getCacheData()[ndx].getAttribute(SecurityUserDS.USER_ID)+ "-" + userPublicListGrid.getSelectedRecord().getAttribute(UserPublicDS.USER_ID)) ;
+	        	if(securityUserDS.getCacheData()[ndx].getAttribute(SecurityUserDS.USER_ID).equals(userPublicListGrid.getSelectedRecord().getAttribute(UserPublicDS.USER_ID))){
+	        		securityUserRecord = securityUserDS.getCacheData()[ndx];
+	        		securityUserForm.editRecord(securityUserRecord);
+	        		break;
+	        	}
+	        }
+	        setAllFieldsReadOnly(false);
+		}
 	}
 
 	private void buildLayout(){
@@ -145,25 +178,22 @@ public class SecurityUserView extends Window  {
 		userPublicListGrid.setHeight("600px");
 		userPublicListGrid.setWidth("350px");
 		
-		 userPublicDS.getField(UserPublicDS.USER_ID).setHidden(false);
-		 userPublicDS.getField(UserPublicDS.USER_ID).setAttribute("readOnly", "true");
-		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setHidden(false);
-		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setEditorType(new TextItem());
-		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("readOnly", "true");
-		 userPublicDS.getField(UserPublicDS.LAST_UPDATE).setAttribute("displayFormat", "toUSShortDateTime");
 		 
 		
-		 //LinkedHashMap securityProfileValueMap = new LinkedHashMap();
-		 Log.debug("**************hashmap" + AppSysCode.getSecurityProfileLookupCache().get("1") );
-		
+		securityUserDS.getField(SecurityUserDS.LAST_UPDATE).setHidden(false);
+		securityUserDS.getField(SecurityUserDS.LAST_UPDATE).setEditorType(new TextItem());
+		securityUserDS.getField(SecurityUserDS.LAST_UPDATE).setAttribute("readOnly", "true");
+		securityUserDS.getField(SecurityUserDS.LAST_UPDATE).setAttribute("displayFormat", "toUSShortDateTime");
 
+		
 		 
 		 securityUserDS.getField("securityProfileId").setEditorType(securityProfileSelectItem);
 		 
 		 CheckboxItem activeYnCkBxItem = new CheckboxItem();
 		 activeYnCkBxItem.setLabelAsTitle(true);
-		 //activeYnCkBxItem.setAttribute("value", "Y");
+		 
 		 securityUserDS.getField("activeYn").setEditorType(activeYnCkBxItem);
+		 securityUserDS.getField(SecurityUserDS.USER_ID).setAttribute("readOnly", "true");
 		 
 		 
 		 commentField.setCellStyle("richTextItemCellStyle");
@@ -174,25 +204,46 @@ public class SecurityUserView extends Window  {
 		 userPublicListGrid.setFields(useridLgf,lastNameLgf,firstNameLgf);
 		
 		 userPublicDS.getField("userId").setHidden(true);
+		 userPublicDS.getField(UserPublicDS.OFFICE_STATE).setEditorType(stateSelectItem);
 
 
 		gridFormSplitLayout.addMember(userPublicListGrid);
-		VLayout formAndButtons = new VLayout(2);
+		formAndButtons = new VLayout(2);
+		
 		formAndButtons.setWidth("700");
 		formAndButtons.setOverflow(Overflow.AUTO);
+		
 		securityUserForm.setWidth("600");
 		securityUserForm.setTitleWidth("100");
 		formAndButtons.addMember(securityUserForm);
 		securityUserForm.setWidth("600");
 		userPublicForm.setTitleWidth("100");
-		formAndButtons.addMember(userPublicForm);
+		userPublicForm.setNumCols(4);
+		userPublicForm.setColWidths(100,200,100,200);
+		userPublicForm.setFields(new FormItem[]{});
+		
+		
+		
+		final TabSet userInfoTabSet = new TabSet();  
+		userInfoTabSet.setTabBarPosition(Side.TOP);  
+		userInfoTabSet.setWidth(600);  
+		userInfoTabSet.setHeight(400);
+        Tab tabPublic = new Tab("Public", "");  
+        
+        tabPublic.setPane(userPublicForm);  
+        userInfoTabSet.addTab(tabPublic);
+		formAndButtons.addMember(userInfoTabSet);
 		
 		formAndButtons.addMember(cmdAddNew);
+		formAndButtons.addMember(cmdSave);
 		userPublicForm.setWidth(300);
+		
+		
 		
 		gridFormSplitLayout.addMember(formAndButtons);
 		layout.addMember(gridFormSplitLayout);
         addChild(layout);
+      setAllFieldsReadOnly(true);
 
 	}
 
@@ -232,6 +283,17 @@ public class SecurityUserView extends Window  {
 	public DynamicForm getSecurityUserForm() {
 		return securityUserForm;
 	}
+	
+	private void setAllFieldsReadOnly(boolean lock_){
+		if(lock_){
+			formAndButtons.disable();
+		}else{formAndButtons.enable();}
+
+	
+	
+	}
 
 }
+
+
 
