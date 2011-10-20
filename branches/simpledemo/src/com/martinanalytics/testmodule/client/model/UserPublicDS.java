@@ -42,6 +42,8 @@ public class UserPublicDS extends GwtRpcDataSource{
 			 		
 	private UserProfile userProfile; 
 	private AppEventProducer notifier;
+	private boolean useGridRecord;
+
   
     	public static UserPublicDS getInstance() {  
           if (instance == null) {  
@@ -191,7 +193,7 @@ public class UserPublicDS extends GwtRpcDataSource{
 					+ (new java.util.Date().getTime() - startTime.getTime()));
  				  ListGridRecord[] list = new ListGridRecord[userPublicResult.size ()];
 				  for (int i = 0; i < list.length; i++) {
-					  	ListGridRecord record = new ListGridRecord ();
+				 	ListGridRecord record = new ListGridRecord ();
 				        copyValues (userPublicResult.get (i), record);
 				        list[i] = record;
 				   }
@@ -274,29 +276,24 @@ public class UserPublicDS extends GwtRpcDataSource{
 *
 *
 */
-  private boolean useGridRecord;
   @Override
   protected void executeUpdate (final String requestId, final DSRequest request, final DSResponse response) {
 	Log.debug("executeUpdate Called - UserPublic");
 	ListGrid grid;
        	// Retrieve record which should be updated.
        	JavaScriptObject data = request.getData ();
-       	
        	Record rec = new Record (data);
-       	for (String attrib : rec.getAttributes()){
-       		Log.debug("attrib " + attrib +" " + rec.getAttribute(attrib));
-       	}
-       	for (String attrib : request.getAttributes()){
-       		Log.debug("requst " + attrib +" " + request.getAttribute(attrib));
-       	}
        	if(useGridRecord){// Find grid -Get record with old and new values combined
 	       	grid = (ListGrid) Canvas.getById (request.getComponentId ());
 	       	int index = grid.getRecordIndex (rec);
 	       	rec = (ListGridRecord) grid.getEditedRecord (index);
 	       	useGridRecord=false;
        	}
-       	
-       	
+
+//       	for(String attrib: rec.getAttributes()){
+//       		Log.debug("attrib:" + attrib + "-" + rec.getAttribute(attrib));
+//       	}
+
         final UserPublicBean userPublicBean = new UserPublicBean();
         copyValues (rec, userPublicBean);
 	final java.util.Date startTime = new java.util.Date();
@@ -314,17 +311,18 @@ public class UserPublicDS extends GwtRpcDataSource{
 				}
 			}
 			public void onSuccess(UserPublicBean result) {
-				Log.debug("userPublicService.updateUserPublic onSuccess: ");
+				Log.debug("userPublicService.updateUserPublic onSuccess ");
+
 				if (result.getClientId() !=null && result.getUserId() !=null){
 				  userProfile.incrementSessionTimeOut();
 				  notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
 					"Successfully updated UserPublic record"
 				  	+ (new java.util.Date().getTime() - startTime.getTime()));
-					  ListGridRecord[] listGridRecordArray = new ListGridRecord[1];
-					  ListGridRecord listGridRecord = new ListGridRecord ();
-					  copyValues (result, listGridRecord);
-					  listGridRecordArray[0] = listGridRecord;
-					  response.setData (listGridRecordArray);
+				  ListGridRecord[] listGridRecordArray = new ListGridRecord[1];
+				  ListGridRecord listGridRecord = new ListGridRecord ();
+				  copyValues (result, listGridRecord);
+				  listGridRecordArray[0] = listGridRecord;
+				  response.setData (listGridRecordArray);
 				  processResponse (requestId, response);
 				  if(getCachePreferred()){
 				    for(int ndx=0;ndx< getCacheList().size();ndx++){
@@ -435,7 +433,6 @@ public class UserPublicDS extends GwtRpcDataSource{
 			to.setFax(from.getAttributeAsString(FAX));
 			to.setOfficeCell(from.getAttributeAsString(OFFICE_CELL));
 			to.setComment(from.getAttributeAsString(COMMENT));
-			Log.debug("LastUpdate" + to.getLastUpdate());
 	    }
 
 /**
@@ -503,19 +500,18 @@ public class UserPublicDS extends GwtRpcDataSource{
 	
 	}
 
-	/**
-	 * @param useRequestRecord the useRequestRecord to set
+ 	/**
+	 * @param useGridRecord true if the the CRUD function should go back to the UI to get the full record
 	 */
 	public void setUseGridRecord(boolean useGridRecord) {
 		this.useGridRecord = useGridRecord;
 	}
 
 	/**
-	 * @return the useRequestRecord
+	 * @return useGridRecord true if the the CRUD function should go back to the UI to get the full record
 	 */
 	public boolean isUseGridRecord() {
 		return useGridRecord;
 	}
-
-  
+ 
 }

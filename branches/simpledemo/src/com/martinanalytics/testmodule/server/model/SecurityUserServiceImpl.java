@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.mortbay.log.Log;
+//import org.mortbay.log.Log;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.martinanalytics.testmodule.client.model.GWTCustomException;
@@ -60,7 +60,7 @@ public class SecurityUserServiceImpl extends RemoteServiceServlet
 		  ps.setDate(++ndx,new java.sql.Date(securityUserBean_.getSessionExpireDt().getTime()) );
 		}catch(Exception e_){
 			ps.setDate(ndx,null);
-			Log.debug("Warning - threw an Exception:" + e_.getMessage() + " on SessionExpireDt");
+			//Log.debug("Warning - threw an Exception:" + e_.getMessage() + " on SessionExpireDt");
 		}
 		ps.setString(++ndx,securityUserBean_.getActiveYn() );
      		rs =  ps.executeQuery();
