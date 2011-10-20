@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clay-model clay-version="2.0.1">
+<database-model author="" begin-script="" end-script="" id="101d650:13314413e67:-8000" name="ledger" sql-dialect-id="jp.azzurri.clay.dialect.Postgre_7_3_Dialect" version="1.0">
+<schema-list>
+<schema id="101d650:13314413e67:-7ffd" name="DEFAULT_SCHEMA">
+<table-list>
+<table id="101d650:13314413e67:-7fff" name="ledger_commodity">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ff9" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ffa" mandatory="true" name="ledger_commodities_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ff6" mandatory="true" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="25" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ff8" mandatory="false" name="mnemonic">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ff7" mandatory="false" name="full_name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="10" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ff5" mandatory="false" name="cusip">
+<data-type name="CHAR" selected-variant-pattern="CHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ff4" mandatory="false" name="fraction">
+<data-type name="INT" selected-variant-pattern="INT"/>
+</column>
+<column auto-increment="false" column-size="10" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ff3" mandatory="false" name="quote_flag">
+<data-type name="CHAR" selected-variant-pattern="CHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ff2" mandatory="false" name="quote_source">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7ff1" mandatory="false" name="quote_tz">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="101d650:13314413e67:-7ffe" name="PK_LEDGER_COMMODITY">
+<primary-key-column name="ledger_commodities_id"/>
+<primary-key-column name="client_id"/>
+</primary-key>
+</table>
+<table id="101d650:13314413e67:-7fcb" name="ledger_price">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fc7" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fc6" mandatory="true" name="ledger_price_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fc2" mandatory="true" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fc5" mandatory="true" name="ledger_commodity_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fc4" mandatory="true" name="ledger_currency_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fc3" mandatory="true" name="effective_date">
+<data-type name="DATE" selected-variant-pattern="DATE"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fc1" mandatory="false" name="source">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fc0" mandatory="false" name="type">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fbd" mandatory="true" name="value_num">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fbf" mandatory="true" name="value_denom">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7d34" mandatory="true" name="ledger_commodities_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+</column-list>
+<primary-key id="101d650:13314413e67:-7fca" name="PK_LEDGER_PRICE">
+<primary-key-column name="client_id"/>
+<primary-key-column name="ledger_price_id"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="101d650:13314413e67:-7d36" name="FK_ledger_price_1" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_LEDGER_COMMODITY" referenced-table="ledger_commodity" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="ledger_commodities_id" referenced-key-column-name="ledger_commodities_id"/>
+<foreign-key-column column-name="client_id" referenced-key-column-name="client_id"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="101d650:13314413e67:-7fbc" name="ledger_account">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fb8" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fb7" mandatory="true" name="ledger_account_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fb6" mandatory="true" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fb5" mandatory="true" name="name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="25" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fb4" mandatory="true" name="account_type">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fb3" mandatory="false" name="ledger_commodity_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fb2" mandatory="false" name="parent_account_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fb1" mandatory="false" name="code">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fb0" mandatory="false" name="description">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="101d650:13314413e67:-7fbb" name="PK_LEDGER_ACCOUNT">
+<primary-key-column name="client_id"/>
+<primary-key-column name="ledger_account_id"/>
+</primary-key>
+</table>
+<table id="101d650:13314413e67:-7fae" name="ledger_transaction">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7faa" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fa9" mandatory="true" name="ledger_transaction_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fa8" mandatory="false" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fa7" mandatory="false" name="currency_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fa6" mandatory="false" name="num">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fa5" mandatory="false" name="post_date">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fa4" mandatory="false" name="enter_date">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7fa3" mandatory="false" name="description">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="101d650:13314413e67:-7fad" name="PK_LEDGER_TRANSACTION">
+<primary-key-column name="client_id"/>
+<primary-key-column name="ledger_transaction_id"/>
+</primary-key>
+</table>
+<table id="101d650:13314413e67:-7fa1" name="ledger_lot">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f9c" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f9d" mandatory="true" name="ledger_lot_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f9b" mandatory="false" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f9a" mandatory="false" name="ledger_account_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f99" mandatory="false" name="is_closed">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+</column-list>
+<primary-key id="101d650:13314413e67:-7fa0" name="PK_LEDGER_LOT">
+<primary-key-column name="client_id"/>
+<primary-key-column name="ledger_lot_id"/>
+</primary-key>
+</table>
+<table id="101d650:13314413e67:-7f96" name="ledger_budget">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f92" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f91" mandatory="true" name="ledger_budget_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f8e" mandatory="false" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="25" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f90" mandatory="true" name="name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f8f" mandatory="false" name="description">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="101d650:13314413e67:-7f95" name="PK_LEDGER_BUDGET">
+<primary-key-column name="client_id"/>
+<primary-key-column name="ledger_budget_id"/>
+</primary-key>
+</table>
+<table id="101d650:13314413e67:-7f8d" name="ledger_budget_amount">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f7d" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f7c" mandatory="true" name="ledger_budget_amount_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f7b" mandatory="false" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f7a" mandatory="false" name="ledger_budget_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f79" mandatory="false" name="ledger_account_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f78" mandatory="false" name="period_num">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f77" mandatory="false" name="amount_num">
+<data-type name="INT8" selected-variant-pattern="INT8"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f74" mandatory="false" name="amount_denom">
+<data-type name="INT8" selected-variant-pattern="INT8"/>
+</column>
+</column-list>
+<primary-key id="101d650:13314413e67:-7f8c" name="PK_LEDGER_BUDGET_AMOUNT">
+<primary-key-column name="client_id"/>
+<primary-key-column name="ledger_budget_amount_id"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="101d650:13314413e67:-7db1" name="FK_ledger_budget_amount_1" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_LEDGER_BUDGET" referenced-table="ledger_budget" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="client_id" referenced-key-column-name="client_id"/>
+<foreign-key-column column-name="ledger_budget_id" referenced-key-column-name="ledger_budget_id"/>
+</foreign-key>
+<foreign-key id="101d650:13314413e67:-7c16" name="FK_ledger_budget_amount_2" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_LEDGER_ACCOUNT" referenced-table="ledger_account" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="client_id" referenced-key-column-name="client_id"/>
+<foreign-key-column column-name="ledger_account_id" referenced-key-column-name="ledger_account_id"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="101d650:13314413e67:-7f73" name="ledger_sched_transaction">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f6f" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f6e" mandatory="true" name="ledger_schedule_transaction_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f6d" mandatory="false" name="last_update">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="25" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f6c" mandatory="false" name="name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f6b" mandatory="false" name="start_date">
+<data-type name="DATE" selected-variant-pattern="DATE"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f6a" mandatory="false" name="last_occur_date">
+<data-type name="DATE" selected-variant-pattern="DATE"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f69" mandatory="false" name="num_occur">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f68" mandatory="false" name="rem_occur">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f67" mandatory="false" name="auto_create">
+<data-type name="BOOLEAN" selected-variant-pattern="BOOLEAN"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f66" mandatory="false" name="auto_notify">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f65" mandatory="false" name="adv_creation_days">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f64" mandatory="false" name="adv_notify_days">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f63" mandatory="false" name="instance_count">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+</column-list>
+<primary-key id="101d650:13314413e67:-7f72" name="PK_LEDGER_SCHED_TRANSACTION">
+<primary-key-column name="client_id"/>
+<primary-key-column name="ledger_schedule_transaction_id"/>
+</primary-key>
+</table>
+<table id="101d650:13314413e67:-7f51" name="ledger_split">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f4d" mandatory="true" name="client_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f4c" mandatory="true" name="ledger_split_id">
+<data-type name="SERIAL" selected-variant-pattern="SERIAL"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f4b" mandatory="true" name="ledger_transaction_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f4a" mandatory="true" name="ledger_account_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f49" mandatory="false" name="memo">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="255" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f48" mandatory="false" name="action">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="1" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f47" mandatory="false" name="reconcile_state">
+<data-type name="CHAR" selected-variant-pattern="CHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="3" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f46" mandatory="false" name="reconcile_date">
+<data-type name="TIMESTAMP" selected-variant-pattern="TIMESTAMP(%p) WITHOUT TIME ZONE"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f45" mandatory="true" name="value_num">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f44" mandatory="true" name="value_denom">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f43" mandatory="true" name="quantity_num">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="10" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f42" mandatory="true" name="quantity_denom">
+<data-type name="CHAR" selected-variant-pattern="CHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="10" decimal-digits="0" default-value="" id="101d650:13314413e67:-7f41" mandatory="false" name="ledger_lot_id">
+<data-type name="CHAR" selected-variant-pattern="CHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="101d650:13314413e67:-7f50" name="PK_LEDGER_SPLIT">
+<primary-key-column name="client_id"/>
+<primary-key-column name="ledger_split_id"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="101d650:13314413e67:-7f2f" name="FK_ledger_split_1" on-delete="CASCADE" on-update="UNSPECIFIED" referenced-key="PK_LEDGER_TRANSACTION" referenced-table="ledger_transaction" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="client_id" referenced-key-column-name="client_id"/>
+<foreign-key-column column-name="ledger_transaction_id" referenced-key-column-name="ledger_transaction_id"/>
+</foreign-key>
+<foreign-key id="101d650:13314413e67:-7e26" name="FK_ledger_split_2" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_LEDGER_ACCOUNT" referenced-table="ledger_account" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="client_id" referenced-key-column-name="client_id"/>
+<foreign-key-column column-name="ledger_account_id" referenced-key-column-name="ledger_account_id"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+</table-list>
+</schema>
+</schema-list>
+</database-model>
+<diagram>
+<table-figure refid="101d650:13314413e67:-7fff" x="26" y="32"/>
+<table-figure height="174" refid="101d650:13314413e67:-7fcb" width="254" x="643" y="22"/>
+<table-figure height="198" refid="101d650:13314413e67:-7fbc" width="288" x="55" y="802"/>
+<table-figure height="171" refid="101d650:13314413e67:-7fae" width="261" x="456" y="290"/>
+<table-figure height="184" refid="101d650:13314413e67:-7fa1" width="310" x="21" y="237"/>
+<table-figure height="126" refid="101d650:13314413e67:-7f96" width="208" x="922" y="68"/>
+<table-figure height="237" refid="101d650:13314413e67:-7f8d" width="312" x="804" y="341"/>
+<table-figure height="244" refid="101d650:13314413e67:-7f73" width="276" x="753" y="664"/>
+<table-figure height="129" refid="101d650:13314413e67:-7f51" width="420" x="24" y="465"/>
+</diagram>
+</clay-model>
