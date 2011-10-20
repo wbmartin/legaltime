@@ -30,7 +30,7 @@
 
 
 
-		<fileset dir="/home/wbmartin/.eclipse/org.eclipse.platform_3.5.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle_2.3.0.r35v201104261923/gwt-2.3.0/">
+		<fileset dir="/home/wbmartin/.eclipse/org.eclipse.platform_3.5.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle_2.3.0.r35v201105191506le/gwt-2.3.0/">
 			<include name="gwt-user.jar" />
 			<include name="gwt-dev-windows.jar" />
 		</fileset>

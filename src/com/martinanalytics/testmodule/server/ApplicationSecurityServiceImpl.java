@@ -48,7 +48,7 @@ public class ApplicationSecurityServiceImpl
                                 result.setClientId(0);
                         }
                 } catch (Exception e) {
-                        //e.printStackTrace();
+                        e.printStackTrace();
                         result.setClientId(0);
                         throw new GWTCustomException("Authentication Failure", e);
                 }

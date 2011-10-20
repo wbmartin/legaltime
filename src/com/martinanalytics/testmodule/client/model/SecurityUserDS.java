@@ -15,6 +15,7 @@ import com.martinanalytics.testmodule.client.model.bean.UserProfile;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSourceField;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.rpc.RPCResponse;
 import com.smartgwt.client.types.FieldType;
 import com.smartgwt.client.widgets.Canvas;
@@ -41,6 +42,8 @@ public class SecurityUserDS extends GwtRpcDataSource{
 			 		
 	private UserProfile userProfile; 
 	private AppEventProducer notifier;
+	private boolean useGridRecord;
+
   
     	public static SecurityUserDS getInstance() {  
           if (instance == null) {  
@@ -56,10 +59,10 @@ public class SecurityUserDS extends GwtRpcDataSource{
 	//public static final String SESSION_EXPIRE_DT="sessionExpireDt";
 	public static final String ACTIVE_YN="activeYn";
 	public static final String LAST_UPDATE="lastUpdate";
-
+	
 
    	protected SecurityUserDS() { 
-	  userProfile = UserProfile.getInstance();
+	  userProfile = UserProfile.getInstance();	   
 	  notifier = new AppEventProducer() ;
 	  DataSourceField field;
 		
@@ -92,9 +95,9 @@ public class SecurityUserDS extends GwtRpcDataSource{
 	  field = new DataSourceField(LAST_UPDATE,FieldType.DATE, "Last Update",50); 
 	  field.setHidden(true); 
 	  addField(field);
+	  useGridRecord=true;
 
 }
-   	
 
 /**
  * Provides a standard template to retrieve beans from the server.  
@@ -141,7 +144,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 			new AsyncCallback<ArrayList<SecurityUserBean>>(){
 				public void onFailure(Throwable caught) {
 					notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-					  "Retrieving SecurityUser Failed ("+ (new java.util.Date().getTime() -startTime.getTime()) + "ms)");
+					  "Retrieving SecurityUser Failed ("+ (new java.util.Date().getTime() -startTime.getTime()) + " ms)");
 					Log.debug("Where Attempted: " +whereClause + " | Orderby attempted " + orderByClause);
 					if(!ServerExceptionHandler.getInstance().handle(caught)){
 
@@ -151,13 +154,14 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				public void onSuccess(ArrayList<SecurityUserBean> securityUserResult) {
 				  Log.debug("Select SecurityUser received  Where Attempted: " + whereClause + " | Orderby attempted " + orderByClause );
 				  notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
-							"Successfully Retrieved SecurityUser listing"
-							+ (new java.util.Date().getTime() - startTime.getTime()));
+					"Successfully Retrieved SecurityUser listing"
+					+ (new java.util.Date().getTime() - startTime.getTime()));
  				  ListGridRecord[] list = new ListGridRecord[securityUserResult.size ()];
 				  for (int i = 0; i < list.length; i++) {
 				 	ListGridRecord record = new ListGridRecord ();
 				        copyValues (securityUserResult.get (i), record);
 				        list[i] = record;
+				        	
 				   }
 				   response.setData (applyClientFilter(list));
 				   processResponse (requestId, response);
@@ -187,7 +191,6 @@ public class SecurityUserDS extends GwtRpcDataSource{
 
 	Log.debug("executeAdd Called - SecurityUser");
 	JavaScriptObject data = request.getData ();
-	
       	ListGridRecord listGridRecord = new ListGridRecord(data);
         final SecurityUserBean securityUserBean = new SecurityUserBean();
         copyValues (listGridRecord, securityUserBean);
@@ -242,15 +245,21 @@ public class SecurityUserDS extends GwtRpcDataSource{
   @Override
   protected void executeUpdate (final String requestId, final DSRequest request, final DSResponse response) {
 	Log.debug("executeUpdate Called - SecurityUser");
-
+	ListGrid grid;
        	// Retrieve record which should be updated.
        	JavaScriptObject data = request.getData ();
-       	ListGridRecord rec = new ListGridRecord (data);
-       	// Find grid
-       	ListGrid grid = (ListGrid) Canvas.getById (request.getComponentId ());
-       	// Get record with old and new values combined
-       	int index = grid.getRecordIndex (rec);
-       	rec = (ListGridRecord) grid.getEditedRecord (index);
+       	Record rec = new Record (data);
+       	if(useGridRecord){// Find grid -Get record with old and new values combined
+	       	grid = (ListGrid) Canvas.getById (request.getComponentId ());
+	       	int index = grid.getRecordIndex (rec);
+	       	rec = (ListGridRecord) grid.getEditedRecord (index);
+	       	useGridRecord=false;
+       	}
+       
+//       	for(String attrib: rec.getAttributes()){
+//       		Log.debug("attrib:" + attrib + "-" + rec.getAttribute(attrib));
+//       	}
+
         final SecurityUserBean securityUserBean = new SecurityUserBean();
         copyValues (rec, securityUserBean);
 	final java.util.Date startTime = new java.util.Date();
@@ -268,25 +277,24 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				}
 			}
 			public void onSuccess(SecurityUserBean result) {
-				Log.debug("securityUserService.updateSecurityUser onSuccess: " + result);
+				Log.debug("securityUserService.updateSecurityUser onSuccess ");
+
 				if (result.getClientId() !=null && result.getUserId() !=null){
 				  userProfile.incrementSessionTimeOut();
 				  notifier.notifyAppEvent(instance, AppMsg.SET_MASTER_WINDOW_STATUS,
 					"Successfully updated SecurityUser record"
 				  	+ (new java.util.Date().getTime() - startTime.getTime()));
-				  Log.info("Bean Updated" + result.toString());
 				  ListGridRecord[] listGridRecordArray = new ListGridRecord[1];
 				  ListGridRecord listGridRecord = new ListGridRecord ();
 				  copyValues (result, listGridRecord);
 				  listGridRecordArray[0] = listGridRecord;
-				  response.setData (listGridRecordArray);
 				  response.setData (listGridRecordArray);
 				  processResponse (requestId, response);
 				  if(getCachePreferred()){
 				    for(int ndx=0;ndx< getCacheList().size();ndx++){
 					if(getCacheList().get(ndx).getAttributeAsInt(CLIENT_ID).equals(result.getClientId())
 					&& getCacheList().get(ndx).getAttributeAsString(USER_ID).equals(result.getUserId())){
-						   getCacheList().remove(ndx);
+						   getCacheList().set(ndx, listGridRecord);
 						   notifier.notifyAppEvent(instance, AppMsg.EVT_CACHE_UPDATED,AppMsg.EVT_RECORD_UPDATED);
 					}
 				    }
@@ -373,14 +381,14 @@ public class SecurityUserDS extends GwtRpcDataSource{
 *
 */
 
-	    public static void copyValues (ListGridRecord from, SecurityUserBean to) {
+	    public static void copyValues (Record from, SecurityUserBean to) {
 			to.setClientId(from.getAttributeAsInt(CLIENT_ID));
 			to.setUserId(from.getAttributeAsString(USER_ID));
 //			to.setPasswordEnc(from.getAttributeAsString(PASSWORD_ENC));
 			to.setSecurityProfileId(from.getAttributeAsInt(SECURITY_PROFILE_ID));
 //			to.setSessionId(from.getAttributeAsString(SESSION_ID));
 //			to.setSessionExpireDt(from.getAttributeAsDate(SESSION_EXPIRE_DT));
-			to.setActiveYn(from.getAttributeAsString(ACTIVE_YN));
+			to.setActiveYn((from.getAttributeAsString(ACTIVE_YN) !=null && from.getAttributeAsString(ACTIVE_YN).equals("true"))?"Y":"N");
 			to.setLastUpdate(from.getAttributeAsDate(LAST_UPDATE));
 	    }
 
@@ -388,28 +396,28 @@ public class SecurityUserDS extends GwtRpcDataSource{
 *
 *
 */
-	    public static void copyValues (SecurityUserBean from, ListGridRecord to) {
+	    public static void copyValues (SecurityUserBean from, Record to) {
 			to.setAttribute(CLIENT_ID, from.getClientId());
 			to.setAttribute(USER_ID, from.getUserId());
 //			to.setAttribute(PASSWORD_ENC, from.getPasswordEnc());
 			to.setAttribute(SECURITY_PROFILE_ID, from.getSecurityProfileId());
 //			to.setAttribute(SESSION_ID, from.getSessionId());
 //			to.setAttribute(SESSION_EXPIRE_DT, from.getSessionExpireDt());
-			to.setAttribute(ACTIVE_YN, from.getActiveYn());
+			to.setAttribute(ACTIVE_YN, (from.getActiveYn() !=null && from.getActiveYn().equals("Y"))?true:false);
 			to.setAttribute(LAST_UPDATE, from.getLastUpdate());
 	    }
 
 	public AppEventProducer getNotifier() {
 			return notifier;
 	}
-	
+//---------------------------
 	public void fetchAllRowsToCache () {
 
 		   Log.debug("RPC to fetch for Cache Called - SecurityUser");
 		   final String whereClause ="";
 		   final String orderByClause ="";
 		   Integer rowLimit =-1;
-		   Integer startRow=1;
+		   Integer startRow=0;
 		   final java.util.Date startTime = new java.util.Date();
 		   securityUserService.selectSecurityUser(userProfile, whereClause, orderByClause, rowLimit, startRow,
 			new AsyncCallback<ArrayList<SecurityUserBean>>(){
@@ -423,7 +431,7 @@ public class SecurityUserDS extends GwtRpcDataSource{
 				public void onSuccess(ArrayList<SecurityUserBean> securityUserResult) {
 				  Log.debug("fetchAllRowsToCache succeeded for SecurityUser");
 				 
-				  ListGridRecord[] list = new ListGridRecord[securityUserResult.size ()];
+ 				  ListGridRecord[] list = new ListGridRecord[securityUserResult.size ()];
 				  for (int i = 0; i < list.length; i++) {
 				 	ListGridRecord record = new ListGridRecord ();
 				        copyValues (securityUserResult.get (i), record);
@@ -440,5 +448,18 @@ public class SecurityUserDS extends GwtRpcDataSource{
 	
 	}
 
-  
+ 	/**
+	 * @param useGridRecord true if the the CRUD function should go back to the UI to get the full record
+	 */
+	public void setUseGridRecord(boolean useGridRecord) {
+		this.useGridRecord = useGridRecord;
+	}
+
+	/**
+	 * @return useGridRecord true if the the CRUD function should go back to the UI to get the full record
+	 */
+	public boolean isUseGridRecord() {
+		return useGridRecord;
+	}
+ 
 }

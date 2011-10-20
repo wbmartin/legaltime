@@ -62,8 +62,8 @@ public class TestModule implements EntryPoint {
 		//Testing only
 		String username = DOM.getElementProperty(DOM.getElementById("username"),"value");
 		String password = DOM.getElementProperty(DOM.getElementById("passwd"),"value");
-		Log.debug("username"+ username);
-		Log.debug("passwd"+ password);
+		//Log.debug("username"+ username);
+		//Log.debug("passwd"+ password);
 		
 		notifier.notifyAppEvent(this, AppMsg.SEND_LOGIN_INFO,username,password,null,"");
 
